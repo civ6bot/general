@@ -1,12 +1,34 @@
-import {client} from "./connection/client";
 import {importx} from "@discordx/importer";
 import * as dotenv from "dotenv";
+import {httpsServer} from "./server/server.app";
+import {discordClient} from "./discord/discord.client";
+import {dataSource} from "./database/database.datasource";
+import {DatabaseServiceText} from "./database/services/service.Text";
+import {loadTextEntities} from "./core/loaders/core.loader.text";
+import {DatabaseServiceConfig} from "./database/services/service.Config";
+import {loadDefaultConfigs} from "./core/loaders/core.loader.config";
 
-importx(
-    __dirname + "/bot/*/*.commands.{js,ts}",
-    __dirname + "/bot/*/buttons/*.buttons.resolver.{js,ts}",
-);
+dotenv.config({path: 'general.env'});
 
-dotenv.config();
+importx(__dirname + "/modules/*/*.interactions.{js,ts}").then(() => {
+    discordClient.login(process.env.BOT_TOKEN as string).then(() => {
+        console.log("Civilization VI \"General\" started");
+    });
+});
 
-client.login(process.env.BOT_TOKEN as string);
+dataSource.initialize().then(async () => {
+    let databaseServiceText: DatabaseServiceText = new DatabaseServiceText();
+    let databaseServiceConfig: DatabaseServiceConfig = new DatabaseServiceConfig();
+
+    await databaseServiceText.clearAll();
+    await databaseServiceText.insertAll(loadTextEntities());
+
+    await databaseServiceConfig.clearAll();
+    await databaseServiceConfig.insertAll(loadDefaultConfigs());
+
+    console.log(`Local database started`);
+});
+
+httpsServer.listen(process.env.SERVER_HTTPS_PORT, () => {
+    console.log(`HTTPS server listening on PORT=${process.env.SERVER_HTTPS_PORT}`);
+});

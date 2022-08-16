@@ -1,0 +1,15 @@
+{
+  "lang": "ru",
+  "text": [
+    { "tag": "MISCELLANEOUS_RANDOM_ERROR_BOUNDS", "value": "Введите число от 2 до [MAX_VALUE]." },
+    { "tag": "MISCELLANEOUS_RANDOM_TITLE", "value": "\uD83C\uDFB2 Случайное число от 1 до [BORDER_VALUE]" },
+    { "tag": "MISCELLANEOUS_RANDOM_DESCRIPTION", "value": "Выпало: **[RANDOM_VALUE]**." },
+    { "tag": "MISCELLANEOUS_RANDOM_BEST_DESCRIPTION", "value": "Выпало: **[RANDOM_VALUE]**! \uD83D\uDD25" },
+
+    { "tag": "MISCELLANEOUS_COIN_TITLE", "value": "\uD83E\uDE99 Подбрасывание монетки" },
+    { "tag": "MISCELLANEOUS_COIN_HEADS_DESCRIPTION", "value": "**Орёл!** \uD83C\uDF15" },
+    { "tag": "MISCELLANEOUS_COIN_TAILS_DESCRIPTION", "value": "**Решка!** \uD83C\uDF11" },
+
+    { "tag": "MISCELLANEOUS_VOTE_TITLE", "value": "\uD83E\uDD14 Вопрос" }
+  ]
+}

@@ -56,7 +56,7 @@ export abstract class DraftInteractions {
     ) { await this.draftService.blindButtonPick(interaction); }
 
     @ButtonComponent(/blindButton-delete/)
-    public async blindDelete(
+    public async blindButtonDelete(
         interaction: ButtonInteraction
     ) { await this.draftService.blindButtonDelete(interaction); }
 }

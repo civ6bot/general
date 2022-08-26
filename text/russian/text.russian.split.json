@@ -1,0 +1,35 @@
+{
+  "lang": "ru",
+  "text": [
+    { "tag": "SPLIT_ERROR_NO_CAPTAINS", "value": "Введите 1 или 2 игроков в качестве капитанов команд. При вводе лишь одного капитана вы автоматически становитесь вторым капитаном." },
+    { "tag": "SPLIT_ERROR_NO_VOICE", "value": "Для использования этой команды вы должны находиться в голосовом канале." },
+    { "tag": "SPLIT_ERROR_NOT_ENOUGH_USERS", "value": "Недостаточно игроков для разделения на команды." },
+    { "tag": "SPLIT_ERROR_TOO_MUCH_USERS", "value": "Слишком много игроков!" },
+    { "tag": "SPLIT_ERROR_PROCESSING", "value": "В данный момент уже проводится разделение на команды. Пожалуйста, подождите." },
+
+    { "tag": "SPLIT_RANDOM_TITLE", "value": "\uD83D\uDC65 Разделение на команды - случайное" },
+
+    { "tag": "SPLIT_CLASSIC_TITLE_PROCESSING", "value": "\uD83D\uDC65 Разделение на команды - классическое, шаг [STEP_NUMBER]/[STEP_TOTAL]" },
+    { "tag": "SPLIT_CLASSIC_TITLE_FINISH", "value": "\uD83D\uDC65 Разделение на команды - классическое" },
+
+    { "tag": "SPLIT_DOUBLE_TITLE_PROCESSING", "value": "\uD83D\uDC65 Разделение на команды - first-double, шаг [STEP_NUMBER]/[STEP_TOTAL]" },
+    { "tag": "SPLIT_DOUBLE_TITLE_FINISH", "value": "\uD83D\uDC65 Разделение на команды - first-double" },
+
+    { "tag": "SPLIT_CWC_TITLE_PROCESSING", "value": "\uD83D\uDC65 Разделение на команды - CWC, шаг [STEP_NUMBER]/[STEP_TOTAL]" },
+    { "tag": "SPLIT_CWC_TITLE_FINISH", "value": "\uD83D\uDC65 Разделение на команды - CWC" },
+
+    { "tag": "SPLIT_DESCRIPTION_START", "value": "\uD83C\uDF40 Фортуна решила, что капитан [CAPTAIN_USER] будет выбирать первым.\n⏳ Время на выбор игрока заканчивается [TIMESTAMP]." },
+    { "tag": "SPLIT_DESCRIPTION_PROCESSING", "value": "Теперь выбирает капитан команды #[TEAM_NUMBER] ([CAPTAIN_USER]).\n⏳ Время на выбор игрока заканчивается [TIMESTAMP]." },
+    { "tag": "SPLIT_DESCRIPTION_FINISH", "value": "Разделение на команды завершено." },
+    { "tag": "SPLIT_DESCRIPTION_TIMEOUT", "value": "⏰❗ Время вышло! Разделение на команды отменено." },
+
+    { "tag": "SPLIT_FIELD_TITLE_USERS", "value": "Игроки:" },
+    { "tag": "SPLIT_FIELD_TITLE_USERS_NOT_PICKED", "value": "Не выбран:" },
+    { "tag": "SPLIT_FIELD_TITLE_TEAM", "value": "Команда #[TEAM_NUMBER]" },
+
+    { "tag": "SPLIT_BUTTON_DELETE", "value": "Удалить (для автора и капитанов)" },
+    { "tag": "SPLIT_NOTIFY_DELETED", "value": "Разделение на команды успешно удалено." },
+
+    { "tag": "SPLIT_ERROR_DELETE_BUTTON_NOT_OWNER_OR_CAPTAIN", "value": "Вы не являетесь капитаном или автором данного разделения на команды." }
+  ]
+}

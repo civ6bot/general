@@ -1,28 +1,22 @@
-// Если первый аргумент метода типа CommandInteraction, то удерживает его в тайминге больше 5 секунд (interaction.deferReply();
-// оборачивает в конструкцию try-catch для избежания отключения бота.
 import {CommandInteraction, EmbedBuilder} from "discord.js";
-import {CoreServicePM} from "../services/core.service.PM";
 import {DatabaseServiceConfig} from "../../database/services/service.Config";
-import {ModuleBaseUI} from "../../modules/base/base.ui";
 import {DatabaseServiceText} from "../../database/services/service.Text";
+import {ModuleBaseUI} from "../../modules/base/base.ui";
+import {CoreServicePM} from "../services/core.service.PM";
 
-export function SafeModuleService(isEphemeral: boolean = false): MethodDecorator {
-    return (
-        target: any,
-        key: string | symbol,
-        descriptor: PropertyDescriptor
-    ) => {
-        let originalMethod = descriptor.value;
-        descriptor.value = async function(...args: any[]): Promise<void> {
-            try {
-                if(args[0].constructor.name === "ChatInputCommandInteraction") {
-                    let interaction: CommandInteraction = args[0] as CommandInteraction;
-                    if(!interaction.deferred)
-                        await interaction.deferReply({ephemeral: isEphemeral});
-                }
-                await originalMethod.apply(this, args);
-            } catch (e) {
-                if(args[0].constructor.name === "ChatInputCommandInteraction"){
+export const SafeModuleService: MethodDecorator = (
+    target: any,
+    key: string | symbol,
+    descriptor: PropertyDescriptor
+) => {
+    let originalMethod = descriptor.value;
+    descriptor.value = async function(...args: any[]): Promise<any> {
+        try {
+            originalMethod.apply(this, args);
+        } catch (e) {
+            console.log(e);
+            if(args[0].constructor.name === "ChatInputCommandInteraction")
+                try {
                     let interaction: CommandInteraction = args[0] as CommandInteraction;
                     let databaseServiceConfig: DatabaseServiceConfig = new DatabaseServiceConfig();
                     let databaseServiceText: DatabaseServiceText = new DatabaseServiceText();
@@ -37,9 +31,8 @@ export function SafeModuleService(isEphemeral: boolean = false): MethodDecorator
                         ? await interaction.editReply({embeds: errorEmbed})
                         : await interaction.reply({embeds: errorEmbed});
                     await CoreServicePM.send(userID, errorEmbed);
-                }
-            }
-        };
-        return descriptor;
-    };
-}
+                } catch {}
+        }
+    }
+    return descriptor;
+};

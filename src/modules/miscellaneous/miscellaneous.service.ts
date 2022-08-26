@@ -1,11 +1,11 @@
 import {DecorateAll} from "decorate-all";
-import {SafeModuleService} from "../../core/decorators/core.decorators.SaveModuleService";
+import {SafeModuleServiceDeferReply} from "../../core/decorators/core.decorators.SaveModuleServiceDeferReply";
 import {CommandInteraction, Message} from "discord.js";
 import {ModuleBaseService} from "../base/base.service";
 import {MiscellaneousUI} from "./miscellaneous.ui";
 import {CoreServiceEmojis} from "../../core/services/core.service.emojis";
 
-@DecorateAll(SafeModuleService())
+@DecorateAll(SafeModuleServiceDeferReply())
 export class MiscellaneousService extends ModuleBaseService {
     private miscellaneousUI: MiscellaneousUI = new MiscellaneousUI();
 

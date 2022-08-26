@@ -3,7 +3,10 @@ import {DraftUI} from "./draft.ui";
 import {ButtonInteraction, CommandInteraction, DMChannel, GuildChannel, GuildMember, Message, User} from "discord.js";
 import {Draft, DraftBlind, DraftFFA, DraftTeamers} from "./draft.models";
 import {CoreGeneratorTimestamp} from "../../core/generators/core.generator.timestamp";
+import {DecorateAll} from "decorate-all";
+import {SafeModuleService} from "../../core/decorators/core.decorators.SaveModuleService";
 
+@DecorateAll(SafeModuleService)
 export class DraftService extends ModuleBaseService {
     private draftUI: DraftUI = new DraftUI();
 
@@ -222,10 +225,10 @@ export class DraftService extends ModuleBaseService {
                 DraftService.drafts.delete(draft.guildID+draft.type);
                 textStrings = await this.getManyText(
                     draft.interaction,
-                    ["DRAFT_BLIND_ERROR_PM", "BASE_ERROR_TITLE"],
-                    [[draft.users[draft.pmMessages.length].toString()]]
+                    ["BASE_ERROR_TITLE", "DRAFT_BLIND_ERROR_PM"],
+                    [null, [draft.users[draft.pmMessages.length].toString()]]
                 );
-                await draft.message.edit({embeds: this.draftUI.error(textStrings[1], textStrings[0])});
+                await draft.message.edit({embeds: this.draftUI.error(textStrings[0], textStrings[1])});
                 for(let i in draft.pmMessages)
                     await draft.pmMessages[i].delete();
                 return;
@@ -339,6 +342,14 @@ export class DraftService extends ModuleBaseService {
         let draft: DraftBlind | undefined = DraftService.drafts.get(key) as DraftBlind || undefined;
         if(!draft)
             return await interaction.message.delete();
+
+        if(interaction.user.id !== draft.interaction.user.id){
+            let textStrings = await this.getManyText(
+                draft.interaction,
+                ["BASE_ERROR_TITLE", "DRAFT_ERROR_BLIND_DELETE_BUTTON_NOT_OWNER"]
+            );
+            return await interaction.reply({embeds: this.draftUI.error(textStrings[0], textStrings[1]), ephemeral: true});
+        }
 
         if(draft.setTimeoutID !== null) {
             clearTimeout(draft.setTimeoutID);

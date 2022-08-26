@@ -104,6 +104,7 @@
     { "tag": "DRAFT_REDRAFT_BUTTON_NO", "value": "Против" },
 
     { "tag": "DRAFT_REDRAFT_ERROR_NOT_FOUND", "value": "Вашего драфта для редрафта не найдено." },
-    { "tag": "DRAFT_REDRAFT_ERROR_NOT_MEMBER", "value": "Вы не участвуете в этом голосовании." }
+    { "tag": "DRAFT_REDRAFT_ERROR_NOT_MEMBER", "value": "Вы не участвуете в этом голосовании." },
+    { "tag": "DRAFT_ERROR_BLIND_DELETE_BUTTON_NOT_OWNER", "value": "Вы не являетесь автором данного драфта." }
   ]
 }

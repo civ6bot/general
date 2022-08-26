@@ -1,13 +1,13 @@
 import {ModuleBaseService} from "../base/base.service";
 import {CommandInteraction, User} from "discord.js";
-import {SafeModuleService} from "../../core/decorators/core.decorators.SaveModuleService";
+import {SafeModuleServiceDeferReply} from "../../core/decorators/core.decorators.SaveModuleServiceDeferReply";
 import {FeedbackUI} from "./feedback.ui";
 import {CoreServicePM} from "../../core/services/core.service.PM";
 
 export class FeedbackService extends ModuleBaseService {
     feedbackUI: FeedbackUI = new FeedbackUI();
 
-    @SafeModuleService(true)
+    @SafeModuleServiceDeferReply(true)
     public async feedback(interaction: CommandInteraction, content: string) {
         let textStrings: string[] = await this.getManyText(interaction, [
             "FEEDBACK_FEEDBACK_TITLE", "FEEDBACK_FEEDBACK_SERVER_FIELD_TITLE",
@@ -27,7 +27,7 @@ export class FeedbackService extends ModuleBaseService {
         ));
     }
 
-    @SafeModuleService()
+    @SafeModuleServiceDeferReply()
     public async about(interaction: CommandInteraction) {
         let textStrings: string[] = await this.getManyText(interaction, [
             "FEEDBACK_ABOUT_TITLE", "FEEDBACK_ABOUT_DESCRIPTION",

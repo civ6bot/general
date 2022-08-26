@@ -15,8 +15,6 @@ export abstract class Draft extends ModuleBaseModel {
     public redraftStatus: number[] = [];
     public thresholdUsers: number = 0;
 
-    public setTimeoutID: NodeJS.Timeout | null = null;
-
     private searchTexts(substr: string): number[] {
         let searchedIndexes: number[] = [];
         this.civilizationsTexts.forEach((text: string, index: number) => {

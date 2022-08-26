@@ -2,13 +2,13 @@ import {ModuleBaseService} from "../base/base.service";
 import {CommandInteraction} from "discord.js";
 import {SteamUI} from "./steam.ui";
 import {DecorateAll} from "decorate-all";
-import {SafeModuleService} from "../../core/decorators/core.decorators.SaveModuleService";
+import {SafeModuleServiceDeferReply} from "../../core/decorators/core.decorators.SaveModuleServiceDeferReply";
 import {RequestsSteam} from "../../requests/requests.steam";
 import {SteamAPIData} from "../../types/type.SteamAPIData";
 import {RequestsUserSteam} from "../../requests/requests.UserSteam";
 import {UserSteam} from "../../types/type.UserSteam";
 
-@DecorateAll(SafeModuleService())
+@DecorateAll(SafeModuleServiceDeferReply())
 export class SteamService extends ModuleBaseService {
     private steamUI: SteamUI = new SteamUI();
     private requestsUserSteam: RequestsUserSteam = new RequestsUserSteam();

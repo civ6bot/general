@@ -43,7 +43,7 @@ export class MiscellaneousService extends ModuleBaseService {
 
         if(interaction.inCachedGuild()){
             let msg: Message = await interaction.editReply({embeds: this.miscellaneousUI.vote(textString, voteContent)});
-            await CoreServiceEmojis.ordered(msg, emojis);
+            await CoreServiceEmojis.reactOrder(msg, emojis);
         }
     }
 }

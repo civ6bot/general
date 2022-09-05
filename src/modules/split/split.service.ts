@@ -1,24 +1,18 @@
 import {ModuleBaseService} from "../base/base.service";
-import {ButtonInteraction, CommandInteraction, GuildChannel, GuildMember, MessageReaction, User} from "discord.js";
+import {ButtonInteraction, CommandInteraction, GuildMember, MessageReaction, User} from "discord.js";
 import {SplitUI} from "./split.ui";
 import {Split, SplitClassic, SplitCWC, SplitDouble, SplitRandom} from "./split.models";
 import {DecorateAll} from "decorate-all";
 import {SafeModuleService} from "../../core/decorators/core.decorators.SaveModuleService";
 import {CoreGeneratorTimestamp} from "../../core/generators/core.generator.timestamp";
+import {CoreServiceEmojis} from "../../core/services/core.service.emojis";
+import {CoreServiceUsers} from "../../core/services/core.service.users";
 
 //@DecorateAll(SafeModuleService)
 export class SplitService extends ModuleBaseService {
     private splitUI: SplitUI = new SplitUI();
 
     public static splits: Map<string, Split> = new Map<string, Split>();    // guildID
-
-    private getUsersFromVoice(interaction: CommandInteraction): User[] {
-        let member = interaction.member as GuildMember;
-        let channel = member.voice.channel as GuildChannel;
-        return channel
-            ? Array.from(channel.members.values()).map((member: GuildMember): User =>  member.user) //.filter(user => !user.bot)
-            : [];
-    }
 
     private checkSplit(split: Split): void {
         if(split.errorReturnTag !== "")
@@ -29,16 +23,27 @@ export class SplitService extends ModuleBaseService {
             split.errorReturnTag = "SPLIT_ERROR_PROCESSING";
     }
 
-    public async random(interaction: CommandInteraction, captain1: GuildMember, captain2: GuildMember | null = null, users: User[] = []) {
-        await interaction.deferReply();
-        if(users.length === 0)
-            users = this.getUsersFromVoice(interaction);
-        //console.log("Before constructor: ", users);
-        let split: SplitRandom = new SplitRandom(interaction, [captain1.user, captain2?.user || null], users);
+    public async random(
+        interaction: CommandInteraction,
+        captain1: GuildMember, captain2: GuildMember | null = null,
+        users: User[] = [],
+        outerSplit: SplitRandom | null = null
+    ) {
+        let split: SplitRandom;
+        if(outerSplit)
+            split = outerSplit;
+        else {
+            await interaction.deferReply();
+            if(users.length === 0)
+                users = CoreServiceUsers.getFromVoice(interaction);
+            split = new SplitRandom(interaction, [captain1.user, captain2?.user || null], users);
+        }
         this.checkSplit(split);
         if(split.errorReturnTag !== ""){
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", split.errorReturnTag]);
-            return await interaction.editReply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
+            return (outerSplit)
+                ? await interaction.channel?.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
+                : await interaction.editReply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
         }
 
         let title: string = await this.getOneText(split.interaction, "SPLIT_RANDOM_TITLE");
@@ -46,35 +51,54 @@ export class SplitService extends ModuleBaseService {
         for(let i: number = 0; i < split.teams.length; i++)
             fieldHeaders.push(await this.getOneText(split.interaction, "SPLIT_FIELD_TITLE_TEAM", i+1));
 
-        await interaction.editReply({embeds: this.splitUI.splitEmbed(
-            title,
-                null,
-                fieldHeaders,
-                split
-            )});
+        (outerSplit)
+            ? await interaction.channel?.send({embeds: this.splitUI.splitEmbed(
+                title,
+                    null,
+                    fieldHeaders,
+                    split
+                )})
+            : await interaction.editReply({embeds: this.splitUI.splitEmbed(
+                    title,
+                    null,
+                    fieldHeaders,
+                    split
+                )});
     }
 
-    public async allLongSplits(interaction: CommandInteraction, type: string, captain1: GuildMember, captain2: GuildMember | null = null, users: User[] = []) {
-        await interaction.deferReply();
-        if(users.length === 0)
-            users = this.getUsersFromVoice(interaction);
+    public async allLongSplits(
+        interaction: CommandInteraction, type: string,
+        captain1: GuildMember,
+        captain2: GuildMember | null = null,
+        users: User[] = [],
+        outerSplit: Split | null = null
+    ) {
         let split: Split;
-        switch(type) {
-            case "Classic":
-                split = new SplitClassic(interaction, [captain1.user, captain2?.user || null], users);
-                break;
-            case "Double":
-                split = new SplitDouble(interaction, [captain1.user, captain2?.user || null], users);
-                break;
-            case "CWC":
-            default:
-                split = new SplitCWC(interaction, [captain1.user, captain2?.user || null], users);
-                break;
+        if(outerSplit)
+            split = outerSplit;
+        else {
+            await interaction.deferReply();
+            if(users.length === 0)
+                users = CoreServiceUsers.getFromVoice(interaction);
+            switch(type) {
+                case "Classic":
+                    split = new SplitClassic(interaction, [captain1.user, captain2?.user || null], users);
+                    break;
+                case "Double":
+                    split = new SplitDouble(interaction, [captain1.user, captain2?.user || null], users);
+                    break;
+                case "CWC":
+                default:
+                    split = new SplitCWC(interaction, [captain1.user, captain2?.user || null], users);
+                    break;
+            }
         }
         this.checkSplit(split);
         if(split.errorReturnTag !== ""){
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", split.errorReturnTag]);
-            return await interaction.editReply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
+            return (outerSplit)
+                ? await interaction.channel?.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
+                : await interaction.editReply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
         }
         SplitService.splits.set(split.guildID, split);
 
@@ -110,19 +134,27 @@ export class SplitService extends ModuleBaseService {
         for(let i: number = 0; i < split.teams.length; i++)
             fieldHeaders.push(await this.getOneText(split.interaction, "SPLIT_FIELD_TITLE_TEAM", i+1));
 
-        split.message = await interaction.editReply({embeds: this.splitUI.splitEmbed(
+        if(!interaction.channel)
+            throw "Interaction no channel!";
+        split.message = (outerSplit)
+            ? await interaction.channel?.send({embeds: this.splitUI.splitEmbed(
+                    textStrings[0],
+                    textStrings[1],
+                    fieldHeaders,
+                    split
+                ), components: this.splitUI.splitDeleteButton(textStrings[2])})
+            : await interaction.editReply({embeds: this.splitUI.splitEmbed(
                 textStrings[0],
                 textStrings[1],
                 fieldHeaders,
                 split
-            ), components: this.splitUI.splitDeleteButton(textStrings[2])});
+                ), components: this.splitUI.splitDeleteButton(textStrings[2])});
 
         split.setTimeoutID = setTimeout(this.timeoutFunction, split.pickTimeMs, split);
         split.reactionCollector = split.message?.createReactionCollector({time: 16*split.pickTimeMs});  // максимальное число игроков
         split.reactionCollector.on("collect", async (reaction: MessageReaction, user: User) => SplitService.reactionCollectorFunction(reaction, user));
         try {   // если оно будет удалено до выставления всех эмодзи
-            for(let i in split.emojis)
-                await split.message.react(split.emojis[i]);
+            await CoreServiceEmojis.reactOrder(split.message, split.emojis);
         } catch {
             SplitService.splits.delete(split.guildID);
         }

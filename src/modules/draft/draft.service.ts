@@ -1,34 +1,18 @@
 import {ModuleBaseService} from "../base/base.service";
 import {DraftUI} from "./draft.ui";
-import {ButtonInteraction, CommandInteraction, DMChannel, GuildChannel, GuildMember, Message, User} from "discord.js";
+import {ButtonInteraction, CommandInteraction, DMChannel, Message, User} from "discord.js";
 import {Draft, DraftBlind, DraftFFA, DraftTeamers} from "./draft.models";
 import {CoreGeneratorTimestamp} from "../../core/generators/core.generator.timestamp";
 import {DecorateAll} from "decorate-all";
 import {SafeModuleService} from "../../core/decorators/core.decorators.SaveModuleService";
+import {CoreServiceCivilizations} from "../../core/services/core.service.civilizations";
+import {CoreServiceUsers} from "../../core/services/core.service.users";
 
 @DecorateAll(SafeModuleService)
 export class DraftService extends ModuleBaseService {
     private draftUI: DraftUI = new DraftUI();
 
     public static drafts: Map<string, Draft> = new Map<string, Draft>();    // guildID+draftType
-
-    private readonly civilizationsConfigTags: string[] = [
-        "DRAFT_AUSTRALIA", "DRAFT_AMERICA", "DRAFT_ENGLAND", "DRAFT_ENGLAND_ELEANOR",
-        "DRAFT_ARABIA", "DRAFT_AZTECS", "DRAFT_BRAZIL", "DRAFT_HUNGARY",
-        "DRAFT_GERMANY", "DRAFT_GREECE_PERICLES", "DRAFT_GREECE_GORGO", "DRAFT_GEORGIA",
-        "DRAFT_EGYPT", "DRAFT_ZULU", "DRAFT_INDIA", "DRAFT_INDIA_CHANDRAGUPTA",
-        "DRAFT_INDONESIA", "DRAFT_INCA", "DRAFT_SPAIN", "DRAFT_CANADA",
-        "DRAFT_CHINA", "DRAFT_KONGO", "DRAFT_KOREA", "DRAFT_CREE",
-        "DRAFT_KHMER", "DRAFT_MACEDONIA" ,"DRAFT_MALI", "DRAFT_MAORI",
-        "DRAFT_MONGOLIA", "DRAFT_MAPUCHE", "DRAFT_NETHERLANDS", "DRAFT_NORWAY",
-        "DRAFT_NUBIA", "DRAFT_OTTOMAN", "DRAFT_PERSIA", "DRAFT_POLAND",
-        "DRAFT_ROME", "DRAFT_RUSSIA", "DRAFT_SCYTHIA", "DRAFT_PHOENICIA",
-        "DRAFT_FRANCE", "DRAFT_FRANCE_ELEANOR", "DRAFT_SWEDEN", "DRAFT_SCOTLAND",
-        "DRAFT_SUMERIA", "DRAFT_JAPAN", "DRAFT_MAYA", "DRAFT_COLOMBIA",
-        "DRAFT_ETHIOPIA", "DRAFT_AMERICA_ROUGH_RIDER", "DRAFT_FRANCE_MAGNIFICENCE", "DRAFT_BYZANTIUM",
-        "DRAFT_GAUL", "DRAFT_BABYLON", "DRAFT_CHINA_KUBLAI", "DRAFT_MONGOLIA_KUBLAI",
-        "DRAFT_VIETNAM", "DRAFT_PORTUGAL"
-    ];
 
     private checkDraft(draft: Draft): void {
         if(draft.errorReturnTag !== "")
@@ -39,37 +23,32 @@ export class DraftService extends ModuleBaseService {
             draft.errorReturnTag = "DRAFT_ERROR_PROCESSING";
     }
 
-    private getUsersFromVoice(interaction: CommandInteraction): User[] {
-        let member = interaction.member as GuildMember;
-        let channel = member.voice.channel as GuildChannel;
-        return channel
-            ? Array.from(channel.members.values()).map((member: GuildMember): User =>  member.user).filter(user => !user.bot)
-            : [];
-    }
-
-    private async getCivilizationsConfigs(interaction: CommandInteraction | ButtonInteraction): Promise<number[]> { return await this.getManySettingNumber(interaction, ...this.civilizationsConfigTags); }
-
-    public async ffa(interaction: CommandInteraction, civAmount: number, bans: string, users: User[] = [], draft: DraftFFA | null = null) {
-        if(!draft) {
+    public async ffa(interaction: CommandInteraction, civAmount: number, bans: string, users: User[] = [], outerDraft: DraftFFA | null = null) {
+        let draft: DraftFFA;
+        if(outerDraft)
+            draft = outerDraft;
+        else {
             await interaction.deferReply();
             let [minCivilizations, maxCivilizations]: number[] = (civAmount === 0)
                 ? await this.getManySettingNumber(interaction, "DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT", "DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT")
                 : [civAmount, civAmount];
             if(users.length === 0)
-                users = this.getUsersFromVoice(interaction);
+                users = CoreServiceUsers.getFromVoice(interaction);
             draft = new DraftFFA(
                 interaction, bans,
-                await this.getCivilizationsConfigs(interaction),
-                await this.getManyText(interaction, this.civilizationsConfigTags.map(text => text + "_TEXT")),
+                await this.getManySettingNumber(interaction, ...CoreServiceCivilizations.civilizationsTags),
+                await this.getManyText(interaction, CoreServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
                 users, minCivilizations, maxCivilizations
             );
-            this.checkDraft(draft);
-            if(draft.errorReturnTag !== "") {
-                let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
-                return await interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
-            }
-            DraftService.drafts.set(draft.guildID+draft.type, draft);
         }
+        this.checkDraft(draft);
+        if(draft.errorReturnTag !== "") {
+            let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
+            return (outerDraft)
+                ? await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+                : await interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+        }
+        DraftService.drafts.set(draft.guildID+draft.type, draft);
 
         let textStrings: string[] = await this.getManyText(
             draft.interaction,
@@ -86,19 +65,29 @@ export class DraftService extends ModuleBaseService {
                     draft
                 )});
         else
-            await draft.interaction.editReply({embeds: this.draftUI.draftFFAEmbed(
-                draft.users.length === 1 ? textStrings[0] : textStrings[1],
-                    textStrings[2],
-                    textStrings[3],
-                    draft
-                )});
+            (outerDraft)
+                ? await draft.interaction.channel?.send({embeds: this.draftUI.draftFFAEmbed(
+                        draft.users.length === 1 ? textStrings[0] : textStrings[1],
+                        textStrings[2],
+                        textStrings[3],
+                        draft
+                    )})
+                : await draft.interaction.editReply({embeds: this.draftUI.draftFFAEmbed(
+                    draft.users.length === 1 ? textStrings[0] : textStrings[1],
+                        textStrings[2],
+                        textStrings[3],
+                        draft
+                    )});
     }
 
-    public async teamers(interaction: CommandInteraction, teamAmount: number, bans: string, users: User[] = [], draft: DraftTeamers | null = null) {
-        if(!draft) {
+    public async teamers(interaction: CommandInteraction, teamAmount: number, bans: string, users: User[] = [], outerDraft: DraftTeamers | null = null) {
+        let draft: DraftTeamers;
+        if(outerDraft)
+            draft = outerDraft;
+        else {
             await interaction.deferReply();
             if(users.length === 0)
-                users = this.getUsersFromVoice(interaction);
+                users = CoreServiceUsers.getFromVoice(interaction);
             let forbiddenPairs: number[][] = (await this.getOneSettingString(interaction, "DRAFT_TEAMERS_FORBIDDEN_PAIRS"))
                 .split(" ")
                 .map( (pair: string): number[] => pair.split("_")
@@ -107,19 +96,21 @@ export class DraftService extends ModuleBaseService {
             draft = new DraftTeamers(
                 interaction,
                 bans,
-                await this.getCivilizationsConfigs(interaction),
-                await this.getManyText(interaction, this.civilizationsConfigTags.map(text => text + "_TEXT")),
+                await this.getManySettingNumber(interaction, ...CoreServiceCivilizations.civilizationsTags),
+                await this.getManyText(interaction, CoreServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
                 users,
                 teamAmount,
                 forbiddenPairs
             );
-            this.checkDraft(draft);
-            if(draft.errorReturnTag !== "") {
-                let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
-                return await interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
-            }
-            DraftService.drafts.set(draft.guildID+draft.type, draft);
         }
+        this.checkDraft(draft);
+        if(draft.errorReturnTag !== "") {
+            let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
+            return (outerDraft)
+                ? await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+                : await interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+        }
+        DraftService.drafts.set(draft.guildID+draft.type, draft);
 
         let textStrings: string[] = await this.getManyText(
             draft.interaction,
@@ -140,37 +131,50 @@ export class DraftService extends ModuleBaseService {
                     draft
                 )});
         else
-            await draft.interaction.editReply({embeds: this.draftUI.draftTeamersEmbed(
-                textStrings[0],
-                    teamDescriptionHeader,
-                    textStrings[1],
-                    textStrings[2],
-                    draft
-                )});
+            (outerDraft)
+                ? await draft.interaction.channel?.send({embeds: this.draftUI.draftTeamersEmbed(
+                        textStrings[0],
+                        teamDescriptionHeader,
+                        textStrings[1],
+                        textStrings[2],
+                        draft
+                    )})
+                : await draft.interaction.editReply({embeds: this.draftUI.draftTeamersEmbed(
+                    textStrings[0],
+                        teamDescriptionHeader,
+                        textStrings[1],
+                        textStrings[2],
+                        draft
+                    )});
     }
 
-    public async blind(interaction: CommandInteraction, civAmount: number, bans: string, users: User[] = [], draft: DraftBlind | null = null) {
-        if(!draft) {
+    public async blind(interaction: CommandInteraction, civAmount: number, bans: string, users: User[] = [], outerDraft: DraftBlind | null = null) {
+        let draft: DraftBlind;
+        if(outerDraft)
+            draft = outerDraft;
+        else {
             await interaction.deferReply();
             let [minCivilizations, maxCivilizations]: number[] = (civAmount === 0)
                 ? await this.getManySettingNumber(interaction, "DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT", "DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT")
                 : [civAmount, civAmount];
             if(users.length === 0)
-                users = this.getUsersFromVoice(interaction);
+                users = CoreServiceUsers.getFromVoice(interaction);
             draft = new DraftBlind(
                 interaction, bans,
-                await this.getCivilizationsConfigs(interaction),
-                await this.getManyText(interaction, this.civilizationsConfigTags.map(text => text + "_TEXT")),
+                await this.getManySettingNumber(interaction, ...CoreServiceCivilizations.civilizationsTags),
+                await this.getManyText(interaction, CoreServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
                 users, minCivilizations, maxCivilizations
             );
-            this.checkDraft(draft);
-            if(draft.errorReturnTag !== "") {
-                let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
-                return await interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
-            }
-            draft.isProcessing = true;
-            DraftService.drafts.set(draft.guildID+draft.type, draft);
         }
+        this.checkDraft(draft);
+        if(draft.errorReturnTag !== "") {
+            let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
+            return (outerDraft)
+                ? await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+                : await interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+        }
+        draft.isProcessing = true;
+        DraftService.drafts.set(draft.guildID+draft.type, draft);
 
         let pickTimeMs: number = await this.getOneSettingNumber(draft.interaction, "DRAFT_BLIND_PICK_TIME_MS");
         let emojis: string[] = await this.getManySettingString(draft.interaction, "BASE_EMOJI_YES", "BASE_EMOJI_NO");
@@ -195,16 +199,27 @@ export class DraftService extends ModuleBaseService {
                     draft
                 ), components: this.draftUI.draftBlindDeleteButton(textStrings[7])});
         else
-            draft.message = await interaction.editReply({embeds: this.draftUI.draftBlindEmbed(
-                draft.users.length === 1 ? textStrings[0] : textStrings[1],
-                    textStrings[2],
-                    textStrings[3],
-                    textStrings[4],
-                    textStrings[5],
-                    textStrings[6],
-                    emojis,
-                    draft
-                ), components: this.draftUI.draftBlindDeleteButton(textStrings[7])});
+            (outerDraft)
+                ? draft.message = await interaction.channel?.send({embeds: this.draftUI.draftBlindEmbed(
+                        draft.users.length === 1 ? textStrings[0] : textStrings[1],
+                        textStrings[2],
+                        textStrings[3],
+                        textStrings[4],
+                        textStrings[5],
+                        textStrings[6],
+                        emojis,
+                        draft
+                    ), components: this.draftUI.draftBlindDeleteButton(textStrings[7])}) as Message
+                : draft.message = await interaction.editReply({embeds: this.draftUI.draftBlindEmbed(
+                    draft.users.length === 1 ? textStrings[0] : textStrings[1],
+                        textStrings[2],
+                        textStrings[3],
+                        textStrings[4],
+                        textStrings[5],
+                        textStrings[6],
+                        emojis,
+                        draft
+                    ), components: this.draftUI.draftBlindDeleteButton(textStrings[7])});
 
         textStrings = await this.getManyText(
             draft.interaction,
@@ -223,11 +238,13 @@ export class DraftService extends ModuleBaseService {
                 }));
             } catch {
                 DraftService.drafts.delete(draft.guildID+draft.type);
+                draft.isProcessing = false;
                 textStrings = await this.getManyText(
                     draft.interaction,
                     ["BASE_ERROR_TITLE", "DRAFT_BLIND_ERROR_PM"],
                     [null, [draft.users[draft.pmMessages.length].toString()]]
                 );
+
                 await draft.message.edit({embeds: this.draftUI.error(textStrings[0], textStrings[1])});
                 for(let i in draft.pmMessages)
                     await draft.pmMessages[i].delete();
@@ -268,7 +285,7 @@ export class DraftService extends ModuleBaseService {
                     [],
                     draft
                 )});
-        }, pickTimeMs+draft.date.getTime()-Date.now(), draft);
+        }, pickTimeMs, draft);
     }
 
     // blindButton-pick-guildID-civID
@@ -303,11 +320,12 @@ export class DraftService extends ModuleBaseService {
                 "DRAFT_BLIND_DESCRIPTION_PROCESSING", "DRAFT_DRAFT_BANS_DESCRIPTION",
                 "DRAFT_DRAFT_ERRORS_DESCRIPTION", "DRAFT_BLIND_FIELD_PLAYERS_TITLE",
                 "DRAFT_BLIND_FIELD_READY_TITLE", "DRAFT_BLIND_FIELD_CIVILIZATION_TITLE"],
-            [null, [draft.users.length], [CoreGeneratorTimestamp.getRelativeTime(pickTimeMs-Date.now()+draft.date.getTime())], [draft.bans.length]]
-        );
+            [null, [draft.users.length], [CoreGeneratorTimestamp.getRelativeTime(pickTimeMs+draft.date.getTime()-Date.now())], [draft.bans.length]]
+        );  // здесь должна оставаться разность времени,
+        // чтобы в сообщении показывало правильное время, а не начинало отчет заново
         let emojis: string[] = await this.getManySettingString(interaction, "BASE_EMOJI_YES", "BASE_EMOJI_NO");
 
-        if(draft.civilizationsPool.map((pool: number[]): number => pool.length).reduce((a: number, b: number): number => a+b, 0) === draft.users.length) {
+        if(draft.civilizationsPool.every((pool: number[]): boolean => pool.length === 1)) {
             if(draft.setTimeoutID !== null) {
                 clearTimeout(draft.setTimeoutID);
                 draft.setTimeoutID = null;
@@ -447,7 +465,7 @@ export class DraftService extends ModuleBaseService {
                     draft
                 ), components: []});
             draft.redraftStatus = [];
-        }, settings[3]+draft.date.getTime()-Date.now(), draft);
+        }, settings[3], draft);
     }
 
     public async redraftButton(interaction: ButtonInteraction, voteStatus: boolean) {
@@ -477,7 +495,7 @@ export class DraftService extends ModuleBaseService {
                 "DRAFT_REDRAFT_FIELD_NO", "DRAFT_REDRAFT_FIELD_ZERO_USERS"
             ], [
                 [draft.runTimes],
-                [draft.thresholdUsers, draft.users.length, CoreGeneratorTimestamp.getRelativeTime(redraftTimeMs-Date.now()+draft.date.getTime())],
+                [draft.thresholdUsers, draft.users.length, CoreGeneratorTimestamp.getRelativeTime(redraftTimeMs)],
                 [emojis[0]],
                 [emojis[1]],
                 [emojis[0], draft.redraftStatus.filter(value => value === 1).length],

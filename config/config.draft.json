@@ -69,7 +69,6 @@
   { "setting": "DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT", "value": 6 },
   { "setting": "DRAFT_BLIND_PICK_TIME_MS", "value": 60000 },
 
-  { "setting": "DRAFT_OBJECT_LIFE_TIME_MS", "value": 600000 },
   { "setting": "REDRAFT_FFA_THRESHOLD_PERCENT", "value": 50 },
   { "setting": "REDRAFT_TEAMERS_THRESHOLD_PERCENT", "value": 50 },
   { "setting": "REDRAFT_BLIND_THRESHOLD_PERCENT", "value": 50 },

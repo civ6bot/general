@@ -1,5 +1,6 @@
 import {ModuleBaseModel} from "../base/base.models";
 import {ButtonInteraction, CommandInteraction, Message, User} from "discord.js";
+import {CoreServiceCivilizations} from "../../core/services/core.service.civilizations";
 
 export abstract class Draft extends ModuleBaseModel {
     public abstract readonly type: string;
@@ -14,15 +15,6 @@ export abstract class Draft extends ModuleBaseModel {
     public runTimes: number = 0;
     public redraftStatus: number[] = [];
     public thresholdUsers: number = 0;
-
-    private searchTexts(substr: string): number[] {
-        let searchedIndexes: number[] = [];
-        this.civilizationsTexts.forEach((text: string, index: number) => {
-            if(text.toLowerCase().includes(substr.toLowerCase()))
-                searchedIndexes.push(index);
-        });
-        return searchedIndexes;
-    }
 
     public revertToMainPool(): number {
         this.runTimes++;
@@ -57,36 +49,10 @@ export abstract class Draft extends ModuleBaseModel {
             return;
         }
         this.civilizationsMainPool = [...Array(civilizationsConfigs.length).keys()].filter(x => civilizationsConfigs[x] === 1);
-
-        // Поиск подстроки для бана
-        let rawBansArray: string[] = rawBans.split(" ").filter(str => str.length > 0);
-        for(let i: number = 0; i < rawBansArray.length; i++) {
-            let bannedArray: number[] = this.searchTexts(rawBansArray[i]);
-            if((bannedArray.length === 0)) {
-                this.errors.push(rawBansArray[i]);
-            } else if(bannedArray.length === 1) {
-                let indexOfBanned: number = this.civilizationsMainPool.indexOf(bannedArray[0]);
-                if(indexOfBanned !== -1) {
-                    this.civilizationsMainPool.splice(indexOfBanned, 1);
-                    this.bans.push(bannedArray[0]);
-                }
-            } else if(i+1 === rawBansArray.length) {
-                this.errors.push(rawBansArray[i]);
-            } else {
-                bannedArray = bannedArray.concat(this.searchTexts(rawBansArray[i+1]));
-                bannedArray = bannedArray.filter((value, index, array) => array.indexOf(value) !== index);
-                if(bannedArray.length !== 1) {
-                    this.errors.push(rawBansArray[i]);
-                } else {
-                    let indexOfBanned: number = this.civilizationsMainPool.indexOf(bannedArray[0]);
-                    if(indexOfBanned !== -1) {
-                        this.civilizationsMainPool.splice(indexOfBanned, 1);
-                        this.bans.push(bannedArray[0]);
-                    }
-                    i++;
-                }
-            }
-        }
+        let {bans, errors} = CoreServiceCivilizations.parseBans(rawBans, civilizationsTexts);
+        this.bans = bans;
+        this.errors = errors;
+        this.civilizationsMainPool = this.civilizationsMainPool.filter(mainPoolIndex => bans.indexOf(mainPoolIndex) === -1);
     }
 
     public getPoolsText(): string[][] {

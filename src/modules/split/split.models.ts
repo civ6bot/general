@@ -73,8 +73,11 @@ export abstract class Split extends ModuleBaseModel {
         this.teams[this.currentCaptainIndex].push(this.users.splice(userIndex, 1)[0]);
         this.currentStep++;
         if(this.currentStep > this.totalStepAmount){
-            if(this.users.length > 0)
-                this.teams[(this.currentCaptainIndex+1)%this.teams.length].push(this.users.pop() as string);
+            if(this.users.length > 0) {
+                let teamsLength: number[] = this.teams.map((team: string[]): number => team.length);
+                if(!teamsLength.every(value => value === teamsLength[0]))
+                    this.teams[teamsLength.indexOf(Math.min(...teamsLength))].push(this.users.pop() as string);
+            }
             this.currentCaptainIndex = -1;
         } else
             this.currentCaptainIndex = this.pickSequence[this.currentStep-1] || -1;

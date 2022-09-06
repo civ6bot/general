@@ -245,7 +245,10 @@ export class DraftService extends ModuleBaseService {
                     [null, [draft.users[draft.pmMessages.length].toString()]]
                 );
 
-                await draft.message.edit({embeds: this.draftUI.error(textStrings[0], textStrings[1])});
+                await draft.message.edit({
+                    embeds: this.draftUI.error(textStrings[0], textStrings[1]),
+                    components: []
+                });
                 for(let i in draft.pmMessages)
                     await draft.pmMessages[i].delete();
                 return;
@@ -285,7 +288,8 @@ export class DraftService extends ModuleBaseService {
                     [],
                     draft
                 )});
-        }, pickTimeMs, draft);
+        }, pickTimeMs+draft.date.getTime()-Date.now(), draft);
+        // Здесь разность, чтобы было корректное время (из-за задержки между вызовом и сообщением в чате)
     }
 
     // blindButton-pick-guildID-civID

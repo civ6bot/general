@@ -234,7 +234,6 @@ export class GameEntityDraft extends GameEntity {
 
     // call every time when reacted
     public async resolveProcessing(reaction: MessageReaction, user: User): Promise<boolean> {
-        //console.log("Resolve draft emoji: ", reaction.emoji.toString(), " user: ", user.id);
         if(user.bot)
             return false;
         if(this.users.map(user => user.id).indexOf(user.id) === -1) {

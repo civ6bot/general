@@ -7,10 +7,12 @@ import {SafeModuleService} from "../../core/decorators/core.decorators.SaveModul
 import {CoreGeneratorTimestamp} from "../../core/generators/core.generator.timestamp";
 import {CoreServiceEmojis} from "../../core/services/core.service.emojis";
 import {CoreServiceUsers} from "../../core/services/core.service.users";
+import {SplitAdapter} from "./split.adapter";
 
 //@DecorateAll(SafeModuleService)
 export class SplitService extends ModuleBaseService {
     private splitUI: SplitUI = new SplitUI();
+    public splitAdapter: SplitAdapter = new SplitAdapter();
 
     public static splits: Map<string, Split> = new Map<string, Split>();    // guildID
 
@@ -238,11 +240,14 @@ export class SplitService extends ModuleBaseService {
             split.reactionCollector?.stop();
             split.isProcessing = false;
             await reaction.message.reactions.removeAll();
+            if(split.bansForDraft !== null)
+                await splitService.splitAdapter.callDraft(split);
         } else {
             split.setTimeoutID = await setTimeout(splitService.timeoutFunction, split.pickTimeMs, split);
         }
     }
 
+    // Если не успели
     private async timeoutFunction(split: Split): Promise<void> {
         split.isProcessing = false;
         split.reactionCollector?.stop();
@@ -265,7 +270,7 @@ export class SplitService extends ModuleBaseService {
         let fieldHeaders: string[] = [await splitService.getOneText(split.interaction, "SPLIT_FIELD_TITLE_USERS")];
         for(let i: number = 0; i < split.teams.length; i++)
             fieldHeaders.push(await splitService.getOneText(split.interaction, "SPLIT_FIELD_TITLE_TEAM", i+1));
-        await split.interaction.editReply({components: [], embeds: splitService.splitUI.splitEmbed(
+        await split.message?.edit({components: [], embeds: splitService.splitUI.splitEmbed(
             textStrings[0],
                 textStrings[1],
                 fieldHeaders,

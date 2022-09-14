@@ -67,7 +67,7 @@ export class CoreGeneratorButton {
             for (let j in formedLabelArray[i])
                 buttonArray.push(
                     new ButtonBuilder()
-                        .setLabel(formedLabelArray?.[i]?.[j] || "Button text not provided")
+                        .setLabel(formedLabelArray?.[i]?.[j] || "")
                         .setEmoji(formedEmojiArray?.[i]?.[j] || "")
                         .setStyle(formedStyleArray?.[i]?.[j] || ButtonStyle.Secondary) // grey button
                         .setCustomId(formedCustomIDArray?.[i]?.[j] || "")

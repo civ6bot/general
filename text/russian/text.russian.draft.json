@@ -60,6 +60,8 @@
     { "tag": "DRAFT_VIETNAM_TEXT", "value": "Вьетнам <:Vietnam:804417073140334603> Госпожа Чьеу" },
     { "tag": "DRAFT_PORTUGAL_TEXT", "value": "Португалия <:Portugal:825055292629844001> Жуан III" },
 
+
+
     { "tag": "DRAFT_ERROR_NOT_ENOUGH_CIVILIZATIONS", "value": "Для такого драфта недостаточно цивилизаций." },
     { "tag": "DRAFT_ERROR_NO_VOICE", "value": "Для использования этой команды вы должны находиться в голосовом канале." },
     { "tag": "DRAFT_ERROR_PROCESSING", "value": "В данный момент уже проводится драфт. Пожалуйста, подождите." },

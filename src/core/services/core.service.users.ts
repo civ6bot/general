@@ -7,7 +7,15 @@ export class CoreServiceUsers {
         return channel
             ? Array.from(channel.members.values())
                 .map((member: GuildMember): User =>  member.user)
-            //    .filter(user => !user.bot)
+                .filter(user => !user.bot)
             : [];
+    }
+
+    public static isAdmin(member: GuildMember): boolean {
+        return member.permissions.has("Administrator");
+    }
+
+    public static isUserPhone(member: GuildMember): boolean {
+        return Boolean(member.presence?.clientStatus?.web);
     }
 }

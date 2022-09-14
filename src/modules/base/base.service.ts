@@ -1,12 +1,12 @@
 import {DatabaseServiceConfig} from "../../database/services/service.Config";
 import {DatabaseServiceText} from "../../database/services/service.Text";
-import {ButtonInteraction, CommandInteraction} from "discord.js";
+import {ButtonInteraction, CommandInteraction, SelectMenuInteraction} from "discord.js";
 
 export class ModuleBaseService {
     protected databaseServiceConfig: DatabaseServiceConfig = new DatabaseServiceConfig();
     protected databaseServiceText: DatabaseServiceText = new DatabaseServiceText();
 
-    protected async getOneSettingString(interaction: CommandInteraction | ButtonInteraction, setting: string): Promise<string> {
+    protected async getOneSettingString(interaction: CommandInteraction | ButtonInteraction | SelectMenuInteraction, setting: string): Promise<string> {
         return await this.databaseServiceConfig.getOneString(interaction.guild?.id as string, setting);
     }
 
@@ -22,7 +22,7 @@ export class ModuleBaseService {
         return await this.databaseServiceConfig.getManyNumber(interaction.guild?.id as string, settings);
     }
 
-    protected async getOneText(interaction_lang: CommandInteraction | ButtonInteraction | string, tag: string, ...args: (string|number)[]): Promise<string> {
+    protected async getOneText(interaction_lang: CommandInteraction | ButtonInteraction | SelectMenuInteraction | string, tag: string, ...args: (string|number)[]): Promise<string> {
         return await this.databaseServiceText.getOne(
             (typeof interaction_lang === 'string')
                 ? interaction_lang as string
@@ -31,7 +31,7 @@ export class ModuleBaseService {
         );
     }
 
-    protected async getManyText(interaction: CommandInteraction | ButtonInteraction, tags: string[], args: (((string|number)[])|null)[] = []): Promise<string[]> {
+    protected async getManyText(interaction: CommandInteraction | ButtonInteraction | SelectMenuInteraction, tags: string[], args: (((string|number)[])|null)[] = []): Promise<string[]> {
         let lang: string = await this.getOneSettingString(interaction, "BASE_LANGUAGE");
         return this.databaseServiceText.getMany(lang, tags, args);
     }

@@ -66,8 +66,9 @@ export class CoreServiceCivilizations {
                 .map( (x: string): number => Number(x)));
     }
 
+    // принимает на вход список нормальных пар
     // возвращает сложный объект
-    public static checkForbiddenPairs(civilizationNumberPairs: readonly number[][]) {
+    public static checkForbiddenPairsTriangles(civilizationNumberPairs: readonly number[][]) {
         let triangleSearch: Map<number, number[]> = new Map<number, number[]>;
         let currentCivIndex: number = -1, currentCivPairIndexes: number[] = [];
         for(let i: number = 0; i < civilizationNumberPairs.length; i++) {
@@ -85,19 +86,20 @@ export class CoreServiceCivilizations {
         triangleSearch.forEach((value: number[], key: number): void => {
             if(!isCorrect)
                 return;
-            for(let i in civilizationNumberPairs)
-                for(let j in value) {
-                    if ((civilizationNumberPairs[i][0] === key) && (civilizationNumberPairs[i][1] === value[j])) {
-                        errorIndexes = [key, ...civilizationNumberPairs[i]];
-                        isCorrect = false;
-                        return;
-                    }
-                    if(value[j] === key) {
-                        errorIndexes = [key];
-                        isCorrect = false;
-                        return;
-                    }
+            for(let i in value)
+                if(key === value[i]) {
+                    isCorrect = false;
+                    errorIndexes = [key];
+                    return;
                 }
+            for(let i: number = 0; i < value.length; i++)
+                for(let j: number = i+1; j < value.length; j++)
+                    for(let k in civilizationNumberPairs)
+                        if((civilizationNumberPairs[k][0] === value[i]) && (civilizationNumberPairs[k][1] === value[j])) {
+                            isCorrect = false;
+                            errorIndexes = [key, ...value];
+                            return;
+                        }
         });
         return {isCorrect, errorIndexes};
     }

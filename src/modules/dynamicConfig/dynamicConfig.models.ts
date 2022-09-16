@@ -110,6 +110,12 @@ export class DynamicConfig extends ModuleBaseModel {
 
     }
 
+    public getAllConfigs(): DynamicConfigEntity[] {
+        return (this._child)
+            ? this._child.getAllConfigs()
+            : this._configs;
+    }
+
     public updateConfigs(entities: DynamicConfigEntity[]): void {
         if(this._child)
             return this._child.updateConfigs(entities);
@@ -240,6 +246,7 @@ export class DynamicConfigEntityTeamersForbiddenPairs extends DynamicConfigEntit
     public check(value: string): boolean {
         this.civilizationErrorIndexes = [];
         let civParseResult: number[][][] = value
+            .replaceAll("-", " ")
             .split("\n")
             .map((civilizationsTextPairString: string): string[] => civilizationsTextPairString.split(","))
             .map((civTextPair: string[]): string[] =>
@@ -252,6 +259,7 @@ export class DynamicConfigEntityTeamersForbiddenPairs extends DynamicConfigEntit
                     return bans;
                 })
             );
+
         if(civParseResult.map((civDoubleArrayResult: number[][]): boolean =>
             (civDoubleArrayResult.length === 2) && civDoubleArrayResult.every((civOneArrayResult: number[]): boolean =>
                 civOneArrayResult.length === 1
@@ -266,7 +274,7 @@ export class DynamicConfigEntityTeamersForbiddenPairs extends DynamicConfigEntit
                 ).sort()
             ).sort();
 
-        let {isCorrect, errorIndexes} = CoreServiceCivilizations.checkForbiddenPairs(civilizationNumberPairs);
+        let {isCorrect, errorIndexes} = CoreServiceCivilizations.checkForbiddenPairsTriangles(civilizationNumberPairs);
         if(isCorrect) {
             this.value = CoreServiceCivilizations.getTeamersForbiddenPairsConfigString(civilizationNumberPairs);
             this.civilizationPairIndexes = civilizationNumberPairs;
@@ -299,10 +307,11 @@ export class DynamicConfigEntityBooleanGameSetting extends DynamicConfigEntity {
 
     public check(value: string): boolean {
         let booleanValue: boolean = (value === "true");
-        if((this.dynamicConfigPointer.configs.slice(1) as DynamicConfigEntityBooleanGameSetting[])
+        if((this.dynamicConfigPointer.getAllConfigs().slice(1) as DynamicConfigEntityBooleanGameSetting[])
             .map(config => config.value)
             .filter(configValue => configValue)
-            .length + (booleanValue ? 1 : -1) > 1) {
+            .length + (booleanValue ? 1 : -1) > 1)
+        {
             this.value = booleanValue;
             return true;
         }

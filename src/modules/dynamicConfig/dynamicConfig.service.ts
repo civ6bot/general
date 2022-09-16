@@ -174,9 +174,9 @@ export class DynamicConfigService extends ModuleBaseService {
                 textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
                 type: "Boolean",
             },
-            ...CoreServiceGameTags.FFAOptionsConfigsStrings[0].map((tag: string): JSONDynamicConfigEntityBoolean => { return {
+            ...CoreServiceGameTags.FFAOptionsConfigsStrings[0].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
                 configTag: tag,
-                textTag: tag+"_TEXT",
+                textTag: tag,
                 type: "BooleanGameSetting",
             }})
         ]],
@@ -213,8 +213,22 @@ export class DynamicConfigService extends ModuleBaseService {
                 ? "DYNAMIC_CONFIG_CHOOSE_CONFIG_DESCRIPTION"
                 : "DYNAMIC_CONFIG_CHOOSE_GROUP_DESCRIPTION"
         ]);
-        let emojiStrings: string[] = await this.getManyText(dynamicConfig.interaction, dynamicConfig.getEmojiTags());
         let optionStrings: string[] = await this.getManyText(dynamicConfig.interaction, dynamicConfig.getOptionTags());
+        let emojiStrings: string[];
+
+        if(dynamicConfig.isConfig) {
+            let emojiTags: string[] = dynamicConfig.getEmojiTags();
+            let configs: DynamicConfigEntity[] = dynamicConfig.getLastChild().configs;
+            emojiStrings = [];
+            for(let i in configs)
+                emojiStrings.push(
+                    (configs[i].type === "BooleanGameSetting")
+                        ? await this.getOneSettingString(dynamicConfig.interaction, emojiTags[i])
+                        : await this.getOneText(dynamicConfig.interaction, emojiTags[i])
+                );
+        } else
+            emojiStrings = await this.getManyText(dynamicConfig.interaction, dynamicConfig.getEmojiTags());
+
         let buttonStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
             "DYNAMIC_CONFIG_BUTTON_BACK", "DYNAMIC_CONFIG_BUTTON_FIRST",
             "DYNAMIC_CONFIG_BUTTON_PREVIOUS", "DYNAMIC_CONFIG_BUTTON_NEXT",
@@ -382,7 +396,9 @@ export class DynamicConfigService extends ModuleBaseService {
         // Последняя категория, получили конфигурацию
         let configs: (JSONDynamicConfigEntityNumber|
             JSONDynamicConfigEntityString|
-            JSONDynamicConfigEntityBoolean)[]|
+            JSONDynamicConfigEntityBoolean
+            |JSONDynamicConfigEntityBooleanGameSetting
+            |JSONDynamicConfigEntityTeamersForbiddenPairs)[]|
             undefined = DynamicConfigService.configsMap.get(dynamicConfig.getOptionTags()[valueIndex]);
         if(configs) {
             await interaction.deferUpdate();
@@ -412,7 +428,7 @@ export class DynamicConfigService extends ModuleBaseService {
         // Вызов изменения конфигурации для булевых значений настроек игры
         if(dynamicConfigEntity.type === "BooleanGameSetting") {
             let dynamicConfigEntityBooleanGameSetting: DynamicConfigEntityBooleanGameSetting = dynamicConfigEntity as DynamicConfigEntityBooleanGameSetting;
-            if(dynamicConfigEntityBooleanGameSetting.check(String(!dynamicConfigEntityBooleanGameSetting.value))) {
+            if(!dynamicConfigEntityBooleanGameSetting.check(String(!dynamicConfigEntityBooleanGameSetting.value))) {
                 let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
                     "BASE_ERROR_TITLE", "DYNAMIC_CONFIG_ERROR_TYPE_BOOLEAN_GAME_SETTING"
                 ]);
@@ -494,7 +510,7 @@ export class DynamicConfigService extends ModuleBaseService {
             let textStrings: string[] = await this.getManyText(interaction, [
                 "BASE_ERROR_TITLE", "DYNAMIC_CONFIG_ERROR_FAIL_TIMEOUT"
             ]);
-            return await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            return await interaction.reply({embeds: this.dynamicConfigUI.error(textStrings[0], textStrings[1]), ephemeral: true});
         }
         this.updateTimeout(dynamicConfig);
 
@@ -505,7 +521,9 @@ export class DynamicConfigService extends ModuleBaseService {
                     "BASE_ERROR_TITLE", "DYNAMIC_CONFIG_ERROR_TYPE_NUMBER"], [
                         null, [dynamicConfigEntityNumber.properties.minValue, dynamicConfigEntityNumber.properties.maxValue]
                 ]);
-                return await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+                await interaction.reply({embeds: this.dynamicConfigUI.error(textStrings[0], textStrings[1]), ephemeral: true});
+                await this.sendDynamicConfigMessage(dynamicConfig);
+                return;
             }
             await this.updateOneDynamicConfigEntity(interaction, dynamicConfigEntityNumber);
             let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
@@ -521,7 +539,9 @@ export class DynamicConfigService extends ModuleBaseService {
             if(!dynamicConfigEntityString.check(value)) {
                 let textStrings: string[] = await this.getManyText(interaction, [
                     "BASE_ERROR_TITLE", "DYNAMIC_CONFIG_ERROR_TYPE_STRING"]);
-                return await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+                await interaction.reply({embeds: this.dynamicConfigUI.error(textStrings[0], textStrings[1]), ephemeral: true});
+                await this.sendDynamicConfigMessage(dynamicConfig);
+                return;
             }
             let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
                 "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
@@ -538,16 +558,19 @@ export class DynamicConfigService extends ModuleBaseService {
                 let textStrings: string[] = [await this.getOneText(interaction, "BASE_ERROR_TITLE")];
                 if(dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationErrorIndexes.length === 1)
                     textStrings.push(await this.getOneText(interaction, "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_SAME",
-                        dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationTexts[dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationErrorIndexes[0]])
-                    );
+                        dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationTexts[dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationErrorIndexes[0]],
+                        value
+                    ));
                 else if(dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationErrorIndexes.length === 3)
-                    textStrings.push(await this.getOneText(interaction, "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_SAME",
+                    textStrings.push(await this.getOneText(interaction, "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_TRIANGLE",
                         dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationErrorIndexes.map((value: number): string =>
-                            dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationTexts[value]).join("\n")
+                            dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationTexts[value]).join("\n"),
+                        value
                         )
                     );
-                else textStrings.push(await this.getOneText(interaction, "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_PARSE"));
-                return await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+                else textStrings.push(await this.getOneText(interaction, "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_PARSE", value));
+                await interaction.reply({embeds: this.dynamicConfigUI.error(textStrings[0], textStrings[1]), ephemeral: true});
+                await this.sendDynamicConfigMessage(dynamicConfig);
             }
             await this.updateOneDynamicConfigEntity(interaction, dynamicConfigEntityEntityTeamersForbiddenPairs);
             let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [

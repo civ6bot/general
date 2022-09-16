@@ -1,8 +1,19 @@
 import {ModuleBaseService} from "../base/base.service";
 import {ButtonInteraction, CommandInteraction, GuildMember, ModalSubmitInteraction, SelectMenuInteraction, TextInputStyle} from "discord.js";
 import {DynamicConfigUI} from "./dynamicConfig.ui";
-import {DynamicConfig, DynamicConfigEntity, DynamicConfigEntityBoolean, DynamicConfigEntityNumber, DynamicConfigEntityString} from "./dynamicConfig.models";
-import {JSONDynamicConfigEntityBoolean, JSONDynamicConfigEntityNumber, JSONDynamicConfigEntityString} from "../../types/type.JSON.DynamicConfigEntities";
+import {
+    DynamicConfig,
+    DynamicConfigEntity,
+    DynamicConfigEntityBoolean,
+    DynamicConfigEntityBooleanGameSetting,
+    DynamicConfigEntityNumber,
+    DynamicConfigEntityString, DynamicConfigEntityTeamersForbiddenPairs
+} from "./dynamicConfig.models";
+import {
+    JSONDynamicConfigEntityBoolean, JSONDynamicConfigEntityBooleanGameSetting,
+    JSONDynamicConfigEntityNumber,
+    JSONDynamicConfigEntityString, JSONDynamicConfigEntityTeamersForbiddenPairs
+} from "../../types/type.JSON.DynamicConfigEntities";
 import {CoreServiceCivilizations} from "../../core/services/core.service.civilizations";
 import {CoreServiceGameTags} from "../../core/services/core.service.gameTags";
 import {CoreServiceUsers} from "../../core/services/core.service.users";
@@ -41,10 +52,12 @@ export class DynamicConfigService extends ModuleBaseService {
             "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_SPLIT"
         ]]
     ]);
-    public static configsMap = new Map<string,
-        (JSONDynamicConfigEntityNumber
+    public static configsMap = new Map<string, (JSONDynamicConfigEntityNumber
         |JSONDynamicConfigEntityString
-        |JSONDynamicConfigEntityBoolean)[]>([
+        |JSONDynamicConfigEntityBoolean
+        |JSONDynamicConfigEntityTeamersForbiddenPairs
+        |JSONDynamicConfigEntityBooleanGameSetting
+        )[]>([
         ["DYNAMIC_CONFIG_CATEGORY_MISCELLANEOUS", [
             {
                 configTag: "MISCELLANEOUS_RANDOM_MAX",
@@ -54,7 +67,6 @@ export class DynamicConfigService extends ModuleBaseService {
                 maxValue: Math.pow(10, 6)
             }
         ]],
-
         ["DYNAMIC_CONFIG_CATEGORY_SPLIT", [
             {
                 configTag: "SPLIT_PICK_TIME_MS",
@@ -64,14 +76,13 @@ export class DynamicConfigService extends ModuleBaseService {
                 maxValue: 900*1000
             }
         ]],
-
         ["DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_CIVILIZATIONS",
             CoreServiceCivilizations.civilizationsTags.map((tag: string): JSONDynamicConfigEntityBoolean => { return {
                 configTag: tag,
                 textTag: tag+"_CONFIG_TEXT",
                 type: "Boolean",
             }})
-        ],
+        ],  // DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_CIVILIZATIONS (комментарий для свёрнутого кода)
         ["DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_FFA", [
             {
                 configTag: "DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT",
@@ -89,7 +100,11 @@ export class DynamicConfigService extends ModuleBaseService {
             },
         ]],
         ["DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_TEAMERS", [
-            // пары забаненных цивилизаций?
+            {
+                configTag: "DRAFT_TEAMERS_FORBIDDEN_PAIRS",
+                textTag: "DYNAMIC_CONFIG_SETTING_DRAFT_TEAMERS_FORBIDDEN_PAIRS",
+                type: "TeamersForbiddenPairs",
+            },
         ]],
         ["DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_BLIND", [
             {
@@ -144,7 +159,15 @@ export class DynamicConfigService extends ModuleBaseService {
                 maxValue: 900*1000
             },
         ]],
-
+        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL", [
+            {
+                configTag: "GAME_VOTE_TIME_MS",
+                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TIME",
+                type: "Number",
+                minValue: 30*1000,
+                maxValue: 900*1000
+            }
+        ]],
         ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MAP", [
             {
                 configTag: "GAME_TEAMERS_MAP",
@@ -154,13 +177,13 @@ export class DynamicConfigService extends ModuleBaseService {
             ...CoreServiceGameTags.FFAOptionsConfigsStrings[0].map((tag: string): JSONDynamicConfigEntityBoolean => { return {
                 configTag: tag,
                 textTag: tag+"_TEXT",
-                type: "Boolean",
+                type: "BooleanGameSetting",
             }})
-        ]]
+        ]],
     ]);
 
     // нельзя использовать ModalSubmitInteraction
-    private async checkDynamicConfigComponent(interaction: SelectMenuInteraction | ButtonInteraction): Promise<DynamicConfig | undefined> {
+    private async checkDynamicConfigComponent(interaction: SelectMenuInteraction | ButtonInteraction, deferUpdate: boolean = true): Promise<DynamicConfig | undefined> {
         let dynamicConfig: DynamicConfig | undefined = DynamicConfigService.dynamicConfigs.get(interaction.guild?.id as string);
         if(!dynamicConfig) {
             await interaction.message.delete();
@@ -178,7 +201,8 @@ export class DynamicConfigService extends ModuleBaseService {
             await interaction.reply({embeds: this.dynamicConfigUI.error(textStrings[0], textStrings[1]), ephemeral: true});
             return undefined;
         }
-        await interaction.deferUpdate();
+        if(deferUpdate)
+            await interaction.deferUpdate();
         return dynamicConfig;
     }
 
@@ -235,28 +259,26 @@ export class DynamicConfigService extends ModuleBaseService {
         dynamicConfig.setTimeoutID = setTimeout(DynamicConfigService.timeoutFunction, dynamicConfig.lifeTimeMs);
     }
 
-    private async updateOneConfigNumber(interaction: CommandInteraction, configTag: string, value: number): Promise<void> {
-        return this.updateManyConfigNumber(interaction, [configTag], [value]);
+    private async updateOneDynamicConfigEntity(interaction: CommandInteraction | ButtonInteraction | ModalSubmitInteraction, entity: DynamicConfigEntity): Promise<void> {
+        return this.updateManyDynamicConfigEntity(interaction, [entity]);
     }
 
-    private async updateManyConfigNumber(interaction: CommandInteraction, configTags: string[], values: number[]): Promise<void> {
-        return;
+    private async updateManyDynamicConfigEntity(interaction: CommandInteraction | ButtonInteraction | ModalSubmitInteraction, entities: DynamicConfigEntity[]): Promise<void> {
+
     }
 
-    private async updateOneConfigString(interaction: CommandInteraction, configTag: string, value: string): Promise<void> {
-        return this.updateManyConfigString(interaction, [configTag], [value]);
-    }
+    private async resetManyDynamicConfigEntity(interaction: CommandInteraction | ButtonInteraction | ModalSubmitInteraction, entities: DynamicConfigEntity[]): Promise<void> {
 
-    private async updateManyConfigString(interaction: CommandInteraction, configTags: string[], values: string[]): Promise<void> {
-        return;
     }
 
     private async createDynamicConfigEntities(
         jsonEntities: (
-        JSONDynamicConfigEntityNumber|
-        JSONDynamicConfigEntityString|
-        JSONDynamicConfigEntityBoolean)[],
-        interaction: CommandInteraction | ButtonInteraction
+            JSONDynamicConfigEntityNumber
+            |JSONDynamicConfigEntityString
+            |JSONDynamicConfigEntityBoolean
+            |JSONDynamicConfigEntityTeamersForbiddenPairs
+            |JSONDynamicConfigEntityBooleanGameSetting)[],
+        dynamicConfig: DynamicConfig
     ): Promise<DynamicConfigEntity[]> {
         let dynamicConfigEntities: DynamicConfigEntity[] = [];
         for(let config of jsonEntities)
@@ -264,19 +286,36 @@ export class DynamicConfigService extends ModuleBaseService {
                 case "Number":
                     dynamicConfigEntities.push(new DynamicConfigEntityNumber(
                         config as JSONDynamicConfigEntityNumber,
-                        await this.getOneSettingNumber(interaction, config.configTag)
+                        await this.getOneSettingNumber(dynamicConfig.interaction, config.configTag)
                     ));
                     break;
                 case "String":
                     dynamicConfigEntities.push(new DynamicConfigEntityString(
                         config as JSONDynamicConfigEntityString,
-                        await this.getOneSettingString(interaction, config.configTag)
+                        await this.getOneSettingString(dynamicConfig.interaction, config.configTag)
                     ));
                     break;
                 case "Boolean":
                     dynamicConfigEntities.push(new DynamicConfigEntityBoolean(
                         config as JSONDynamicConfigEntityBoolean,
-                        !!(await this.getOneSettingNumber(interaction, config.configTag))
+                        !!(await this.getOneSettingNumber(dynamicConfig.interaction, config.configTag))
+                    ));
+                    break;
+                case "TeamersForbiddenPairs":
+                    dynamicConfigEntities.push(new DynamicConfigEntityTeamersForbiddenPairs(
+                        config as JSONDynamicConfigEntityTeamersForbiddenPairs,
+                        await this.getOneSettingString(dynamicConfig.interaction, config.configTag),
+                        await this.getManyText(
+                            dynamicConfig.interaction,
+                            CoreServiceCivilizations.civilizationsTags.map(tag => tag+"_TEXT")
+                        )
+                    ));
+                    break;
+                case "BooleanGameSetting":
+                    dynamicConfigEntities.push(new DynamicConfigEntityBooleanGameSetting(
+                        config as JSONDynamicConfigEntityBooleanGameSetting,
+                        !!(await this.getOneSettingNumber(dynamicConfig.interaction, config.configTag)),
+                        dynamicConfig
                     ));
                     break;
                 default:
@@ -317,21 +356,22 @@ export class DynamicConfigService extends ModuleBaseService {
     // Может вызвать другое меню (изменение сообщения)
     // или модальное окно
     public async menu(interaction: SelectMenuInteraction) {
-        let dynamicConfig: DynamicConfig | undefined = await this.checkDynamicConfigComponent(interaction);
+        let dynamicConfig: DynamicConfig | undefined = await this.checkDynamicConfigComponent(interaction, false);
         if(!dynamicConfig)
             return;
 
         let valueIndex: number = Number(interaction.values[0]);
         if(Number.isNaN(valueIndex))
-            return;
+            return await interaction.deferUpdate();
         let option: string | undefined = dynamicConfig.getOptionTags()[valueIndex];
         if(!option)
-            return;
+            return await interaction.deferUpdate();
         this.updateTimeout(dynamicConfig);
 
         // Новая категория
         let categories: string[] | undefined = DynamicConfigService.tagsMap.get(dynamicConfig.getOptionTags()[valueIndex]);
         if(categories) {
+            await interaction.deferUpdate();
             dynamicConfig.createChild(valueIndex, categories);
             await this.sendDynamicConfigMessage(dynamicConfig);
             dynamicConfig.date = new Date();
@@ -345,7 +385,8 @@ export class DynamicConfigService extends ModuleBaseService {
             JSONDynamicConfigEntityBoolean)[]|
             undefined = DynamicConfigService.configsMap.get(dynamicConfig.getOptionTags()[valueIndex]);
         if(configs) {
-            let dynamicConfigEntities: DynamicConfigEntity[] = await this.createDynamicConfigEntities(configs, dynamicConfig.interaction);
+            await interaction.deferUpdate();
+            let dynamicConfigEntities: DynamicConfigEntity[] = await this.createDynamicConfigEntities(configs, dynamicConfig);
             dynamicConfig.createChild(valueIndex, [], dynamicConfigEntities);
             await this.sendDynamicConfigMessage(dynamicConfig);
             return;
@@ -354,24 +395,40 @@ export class DynamicConfigService extends ModuleBaseService {
         let dynamicConfigEntity: DynamicConfigEntity | undefined = dynamicConfig.getLastChild().configs[valueIndex];
         if(!dynamicConfigEntity)
             return;
-        // Вызов изменение конфигурации для булевых значений
+
+        // Вызов изменения конфигурации для булевых значений
         if(dynamicConfigEntity.type === "Boolean") {
             let dynamicConfigEntityBoolean: DynamicConfigEntityBoolean = dynamicConfigEntity as DynamicConfigEntityBoolean;
-            dynamicConfigEntityBoolean.value = !dynamicConfigEntityBoolean.value;
-            await this.updateOneConfigNumber(
-                dynamicConfig.interaction as CommandInteraction,
-                dynamicConfigEntityBoolean.properties.configTag,
-                Number(dynamicConfigEntityBoolean.value)
-            );
+            dynamicConfigEntityBoolean.check(String(!dynamicConfigEntityBoolean.value));
+            await this.updateOneDynamicConfigEntity(dynamicConfig.interaction, dynamicConfigEntityBoolean);
             let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
                 "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
             ]);
-            await dynamicConfig.interaction.followUp({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
             await this.sendDynamicConfigMessage(dynamicConfig);
             return;
         }
 
-        // Модальное окно для изменения не-булевых значений
+        // Вызов изменения конфигурации для булевых значений настроек игры
+        if(dynamicConfigEntity.type === "BooleanGameSetting") {
+            let dynamicConfigEntityBooleanGameSetting: DynamicConfigEntityBooleanGameSetting = dynamicConfigEntity as DynamicConfigEntityBooleanGameSetting;
+            if(dynamicConfigEntityBooleanGameSetting.check(String(!dynamicConfigEntityBooleanGameSetting.value))) {
+                let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
+                    "BASE_ERROR_TITLE", "DYNAMIC_CONFIG_ERROR_TYPE_BOOLEAN_GAME_SETTING"
+                ]);
+                await interaction.reply({embeds: this.dynamicConfigUI.error(textStrings[0], textStrings[1]), ephemeral: true});
+                return;
+            }
+            await this.updateOneDynamicConfigEntity(dynamicConfig.interaction, dynamicConfigEntityBooleanGameSetting);
+            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
+                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
+            ]);
+            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await this.sendDynamicConfigMessage(dynamicConfig);
+            return;
+        }
+
+        // Модальные окна для изменения не-булевых значений
         if(dynamicConfigEntity.type === "Number") {
             let dynamicConfigEntityNumber: DynamicConfigEntityNumber = dynamicConfigEntity as DynamicConfigEntityNumber;
             let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
@@ -380,20 +437,129 @@ export class DynamicConfigService extends ModuleBaseService {
             ]);
             await interaction.showModal(this.dynamicConfigUI.configModal(
                 `${textStrings[1] + " "}${textStrings[0]}`,
-                dynamicConfigEntityNumber.properties.configTag,
-                textStrings[2]
+                String(valueIndex),
+                textStrings[2],
+                dynamicConfigEntity.stringifiedValue
             ));
+            return;
         }
+
+        if(dynamicConfigEntity.type === "String") {
+            let dynamicConfigEntityString: DynamicConfigEntityString = dynamicConfigEntity as DynamicConfigEntityString;
+            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
+                dynamicConfigEntityString.properties.textTag, dynamicConfigEntityString.properties.textTag+"_EMOJI",
+                "DYNAMIC_CONFIG_MODAL_LABEL"
+            ]);
+            await interaction.showModal(this.dynamicConfigUI.configModal(
+                `${textStrings[1] + " "}${textStrings[0]}`,
+                String(valueIndex),
+                textStrings[2],
+                dynamicConfigEntity.stringifiedValue
+            ));
+            return;
+        }
+
+        if(dynamicConfigEntity.type === "TeamersForbiddenPairs") {
+            let dynamicConfigEntityEntityTeamersForbiddenPairs: DynamicConfigEntityTeamersForbiddenPairs = dynamicConfigEntity as DynamicConfigEntityTeamersForbiddenPairs;
+            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
+                dynamicConfigEntityEntityTeamersForbiddenPairs.properties.textTag,
+                dynamicConfigEntityEntityTeamersForbiddenPairs.properties.textTag+"_EMOJI",
+                "DYNAMIC_CONFIG_MODAL_LABEL"
+            ]);
+            await interaction.showModal(this.dynamicConfigUI.configModal(
+                `${textStrings[1] + " "}${textStrings[0]}`,
+                String(valueIndex),
+                textStrings[2],
+                dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationPairIndexes
+                    .map((value: number[]): string =>
+                        `${dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationTexts[value[0]]}, ${dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationTexts[value[1]]}`)
+                    .join("\n")
+                    .replaceAll(/<.+?>/g, "-"),     // ? - ленивый поиск
+                true
+            ));
+            return;
+        }
+
+        // Если ничего не совпало, то ничего не делать
+        await interaction.deferUpdate();
     }
 
     public async modalSetting(interaction: ModalSubmitInteraction) {
-        console.log(interaction);
-        const [favTVShow, favHaiku] = ["favoriteColorInput", "hobbiesInput"].map((id) =>
-            interaction.fields.getTextInputValue(id)
-        );
-        await interaction.reply(
-            `Favorite TV Show: ${favTVShow}, Favorite haiku: ${favHaiku}`
-        );
+        let index: number = Number(Array.from(interaction.fields.fields.keys())[0]),
+            value: string = Array.from(interaction.fields.fields.values())[0].value;
+
+        let dynamicConfig: DynamicConfig | undefined = DynamicConfigService.dynamicConfigs.get(interaction.guild?.id as string);
+        let dynamicConfigEntity: DynamicConfigEntity | undefined = dynamicConfig?.getLastChild().configs[index];
+        if(!dynamicConfig || !dynamicConfigEntity) {
+            let textStrings: string[] = await this.getManyText(interaction, [
+                "BASE_ERROR_TITLE", "DYNAMIC_CONFIG_ERROR_FAIL_TIMEOUT"
+            ]);
+            return await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+        }
+        this.updateTimeout(dynamicConfig);
+
+        if(dynamicConfigEntity.type === "Number") {
+            let dynamicConfigEntityNumber: DynamicConfigEntityNumber = dynamicConfigEntity as DynamicConfigEntityNumber;
+            if(!dynamicConfigEntityNumber.check(value)) {
+                let textStrings: string[] = await this.getManyText(interaction, [
+                    "BASE_ERROR_TITLE", "DYNAMIC_CONFIG_ERROR_TYPE_NUMBER"], [
+                        null, [dynamicConfigEntityNumber.properties.minValue, dynamicConfigEntityNumber.properties.maxValue]
+                ]);
+                return await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            }
+            await this.updateOneDynamicConfigEntity(interaction, dynamicConfigEntityNumber);
+            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
+                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
+            ]);
+            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await this.sendDynamicConfigMessage(dynamicConfig);
+            return;
+        }
+
+        if(dynamicConfigEntity.type === "String") {
+            let dynamicConfigEntityString: DynamicConfigEntityString = dynamicConfigEntity as DynamicConfigEntityString;
+            if(!dynamicConfigEntityString.check(value)) {
+                let textStrings: string[] = await this.getManyText(interaction, [
+                    "BASE_ERROR_TITLE", "DYNAMIC_CONFIG_ERROR_TYPE_STRING"]);
+                return await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            }
+            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
+                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
+            ]);
+            await this.updateOneDynamicConfigEntity(interaction, dynamicConfigEntityString);
+            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await this.sendDynamicConfigMessage(dynamicConfig);
+            return;
+        }
+
+        if(dynamicConfigEntity.type === "TeamersForbiddenPairs") {
+            let dynamicConfigEntityEntityTeamersForbiddenPairs: DynamicConfigEntityTeamersForbiddenPairs = dynamicConfigEntity as DynamicConfigEntityTeamersForbiddenPairs;
+            if(!dynamicConfigEntityEntityTeamersForbiddenPairs.check(value)) {
+                let textStrings: string[] = [await this.getOneText(interaction, "BASE_ERROR_TITLE")];
+                if(dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationErrorIndexes.length === 1)
+                    textStrings.push(await this.getOneText(interaction, "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_SAME",
+                        dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationTexts[dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationErrorIndexes[0]])
+                    );
+                else if(dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationErrorIndexes.length === 3)
+                    textStrings.push(await this.getOneText(interaction, "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_SAME",
+                        dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationErrorIndexes.map((value: number): string =>
+                            dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationTexts[value]).join("\n")
+                        )
+                    );
+                else textStrings.push(await this.getOneText(interaction, "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_PARSE"));
+                return await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            }
+            await this.updateOneDynamicConfigEntity(interaction, dynamicConfigEntityEntityTeamersForbiddenPairs);
+            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
+                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
+            ]);
+            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await this.sendDynamicConfigMessage(dynamicConfig);
+            return;
+        }
+
+        // Если ничего не совпало, то ничего не делать
+        await interaction.reply(`Modal is not implemented. Index=${index}, value=${value}.`);
     }
 
     public async deleteButton(interaction: ButtonInteraction) {
@@ -474,12 +640,17 @@ export class DynamicConfigService extends ModuleBaseService {
             categories
                 .map((category: string) => DynamicConfigService.configsMap.get(category) || [])
                 .reduce((a, b) => a.concat(b), []),
-            dynamicConfig.interaction
+            dynamicConfig
         );
-
-        // что-то сделать
-        // с configs (это уже объекты)
-
+        await this.resetManyDynamicConfigEntity(interaction, configs);
+        if(dynamicConfig.isConfig) {
+            let configs: (JSONDynamicConfigEntityNumber|
+                JSONDynamicConfigEntityString|
+                JSONDynamicConfigEntityBoolean)[]|
+                undefined = DynamicConfigService.configsMap.get(dynamicConfig.getTitleTag());
+            if(configs)
+                dynamicConfig.updateConfigs(await this.createDynamicConfigEntities(configs, dynamicConfig));
+        }
         let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
             "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_RESET_SUCCESS"
         ]);

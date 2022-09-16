@@ -1,9 +1,15 @@
 {
   "lang": "ru",
   "text": [
-    { "tag": "DYNAMIC_CONFIG_ERROR_FAIL", "value": "Настройка не была изменена." },
     { "tag": "DYNAMIC_CONFIG_ERROR_COMMAND_NOT_ADMIN", "value": "Для выполнения данной команды необходимы права администратора." },
     { "tag": "DYNAMIC_CONFIG_ERROR_NOT_OWNER", "value": "Вы не являетесь автором этого сообщения. Пожалуйста, дождитесь, когда другой администратор завершит изменение настроек сервера." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_FAIL_TIMEOUT", "value": "Превышено время ожидания. Настройка не была изменена." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_NUMBER", "value": "Введите целочисленное значение от [MIN_VALUE] до [MAX_VALUE]." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_STRING", "value": "Настройка не была изменена." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_BOOLEAN_GAME_SETTING", "value": "Голосование должно иметь хотя бы 2 варианта ответа. Если вы хотите отключить это голосование, воспользуйтесь соответствующей настройкой." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_PARSE", "value": "Список содержит ошибки. Убедитесь, что вы вводите пары цивилизации корректно:\n  – каждая пара цивилизаций записана с новой строки;\n  – цивилизации в каждой паре разделены запятой;\n  – ни одна пара не содержит двух одинаковых лидеров." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_SAME", "value": "Список содержит пару, в которой записана одинаковая цивилизация.\n\n[CIVILIZATION_ERROR]\n\nУбедитесь, что вы вводите пары цивилизации корректно:\n  – каждая пара цивилизаций записана с новой строки;\n  – цивилизации в каждой паре разделены запятой;\n  – ни одна пара не содержит двух одинаковых лидеров." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_TRIANGLE", "value": "В списке присутствуют цивилизации, которые не могут быть разделены между двумя командами.\n\n[CIVILIZATIONS_ERRORS]\n\nУбедитесь, что выбранные цивилизации не образуют всевозможные пары и повторите попытку." },
 
     { "tag": "DYNAMIC_CONFIG_BUTTON_BACK", "value": "Назад" },
     { "tag": "DYNAMIC_CONFIG_BUTTON_FIRST", "value": "На первую страницу" },
@@ -31,6 +37,8 @@
 
     { "tag": "DYNAMIC_CONFIG_MENU_PLACEHOLDER_CATEGORY", "value": "Выберите категорию" },
     { "tag": "DYNAMIC_CONFIG_MENU_PLACEHOLDER_CONFIG", "value": "Выберите настройку" },
+
+
 
     { "tag": "DYNAMIC_CONFIG_CATEGORY_MISCELLANEOUS", "value": "Разное" },
     { "tag": "DYNAMIC_CONFIG_CATEGORY_MISCELLANEOUS_EMOJI", "value": "\uD83C\uDFB2" },
@@ -176,13 +184,14 @@
     { "tag": "DRAFT_MONGOLIA_KUBLAI_CONFIG_TEXT_EMOJI", "value": "<:Mongolia_Kublai:935611499051896843>" },
     { "tag": "DRAFT_VIETNAM_CONFIG_TEXT_EMOJI", "value": "<:Vietnam:804417073140334603>" },
     { "tag": "DRAFT_PORTUGAL_CONFIG_TEXT_EMOJI", "value": "<:Portugal:825055292629844001>" },
-    
+
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT", "value": "Минимум цивилизаций в драфте" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT_EMOJI", "value": "\uD83D\uDD3D" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT", "value": "Максимум цивилизаций в драфте" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT_EMOJI", "value": "\uD83D\uDD3C" },
 
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_TEAMERS_FORBIDDEN_PAIRS", "value": "Запрещённые пары для одной команды" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_TEAMERS_FORBIDDEN_PAIRS_EMOJI", "value": "\uD83D\uDD00" },
 
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT", "value": "Минимум цивилизаций в драфте" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT_EMOJI", "value": "\uD83D\uDD3D" },

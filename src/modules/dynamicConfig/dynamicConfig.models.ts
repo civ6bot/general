@@ -1,6 +1,7 @@
 import {ModuleBaseModel} from "../base/base.models";
 import {CommandInteraction} from "discord.js";
-import {JSONDynamicConfigEntityBoolean, JSONDynamicConfigEntityNumber, JSONDynamicConfigEntityString} from "../../types/type.JSON.DynamicConfigEntities";
+import {JSONDynamicConfigEntityBoolean, JSONDynamicConfigEntityNumber, JSONDynamicConfigEntityString, JSONDynamicConfigEntityTeamersForbiddenPairs} from "../../types/type.JSON.DynamicConfigEntities";
+import {CoreServiceCivilizations} from "../../core/services/core.service.civilizations";
 
 export class DynamicConfig extends ModuleBaseModel {
     private _pageCurrent: number = 1;
@@ -101,11 +102,21 @@ export class DynamicConfig extends ModuleBaseModel {
                 .map((entity: DynamicConfigEntity): string => entity.stringifiedValue);
     }
 
+    // Получить конфиги с текущей страницы
     public get configs(): DynamicConfigEntity[] {
         return (this._child)
             ? this._child.configs
             : this._configs.slice((this.pageCurrent-1)*this.entitiesPerPage, this.pageCurrent*this.entitiesPerPage);
 
+    }
+
+    public updateConfigs(entities: DynamicConfigEntity[]): void {
+        if(this._child)
+            return this._child.updateConfigs(entities);
+        if(!this.isConfig || (entities.length !== this._configs.length))
+            return;
+        if(entities.every((value, index): boolean => (entities[index].properties.configTag === this._configs[index].properties.configTag)))
+            this._configs = entities;
     }
 
     public get pageCurrent(): number {
@@ -148,7 +159,12 @@ export class DynamicConfigEntityNumber extends DynamicConfigEntity {
     public get stringifiedValue(): string { return String(this.value); }
 
     public check(value: string): boolean {
-        return (Number(value) >= this.properties.minValue) && (Number(value) <= this.properties.maxValue);
+        let numberValue: number = Number(value);
+        if((numberValue >= this.properties.minValue) && (numberValue <= this.properties.maxValue)) {
+            this.value = numberValue;
+            return true;
+        }
+        return false;
     }
 }
 
@@ -166,7 +182,11 @@ export class DynamicConfigEntityString extends DynamicConfigEntity {
     public get stringifiedValue(): string { return this.value; }
 
     public check(value: string): boolean {
-        return (value !== "");
+        if (value !== "") {
+            this.value = value;
+            return true;
+        }
+        return false;
     }
 }
 
@@ -184,10 +204,108 @@ export class DynamicConfigEntityBoolean extends DynamicConfigEntity {
     public get stringifiedValue(): string { return this.value ? "✅" : "🚫"; }
 
     public check(value: string): boolean {
-        if(value === "true")
-            return !this.value;
-        else if(value === "false")
-            return this.value;
-        else return false;
+        this.value = (value === "true");
+        return true;
+    }
+}
+
+export class DynamicConfigEntityTeamersForbiddenPairs extends DynamicConfigEntity {
+    public readonly type: string = "TeamersForbiddenPairs";
+    public value: string;
+    public readonly properties: JSONDynamicConfigEntityTeamersForbiddenPairs;
+
+    public civilizationPairIndexes: number[][];
+    public civilizationTexts: string[];
+    public civilizationErrorIndexes: number[] = [];
+
+    constructor(
+        properties: JSONDynamicConfigEntityTeamersForbiddenPairs,
+        value: string,
+        civilizationTexts: string[]
+    ) {
+        super();
+        this.value = value;
+        this.properties = properties;
+
+        this.civilizationPairIndexes = CoreServiceCivilizations.getForbiddenPairs(value);
+        this.civilizationTexts = civilizationTexts;
+    }
+
+    // не используется
+    public get stringifiedValue(): string { return ""; }
+
+    // На вход - человеческий текст
+    // если всё ок - меняется строка для config и массив пар и возвращается true
+    // Если нет - возвращается false
+    public check(value: string): boolean {
+        this.civilizationErrorIndexes = [];
+        let civParseResult: number[][][] = value
+            .split("\n")
+            .map((civilizationsTextPairString: string): string[] => civilizationsTextPairString.split(","))
+            .map((civTextPair: string[]): string[] =>
+                civTextPair.map((civText: string, index: number): string =>
+                    civTextPair[index] = civText.trim()
+                )
+            ).map((civilizationsTextPairString: string[]): number[][] =>
+                civilizationsTextPairString.map((civText: string): number[] => {
+                    let {bans, errors} = CoreServiceCivilizations.parseBans(civText, this.civilizationTexts);
+                    return bans;
+                })
+            );
+        if(civParseResult.map((civDoubleArrayResult: number[][]): boolean =>
+            (civDoubleArrayResult.length === 2) && civDoubleArrayResult.every((civOneArrayResult: number[]): boolean =>
+                civOneArrayResult.length === 1
+            )
+        ).some(result => !result))
+            return false;
+
+        let civilizationNumberPairs: number[][] = civParseResult
+            .map((civDoubleArrayResult: number[][]): number[] =>
+                civDoubleArrayResult.map((civOneArrayResult: number[]): number =>
+                    civOneArrayResult[0]
+                ).sort()
+            ).sort();
+
+        let {isCorrect, errorIndexes} = CoreServiceCivilizations.checkForbiddenPairs(civilizationNumberPairs);
+        if(isCorrect) {
+            this.value = CoreServiceCivilizations.getTeamersForbiddenPairsConfigString(civilizationNumberPairs);
+            this.civilizationPairIndexes = civilizationNumberPairs;
+            return true;
+        }
+        this.civilizationErrorIndexes = errorIndexes;
+        return false;
+    }
+}
+
+export class DynamicConfigEntityBooleanGameSetting extends DynamicConfigEntity {
+    public readonly type: string = "BooleanGameSetting";
+    public value: boolean;
+    public readonly properties: JSONDynamicConfigEntityTeamersForbiddenPairs;
+
+    private dynamicConfigPointer: DynamicConfig;
+
+    constructor(
+        properties: JSONDynamicConfigEntityBoolean,
+        value: boolean,
+        dynamicConfigPointer: DynamicConfig
+    ) {
+        super();
+        this.value = value;
+        this.properties = properties;
+        this.dynamicConfigPointer = dynamicConfigPointer;
+    }
+
+    public get stringifiedValue(): string { return this.value ? "✅" : "🚫"; }
+
+    public check(value: string): boolean {
+        let booleanValue: boolean = (value === "true");
+        if((this.dynamicConfigPointer.configs.slice(1) as DynamicConfigEntityBooleanGameSetting[])
+            .map(config => config.value)
+            .filter(configValue => configValue)
+            .length + (booleanValue ? 1 : -1) > 1) {
+            this.value = booleanValue;
+            return true;
+        }
+        return false;
     }
 }

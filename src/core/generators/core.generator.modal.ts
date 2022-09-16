@@ -6,6 +6,7 @@ export class CoreGeneratorModal {
         title: string,
         inputCustomIDs: string[],
         inputLabels: string[],
+        defaultValue: string[] = [],
         inputStyles: TextInputStyle[] = []
     ): ModalBuilder {
         let modal: ModalBuilder = new ModalBuilder()
@@ -17,6 +18,7 @@ export class CoreGeneratorModal {
                     .setCustomId(inputCustomIDs[i])
                     .setLabel(inputLabels[i])
                     .setStyle(inputStyles[i] || TextInputStyle.Short)
+                    .setValue(defaultValue[i] || "")
             ));
         return modal;
     }

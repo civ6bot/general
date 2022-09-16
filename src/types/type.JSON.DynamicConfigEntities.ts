@@ -1,24 +1,20 @@
-export type JSONDynamicConfigEntityNumber = {
+export interface JSONDynamicConfigEntity {
     configTag: string,
     textTag: string,
-    type: string,
-    //emojiFromConfig: boolean,
+    type: string
+}
 
+export interface JSONDynamicConfigEntityNumber extends JSONDynamicConfigEntity {
     minValue: number,
     maxValue: number
 }
 
-export type JSONDynamicConfigEntityString = {
-    configTag: string,
-    textTag: string,
-    type: string,
-    //emojiFromConfig: boolean,
-
+export interface JSONDynamicConfigEntityString extends JSONDynamicConfigEntity {
     isEmoji: boolean
 }
 
-export type JSONDynamicConfigEntityBoolean = {
-    configTag: string,
-    textTag: string,
-    type: string,
-}
+export interface JSONDynamicConfigEntityBoolean extends JSONDynamicConfigEntity {}
+
+export interface JSONDynamicConfigEntityTeamersForbiddenPairs extends JSONDynamicConfigEntity {}
+
+export interface JSONDynamicConfigEntityBooleanGameSetting extends JSONDynamicConfigEntity {}

@@ -26,6 +26,7 @@ export class CoreServiceCivilizations {
         return searchedIndexes;
     }
 
+    // возвращает сложный объект
     // rawBans - просматриваемая строка, civilizationsTexts = const
     // возвращает индексы по const
     public static parseBans(rawBans: string, civilizationTexts: string[]) {
@@ -57,5 +58,51 @@ export class CoreServiceCivilizations {
             bans: Array.from(new Set(bans)),    // уникальные индексы
             errors: errors
         };
+    }
+
+    public static getForbiddenPairs(pairs: string): number[][] {
+        return pairs.split(" ")
+            .map( (pair: string): number[] => pair.split("_")
+                .map( (x: string): number => Number(x)));
+    }
+
+    // возвращает сложный объект
+    public static checkForbiddenPairs(civilizationNumberPairs: readonly number[][]) {
+        let triangleSearch: Map<number, number[]> = new Map<number, number[]>;
+        let currentCivIndex: number = -1, currentCivPairIndexes: number[] = [];
+        for(let i: number = 0; i < civilizationNumberPairs.length; i++) {
+            if(civilizationNumberPairs[i][0] === currentCivIndex)
+                currentCivPairIndexes.push(civilizationNumberPairs[i][1]);
+            if((civilizationNumberPairs[i][0] !== currentCivIndex) || i === civilizationNumberPairs.length-1) {
+                if(currentCivPairIndexes.length > 1)
+                    triangleSearch.set(currentCivIndex, currentCivPairIndexes.slice());
+                currentCivIndex = civilizationNumberPairs[i][0];
+                currentCivPairIndexes = [civilizationNumberPairs[i][1]];
+            }
+        }
+        let isCorrect: boolean = true;
+        let errorIndexes: number[] = [];
+        triangleSearch.forEach((value: number[], key: number): void => {
+            if(!isCorrect)
+                return;
+            for(let i in civilizationNumberPairs)
+                for(let j in value) {
+                    if ((civilizationNumberPairs[i][0] === key) && (civilizationNumberPairs[i][1] === value[j])) {
+                        errorIndexes = [key, ...civilizationNumberPairs[i]];
+                        isCorrect = false;
+                        return;
+                    }
+                    if(value[j] === key) {
+                        errorIndexes = [key];
+                        isCorrect = false;
+                        return;
+                    }
+                }
+        });
+        return {isCorrect, errorIndexes};
+    }
+
+    public static getTeamersForbiddenPairsConfigString(pairs: number[][]): string {
+        return pairs.map((pair: number[]): string => pair.join("_")).join(" ");
     }
 }

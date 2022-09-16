@@ -1,6 +1,6 @@
 import {ModuleBaseUI} from "../base/base.ui";
-import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ModalBuilder, SelectMenuBuilder} from "discord.js";
-import {DynamicConfig} from "./dynamicConfig.models";
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ModalBuilder, SelectMenuBuilder, TextInputStyle} from "discord.js";
+import {DynamicConfig, DynamicConfigEntityTeamersForbiddenPairs} from "./dynamicConfig.models";
 import {CoreGeneratorEmbed} from "../../core/generators/core.generator.embed";
 import {CoreGeneratorMenu} from "../../core/generators/core.generator.menu";
 import {CoreGeneratorButton} from "../../core/generators/core.generator.button";
@@ -14,6 +14,15 @@ export class DynamicConfigUI extends ModuleBaseUI {
         emojis: string[], options: string[]
     ): EmbedBuilder[] {
         let values: string[] = dynamicConfig.getStringifiedValues();
+        if(dynamicConfig.isConfig && dynamicConfig.getLastChild().configs[0]?.type === "TeamersForbiddenPairs") {
+            let dynamicConfigEntityTeamersForbiddenPairs: DynamicConfigEntityTeamersForbiddenPairs = (dynamicConfig.getLastChild().configs[0] as DynamicConfigEntityTeamersForbiddenPairs);
+            values = ["\n" + dynamicConfigEntityTeamersForbiddenPairs.civilizationPairIndexes
+                .map((value: number[]): string => `– ${dynamicConfigEntityTeamersForbiddenPairs.civilizationTexts[value[0]]}, ${dynamicConfigEntityTeamersForbiddenPairs.civilizationTexts[value[1]]}`)
+                .join("\n")
+            ];
+            options = [`__**${options[0]}**__`];
+        }
+
         return CoreGeneratorEmbed.getSingle(
             (dynamicConfig.pageTotal > 1)
                 ? `${titleEmoji} ${title}, ${titlePage} ${dynamicConfig.pageCurrent}/${dynamicConfig.pageTotal}`
@@ -87,12 +96,16 @@ export class DynamicConfigUI extends ModuleBaseUI {
         title: string,
         configTag: string,
         label: string,
+        defaultValue: string,
+        isStyleParagraphText: boolean = false
     ): ModalBuilder {
         return CoreGeneratorModal.build(
             "dynamicConfig-modal",
             title,
             [configTag],
-            [label]
+            [label],
+            [defaultValue],
+            (isStyleParagraphText) ? [TextInputStyle.Paragraph] : [TextInputStyle.Short]
         );
     };
 

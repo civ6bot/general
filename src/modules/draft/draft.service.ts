@@ -88,10 +88,9 @@ export class DraftService extends ModuleBaseService {
             await interaction.deferReply();
             if(users.length === 0)
                 users = CoreServiceUsers.getFromVoice(interaction);
-            let forbiddenPairs: number[][] = (await this.getOneSettingString(interaction, "DRAFT_TEAMERS_FORBIDDEN_PAIRS"))
-                .split(" ")
-                .map( (pair: string): number[] => pair.split("_")
-                    .map( (x: string): number => Number(x)));
+            let forbiddenPairs: number[][] = CoreServiceCivilizations.getForbiddenPairs(
+                await this.getOneSettingString(interaction, "DRAFT_TEAMERS_FORBIDDEN_PAIRS")
+            );
 
             draft = new DraftTeamers(
                 interaction,

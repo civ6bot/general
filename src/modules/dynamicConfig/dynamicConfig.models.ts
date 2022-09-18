@@ -165,7 +165,7 @@ export class DynamicConfigEntityNumber extends DynamicConfigEntity {
     public get stringifiedValue(): string { return String(this.value); }
 
     public check(value: string): boolean {
-        let numberValue: number = Number(value);
+        let numberValue: number = Math.floor(Number(value));
         if((numberValue >= this.properties.minValue) && (numberValue <= this.properties.maxValue)) {
             this.value = numberValue;
             return true;
@@ -272,7 +272,13 @@ export class DynamicConfigEntityTeamersForbiddenPairs extends DynamicConfigEntit
                 civDoubleArrayResult.map((civOneArrayResult: number[]): number =>
                     civOneArrayResult[0]
                 ).sort()
-            ).sort();
+            ).sort()
+            .filter((value: number[], index: number, array: number[][]): boolean => {
+                for(let i: number = index+1; i < array.length; i++)
+                    if((array[i][0] === value[0]) && (array[i][1] === value[1]))
+                        return false;
+                return true;
+            });
 
         let {isCorrect, errorIndexes} = CoreServiceCivilizations.checkForbiddenPairsTriangles(civilizationNumberPairs);
         if(isCorrect) {

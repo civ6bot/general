@@ -59,7 +59,9 @@ export class DatabaseServiceConfig extends DatabaseServiceBase {
         return values;
     }
 
-    public async insertAll(entitiesConfig: EntityConfig[]): Promise<void> {
+    // можно использовать для обновления конфигурации
+    // daatabase.save позволяет перезаписать
+    public async insertAll(entitiesConfig: EntityConfig[]): Promise<boolean> {
         let normalizedEntitiesConfig: EntityConfig[] = entitiesConfig.map((x: EntityConfig): EntityConfig => {
             let normalizedEntity: EntityConfig = new EntityConfig();
             normalizedEntity.guildID = x.guildID;
@@ -68,8 +70,11 @@ export class DatabaseServiceConfig extends DatabaseServiceBase {
             return normalizedEntity;
         });
         await this.database.save(normalizedEntitiesConfig);
+        let requestConfig: RequestsConfig = new RequestsConfig();
+        return !!(await requestConfig.put(entitiesConfig));
     }
 
+    // используется каждый раз при включении/перезапуске
     public async clearAll(): Promise<void> {
         await this.database.clear(EntityConfig);
     }

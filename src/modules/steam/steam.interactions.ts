@@ -6,12 +6,12 @@ import {ApplicationCommandOptionType, CommandInteraction} from "discord.js";
 export abstract class SteamInteractions {
     steamService: SteamService = new SteamService();
 
-    @Slash("link", { description: "Получить ссылку на лобби" })
+    @Slash("link", { description: "Get your lobby link" })
     async link(
         @SlashOption("описание", { required: false }) description: string = "",
         interaction: CommandInteraction
     ){ await this.steamService.link(interaction, description); }
 
-    @Slash("connect", {description: "Подключить Steam к профилю"})
+    @Slash("connect", {description: "Connect your Steam to civ6bot"})
     async connect(interaction: CommandInteraction){ await this.steamService.connect(interaction); }
 }

@@ -8,24 +8,24 @@ import {DraftService} from "./draft.service";
 export abstract class DraftInteractionsGrouped {
     private draftService: DraftService = new DraftService();
 
-    @Slash("ffa", { description: "Драфт цивилизаций для FFA" })
+    @Slash("ffa", { description: "Draft for FFA game" })
     public async ffa(
-        @SlashOption("количество-цивилизаций", { required: false }) civAmount: number = 0,
-        @SlashOption("баны", { required: false }) bans: string = "",
+        @SlashOption("civilizations-amount", { required: false }) civAmount: number = 0,
+        @SlashOption("bans", { required: false }) bans: string = "",
         interaction: CommandInteraction
     ) { await this.draftService.ffa(interaction, civAmount, bans); }
 
-    @Slash("teamers", { description: "Драфт цивилизаций для Teamers" })
+    @Slash("teamers", { description: "Draft for Teamers game" })
     public async teamers(
-        @SlashOption("количество-команд", { required: false }) teamAmount: number = 2,
-        @SlashOption("баны", { required: false }) bans: string = "",
+        @SlashOption("teams-amount", { required: false }) teamAmount: number = 2,
+        @SlashOption("bans", { required: false }) bans: string = "",
         interaction: CommandInteraction
     ) { await this.draftService.teamers(interaction, teamAmount, bans); }
 
-    @Slash("blind", { description: "Драфт цивилизаций для FFA взакрытую" })
+    @Slash("blind", { description: "Draft for FFA game (blind mode)" })
     public async blind(
-        @SlashOption("количество-цивилизаций", { required: false }) civAmount: number = 0,
-        @SlashOption("баны", { required: false }) bans: string = "",
+        @SlashOption("civilizations-amount", { required: false }) civAmount: number = 0,
+        @SlashOption("bans", { required: false }) bans: string = "",
         interaction: CommandInteraction
     ) { await this.draftService.blind(interaction, civAmount, bans); }
 }
@@ -34,7 +34,7 @@ export abstract class DraftInteractionsGrouped {
 export abstract class DraftInteractions {
     private draftService: DraftService = new DraftService();
 
-    @Slash("redraft", { description: "Получить редрафт последнего драфта" })
+    @Slash("redraft", { description: "Redraft vote for last draft" })
     public async redraft(
         interaction: CommandInteraction
     ){ await this.draftService.redraft(interaction); }

@@ -253,18 +253,23 @@ export class DynamicConfigEntityTeamersForbiddenPairs extends DynamicConfigEntit
                 civTextPair.map((civText: string, index: number): string =>
                     civTextPair[index] = civText.trim()
                 )
-            ).map((civilizationsTextPairString: string[]): number[][] =>
+            )
+            .map((civilizationsTextPairString: string[]): number[][] =>
                 civilizationsTextPairString.map((civText: string): number[] => {
                     let {bans, errors} = CoreServiceCivilizations.parseBans(civText, this.civilizationTexts);
                     return bans;
                 })
+            )
+            .filter((civDoubleNumber: number[][]): boolean =>
+                civDoubleNumber.filter((civOneNumber: number[]): boolean =>
+                    civOneNumber.length !== 0
+                ).length !== 0
             );
-
         if(civParseResult.map((civDoubleArrayResult: number[][]): boolean =>
             (civDoubleArrayResult.length === 2) && civDoubleArrayResult.every((civOneArrayResult: number[]): boolean =>
                 civOneArrayResult.length === 1
             )
-        ).some(result => !result))
+        ).some(result => !result) && civParseResult.length !== 0)
             return false;
 
         let civilizationNumberPairs: number[][] = civParseResult

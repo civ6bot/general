@@ -37,7 +37,7 @@
 
     { "tag": "DYNAMIC_CONFIG_MENU_PLACEHOLDER_CATEGORY", "value": "Выберите категорию" },
     { "tag": "DYNAMIC_CONFIG_MENU_PLACEHOLDER_CONFIG", "value": "Выберите настройку" },
-
+    { "tag": "DYNAMIC_CONFIG_DESCRIPTION_NO_VALUE", "value": "  – нет" },
 
 
     { "tag": "DYNAMIC_CONFIG_CATEGORY_MISCELLANEOUS", "value": "Разное" },

@@ -8,31 +8,31 @@ import {ApplicationCommandOptionType, ButtonInteraction, CommandInteraction, Gui
 export abstract class SplitInteractions {
     private splitService: SplitService = new SplitService();
 
-    @Slash("random", {description: "Разделение случайным образом"})
+    @Slash("random", {description: "Split into teams randomly"})
     public async random(
-        @SlashOption("1й-капитан", { required: true, type: ApplicationCommandOptionType.User }) captain1: GuildMember,
-        @SlashOption("2й-капитан", { required: false, type: ApplicationCommandOptionType.User }) captain2: GuildMember | null = null,
+        @SlashOption("1st-captain", { required: true, type: ApplicationCommandOptionType.User }) captain1: GuildMember,
+        @SlashOption("2nd-captain", { required: false, type: ApplicationCommandOptionType.User }) captain2: GuildMember | null = null,
         interaction: CommandInteraction
     ) { await this.splitService.random(interaction, captain1, captain2); }
 
-    @Slash("classic", {description: "Разделение 1-2-1-2..."})
+    @Slash("classic", {description: "Split: 1-2-1-2..."})
     public async classic(
-        @SlashOption("1й-капитан", { required: true, type: ApplicationCommandOptionType.User }) captain1: GuildMember,
-        @SlashOption("2й-капитан", { required: false, type: ApplicationCommandOptionType.User }) captain2: GuildMember | null = null,
+        @SlashOption("1st-captain", { required: true, type: ApplicationCommandOptionType.User }) captain1: GuildMember,
+        @SlashOption("2nd-captain", { required: false, type: ApplicationCommandOptionType.User }) captain2: GuildMember | null = null,
         interaction: CommandInteraction
     ) { await this.splitService.allLongSplits(interaction, "Classic", captain1, captain2); }
 
-    @Slash("double", {description: "Разделение по командам: 1-2-2, затем 1-2-1-2..."})
+    @Slash("double", {description: "Split: 1-2-2, then 1-2-1-2..."})
     public async double(
-        @SlashOption("1й-капитан", { required: true, type: ApplicationCommandOptionType.User }) captain1: GuildMember,
-        @SlashOption("2й-капитан", { required: false, type: ApplicationCommandOptionType.User }) captain2: GuildMember | null = null,
+        @SlashOption("1st-captain", { required: true, type: ApplicationCommandOptionType.User }) captain1: GuildMember,
+        @SlashOption("2nd-captain", { required: false, type: ApplicationCommandOptionType.User }) captain2: GuildMember | null = null,
         interaction: CommandInteraction
     ) { await this.splitService.allLongSplits(interaction, "Double", captain1, captain2); }
 
-    @Slash("cwc", {description: "Разделение, подобное формату драфта CWC"})
+    @Slash("cwc", {description: "Split CWC-like"})
     public async cwc(
-        @SlashOption("1й-капитан", { required: true, type: ApplicationCommandOptionType.User }) captain1: GuildMember,
-        @SlashOption("2й-капитан", { required: false, type: ApplicationCommandOptionType.User }) captain2: GuildMember | null = null,
+        @SlashOption("1st-captain", { required: true, type: ApplicationCommandOptionType.User }) captain1: GuildMember,
+        @SlashOption("2nd-captain", { required: false, type: ApplicationCommandOptionType.User }) captain2: GuildMember | null = null,
         interaction: CommandInteraction
     ) { await this.splitService.allLongSplits(interaction, "CWC", captain1, captain2); }
 

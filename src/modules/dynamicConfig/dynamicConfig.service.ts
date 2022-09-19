@@ -453,7 +453,8 @@ export class DynamicConfigService extends ModuleBaseService {
             dynamicConfig.getTitleTag()+"_EMOJI", dynamicConfig.getTitleTag(),
             "DYNAMIC_CONFIG_TITLE_PAGE", (dynamicConfig.isConfig)
                 ? "DYNAMIC_CONFIG_CHOOSE_CONFIG_DESCRIPTION"
-                : "DYNAMIC_CONFIG_CHOOSE_GROUP_DESCRIPTION"
+                : "DYNAMIC_CONFIG_CHOOSE_GROUP_DESCRIPTION",
+            "DYNAMIC_CONFIG_DESCRIPTION_NO_VALUE"
         ]);
         let optionStrings: string[] = await this.getManyText(dynamicConfig.interaction, dynamicConfig.getOptionTags());
         let emojiStrings: string[];
@@ -464,7 +465,7 @@ export class DynamicConfigService extends ModuleBaseService {
             emojiStrings = [];
             for(let i in configs)
                 emojiStrings.push(
-                    (configs[i].type === "BooleanGameSetting")
+                    (configs[i].type === "BooleanGameSetting")  // в этом типе конфигураций эмодзи не в конфиге, а в тексте
                         ? await this.getOneSettingString(dynamicConfig.interaction, emojiTags[i])
                         : await this.getOneText(dynamicConfig.interaction, emojiTags[i])
                 );
@@ -487,7 +488,8 @@ export class DynamicConfigService extends ModuleBaseService {
                     dynamicConfig,
                     textStrings[0], textStrings[1], textStrings[2], textStrings[3],
                     emojiStrings,
-                    optionStrings
+                    optionStrings,
+                    textStrings[4]
                 ),
                 components: [
                     ...this.dynamicConfigUI.configButtons(dynamicConfig, buttonStrings),
@@ -499,7 +501,8 @@ export class DynamicConfigService extends ModuleBaseService {
                     dynamicConfig,
                     textStrings[0], textStrings[1], textStrings[2], textStrings[3],
                     emojiStrings,
-                    optionStrings
+                    optionStrings,
+                    textStrings[4]
                 ),
                 components: [
                     ...this.dynamicConfigUI.configButtons(dynamicConfig, buttonStrings),
@@ -665,7 +668,9 @@ export class DynamicConfigService extends ModuleBaseService {
             dynamicConfig = new DynamicConfig(interaction, entitiesPerPage, lifeTimeMs, "DYNAMIC_CONFIG_TITLE", optionsTags);
             DynamicConfigService.dynamicConfigs.set(key, dynamicConfig);
         } else {
-            await dynamicConfig.interaction.deleteReply();
+            try {
+                await dynamicConfig.interaction.deleteReply();
+            } catch {}
             dynamicConfig.interaction = interaction;
         }
         this.updateTimeout(dynamicConfig);
@@ -799,6 +804,7 @@ export class DynamicConfigService extends ModuleBaseService {
                         `${dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationTexts[value[0]]}, ${dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationTexts[value[1]]}`)
                     .join("\n")
                     .replaceAll(/<.+?>/g, "-"),     // ? - ленивый поиск
+                true,
                 true
             ));
             return;

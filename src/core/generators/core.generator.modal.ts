@@ -7,7 +7,8 @@ export class CoreGeneratorModal {
         inputCustomIDs: string[],
         inputLabels: string[],
         defaultValue: string[] = [],
-        inputStyles: TextInputStyle[] = []
+        inputStyles: TextInputStyle[] = [],
+        zeroCharactersInput: boolean = false
     ): ModalBuilder {
         let modal: ModalBuilder = new ModalBuilder()
             .setCustomId(customID)
@@ -19,6 +20,8 @@ export class CoreGeneratorModal {
                     .setLabel(inputLabels[i])
                     .setStyle(inputStyles[i] || TextInputStyle.Short)
                     .setValue(defaultValue[i] || "")
+                    .setMinLength(zeroCharactersInput ? 0 : 1)
+                    .setRequired(!zeroCharactersInput)
             ));
         return modal;
     }

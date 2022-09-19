@@ -6,12 +6,12 @@ import {CommandInteraction} from "discord.js";
 export abstract class FeedbackInteractions{
     feedbackService: FeedbackService = new FeedbackService();
 
-    @Slash("about", { description: "Справка о боте" })
+    @Slash("about", { description: "Bot information" })
     public async about(
         interaction: CommandInteraction
     ) { await this.feedbackService.about(interaction); }
 
-    @Slash("feedback", { description: "Отправить отзыв или ошибку о работе бота" })
+    @Slash("feedback", { description: "Send suggestion or feedback to developers" })
     public async feedback(
         @SlashOption("содержание", { required: true }) content: string,
         interaction: CommandInteraction

@@ -11,15 +11,18 @@ export class DynamicConfigUI extends ModuleBaseUI {
         dynamicConfig: DynamicConfig,
         titleEmoji: string, title: string, titlePage: string,
         description: string,
-        emojis: string[], options: string[]
+        emojis: string[], options: string[],
+        noValue: string = ""
     ): EmbedBuilder[] {
         let values: string[] = dynamicConfig.getStringifiedValues();
         if(dynamicConfig.isConfig && dynamicConfig.getLastChild().configs[0]?.type === "TeamersForbiddenPairs") {
             let dynamicConfigEntityTeamersForbiddenPairs: DynamicConfigEntityTeamersForbiddenPairs = (dynamicConfig.getLastChild().configs[0] as DynamicConfigEntityTeamersForbiddenPairs);
-            values = ["\n" + dynamicConfigEntityTeamersForbiddenPairs.civilizationPairIndexes
+            let pairString: string = dynamicConfigEntityTeamersForbiddenPairs.civilizationPairIndexes
                 .map((value: number[]): string => `– ${dynamicConfigEntityTeamersForbiddenPairs.civilizationTexts[value[0]]}, ${dynamicConfigEntityTeamersForbiddenPairs.civilizationTexts[value[1]]}`)
-                .join("\n")
-            ];
+                .join("\n");
+            if(pairString === "")
+                pairString = noValue;
+            values = ["\n" + pairString];
             options = [`__**${options[0]}**__`];
         }
 
@@ -97,7 +100,8 @@ export class DynamicConfigUI extends ModuleBaseUI {
         configTag: string,
         label: string,
         defaultValue: string,
-        isStyleParagraphText: boolean = false
+        isStyleParagraphText: boolean = false,
+        zeroCharactersInput: boolean = false
     ): ModalBuilder {
         return CoreGeneratorModal.build(
             "dynamicConfig-modal",
@@ -105,7 +109,8 @@ export class DynamicConfigUI extends ModuleBaseUI {
             [configTag],
             [label],
             [defaultValue],
-            (isStyleParagraphText) ? [TextInputStyle.Paragraph] : [TextInputStyle.Short]
+            (isStyleParagraphText) ? [TextInputStyle.Paragraph] : [TextInputStyle.Short],
+            zeroCharactersInput
         );
     };
 

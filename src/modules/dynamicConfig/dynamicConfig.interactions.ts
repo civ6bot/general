@@ -6,7 +6,7 @@ import {DynamicConfigService} from "./dynamicConfig.service";
 export abstract class DynamicConfigInteractions {
     private dynamicConfigService: DynamicConfigService = new DynamicConfigService();
 
-    @Slash("config", { description: "Поменять настройки" })
+    @Slash("config", { description: "Edit server settings" })
     public async config(
         interaction: CommandInteraction
     ) { await this.dynamicConfigService.config(interaction); }

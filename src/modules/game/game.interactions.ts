@@ -8,12 +8,12 @@ import {GameService} from "./game.service";
 export abstract class GameInteractionsGrouped {
     private gameService: GameService = new GameService();
 
-    @Slash("ffa", { description: "Голосование для FFA" })
+    @Slash("ffa", { description: "Vote for new FFA game" })
     public async ffa(
         interaction: CommandInteraction
     ) { await this.gameService.ffa(interaction); }
 
-    @Slash("teamers", { description: "Голосование для Teamers" })
+    @Slash("teamers", { description: "Vote for new Teamers game" })
     public async teamers(
         interaction: CommandInteraction
     ) { await this.gameService.teamers(interaction); }

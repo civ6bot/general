@@ -6,20 +6,20 @@ import {MiscellaneousService} from "./miscellaneous.service";
 export abstract class MiscellaneousInteractions {
     miscellaneousService: MiscellaneousService = new MiscellaneousService();
 
-    @Slash("random", { description: "Случайное число от 1 до N" })
+    @Slash("random", { description: "Random number from 1 to N" })
     public async random(
-        @SlashOption("число", { type: ApplicationCommandOptionType.Number, description: "Максимальное значение", required: true }) n: number,
+        @SlashOption("n-value", { type: ApplicationCommandOptionType.Number, description: "Max value", required: true }) n: number,
         interaction: CommandInteraction
     ) { await this.miscellaneousService.random(interaction, n); }
 
-    @Slash("coin", {description: "Подбросить монетку"})
+    @Slash("coin", {description: "Flip coin"})
     public async coin(
         interaction: CommandInteraction
     ) { await this.miscellaneousService.coin(interaction); }
 
-    @Slash("vote", {description: "Запустить опрос"})
+    @Slash("vote", {description: "Start local vote"})
     public async vote(
-        @SlashOption("опрос", {type: ApplicationCommandOptionType.String, description: "содержание", required: true}) voteContent: string,
+        @SlashOption("vote-text", {type: ApplicationCommandOptionType.String, description: "subject of your vote", required: true}) voteContent: string,
         interaction: CommandInteraction
     ) { await this.miscellaneousService.vote(interaction, voteContent); }
 }

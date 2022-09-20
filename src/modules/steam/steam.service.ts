@@ -1,19 +1,18 @@
 import {ModuleBaseService} from "../base/base.service";
 import {CommandInteraction} from "discord.js";
 import {SteamUI} from "./steam.ui";
-import {DecorateAll} from "decorate-all";
 import {SafeModuleServiceDeferReply} from "../../core/decorators/core.decorators.SaveModuleServiceDeferReply";
 import {RequestsSteam} from "../../requests/requests.steam";
 import {SteamAPIData} from "../../types/type.SteamAPIData";
 import {RequestsUserSteam} from "../../requests/requests.UserSteam";
 import {UserSteam} from "../../types/type.UserSteam";
 
-@DecorateAll(SafeModuleServiceDeferReply())
 export class SteamService extends ModuleBaseService {
     private steamUI: SteamUI = new SteamUI();
     private requestsUserSteam: RequestsUserSteam = new RequestsUserSteam();
     private requestsSteam: RequestsSteam = new RequestsSteam();
 
+    @SafeModuleServiceDeferReply()
     async link(interaction: CommandInteraction, description: string) {
         let gameIDArray: string[] = ["289070", "480"];
         let textStringsError: string[] = await this.getManyText(interaction,
@@ -54,7 +53,7 @@ export class SteamService extends ModuleBaseService {
             "STEAM_CONNECT_BUTTON_LABEL", "STEAM_CONNECT_BUTTON_EMOJI"
         ]);
 
-        await interaction.editReply({
+        await interaction.reply({
             embeds: this.steamUI.connectEmbed(textStrings[0], textStrings[1]),
             components: this.steamUI.connectButton(textStrings[2], textStrings[3], process.env.OAUTH2_REDIRECT_LINK as string)
         });

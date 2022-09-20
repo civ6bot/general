@@ -26,3 +26,7 @@ discordClient.once("ready", async () => {
 discordClient.on("interactionCreate", (interaction: Interaction) => {
     discordClient.executeInteraction(interaction, true);
 });
+
+process.on('uncaughtException', error => {
+    console.error(error);
+});

@@ -3,12 +3,9 @@ import {DraftUI} from "./draft.ui";
 import {ButtonInteraction, CommandInteraction, DMChannel, Message, User} from "discord.js";
 import {Draft, DraftBlind, DraftFFA, DraftTeamers} from "./draft.models";
 import {CoreGeneratorTimestamp} from "../../core/generators/core.generator.timestamp";
-import {DecorateAll} from "decorate-all";
-import {SafeModuleService} from "../../core/decorators/core.decorators.SaveModuleService";
 import {CoreServiceCivilizations} from "../../core/services/core.service.civilizations";
 import {CoreServiceUsers} from "../../core/services/core.service.users";
 
-@DecorateAll(SafeModuleService)
 export class DraftService extends ModuleBaseService {
     private draftUI: DraftUI = new DraftUI();
 
@@ -28,7 +25,6 @@ export class DraftService extends ModuleBaseService {
         if(outerDraft)
             draft = outerDraft;
         else {
-            await interaction.deferReply();
             let [minCivilizations, maxCivilizations]: number[] = (civAmount === 0)
                 ? await this.getManySettingNumber(interaction, "DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT", "DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT")
                 : [civAmount, civAmount];
@@ -46,7 +42,7 @@ export class DraftService extends ModuleBaseService {
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
             return (outerDraft)
                 ? await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
-                : await interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+                : await interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
         }
         DraftService.drafts.set(draft.guildID+draft.type, draft);
 
@@ -72,7 +68,7 @@ export class DraftService extends ModuleBaseService {
                         textStrings[3],
                         draft
                     )})
-                : await draft.interaction.editReply({embeds: this.draftUI.draftFFAEmbed(
+                : await draft.interaction.reply({embeds: this.draftUI.draftFFAEmbed(
                     draft.users.length === 1 ? textStrings[0] : textStrings[1],
                         textStrings[2],
                         textStrings[3],
@@ -85,7 +81,6 @@ export class DraftService extends ModuleBaseService {
         if(outerDraft)
             draft = outerDraft;
         else {
-            await interaction.deferReply();
             if(users.length === 0)
                 users = CoreServiceUsers.getFromVoice(interaction);
             let forbiddenPairs: number[][] = CoreServiceCivilizations.getForbiddenPairs(
@@ -107,7 +102,7 @@ export class DraftService extends ModuleBaseService {
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
             return (outerDraft)
                 ? await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
-                : await interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+                : await interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
         }
         DraftService.drafts.set(draft.guildID+draft.type, draft);
 
@@ -138,7 +133,7 @@ export class DraftService extends ModuleBaseService {
                         textStrings[2],
                         draft
                     )})
-                : await draft.interaction.editReply({embeds: this.draftUI.draftTeamersEmbed(
+                : await draft.interaction.reply({embeds: this.draftUI.draftTeamersEmbed(
                     textStrings[0],
                         teamDescriptionHeader,
                         textStrings[1],
@@ -254,41 +249,43 @@ export class DraftService extends ModuleBaseService {
             }
         }
 
-        draft.setTimeoutID = await setTimeout(async function(draft: DraftBlind) {
-            let draftService: DraftService = new DraftService();
-            draft.isProcessing = false;
-
-            let textStrings = await draftService.getManyText(
-                draft.interaction,
-                ["DRAFT_BLIND_PM_TITLE", "DRAFT_BLIND_TITLE_ONE_PLAYER",
-                    "DRAFT_BLIND_TITLE_MANY_PLAYERS", "DRAFT_BLIND_DESCRIPTION_PROCESSING_TIMEOUT",
-                    "DRAFT_DRAFT_BANS_DESCRIPTION", "DRAFT_DRAFT_ERRORS_DESCRIPTION",
-                    "DRAFT_BLIND_FIELD_PLAYERS_TITLE", "DRAFT_BLIND_FIELD_CIVILIZATION_TITLE"],
-                [null, null, [draft.users.length], null, [draft.bans.length]]
-            );
-
-            for(let i in draft.civilizationsPool)
-                if(draft.civilizationsPool[i].length > 1) {
-                    draft.civilizationsPool[i] = [draft.civilizationsPool[i][Math.floor(Math.random()*draft.civilizationsPool[i].length)]];
-                    await draft.pmMessages[i].edit({components: [], embeds: draftService.draftUI.draftBlindPMEmbed(
-                            textStrings[0],
-                            await draftService.getOneText(draft.interaction, "DRAFT_BLIND_PM_DESCRIPTION_TIMEOUT", draft.getPoolsText()[i][0]),
-                            draft
-                        )});
-                }
-
-            await draft.message?.edit({components: [], embeds: draftService.draftUI.draftBlindEmbed(
-                draft.users.length === 1 ? textStrings[1] : textStrings[2],
-                    textStrings[3],
-                    textStrings[4],
-                    textStrings[5],
-                    textStrings[6],
-                    textStrings[7],
-                    [],
-                    draft
-                )});
-        }, pickTimeMs+draft.date.getTime()-Date.now(), draft);
+        draft.setTimeoutID = await setTimeout(DraftService.blindTimeout, pickTimeMs+draft.date.getTime()-Date.now(), draft);
         // Здесь разность, чтобы было корректное время (из-за задержки между вызовом и сообщением в чате)
+    }
+
+    public static async blindTimeout(draft: DraftBlind): Promise<void> {
+        let draftService: DraftService = new DraftService();
+        draft.isProcessing = false;
+
+        let textStrings = await draftService.getManyText(
+            draft.interaction,
+            ["DRAFT_BLIND_PM_TITLE", "DRAFT_BLIND_TITLE_ONE_PLAYER",
+                "DRAFT_BLIND_TITLE_MANY_PLAYERS", "DRAFT_BLIND_DESCRIPTION_PROCESSING_TIMEOUT",
+                "DRAFT_DRAFT_BANS_DESCRIPTION", "DRAFT_DRAFT_ERRORS_DESCRIPTION",
+                "DRAFT_BLIND_FIELD_PLAYERS_TITLE", "DRAFT_BLIND_FIELD_CIVILIZATION_TITLE"],
+            [null, null, [draft.users.length], null, [draft.bans.length]]
+        );
+
+        for(let i in draft.civilizationsPool)
+            if(draft.civilizationsPool[i].length > 1) {
+                draft.civilizationsPool[i] = [draft.civilizationsPool[i][Math.floor(Math.random()*draft.civilizationsPool[i].length)]];
+                await draft.pmMessages[i].edit({components: [], embeds: draftService.draftUI.draftBlindPMEmbed(
+                        textStrings[0],
+                        await draftService.getOneText(draft.interaction, "DRAFT_BLIND_PM_DESCRIPTION_TIMEOUT", draft.getPoolsText()[i][0]),
+                        draft
+                    )});
+            }
+
+        await draft.message?.edit({components: [], embeds: draftService.draftUI.draftBlindEmbed(
+                draft.users.length === 1 ? textStrings[1] : textStrings[2],
+                textStrings[3],
+                textStrings[4],
+                textStrings[5],
+                textStrings[6],
+                textStrings[7],
+                [],
+                draft
+            )});
     }
 
     // blindButton-pick-guildID-civID
@@ -389,11 +386,10 @@ export class DraftService extends ModuleBaseService {
     }
 
     public async redraft(interaction: CommandInteraction) {
-        await interaction.deferReply();
         let drafts: Draft[] = Array.from(DraftService.drafts.values());
         if(drafts.filter(draft => (draft.isProcessing && (draft.interaction.guild?.id as string) === (interaction.guild?.id as string))).length > 0){
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", "DRAFT_ERROR_PROCESSING"]);
-            return interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+            return interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
         }
 
         let draft: Draft | undefined = drafts
@@ -402,7 +398,7 @@ export class DraftService extends ModuleBaseService {
 
         if(!draft){
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", "DRAFT_REDRAFT_ERROR_NOT_FOUND"]);
-            return interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+            return interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
         }
 
         let settings: number[] = await this.getManySettingNumber(interaction,
@@ -433,7 +429,7 @@ export class DraftService extends ModuleBaseService {
                 [emojis[1], draft.redraftStatus.filter(value => value === 0).length]
             ]
         );
-        await interaction.editReply({embeds: this.draftUI.redraftEmbed(
+        await interaction.reply({embeds: this.draftUI.redraftEmbed(
             textStrings[0],
                 textStrings[1],
                 textStrings[2],
@@ -443,32 +439,57 @@ export class DraftService extends ModuleBaseService {
                 draft
             ), components: this.draftUI.redraftButtons([textStrings[5], textStrings[6]], emojis)});
 
-        draft.setTimeoutID = await setTimeout(async function (draft: Draft) {
-            let draftService: DraftService = new DraftService();
-            draft.isProcessing = false;
-            let emojis: string[] = await draftService.getManySettingString(interaction, "BASE_EMOJI_YES", "BASE_EMOJI_NO");
-            let textStrings: string[] = await draftService.getManyText(
-                draft.interaction,
-                ["DRAFT_REDRAFT_TITLE", "DRAFT_REDRAFT_DESCRIPTION_TIMEOUT",
-                    "DRAFT_REDRAFT_FIELD_YES", "DRAFT_REDRAFT_FIELD_UNKNOWN",
-                    "DRAFT_REDRAFT_FIELD_NO", "DRAFT_REDRAFT_FIELD_ZERO_USERS"
-                ], [[draft.runTimes], null,
-                    [emojis[0], draft.redraftStatus.filter(value => value === 1).length], [draft.redraftStatus.filter(value => value === -1).length],
-                    [emojis[1], draft.redraftStatus.filter(value => value === 0).length]
-                ]
-            );
-            draft.runTimes = 0;
-            await draft.interaction.editReply({embeds: draftService.draftUI.redraftEmbed(
+        draft.setTimeoutID = await setTimeout(DraftService.redraftTimeout, settings[3], draft);
+    }
+
+    public static async redraftTimeout(draft: Draft): Promise<void> {
+        let draftService: DraftService = new DraftService();
+        draft.isProcessing = false;
+        let emojis: string[] = await draftService.getManySettingString(draft.interaction, "BASE_EMOJI_YES", "BASE_EMOJI_NO");
+        let textStrings: string[] = await draftService.getManyText(
+            draft.interaction,
+            ["DRAFT_REDRAFT_TITLE", "DRAFT_REDRAFT_DESCRIPTION_TIMEOUT",
+                "DRAFT_REDRAFT_FIELD_YES", "DRAFT_REDRAFT_FIELD_UNKNOWN",
+                "DRAFT_REDRAFT_FIELD_NO", "DRAFT_REDRAFT_FIELD_ZERO_USERS"
+            ], [[draft.runTimes], null,
+                [emojis[0], draft.redraftStatus.filter(value => value === 1).length], [draft.redraftStatus.filter(value => value === -1).length],
+                [emojis[1], draft.redraftStatus.filter(value => value === 0).length]
+            ]
+        );
+        draft.runTimes = 0;
+        await draft.interaction.editReply({embeds: draftService.draftUI.redraftEmbed(
                 textStrings[0],
-                    textStrings[1],
-                    textStrings[2],
-                    textStrings[3],
-                    textStrings[4],
-                    textStrings[5],
-                    draft
-                ), components: []});
-            draft.redraftStatus = [];
-        }, settings[3], draft);
+                textStrings[1],
+                textStrings[2],
+                textStrings[3],
+                textStrings[4],
+                textStrings[5],
+                draft
+            ), components: []});
+        draft.redraftStatus = [];
+    }
+
+    public static async redraftTimeoutSuccess(draft: Draft): Promise<void> {
+        let draftService: DraftService = new DraftService();
+        switch (draft.type) {
+            case "FFA":
+                let draftFFA: DraftFFA = draft as DraftFFA;
+                draftFFA.divideCivilizations();
+                await draftService.ffa(draftFFA.interaction as CommandInteraction, 0, "", [], draftFFA);
+                return;
+            case "Teamers":
+                let draftTeamers: DraftTeamers = draft as DraftTeamers;
+                draftTeamers.divideCivilizations();
+                await draftService.teamers(draftTeamers.interaction as CommandInteraction, 0, "", [], draftTeamers);
+                return;
+            case "Blind":
+                let draftBlind: DraftBlind = draft as DraftBlind;
+                draftBlind.divideCivilizations(draftBlind.redraftCivilizationsAmount);
+                draftBlind.isProcessing = true;
+                draftBlind.pmMessages = [];
+                await draftService.blind(draftBlind.interaction as CommandInteraction, 0, "", [], draftBlind);
+                return;
+        }
     }
 
     public async redraftButton(interaction: ButtonInteraction, voteStatus: boolean) {
@@ -525,25 +546,7 @@ export class DraftService extends ModuleBaseService {
                     draft
                 )});
             draft.redraftStatus = [];
-            await setTimeout(async function (draft: Draft) {
-                let draftService: DraftService = new DraftService();
-                switch(draft.type) {
-                    case "FFA":
-                        let draftFFA: DraftFFA = draft as DraftFFA;
-                        draftFFA.divideCivilizations();
-                        return await draftService.ffa(draftFFA.interaction as CommandInteraction, 0, "", [], draftFFA);
-                    case "Teamers":
-                        let draftTeamers: DraftTeamers = draft as DraftTeamers;
-                        draftTeamers.divideCivilizations();
-                        return await draftService.teamers(draftTeamers.interaction as CommandInteraction, 0, "", [], draftTeamers);
-                    case "Blind":
-                        let draftBlind: DraftBlind = draft as DraftBlind;
-                        draftBlind.divideCivilizations(draftBlind.redraftCivilizationsAmount);
-                        draftBlind.isProcessing = true;
-                        draftBlind.pmMessages = [];
-                        return await draftService.blind(draftBlind.interaction as CommandInteraction, 0, "", [], draftBlind);
-                }
-            }, 2000, draft);
+            await setTimeout(DraftService.redraftTimeoutSuccess, 2000, draft);
         } else if(draft.redraftStatus.filter(value => value === 0).length >= draft.users.length-draft.thresholdUsers+1) {
             draft.isProcessing = false;
             draft.runTimes = 0;

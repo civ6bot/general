@@ -2,14 +2,11 @@ import {ModuleBaseService} from "../base/base.service";
 import {ButtonInteraction, CommandInteraction, GuildMember, MessageReaction, User} from "discord.js";
 import {SplitUI} from "./split.ui";
 import {Split, SplitClassic, SplitCWC, SplitDouble, SplitRandom} from "./split.models";
-import {DecorateAll} from "decorate-all";
-import {SafeModuleService} from "../../core/decorators/core.decorators.SaveModuleService";
 import {CoreGeneratorTimestamp} from "../../core/generators/core.generator.timestamp";
 import {CoreServiceEmojis} from "../../core/services/core.service.emojis";
 import {CoreServiceUsers} from "../../core/services/core.service.users";
 import {SplitAdapter} from "./split.adapter";
 
-//@DecorateAll(SafeModuleService)
 export class SplitService extends ModuleBaseService {
     private splitUI: SplitUI = new SplitUI();
     public splitAdapter: SplitAdapter = new SplitAdapter();
@@ -35,7 +32,6 @@ export class SplitService extends ModuleBaseService {
         if(outerSplit)
             split = outerSplit;
         else {
-            await interaction.deferReply();
             if(users.length === 0)
                 users = CoreServiceUsers.getFromVoice(interaction);
             split = new SplitRandom(interaction, [captain1.user, captain2?.user || null], users);
@@ -45,7 +41,7 @@ export class SplitService extends ModuleBaseService {
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", split.errorReturnTag]);
             return (outerSplit)
                 ? await interaction.channel?.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
-                : await interaction.editReply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
+                : await interaction.reply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
         }
 
         let title: string = await this.getOneText(split.interaction, "SPLIT_RANDOM_TITLE");
@@ -60,7 +56,7 @@ export class SplitService extends ModuleBaseService {
                     fieldHeaders,
                     split
                 )})
-            : await interaction.editReply({embeds: this.splitUI.splitEmbed(
+            : await interaction.reply({embeds: this.splitUI.splitEmbed(
                     title,
                     null,
                     fieldHeaders,

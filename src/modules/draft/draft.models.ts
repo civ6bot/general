@@ -163,6 +163,6 @@ export class DraftBlind extends DraftFFA {
         minCivilizationsAmount: number = 1, maxCivilizationsAmount: number = 16
     ) {
         super(interaction, bans, configs, texts, users, minCivilizationsAmount, maxCivilizationsAmount);
-        this.redraftCivilizationsAmount = this.civilizationsPool[0].length || 0;
+        this.redraftCivilizationsAmount = this.civilizationsPool[0]?.length || 0;
     }
 }

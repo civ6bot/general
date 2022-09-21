@@ -12,11 +12,10 @@ export const discordClient: Client = new Client({
         IntentsBitField.Flags.DirectMessages,
         IntentsBitField.Flags.MessageContent,
     ],
-    // botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
-    botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id).filter((guild) => guild === "795264927974555648")],
+    botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id).filter((guild) => guild !== "663144077818331186")],
     silent: false,
     shards: "auto",
-    rest: {offset: 0}
+    rest: {offset: 0},
 });
 
 discordClient.once("ready", async () => {

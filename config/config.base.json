@@ -1,5 +1,5 @@
 [
-  { "setting": "BASE_LANGUAGE", "value": "ru" },
+  { "setting": "BASE_LANGUAGE", "value": "Russian" },
   { "setting": "BASE_EMOJI_YES", "value": "<:Yes:808418109710794843>" },
   { "setting": "BASE_EMOJI_NO", "value": "<:No:808418109319938099>" },
   { "setting": "BASE_UNKNOWN_ERROR_PM_USER_ID", "value": "352051709649879053" }

@@ -148,7 +148,7 @@ export class SplitService extends ModuleBaseService {
                 split
                 ), components: this.splitUI.splitDeleteButton(textStrings[2])});
 
-        split.setTimeoutID = setTimeout(this.timeoutFunction, split.pickTimeMs, split);
+        split.setTimeoutID = setTimeout(SplitService.timeoutFunction, split.pickTimeMs, split);
         split.reactionCollector = split.message?.createReactionCollector({time: 16*split.pickTimeMs});  // максимальное число игроков
         split.reactionCollector.on("collect", async (reaction: MessageReaction, user: User) => SplitService.reactionCollectorFunction(reaction, user));
         try {   // если оно будет удалено до выставления всех эмодзи
@@ -239,12 +239,12 @@ export class SplitService extends ModuleBaseService {
             if(split.bansForDraft !== null)
                 await splitService.splitAdapter.callDraft(split);
         } else {
-            split.setTimeoutID = await setTimeout(splitService.timeoutFunction, split.pickTimeMs, split);
+            split.setTimeoutID = await setTimeout(SplitService.timeoutFunction, split.pickTimeMs, split);
         }
     }
 
     // Если не успели
-    private async timeoutFunction(split: Split): Promise<void> {
+    public static async timeoutFunction(split: Split): Promise<void> {
         split.isProcessing = false;
         split.reactionCollector?.stop();
         let splitService: SplitService = new SplitService();

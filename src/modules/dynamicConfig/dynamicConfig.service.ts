@@ -511,7 +511,7 @@ export class DynamicConfigService extends ModuleBaseService {
             });
     }
 
-    private updateTimeout(dynamicConfig: DynamicConfig): void {
+    private updateTimeoutTimer(dynamicConfig: DynamicConfig): void {
         dynamicConfig.date = new Date();
         if(dynamicConfig.setTimeoutID !== null)
             clearTimeout(dynamicConfig.setTimeoutID);
@@ -673,7 +673,7 @@ export class DynamicConfigService extends ModuleBaseService {
             } catch {}
             dynamicConfig.interaction = interaction;
         }
-        this.updateTimeout(dynamicConfig);
+        this.updateTimeoutTimer(dynamicConfig);
         await this.sendDynamicConfigMessage(dynamicConfig, true);
 
     }
@@ -693,7 +693,7 @@ export class DynamicConfigService extends ModuleBaseService {
         let option: string | undefined = dynamicConfig.getOptionTags()[valueIndex];
         if(!option)
             return await interaction.deferUpdate();
-        this.updateTimeout(dynamicConfig);
+        this.updateTimeoutTimer(dynamicConfig);
 
         // Новая категория
         let categories: string[] | undefined = DynamicConfigService.tagsMap.get(dynamicConfig.getOptionTags()[valueIndex]);
@@ -826,7 +826,7 @@ export class DynamicConfigService extends ModuleBaseService {
             ]);
             return await interaction.reply({embeds: this.dynamicConfigUI.error(textStrings[0], textStrings[1]), ephemeral: true});
         }
-        this.updateTimeout(dynamicConfig);
+        this.updateTimeoutTimer(dynamicConfig);
 
         if(dynamicConfigEntity.type === "Number") {
             let dynamicConfigEntityNumber: DynamicConfigEntityNumber = dynamicConfigEntity as DynamicConfigEntityNumber;
@@ -914,7 +914,7 @@ export class DynamicConfigService extends ModuleBaseService {
         let dynamicConfig: DynamicConfig | undefined = await this.checkDynamicConfigComponent(interaction);
         if(!dynamicConfig)
             return;
-        this.updateTimeout(dynamicConfig);
+        this.updateTimeoutTimer(dynamicConfig);
         let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
             "DYNAMIC_CONFIG_RESET_TITLE", "DYNAMIC_CONFIG_RESET_DESCRIPTION"
         ]);
@@ -931,7 +931,7 @@ export class DynamicConfigService extends ModuleBaseService {
         let dynamicConfig: DynamicConfig | undefined = await this.checkDynamicConfigComponent(interaction);
         if(!dynamicConfig)
             return;
-        this.updateTimeout(dynamicConfig);
+        this.updateTimeoutTimer(dynamicConfig);
         dynamicConfig.toFirstPage();
         await this.sendDynamicConfigMessage(dynamicConfig);
     }
@@ -940,7 +940,7 @@ export class DynamicConfigService extends ModuleBaseService {
         let dynamicConfig: DynamicConfig | undefined = await this.checkDynamicConfigComponent(interaction);
         if(!dynamicConfig)
             return;
-        this.updateTimeout(dynamicConfig);
+        this.updateTimeoutTimer(dynamicConfig);
         dynamicConfig.toPreviousPage();
         await this.sendDynamicConfigMessage(dynamicConfig);
     }
@@ -949,7 +949,7 @@ export class DynamicConfigService extends ModuleBaseService {
         let dynamicConfig: DynamicConfig | undefined = await this.checkDynamicConfigComponent(interaction);
         if(!dynamicConfig)
             return;
-        this.updateTimeout(dynamicConfig);
+        this.updateTimeoutTimer(dynamicConfig);
         dynamicConfig.toNextPage();
         await this.sendDynamicConfigMessage(dynamicConfig);
     }
@@ -958,7 +958,7 @@ export class DynamicConfigService extends ModuleBaseService {
         let dynamicConfig: DynamicConfig | undefined = await this.checkDynamicConfigComponent(interaction);
         if(!dynamicConfig)
             return;
-        this.updateTimeout(dynamicConfig);
+        this.updateTimeoutTimer(dynamicConfig);
         dynamicConfig.toLastPage();
         await this.sendDynamicConfigMessage(dynamicConfig);
     }
@@ -967,7 +967,7 @@ export class DynamicConfigService extends ModuleBaseService {
         let dynamicConfig: DynamicConfig | undefined = await this.checkDynamicConfigComponent(interaction);
         if(!dynamicConfig)
             return;
-        this.updateTimeout(dynamicConfig);
+        this.updateTimeoutTimer(dynamicConfig);
         let configs: DynamicConfigEntity[];
         if(dynamicConfig.isConfig) {
             configs = dynamicConfig.getAllConfigs();
@@ -1003,7 +1003,7 @@ export class DynamicConfigService extends ModuleBaseService {
         let dynamicConfig: DynamicConfig | undefined = await this.checkDynamicConfigComponent(interaction);
         if(!dynamicConfig)
             return;
-        this.updateTimeout(dynamicConfig);
+        this.updateTimeoutTimer(dynamicConfig);
         await this.sendDynamicConfigMessage(dynamicConfig);
     }
 
@@ -1011,7 +1011,7 @@ export class DynamicConfigService extends ModuleBaseService {
         let dynamicConfig: DynamicConfig | undefined = await this.checkDynamicConfigComponent(interaction);
         if(!dynamicConfig)
             return;
-        this.updateTimeout(dynamicConfig);
+        this.updateTimeoutTimer(dynamicConfig);
         dynamicConfig.deleteLastChild();
         await this.sendDynamicConfigMessage(dynamicConfig);
     }

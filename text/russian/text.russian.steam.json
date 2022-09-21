@@ -1,5 +1,5 @@
 {
-  "lang": "ru",
+  "lang": "Russian",
   "text": [
     { "tag": "STEAM_CONNECT_TITLE", "value": "\uD83C\uDF10 Подключение Steam" },
     { "tag": "STEAM_CONNECT_DESCRIPTION", "value": "Чтобы получать ссылки на лобби, сделайте следующее:\n\n1) Добавьте аккаунт Steam в ваш профиль Discord (Настройки -> Интеграции);\n2) нажмите на кнопку ниже!" },

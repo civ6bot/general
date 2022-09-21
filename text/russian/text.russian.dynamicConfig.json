@@ -1,5 +1,5 @@
 {
-  "lang": "ru",
+  "lang": "Russian",
   "text": [
     { "tag": "DYNAMIC_CONFIG_ERROR_COMMAND_NOT_ADMIN", "value": "Для выполнения данной команды необходимы права администратора." },
     { "tag": "DYNAMIC_CONFIG_ERROR_NOT_OWNER", "value": "Вы не являетесь автором этого сообщения. Пожалуйста, дождитесь, когда другой администратор завершит изменение настроек сервера." },
@@ -45,7 +45,8 @@
     { "tag": "DYNAMIC_CONFIG_SETTING_MISCELLANEOUS_RANDOM_MAX", "value": "Максимум случайного числа" },
     { "tag": "DYNAMIC_CONFIG_SETTING_MISCELLANEOUS_RANDOM_MAX_EMOJI", "value": "\uD83C\uDFB2" },
 
-
+    { "tag": "DYNAMIC_CONFIG_LANGUAGE", "value": "Выбор языка" },
+    { "tag": "DYNAMIC_CONFIG_LANGUAGE_EMOJI", "value": "\uD83C\uDDE6" },
 
     { "tag": "DYNAMIC_CONFIG_CATEGORY_SPLIT", "value": "Разделение на команды" },
     { "tag": "DYNAMIC_CONFIG_CATEGORY_SPLIT_EMOJI", "value": "\uD83D\uDC65" },

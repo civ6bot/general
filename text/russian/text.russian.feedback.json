@@ -1,5 +1,5 @@
 {
-  "lang": "ru",
+  "lang": "Russian",
   "text": [
     { "tag": "FEEDBACK_ABOUT_TITLE", "value": "ℹ️ Справка" },
     { "tag": "FEEDBACK_ABOUT_DESCRIPTION", "value": "• Сайт: https://civ6bot.xyz\n• ссылка на проект GitHub: https://github.com/civ6bot\n• все команды бота и их описание перечислены при написании символа \"/\" (слеш)\n• для отзывов и обратной связи используйте команду: **/feedback**\n• вы можете поддержать проект и задонатить на хостинг бота (напишите в ЛС)\n• для связи с разработчиком в Discord: **ZhenjaMax#3594**" },

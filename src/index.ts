@@ -13,6 +13,7 @@ dotenv.config({path: 'general.env'});
 importx(__dirname + "/modules/*/*.interactions.{js,ts}").then(() => {
     discordClient.login(process.env.BOT_TOKEN as string).then(() => {
         console.log("Civilization VI \"General\" started");
+        discordClient.user?.setAvatar(__dirname + "/../images/avatar-general.png");
     });
 });
 

@@ -17,12 +17,19 @@ export class CoreGeneratorMenu {
                     .setMinValues(1)
                     .setMaxValues(1)
                     .addOptions(labels.map((label: string, index: number): SelectMenuComponentOptionData => {
-                        return {
-                            label: labels[index],
-                            emoji: emojis[index],
-                            value: values[index],
-                            description: descriptions[index]
-                        };
+                        console.log(emojis[index]);
+                        return (emojis[index] === "")
+                            ? {
+                                label: labels[index],
+                                value: values[index],
+                                description: descriptions[index]
+                            }
+                            : {
+                                label: labels[index],
+                                emoji: emojis[index],
+                                value: values[index],
+                                description: descriptions[index]
+                            };
                     })),
             )
         ];

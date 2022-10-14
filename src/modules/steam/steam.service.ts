@@ -2,14 +2,14 @@ import {ModuleBaseService} from "../base/base.service";
 import {CommandInteraction} from "discord.js";
 import {SteamUI} from "./steam.ui";
 import {SafeModuleServiceDeferReply} from "../../core/decorators/core.decorators.SaveModuleServiceDeferReply";
-import {RequestsSteam} from "../../requests/requests.steam";
 import {SteamAPIData} from "../../types/type.SteamAPIData";
-import {RequestsUserSteam} from "../../requests/requests.UserSteam";
+import {DatabaseServiceUserSteam} from "../../database/services/service.UserSteam";
 import {UserSteam} from "../../types/type.UserSteam";
+import {RequestsSteam} from "../../requests/requests.steam";
 
 export class SteamService extends ModuleBaseService {
     private steamUI: SteamUI = new SteamUI();
-    private requestsUserSteam: RequestsUserSteam = new RequestsUserSteam();
+    private databaseServiceUserSteam: DatabaseServiceUserSteam = new DatabaseServiceUserSteam();
     private requestsSteam: RequestsSteam = new RequestsSteam();
 
     @SafeModuleServiceDeferReply()
@@ -21,7 +21,7 @@ export class SteamService extends ModuleBaseService {
         );
 
         let discordID: string = interaction.user.id;
-        let userSteam: UserSteam | null = await this.requestsUserSteam.getOne(discordID);
+        let userSteam: UserSteam | null = await this.databaseServiceUserSteam.getOne(discordID);
         if(userSteam === null)
             return this.connect(interaction);
         let steamAPIData: SteamAPIData | null = await this.requestsSteam.getSteamLinkData(userSteam.steamID);

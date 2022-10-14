@@ -1,0 +1,15 @@
+{
+  "lang": "English",
+  "text": [
+    { "tag": "MISCELLANEOUS_RANDOM_ERROR_BOUNDS", "value": "Input number from 2 to [MAX_VALUE]." },
+    { "tag": "MISCELLANEOUS_RANDOM_TITLE", "value": "🎲 Random number from 1 to [BORDER_VALUE]" },
+    { "tag": "MISCELLANEOUS_RANDOM_DESCRIPTION", "value": "You got: **[RANDOM_VALUE]**." },
+    { "tag": "MISCELLANEOUS_RANDOM_BEST_DESCRIPTION", "value": "You got: **[RANDOM_VALUE]**! \uD83D\uDD25" },
+
+    { "tag": "MISCELLANEOUS_COIN_TITLE", "value": "\uD83E\uDE99 Flip coin" },
+    { "tag": "MISCELLANEOUS_COIN_HEADS_DESCRIPTION", "value": "**Head!** \uD83C\uDF15" },
+    { "tag": "MISCELLANEOUS_COIN_TAILS_DESCRIPTION", "value": "**Tails!** \uD83C\uDF11" },
+
+    { "tag": "MISCELLANEOUS_VOTE_TITLE", "value": "\uD83E\uDD14 Question" }
+  ]
+}

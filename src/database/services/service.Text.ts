@@ -1,7 +1,10 @@
-import {DatabaseServiceBase} from "./service.base";
 import {EntityText} from "../entities/entity.Text";
+import {EntityManager} from "typeorm";
+import {dataSource} from "../database.datasource";
 
-export class DatabaseServiceText extends DatabaseServiceBase {
+export class DatabaseServiceText {
+    protected database: EntityManager = dataSource.manager;
+
     public async getOne(lang: string, tag: string, args: (string|number)[] = []): Promise<string> {
 
         let entityText: EntityText | null = await this.database.findOneBy(EntityText, {
@@ -30,10 +33,18 @@ export class DatabaseServiceText extends DatabaseServiceBase {
     }
 
     public async insertAll(entitiesText: EntityText[]): Promise<EntityText[]> {
-        return await this.database.save(EntityText, entitiesText);
+        return await this.database.save(EntityText, entitiesText, { chunk: 750 });
     }
 
     public async clearAll(): Promise<void> {
         await this.database.clear(EntityText);
+    }
+
+    public static async getLanguages(): Promise<string[]> {
+        let database: EntityManager = dataSource.manager;
+        let entitiesText: EntityText[] = await database.find(EntityText);
+        return Array<string>.from(new Set<string>(entitiesText
+            .map((entity: EntityText): string => entity.lang) || [])
+        );
     }
 }

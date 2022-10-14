@@ -18,3 +18,5 @@ export interface JSONDynamicConfigEntityBoolean extends JSONDynamicConfigEntity 
 export interface JSONDynamicConfigEntityTeamersForbiddenPairs extends JSONDynamicConfigEntity {}
 
 export interface JSONDynamicConfigEntityBooleanGameSetting extends JSONDynamicConfigEntity {}
+
+export interface JSONDynamicConfigEntityBooleanLanguage extends JSONDynamicConfigEntityBooleanGameSetting {}

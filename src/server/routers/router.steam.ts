@@ -1,14 +1,16 @@
 import {Router} from "express";
+import {DatabaseServiceUserSteam} from "../../database/services/service.UserSteam";
 import {RequestsDiscordConnections} from "../../requests/requests.discordConnections";
-import {RequestsUserSteam} from "../../requests/requests.UserSteam";
 import {RequestResponseUserSteam} from "../../types/type.RequestResponseUserSteam";
 
+// Этот маршрут необходим, чтобы сайт посылал сюда запрос и возвращал
+// пользователю ответ. Вообще, необходимо это переделать на PHP со стороны сайта.
 export const routerSteam: Router = Router();
 routerSteam.post('/', async (req, res) => {
     let getRequestResponse: Function = async (): Promise<RequestResponseUserSteam> => {
         try {
             let requestsDiscordConnections: RequestsDiscordConnections = new RequestsDiscordConnections();
-            let requestsUserSteam: RequestsUserSteam = new RequestsUserSteam();
+            let databaseServiceUserSteam: DatabaseServiceUserSteam = new DatabaseServiceUserSteam();
             let code: string = req.body.code;
 
             let authorizationToken: string | null = await requestsDiscordConnections.getDiscordAuthorizationToken(code);
@@ -23,10 +25,10 @@ routerSteam.post('/', async (req, res) => {
             if(steamID == null)
                 return {status: "error_no_steam", discordID: null, steamID: null};
 
-            let isUserSteamExists: boolean|null = await requestsUserSteam.isExists(discordID);
+            let isUserSteamExists: boolean|null = await databaseServiceUserSteam.isExists(discordID);
             if(isUserSteamExists === null)
                 isUserSteamExists = false;
-            await requestsUserSteam.putOne({
+            await databaseServiceUserSteam.insertOne({
                 discordID: discordID,
                 steamID: steamID
             });

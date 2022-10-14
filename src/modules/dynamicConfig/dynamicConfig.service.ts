@@ -5,27 +5,29 @@ import {
     DynamicConfig,
     DynamicConfigEntity,
     DynamicConfigEntityBoolean,
-    DynamicConfigEntityBooleanGameSetting,
+    DynamicConfigEntityBooleanGameSetting, DynamicConfigEntityBooleanLanguage,
     DynamicConfigEntityNumber,
     DynamicConfigEntityString, DynamicConfigEntityTeamersForbiddenPairs
 } from "./dynamicConfig.models";
 import {
-    JSONDynamicConfigEntityBoolean, JSONDynamicConfigEntityBooleanGameSetting,
+    JSONDynamicConfigEntityBoolean, JSONDynamicConfigEntityBooleanGameSetting, JSONDynamicConfigEntityBooleanLanguage,
     JSONDynamicConfigEntityNumber,
     JSONDynamicConfigEntityString, JSONDynamicConfigEntityTeamersForbiddenPairs
 } from "../../types/type.JSON.DynamicConfigEntities";
 import {CoreServiceCivilizations} from "../../core/services/core.service.civilizations";
 import {CoreServiceGameTags} from "../../core/services/core.service.gameTags";
 import {CoreServiceUsers} from "../../core/services/core.service.users";
+import {DatabaseServiceText} from "../../database/services/service.Text";
 
 export class DynamicConfigService extends ModuleBaseService {
     private dynamicConfigUI: DynamicConfigUI = new DynamicConfigUI();
 
     public static dynamicConfigs: Map<string, DynamicConfig> = new Map<string, DynamicConfig>();    // guildID
-    public static tagsMap: Map<string, string[]> = new Map<string, string[]>([
+    private tagsMap: Map<string, string[]> = new Map<string, string[]>([
         ["DYNAMIC_CONFIG_TITLE", [
             "DYNAMIC_CONFIG_CATEGORY_MISCELLANEOUS", "DYNAMIC_CONFIG_CATEGORY_SPLIT",
-            "DYNAMIC_CONFIG_CATEGORY_DRAFT", "DYNAMIC_CONFIG_CATEGORY_GAME"
+            "DYNAMIC_CONFIG_CATEGORY_DRAFT", "DYNAMIC_CONFIG_CATEGORY_GAME",
+            "DYNAMIC_CONFIG_LANGUAGE"
         ]],
         ["DYNAMIC_CONFIG_CATEGORY_DRAFT", [
             "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_CIVILIZATIONS", "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_FFA",
@@ -58,6 +60,7 @@ export class DynamicConfigService extends ModuleBaseService {
         |JSONDynamicConfigEntityTeamersForbiddenPairs
         |JSONDynamicConfigEntityBooleanGameSetting
         )[]>([
+        ["DYNAMIC_CONFIG_LANGUAGE", []],
         ["DYNAMIC_CONFIG_CATEGORY_MISCELLANEOUS", [
             {
                 configTag: "MISCELLANEOUS_RANDOM_MAX",
@@ -463,14 +466,19 @@ export class DynamicConfigService extends ModuleBaseService {
             let emojiTags: string[] = dynamicConfig.getEmojiTags();
             let configs: DynamicConfigEntity[] = dynamicConfig.getLastChild().configs;
             emojiStrings = [];
-            for(let i in configs)
+            for(let i in configs) {
+                console.log("config: ", configs[i].type);
                 emojiStrings.push(
                     (configs[i].type === "BooleanGameSetting")  // в этом типе конфигураций эмодзи не в конфиге, а в тексте
                         ? await this.getOneSettingString(dynamicConfig.interaction, emojiTags[i])
-                        : await this.getOneText(dynamicConfig.interaction, emojiTags[i])
+                        : (configs[i].type === "BooleanLanguage")    // в этом типе эмодзи нет
+                            ? "" : await this.getOneText(dynamicConfig.interaction, emojiTags[i])
                 );
+            }
         } else
             emojiStrings = await this.getManyText(dynamicConfig.interaction, dynamicConfig.getEmojiTags());
+
+        console.log("emojiStrings: ", emojiStrings);
 
         let buttonStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
             "DYNAMIC_CONFIG_BUTTON_BACK", "DYNAMIC_CONFIG_BUTTON_FIRST",
@@ -511,7 +519,7 @@ export class DynamicConfigService extends ModuleBaseService {
             });
     }
 
-    private updateTimeoutTimer(dynamicConfig: DynamicConfig): void {
+    protected updateTimeoutTimer(dynamicConfig: DynamicConfig): void {
         dynamicConfig.date = new Date();
         if(dynamicConfig.setTimeoutID !== null)
             clearTimeout(dynamicConfig.setTimeoutID);
@@ -592,6 +600,11 @@ export class DynamicConfigService extends ModuleBaseService {
                     tags.push(dynamicConfigEntityTeamersForbiddenPairs.properties.configTag);
                     values.push(String(dynamicConfigEntityTeamersForbiddenPairs.value));
                     break;
+                case "BooleanLanguage":
+                    let dynamicConfigEntityBooleanLanguage: DynamicConfigEntityBooleanLanguage = entities[i] as DynamicConfigEntityBooleanLanguage;
+                    tags.push(dynamicConfigEntityBooleanLanguage.properties.configTag);
+                    values.push(dynamicConfigEntityBooleanLanguage.properties.textTag);
+                    break;
             }
         await this.updateManySetting(interaction, tags, values);
     }
@@ -643,6 +656,14 @@ export class DynamicConfigService extends ModuleBaseService {
                         dynamicConfig
                     ));
                     break;
+                case "BooleanLanguage":
+                    console.log("BooleanLanguage created");
+                    dynamicConfigEntities.push(new DynamicConfigEntityBooleanLanguage(
+                        config as JSONDynamicConfigEntityBooleanLanguage,
+                        (await this.getOneSettingString(dynamicConfig.interaction, config.configTag) === (config as JSONDynamicConfigEntityBooleanLanguage).textTag),
+                        dynamicConfig
+                    ));
+                    break;
                 default:
                     break;
             }
@@ -663,7 +684,7 @@ export class DynamicConfigService extends ModuleBaseService {
         let dynamicConfig: DynamicConfig | undefined = DynamicConfigService.dynamicConfigs.get(key);
         if(!dynamicConfig) {
             let entitiesPerPage: number = await this.getOneSettingNumber(interaction, "DYNAMIC_CONFIG_PAGINATION_SIZE");
-            let optionsTags: string[] = DynamicConfigService.tagsMap.get("DYNAMIC_CONFIG_TITLE") || [];
+            let optionsTags: string[] = this.tagsMap.get("DYNAMIC_CONFIG_TITLE") || [];
             let lifeTimeMs: number = await this.getOneSettingNumber(interaction, "DYNAMIC_CONFIG_LIFE_TIME_MS");
             dynamicConfig = new DynamicConfig(interaction, entitiesPerPage, lifeTimeMs, "DYNAMIC_CONFIG_TITLE", optionsTags);
             DynamicConfigService.dynamicConfigs.set(key, dynamicConfig);
@@ -696,7 +717,7 @@ export class DynamicConfigService extends ModuleBaseService {
         this.updateTimeoutTimer(dynamicConfig);
 
         // Новая категория
-        let categories: string[] | undefined = DynamicConfigService.tagsMap.get(dynamicConfig.getOptionTags()[valueIndex]);
+        let categories: string[] | undefined = this.tagsMap.get(dynamicConfig.getOptionTags()[valueIndex]);
         if(categories) {
             await interaction.deferUpdate();
             dynamicConfig.createChild(valueIndex, categories);
@@ -707,12 +728,19 @@ export class DynamicConfigService extends ModuleBaseService {
         }
 
         // Последняя категория, получили конфигурацию
-        let configs: (JSONDynamicConfigEntityNumber|
-            JSONDynamicConfigEntityString|
-            JSONDynamicConfigEntityBoolean
+        let configs: (JSONDynamicConfigEntityNumber
+            |JSONDynamicConfigEntityString
+            |JSONDynamicConfigEntityBoolean
             |JSONDynamicConfigEntityBooleanGameSetting
-            |JSONDynamicConfigEntityTeamersForbiddenPairs)[]|
-            undefined = DynamicConfigService.configsMap.get(dynamicConfig.getOptionTags()[valueIndex]);
+            |JSONDynamicConfigEntityTeamersForbiddenPairs
+            |JSONDynamicConfigEntityBooleanLanguage)[]
+            |undefined = DynamicConfigService.configsMap.get(dynamicConfig.getOptionTags()[valueIndex]);
+        if(dynamicConfig.getOptionTags()[valueIndex] === "DYNAMIC_CONFIG_LANGUAGE")
+            configs = (await DatabaseServiceText.getLanguages()).map((language: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+                configTag: "BASE_LANGUAGE",
+                textTag: language,
+                type: "BooleanLanguage",
+            }});
         if(configs) {
             await interaction.deferUpdate();
             let dynamicConfigEntities: DynamicConfigEntity[] = await this.createDynamicConfigEntities(configs, dynamicConfig);
@@ -749,6 +777,20 @@ export class DynamicConfigService extends ModuleBaseService {
                 return;
             }
             await this.updateOneDynamicConfigEntity(dynamicConfig.interaction, dynamicConfigEntityBooleanGameSetting);
+            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
+                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
+            ]);
+            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await this.sendDynamicConfigMessage(dynamicConfig);
+            return;
+        }
+
+        // Вызов изменения конфигурации для настроек языка
+        if(dynamicConfigEntity.type === "BooleanLanguage") {
+            console.log("here!");
+            let dynamicConfigEntityBooleanLanguage: DynamicConfigEntityBooleanLanguage = dynamicConfigEntity as DynamicConfigEntityBooleanLanguage;
+            dynamicConfigEntityBooleanLanguage.check("true");
+            await this.updateOneDynamicConfigEntity(dynamicConfig.interaction, dynamicConfigEntityBooleanLanguage);
             let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
                 "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
             ]);
@@ -976,7 +1018,7 @@ export class DynamicConfigService extends ModuleBaseService {
             for(let i: number = 0; i < categories.length; i++) {
                 categories = categories
                     .slice(0, i)
-                    .concat(DynamicConfigService.tagsMap.get(categories[i]) || [categories[i]])
+                    .concat(this.tagsMap.get(categories[i]) || [categories[i]])
                     .concat(categories.slice(i+1))
             }
             configs = await this.createDynamicConfigEntities(categories

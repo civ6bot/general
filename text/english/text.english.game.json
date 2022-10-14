@@ -1,0 +1,152 @@
+{
+  "lang": "English",
+  "text": [
+    { "tag": "GAME_ERROR_PROCESSING", "value": "New game vote is processing. Please, wait" },
+    { "tag": "GAME_ERROR_NO_VOICE", "value": "You need to be in voice channel to use this command." },
+    { "tag": "GAME_ERROR_NOT_ENOUGH_USERS", "value": "Not enough users to run this command." },
+    { "tag": "GAME_ERROR_TOO_MUCH_USERS", "value": "Too much users to run this command." },
+    { "tag": "GAME_ERROR_READY_BUTTON_NOT_MEMBER", "value": "You cannot vote there." },
+    { "tag": "GAME_ERROR_DELETE_BUTTON_NOT_OWNER", "value": "You are not author of this new game vote." },
+
+    { "tag": "GAME_BANS_START", "value": "\uD83E\uDD14 **Civilization bans:** none.\n*Add reactions or write to chat civilization name.*" },
+    { "tag": "GAME_BANS_PROCESSING", "value": "\uD83E\uDD14 **Civilization bans:**" },
+
+    { "tag": "GAME_BUTTON_READY", "value": "Ready!" },
+    { "tag": "GAME_BUTTON_DELETE", "value": "Delete (for author)" },
+    { "tag": "GAME_NOTIFY_DELETED", "value": "New game vote deleted successfully." },
+
+    { "tag": "GAME_READY_TITLE", "value": "⚡ Are you ready?" },
+    { "tag": "GAME_READY_DESCRIPTION_PROCESSING", "value": "⏳ **__Hurry up!__** Vote time ends [TIMESTAMP]." },
+    { "tag": "GAME_READY_DESCRIPTION_FINISH", "value": "⚡ **Everyone is ready!**" },
+    { "tag": "GAME_READY_FIELD_PLAYERS_TITLE", "value": "Player:" },
+    { "tag": "GAME_READY_FIELD_READY_TITLE", "value": "Ready?" },
+
+    { "tag": "GAME_RESULT_TIMEOUT_DESCRIPTION", "value": "⏰❗ Time up! Some players didn't vote on time." },
+    { "tag": "GAME_RESULT_UNKNOWN", "value": "❔ Unknown" },
+
+    { "tag": "GAME_FFA_RESULT_TITLE", "value": "⚖ New game vote - FFA" },
+
+    { "tag": "GAME_FFA_MAP", "value": "\uD83C\uDF0D **Map**" },
+    { "tag": "GAME_FFA_MAP_PANGAEA", "value": "Pangaea" },
+    { "tag": "GAME_FFA_MAP_CONTINENTS", "value": "Continents" },
+    { "tag": "GAME_FFA_MAP_HIGHLANDS", "value": "Highlands" },
+    { "tag": "GAME_FFA_MAP_SEVEN_SEAS", "value": "Seven seas" },
+    { "tag": "GAME_FFA_MAP_LAKES", "value": "Lakes" },
+    { "tag": "GAME_FFA_MAP_ARCHIPELAGO", "value": "Archipelago" },
+    { "tag": "GAME_FFA_MAP_INLAND_SEA", "value": "Inland sea" },
+    { "tag": "GAME_FFA_MAP_FRACTAL", "value": "Fractal" },
+    { "tag": "GAME_FFA_MAP_CONTINENTS_AND_ISLANDS", "value": "Continents and islands" },
+    { "tag": "GAME_FFA_MAP_PRIMORDIAL", "value": "Primordial" },
+    { "tag": "GAME_FFA_MAP_TILTED_AXIS", "value": "Tilted Axis" },
+
+    { "tag": "GAME_FFA_DISASTERS", "value": "\uD83C\uDF0B **Disasters**" },
+    { "tag": "GAME_FFA_DISASTERS_1", "value": "Weak" },
+    { "tag": "GAME_FFA_DISASTERS_2", "value": "Standard" },
+    { "tag": "GAME_FFA_DISASTERS_3", "value": "Strengthened" },
+    { "tag": "GAME_FFA_DISASTERS_4", "value": "Catastrophic" },
+
+    { "tag": "GAME_FFA_BONUS_RESOURCES", "value": "\uD83C\uDF3D **Bonus resources**" },
+    { "tag": "GAME_FFA_BONUS_RESOURCES_STANDARD", "value": "Standard" },
+    { "tag": "GAME_FFA_BONUS_RESOURCES_ABUNDANT", "value": "Abundant" },
+
+    { "tag": "GAME_FFA_STRATEGIC_RESOURCES", "value": "\uD83D\uDC0E **Strategic resources**" },
+    { "tag": "GAME_FFA_STRATEGIC_RESOURCES_STANDARD", "value": "Standard" },
+    { "tag": "GAME_FFA_STRATEGIC_RESOURCES_ABUNDANT", "value": "Abundant" },
+    { "tag": "GAME_FFA_STRATEGIC_RESOURCES_GUARANTEED", "value": "Guaranteed" },
+
+    { "tag": "GAME_FFA_WONDERS", "value": "⭐ **Natural wonders density**" },
+    { "tag": "GAME_FFA_WONDERS_STANDARD", "value": "Standard" },
+    { "tag": "GAME_FFA_WONDERS_ABUNDANT", "value": "Abundant" },
+
+    { "tag": "GAME_FFA_AGE", "value": "\uD83C\uDFDE **World age**" },
+    { "tag": "GAME_FFA_AGE_STANDARD", "value": "Standard" },
+    { "tag": "GAME_FFA_AGE_NEW", "value": "New" },
+
+    { "tag": "GAME_FFA_GOLD_TRADING", "value": "\uD83E\uDE99 **Gold trading**" },
+    { "tag": "GAME_FFA_GOLD_TRADING_NO", "value": "Banned" },
+    { "tag": "GAME_FFA_GOLD_TRADING_ALLIES", "value": "Allowed between allies" },
+    { "tag": "GAME_FFA_GOLD_TRADING_FRIENDS", "value": "Allowed between friends" },
+    { "tag": "GAME_FFA_GOLD_TRADING_YES", "value": "Allowed" },
+
+    { "tag": "GAME_FFA_STRATEGIC_TRADING", "value": "\uD83D\uDC34 **Strategic resources trading**" },
+    { "tag": "GAME_FFA_STRATEGIC_TRADING_NO", "value": "Banned" },
+    { "tag": "GAME_FFA_STRATEGIC_TRADING_ALLIES", "value": "Allowed between allies" },
+    { "tag": "GAME_FFA_STRATEGIC_TRADING_FRIENDS", "value": "Allowed between friends" },
+    { "tag": "GAME_FFA_STRATEGIC_TRADING_YES", "value": "Allowed" },
+
+    { "tag": "GAME_FFA_FRIENDS", "value": "\uD83E\uDD1D **Friends amount**" },
+    { "tag": "GAME_FFA_FRIENDS_0", "value": "Zero" },
+    { "tag": "GAME_FFA_FRIENDS_1", "value": "One" },
+    { "tag": "GAME_FFA_FRIENDS_2", "value": "Two" },
+    { "tag": "GAME_FFA_FRIENDS_3", "value": "Three" },
+    { "tag": "GAME_FFA_FRIENDS_INFINITY", "value": "Any" },
+
+    { "tag": "GAME_FFA_MILITARY_ALLIANCE", "value": "⚔ **Military alliance**" },
+    { "tag": "GAME_FFA_MILITARY_ALLIANCE_NO", "value": "Banned" },
+    { "tag": "GAME_FFA_MILITARY_ALLIANCE_YES", "value": "Allowed" },
+
+    { "tag": "GAME_FFA_CHATTING", "value": "💬 **Chatting**" },
+    { "tag": "GAME_FFA_CHATTING_ANY", "value": "Any" },
+    { "tag": "GAME_FFA_CHATTING_PUBLIC", "value": "Public only" },
+
+    { "tag": "GAME_FFA_DRAFT", "value": "🃏 **Draft type**" },
+    { "tag": "GAME_FFA_DRAFT_CLASSIC", "value": "Classic" },
+    { "tag": "GAME_FFA_DRAFT_BLIND", "value": "Blind" },
+
+
+
+    { "tag": "GAME_TEAMERS_RESULT_TITLE", "value": "⚖ New game vote - Teamers" },
+
+    { "tag": "GAME_TEAMERS_MAP", "value": "\uD83C\uDF0D **Map**" },
+    { "tag": "GAME_TEAMERS_MAP_PANGAEA", "value": "Pangaea" },
+    { "tag": "GAME_TEAMERS_MAP_CONTINENTS", "value": "Continents" },
+    { "tag": "GAME_TEAMERS_MAP_HIGHLANDS", "value": "Highlands" },
+    { "tag": "GAME_TEAMERS_MAP_SEVEN_SEAS", "value": "Seven seas" },
+    { "tag": "GAME_TEAMERS_MAP_LAKES", "value": "Lakes" },
+    { "tag": "GAME_TEAMERS_MAP_ARCHIPELAGO", "value": "Archipelago" },
+    { "tag": "GAME_TEAMERS_MAP_INLAND_SEA", "value": "Inland sea" },
+    { "tag": "GAME_TEAMERS_MAP_FRACTAL", "value": "Fractal" },
+    { "tag": "GAME_TEAMERS_MAP_CONTINENTS_AND_ISLANDS", "value": "Continents and islands" },
+    { "tag": "GAME_TEAMERS_MAP_PRIMORDIAL", "value": "Primordial" },
+    { "tag": "GAME_TEAMERS_MAP_TILTED_AXIS", "value": "Tilted Axis" },
+
+    { "tag": "GAME_TEAMERS_DISASTERS", "value": "\uD83C\uDF0B **Disasters**" },
+    { "tag": "GAME_TEAMERS_DISASTERS_1", "value": "Weak" },
+    { "tag": "GAME_TEAMERS_DISASTERS_2", "value": "Standard" },
+    { "tag": "GAME_TEAMERS_DISASTERS_3", "value": "Strengthened" },
+    { "tag": "GAME_TEAMERS_DISASTERS_4", "value": "Catastrophic" },
+
+    { "tag": "GAME_TEAMERS_BONUS_RESOURCES", "value": "\uD83C\uDF3D **Bonus resources**" },
+    { "tag": "GAME_TEAMERS_BONUS_RESOURCES_STANDARD", "value": "Standard" },
+    { "tag": "GAME_TEAMERS_BONUS_RESOURCES_ABUNDANT", "value": "Abundant" },
+
+    { "tag": "GAME_TEAMERS_STRATEGIC_RESOURCES", "value": "\uD83D\uDC0E **Strategic resources**" },
+    { "tag": "GAME_TEAMERS_STRATEGIC_RESOURCES_STANDARD", "value": "Standard" },
+    { "tag": "GAME_TEAMERS_STRATEGIC_RESOURCES_ABUNDANT", "value": "Abundant" },
+    { "tag": "GAME_TEAMERS_STRATEGIC_RESOURCES_GUARANTEED", "value": "Guaranteed" },
+
+    { "tag": "GAME_TEAMERS_WONDERS", "value": "⭐ **Natural wonders density**" },
+    { "tag": "GAME_TEAMERS_WONDERS_STANDARD", "value": "Standard" },
+    { "tag": "GAME_TEAMERS_WONDERS_ABUNDANT", "value": "Abundant" },
+
+    { "tag": "GAME_TEAMERS_AGE", "value": "\uD83C\uDFDE **World age**" },
+    { "tag": "GAME_TEAMERS_AGE_STANDARD", "value": "Standard" },
+    { "tag": "GAME_TEAMERS_AGE_NEW", "value": "New" },
+
+    { "tag": "GAME_TEAMERS_RELIC", "value": "\uD83D\uDDFF **Relic trading**" },
+    { "tag": "GAME_TEAMERS_RELIC_TURN_20", "value": "Allowed from turn 20" },
+    { "tag": "GAME_TEAMERS_RELIC_YES", "value": "Allowed" },
+
+    { "tag": "GAME_TEAMERS_REMAPS", "value": "\uD83D\uDD04 **Remaps (turn 8)**" },
+    { "tag": "GAME_TEAMERS_REMAPS_NO", "value": "Banned" },
+    { "tag": "GAME_TEAMERS_REMAPS_YES", "value": "Allowed" },
+
+    { "tag": "GAME_TEAMERS_SPLIT", "value": "\uD83D\uDC65 **Split type**" },
+    { "tag": "GAME_TEAMERS_SPLIT_CLASSIC", "value": "Classic" },
+    { "tag": "GAME_TEAMERS_SPLIT_DOUBLE", "value": "First-double" },
+    { "tag": "GAME_TEAMERS_SPLIT_CWC", "value": "CWC" },
+    { "tag": "GAME_TEAMERS_SPLIT_RANDOM", "value": "Random" },
+
+    { "tag": "GAME_TEAMERS_CAPTAINS", "value": "\uD83D\uDC51 **Captains vote**" }
+  ]
+}

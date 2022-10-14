@@ -1,0 +1,16 @@
+{
+  "lang": "English",
+  "text": [
+    { "tag": "STEAM_CONNECT_TITLE", "value": "\uD83C\uDF10 Steam connection" },
+    { "tag": "STEAM_CONNECT_DESCRIPTION", "value": "Follow these steps:\n\n1) Add Steam steam account to your Discord integrations;\n2) click to button below (to bot website)!" },
+    { "tag": "STEAM_CONNECT_BUTTON_LABEL", "value": "Connect" },
+    { "tag": "STEAM_CONNECT_BUTTON_EMOJI", "value": "\uD83C\uDF10" },
+
+    { "tag": "STEAM_LINK_TITLE", "value": "\uD83C\uDF10 Lobby" },
+    { "tag": "STEAM_LINK_DESCRIPTION_LICENSE", "value": "\uD83D\uDC51 Lobby link:\n**[STEAM_LOBBY_URL]**" },
+    { "tag": "STEAM_LINK_DESCRIPTION_PIRATE", "value": "\uD83C\uDFF4\u200D☠️ Lobby link:\n**[STEAM_LOBBY_URL]**" },
+    { "tag": "STEAM_LINK_FIELD_TITLE", "value": "❗ Description:" },
+    { "tag": "STEAM_LINK_ERROR_WRONG_GAME", "value": "You are playing wrong game." },
+    { "tag": "STEAM_LINK_ERROR_NO_STEAM_DATA", "value": "Error while generating link. Reasons:\n- you didn't create lobby;\n- your Steam account has \"offline\" or \"invisible\" status;\n- your Steam account is private." }
+  ]
+}

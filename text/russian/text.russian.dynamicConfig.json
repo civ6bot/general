@@ -46,7 +46,7 @@
     { "tag": "DYNAMIC_CONFIG_SETTING_MISCELLANEOUS_RANDOM_MAX_EMOJI", "value": "\uD83C\uDFB2" },
 
     { "tag": "DYNAMIC_CONFIG_LANGUAGE", "value": "Выбор языка" },
-    { "tag": "DYNAMIC_CONFIG_LANGUAGE_EMOJI", "value": "\uD83C\uDDE6" },
+    { "tag": "DYNAMIC_CONFIG_LANGUAGE_EMOJI", "value": "\uD83C\uDF0D" },
 
     { "tag": "DYNAMIC_CONFIG_CATEGORY_SPLIT", "value": "Разделение на команды" },
     { "tag": "DYNAMIC_CONFIG_CATEGORY_SPLIT_EMOJI", "value": "\uD83D\uDC65" },
@@ -233,7 +233,7 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_DISASTERS_EMOJI", "value": "\uD83C\uDF0B" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BONUS_RESOURCES", "value": "Бонусные ресурсы" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BONUS_RESOURCES_EMOJI", "value": "\uD83C\uDF3D" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_STRATEGIC_RESOURCES", "value": "Бонусные ресурсы" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_STRATEGIC_RESOURCES", "value": "Стратегические ресурсы" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_STRATEGIC_RESOURCES_EMOJI", "value": "\uD83D\uDC0E" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_WONDERS", "value": "Количество чудес природы" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_WONDERS_EMOJI", "value": "⭐" },
@@ -258,7 +258,7 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_DISASTERS_EMOJI", "value": "\uD83C\uDF0B" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BONUS_RESOURCES", "value": "Бонусные ресурсы" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BONUS_RESOURCES_EMOJI", "value": "\uD83C\uDF3D" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_STRATEGIC_RESOURCES", "value": "Бонусные ресурсы" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_STRATEGIC_RESOURCES", "value": "Стратегические ресурсы" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_STRATEGIC_RESOURCES_EMOJI", "value": "\uD83D\uDC0E" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_WONDERS", "value": "Количество чудес природы" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_WONDERS_EMOJI", "value": "⭐" },

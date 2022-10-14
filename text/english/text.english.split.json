@@ -1,0 +1,35 @@
+{
+  "lang": "English",
+  "text": [
+    { "tag": "SPLIT_ERROR_NO_CAPTAINS", "value": "Input 1 or 2 captains; if you write only first captain then you will be second captain" },
+    { "tag": "SPLIT_ERROR_NO_VOICE", "value": "You need to be in voice channel to use split command." },
+    { "tag": "SPLIT_ERROR_NOT_ENOUGH_USERS", "value": "Not enough players to run split." },
+    { "tag": "SPLIT_ERROR_TOO_MUCH_USERS", "value": "Too much players." },
+    { "tag": "SPLIT_ERROR_PROCESSING", "value": "Split is processing. Please, wait." },
+
+    { "tag": "SPLIT_RANDOM_TITLE", "value": "\uD83D\uDC65 Split - random" },
+
+    { "tag": "SPLIT_CLASSIC_TITLE_PROCESSING", "value": "\uD83D\uDC65 Split - classic, step [STEP_NUMBER]/[STEP_TOTAL]" },
+    { "tag": "SPLIT_CLASSIC_TITLE_FINISH", "value": "\uD83D\uDC65 Split - classic" },
+
+    { "tag": "SPLIT_DOUBLE_TITLE_PROCESSING", "value": "\uD83D\uDC65 Split - first-double, step [STEP_NUMBER]/[STEP_TOTAL]" },
+    { "tag": "SPLIT_DOUBLE_TITLE_FINISH", "value": "\uD83D\uDC65 Split - first-double" },
+
+    { "tag": "SPLIT_CWC_TITLE_PROCESSING", "value": "\uD83D\uDC65 Split - CWC, step [STEP_NUMBER]/[STEP_TOTAL]" },
+    { "tag": "SPLIT_CWC_TITLE_FINISH", "value": "\uD83D\uDC65 Split - CWC" },
+
+    { "tag": "SPLIT_DESCRIPTION_START", "value": "\uD83C\uDF40 Roll dice... captain [CAPTAIN_USER] is first captain.\n⏳ Pick time ends [TIMESTAMP]." },
+    { "tag": "SPLIT_DESCRIPTION_PROCESSING", "value": "Now chooses captain #[TEAM_NUMBER] ([CAPTAIN_USER]).\n⏳ Pick time ends [TIMESTAMP]." },
+    { "tag": "SPLIT_DESCRIPTION_FINISH", "value": "Split was completed." },
+    { "tag": "SPLIT_DESCRIPTION_TIMEOUT", "value": "⏰❗ Time up! Split was canceled." },
+
+    { "tag": "SPLIT_FIELD_TITLE_USERS", "value": "Players:" },
+    { "tag": "SPLIT_FIELD_TITLE_USERS_NOT_PICKED", "value": "Didn't picked:" },
+    { "tag": "SPLIT_FIELD_TITLE_TEAM", "value": "Team #[TEAM_NUMBER]" },
+
+    { "tag": "SPLIT_BUTTON_DELETE", "value": "Delete (for author and captains)" },
+    { "tag": "SPLIT_NOTIFY_DELETED", "value": "Split deleted successfully." },
+
+    { "tag": "SPLIT_ERROR_DELETE_BUTTON_NOT_OWNER_OR_CAPTAIN", "value": "You are neither a capitan nor author of this split." }
+  ]
+}

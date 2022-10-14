@@ -1,6 +1,12 @@
 import {ModuleBaseModel} from "../base/base.models";
 import {CommandInteraction} from "discord.js";
-import {JSONDynamicConfigEntityBoolean, JSONDynamicConfigEntityNumber, JSONDynamicConfigEntityString, JSONDynamicConfigEntityTeamersForbiddenPairs} from "../../types/type.JSON.DynamicConfigEntities";
+import {
+    JSONDynamicConfigEntityBoolean,
+    JSONDynamicConfigEntityBooleanLanguage,
+    JSONDynamicConfigEntityNumber,
+    JSONDynamicConfigEntityString,
+    JSONDynamicConfigEntityTeamersForbiddenPairs
+} from "../../types/type.JSON.DynamicConfigEntities";
 import {CoreServiceCivilizations} from "../../core/services/core.service.civilizations";
 
 export class DynamicConfig extends ModuleBaseModel {
@@ -299,9 +305,9 @@ export class DynamicConfigEntityTeamersForbiddenPairs extends DynamicConfigEntit
 export class DynamicConfigEntityBooleanGameSetting extends DynamicConfigEntity {
     public readonly type: string = "BooleanGameSetting";
     public value: boolean;
-    public readonly properties: JSONDynamicConfigEntityTeamersForbiddenPairs;
+    public readonly properties: JSONDynamicConfigEntityBoolean;
 
-    private dynamicConfigPointer: DynamicConfig;
+    protected dynamicConfigPointer: DynamicConfig;
 
     constructor(
         properties: JSONDynamicConfigEntityBoolean,
@@ -327,5 +333,25 @@ export class DynamicConfigEntityBooleanGameSetting extends DynamicConfigEntity {
             return true;
         }
         return false;
+    }
+}
+
+export class DynamicConfigEntityBooleanLanguage extends DynamicConfigEntityBooleanGameSetting {
+    public readonly type: string = "BooleanLanguage";
+
+    constructor(
+        properties: JSONDynamicConfigEntityBooleanLanguage,
+        value: boolean,
+        dynamicConfigPointer: DynamicConfig
+    ) {
+        super(properties, value, dynamicConfigPointer);
+    }
+
+    override check(value: string): boolean {
+        this.dynamicConfigPointer.getAllConfigs().forEach((dynamicConfigEntity): void => {
+            (dynamicConfigEntity as DynamicConfigEntityBooleanLanguage).value = false;
+        });
+        this.value = true;
+        return true;
     }
 }

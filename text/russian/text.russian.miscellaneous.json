@@ -2,7 +2,7 @@
   "lang": "Russian",
   "text": [
     { "tag": "MISCELLANEOUS_RANDOM_ERROR_BOUNDS", "value": "Введите число от 2 до [MAX_VALUE]." },
-    { "tag": "MISCELLANEOUS_RANDOM_TITLE", "value": "\uD83C\uDFB2 Случайное число от 1 до [BORDER_VALUE]" },
+    { "tag": "MISCELLANEOUS_RANDOM_TITLE", "value": "🎲 Случайное число от 1 до [BORDER_VALUE]" },
     { "tag": "MISCELLANEOUS_RANDOM_DESCRIPTION", "value": "Выпало: **[RANDOM_VALUE]**." },
     { "tag": "MISCELLANEOUS_RANDOM_BEST_DESCRIPTION", "value": "Выпало: **[RANDOM_VALUE]**! \uD83D\uDD25" },
 

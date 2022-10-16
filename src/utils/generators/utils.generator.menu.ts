@@ -17,7 +17,6 @@ export class UtilsGeneratorMenu {
                     .setMinValues(1)
                     .setMaxValues(1)
                     .addOptions(labels.map((label: string, index: number): SelectMenuComponentOptionData => {
-                        console.log(emojis[index]);
                         return (emojis[index] === "")
                             ? {
                                 label: labels[index],

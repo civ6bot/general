@@ -467,7 +467,6 @@ export class DynamicConfigService extends ModuleBaseService {
             let configs: DynamicConfigEntity[] = dynamicConfig.getLastChild().configs;
             emojiStrings = [];
             for(let i in configs) {
-                console.log("config: ", configs[i].type);
                 emojiStrings.push(
                     (configs[i].type === "BooleanGameSetting")  // в этом типе конфигураций эмодзи не в конфиге, а в тексте
                         ? await this.getOneSettingString(dynamicConfig.interaction, emojiTags[i])
@@ -477,8 +476,6 @@ export class DynamicConfigService extends ModuleBaseService {
             }
         } else
             emojiStrings = await this.getManyText(dynamicConfig.interaction, dynamicConfig.getEmojiTags());
-
-        console.log("emojiStrings: ", emojiStrings);
 
         let buttonStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
             "DYNAMIC_CONFIG_BUTTON_BACK", "DYNAMIC_CONFIG_BUTTON_FIRST",
@@ -657,7 +654,6 @@ export class DynamicConfigService extends ModuleBaseService {
                     ));
                     break;
                 case "BooleanLanguage":
-                    console.log("BooleanLanguage created");
                     dynamicConfigEntities.push(new DynamicConfigEntityBooleanLanguage(
                         config as JSONDynamicConfigEntityBooleanLanguage,
                         (await this.getOneSettingString(dynamicConfig.interaction, config.configTag) === (config as JSONDynamicConfigEntityBooleanLanguage).textTag),
@@ -787,7 +783,6 @@ export class DynamicConfigService extends ModuleBaseService {
 
         // Вызов изменения конфигурации для настроек языка
         if(dynamicConfigEntity.type === "BooleanLanguage") {
-            console.log("here!");
             let dynamicConfigEntityBooleanLanguage: DynamicConfigEntityBooleanLanguage = dynamicConfigEntity as DynamicConfigEntityBooleanLanguage;
             dynamicConfigEntityBooleanLanguage.check("true");
             await this.updateOneDynamicConfigEntity(dynamicConfig.interaction, dynamicConfigEntityBooleanLanguage);

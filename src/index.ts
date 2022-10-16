@@ -35,8 +35,7 @@ importx(__dirname + "/modules/*/*.interactions.{js,ts}").then(() => {
             }, 45*1000);
         }, 60*1000);
 
-        console.log(
-            isTesting
+        console.log(isTesting
                 ? "Civilization VI \"Test\" started"
                 : "Civilization VI \"General\" started"
         );

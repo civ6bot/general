@@ -1,6 +1,6 @@
 import {ActionRowBuilder, SelectMenuBuilder, SelectMenuComponentOptionData} from "discord.js";
 
-export class CoreGeneratorMenu {
+export class UtilsGeneratorMenu {
     public static build (
         customID: string,
         placeholder: string,

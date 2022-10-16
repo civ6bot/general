@@ -1,14 +1,16 @@
 import {CommandInteraction, Message} from "discord.js";
 import {ModuleBaseService} from "../base/base.service";
 import {MiscellaneousUI} from "./miscellaneous.ui";
-import {CoreServiceEmojis} from "../../core/services/core.service.emojis";
+import {UtilsServiceEmojis} from "../../utils/services/utils.service.emojis";
 
 export class MiscellaneousService extends ModuleBaseService {
     private miscellaneousUI: MiscellaneousUI = new MiscellaneousUI();
 
     public async random(interaction: CommandInteraction, n: number) {
-        let randomValue: number = 1+Math.floor(Math.random()*n);
         let randomMax: number = (await this.getOneSettingNumber(interaction, "MISCELLANEOUS_RANDOM_MAX"));
+        if(isNaN(n))
+            n = randomMax;
+        let randomValue: number = 1+Math.floor(Math.random()*n);
         let textStrings: string[] = await this.getManyText(
             interaction,
             ["MISCELLANEOUS_RANDOM_TITLE", "MISCELLANEOUS_RANDOM_BEST_DESCRIPTION",
@@ -40,7 +42,7 @@ export class MiscellaneousService extends ModuleBaseService {
 
         if(interaction.inCachedGuild()){
             let msg: Message = await interaction.reply({embeds: this.miscellaneousUI.vote(textString, voteContent), fetchReply: true});
-            await CoreServiceEmojis.reactOrder(msg, emojis);
+            await UtilsServiceEmojis.reactOrder(msg, emojis);
         }
     }
 }

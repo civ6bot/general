@@ -7,7 +7,7 @@ import {
     JSONDynamicConfigEntityString,
     JSONDynamicConfigEntityTeamersForbiddenPairs
 } from "../../types/type.JSON.DynamicConfigEntities";
-import {CoreServiceCivilizations} from "../../core/services/core.service.civilizations";
+import {UtilsServiceCivilizations} from "../../utils/services/utils.service.civilizations";
 
 export class DynamicConfig extends ModuleBaseModel {
     private _pageCurrent: number = 1;
@@ -239,7 +239,7 @@ export class DynamicConfigEntityTeamersForbiddenPairs extends DynamicConfigEntit
         this.value = value;
         this.properties = properties;
 
-        this.civilizationPairIndexes = CoreServiceCivilizations.getForbiddenPairs(value);
+        this.civilizationPairIndexes = UtilsServiceCivilizations.getForbiddenPairs(value);
         this.civilizationTexts = civilizationTexts;
     }
 
@@ -262,7 +262,7 @@ export class DynamicConfigEntityTeamersForbiddenPairs extends DynamicConfigEntit
             )
             .map((civilizationsTextPairString: string[]): number[][] =>
                 civilizationsTextPairString.map((civText: string): number[] => {
-                    let {bans, errors} = CoreServiceCivilizations.parseBans(civText, this.civilizationTexts);
+                    let {bans, errors} = UtilsServiceCivilizations.parseBans(civText, this.civilizationTexts);
                     return bans;
                 })
             )
@@ -291,9 +291,9 @@ export class DynamicConfigEntityTeamersForbiddenPairs extends DynamicConfigEntit
                 return true;
             });
 
-        let {isCorrect, errorIndexes} = CoreServiceCivilizations.checkForbiddenPairsTriangles(civilizationNumberPairs);
+        let {isCorrect, errorIndexes} = UtilsServiceCivilizations.checkForbiddenPairsTriangles(civilizationNumberPairs);
         if(isCorrect) {
-            this.value = CoreServiceCivilizations.getTeamersForbiddenPairsConfigString(civilizationNumberPairs);
+            this.value = UtilsServiceCivilizations.getTeamersForbiddenPairsConfigString(civilizationNumberPairs);
             this.civilizationPairIndexes = civilizationNumberPairs;
             return true;
         }

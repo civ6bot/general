@@ -1,7 +1,7 @@
 import {GuildMember, EmbedBuilder, User} from "discord.js";
 import {discordClient} from "../../discord/discord.client";
 
-export class CoreServicePM {
+export class UtilsServicePM {
     public static async send(
         userDataInstance: string | GuildMember | User,
         message: string | EmbedBuilder[]

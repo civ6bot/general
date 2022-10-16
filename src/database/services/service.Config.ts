@@ -1,9 +1,10 @@
 import {EntityConfig} from "../entities/entity.Config";
 import {EntityManager} from "typeorm";
-import {dataSource, outerDataSource} from "../database.datasource";
+import {localDataSource, outerDataSource} from "../database.datasources";
+import {loadDefaultConfigs} from "../../utils/loaders/utils.loader.config";
 
 export class DatabaseServiceConfig {
-    protected database: EntityManager = dataSource.manager;
+    protected database: EntityManager = localDataSource.manager;
     protected outerDatabase: EntityManager = outerDataSource.manager;
 
     public async getOneString(guildID: string, setting: string): Promise<string> {
@@ -18,9 +19,12 @@ export class DatabaseServiceConfig {
         // Если в локальной нет значения,
         // то импортируем внешнюю в локальную
         // и затем ищем в локальной
+        let localDefaultConfigSettings: string[] = loadDefaultConfigs().map(defaultEntityConfig => defaultEntityConfig.setting);
+
         let entitiesConfig: EntityConfig[] = (await this.outerDatabase.findBy(EntityConfig, {
             guildID: guildID
         })) || [];
+        entitiesConfig.filter(entityConfig => localDefaultConfigSettings.indexOf(entityConfig.setting) !== -1)
         await this.insertAll(entitiesConfig);
         entityConfig = await this.database.findOneBy(EntityConfig, {
             guildID: guildID,
@@ -35,7 +39,9 @@ export class DatabaseServiceConfig {
         let defaultEntitiesConfig: EntityConfig[] = await this.outerDatabase.findBy(EntityConfig, {
             guildID: "DEFAULT"
         }) as EntityConfig[];
-        defaultEntitiesConfig.forEach(x => x.guildID = guildID);
+        defaultEntitiesConfig
+            .filter(defaultEntityConfig => localDefaultConfigSettings.indexOf(defaultEntityConfig.setting) !== -1)
+            .forEach(x => x.guildID = guildID);
         await this.insertAll(defaultEntitiesConfig);
         await this.outerDatabase.save(defaultEntitiesConfig);
         entityConfig = await this.database.findOneBy(EntityConfig,  {

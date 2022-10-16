@@ -1,6 +1,6 @@
 import {ModuleBaseModel} from "../base/base.models";
 import {CommandInteraction, Message, MessageCollector, MessageReaction, ReactionCollector, User} from "discord.js";
-import {CoreServiceLetters} from "../../core/services/core.service.letters";
+import {UtilsServiceLetters} from "../../utils/services/utils.service.letters";
 
 export abstract class Game extends ModuleBaseModel {
     public abstract readonly type: string;
@@ -75,7 +75,7 @@ export class GameTeamers extends Game {
         super(interaction, users, voteTimeMs);
         for(let i in headers)
             this.entities.push(new GameEntityDefault(headers[i], options[i], emojis[i], users));
-        this.entityCaptains = new GameEntityCaptains(captainsHeader, users.map((user: User): string => user.toString()), CoreServiceLetters.getLetters().slice(0, users.length), users);
+        this.entityCaptains = new GameEntityCaptains(captainsHeader, users.map((user: User): string => user.toString()), UtilsServiceLetters.getLetters().slice(0, users.length), users);
         this.entityDraft = new GameEntityDraft(draftHeaders, draftOptions, draftEmojis, users, banThreshold);
         this.entityReady = new GameEntityReady(readyTitle, readyDescriptions, readyFieldTitles, fieldEmojis, users, interaction.user);
         if (this.users.length < 4)

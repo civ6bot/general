@@ -1,11 +1,11 @@
 import {ModuleBaseUI} from "../base/base.ui";
 import {ActionRowBuilder, ButtonBuilder, EmbedBuilder} from "discord.js";
-import {CoreGeneratorEmbed} from "../../core/generators/core.generator.embed";
-import {CoreGeneratorButton} from "../../core/generators/core.generator.button";
+import {UtilsGeneratorEmbed} from "../../utils/generators/utils.generator.embed";
+import {UtilsGeneratorButton} from "../../utils/generators/utils.generator.button";
 
 export class SteamUI extends ModuleBaseUI {
     public connectEmbed(title: string, description: string): EmbedBuilder[] {
-        return CoreGeneratorEmbed.getSingle(
+        return UtilsGeneratorEmbed.getSingle(
             title,
             "#3B88C3",
             description
@@ -13,11 +13,11 @@ export class SteamUI extends ModuleBaseUI {
     }
 
     public connectButton(label: string, emoji: string, url: string): ActionRowBuilder<ButtonBuilder>[] {
-        return CoreGeneratorButton.getSingleLink(label, url, emoji);
+        return UtilsGeneratorButton.getSingleLink(label, url, emoji);
     }
 
     public link(title: string, description: string, fieldTitle: string, fieldDescription: string): EmbedBuilder[] {
-        return  CoreGeneratorEmbed.getSingle(
+        return  UtilsGeneratorEmbed.getSingle(
             title,
             "#3B88C3",
             description,

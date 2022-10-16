@@ -1,6 +1,6 @@
 import {ModuleBaseModel} from "../base/base.models";
 import {CommandInteraction, Message, ReactionCollector, User} from "discord.js";
-import {CoreServiceLetters} from "../../core/services/core.service.letters";
+import {UtilsServiceLetters} from "../../utils/services/utils.service.letters";
 
 export abstract class Split extends ModuleBaseModel {
     abstract type: string;
@@ -11,7 +11,7 @@ export abstract class Split extends ModuleBaseModel {
     public users: string[];
     public teams: string[][] = [[], []];
 
-    public emojis: string[] = CoreServiceLetters.getLetters();
+    public emojis: string[] = UtilsServiceLetters.getLetters();
     public captainEmoji: string = "👑";
 
     public currentStep: number = 1;

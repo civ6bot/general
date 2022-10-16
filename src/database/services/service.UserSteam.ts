@@ -1,6 +1,6 @@
 import {EntityUserSteam} from "../entities/entity.UserSteam";
 import {EntityManager} from "typeorm";
-import {outerDataSource} from "../database.datasource";
+import {outerDataSource} from "../database.datasources";
 
 export class DatabaseServiceUserSteam {
     protected outerDatabase: EntityManager = outerDataSource.manager;

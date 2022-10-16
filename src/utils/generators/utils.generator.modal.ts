@@ -1,6 +1,6 @@
 import {ActionRowBuilder, ModalActionRowComponentBuilder, ModalBuilder, TextInputBuilder, TextInputStyle} from "discord.js";
 
-export class CoreGeneratorModal {
+export class UtilsGeneratorModal {
     public static build(
         customID: string,
         title: string,

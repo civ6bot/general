@@ -1,7 +1,7 @@
 import {ModuleBaseService} from "../base/base.service";
 import {CommandInteraction, User} from "discord.js";
 import {FeedbackUI} from "./feedback.ui";
-import {CoreServicePM} from "../../core/services/core.service.PM";
+import {UtilsServicePM} from "../../utils/services/utils.service.PM";
 
 export class FeedbackService extends ModuleBaseService {
     feedbackUI: FeedbackUI = new FeedbackUI();
@@ -16,7 +16,7 @@ export class FeedbackService extends ModuleBaseService {
         let pmUserID: string = await this.getOneSettingString(interaction, "BASE_UNKNOWN_ERROR_PM_USER_ID");
         let author: User = interaction.user;
 
-        await CoreServicePM.send(pmUserID, this.feedbackUI.feedback(
+        await UtilsServicePM.send(pmUserID, this.feedbackUI.feedback(
             textStrings[0],
             content,
             {name: textStrings[1], value: textStrings[2]},

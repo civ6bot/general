@@ -1,6 +1,6 @@
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from "discord.js";
 
-export class CoreGeneratorButton {
+export class UtilsGeneratorButton {
     private static maxButtonsPerRow: number = 5;
     private static maxRows: number = 5;
 

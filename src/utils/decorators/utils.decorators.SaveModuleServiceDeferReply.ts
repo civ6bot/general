@@ -1,7 +1,7 @@
 // Если первый аргумент метода типа CommandInteraction, то удерживает его в тайминге больше 5 секунд interaction.deferReply();
 // оборачивает в конструкцию try-catch для избежания отключения бота.
 import {CommandInteraction, EmbedBuilder} from "discord.js";
-import {CoreServicePM} from "../services/core.service.PM";
+import {UtilsServicePM} from "../services/utils.service.PM";
 import {DatabaseServiceConfig} from "../../database/services/service.Config";
 import {ModuleBaseUI} from "../../modules/base/base.ui";
 import {DatabaseServiceText} from "../../database/services/service.Text";
@@ -36,7 +36,7 @@ export function SafeModuleServiceDeferReply(isEphemeral: boolean = false): Metho
                     interaction.deferred
                         ? await interaction.editReply({embeds: errorEmbed})
                         : await interaction.reply({embeds: errorEmbed});
-                    await CoreServicePM.send(userID, errorEmbed);
+                    await UtilsServicePM.send(userID, errorEmbed);
                 }
             }
         };

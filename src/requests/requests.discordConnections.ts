@@ -1,6 +1,6 @@
 import axios from "axios";
 import {DecorateAll} from "decorate-all";
-import {SafeRequest} from "../core/decorators/core.decorators.SafeRequest";
+import {SafeRequest} from "../utils/decorators/utils.decorators.SafeRequest";
 
 @DecorateAll(SafeRequest)
 export class RequestsDiscordConnections {
@@ -10,8 +10,8 @@ export class RequestsDiscordConnections {
 
     public async getDiscordAuthorizationToken(specialCode: string): Promise<string|null> {
         let {data, status} = await axios.post<any>(this.discordAuthorizationTokenUrl, new URLSearchParams({
-            client_id: process.env.BOT_CLIENT_ID as string,
-            client_secret: process.env.BOT_SECRET as string,
+            client_id: process.env.OAUTH2_BOT_CLIENT_ID as string,
+            client_secret: process.env.OAUTH2_BOT_SECRET as string,
             specialCode,
             grant_type: 'authorization_code',
             redirect_uri: process.env.OAUTH2_REDIRECT_URI_FOR_TOKEN as string,

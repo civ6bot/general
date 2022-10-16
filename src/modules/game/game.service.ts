@@ -2,12 +2,12 @@ import {ModuleBaseService} from "../base/base.service";
 import {GameUI} from "./game.ui";
 import {ButtonInteraction, CommandInteraction, Message, MessageReaction, User} from "discord.js";
 import {Game, GameEntity, GameEntityDraft, GameEntityReady, GameFFA, GameTeamers} from "./game.models";
-import {CoreGeneratorTimestamp} from "../../core/generators/core.generator.timestamp";
-import {CoreServiceCivilizations} from "../../core/services/core.service.civilizations";
-import {CoreServiceEmojis} from "../../core/services/core.service.emojis";
-import {CoreServiceUsers} from "../../core/services/core.service.users";
+import {UtilsGeneratorTimestamp} from "../../utils/generators/utils.generator.timestamp";
+import {UtilsServiceCivilizations} from "../../utils/services/utils.service.civilizations";
+import {UtilsServiceEmojis} from "../../utils/services/utils.service.emojis";
+import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
 import {GameAdapter} from "./game.adapter";
-import {CoreServiceGameTags} from "../../core/services/core.service.gameTags";
+import {UtilsServiceGameTags} from "../../utils/services/utils.service.gameTags";
 
 export class GameService extends ModuleBaseService {
     private gameUI: GameUI = new GameUI();
@@ -25,13 +25,13 @@ export class GameService extends ModuleBaseService {
     }
 
     private getFFAEmojisConfigsStrings(): string[][] {
-        return CoreServiceGameTags.FFAOptionsConfigsStrings
+        return UtilsServiceGameTags.FFAOptionsConfigsStrings
             .map((arr: string[]): string[] =>
                 arr.map((option: string): string => option + "_EMOJI"));
     }
 
     private getTeamersEmojisConfigsStrings(): string[][] {
-        return CoreServiceGameTags.teamersOptionsConfigsStrings
+        return UtilsServiceGameTags.teamersOptionsConfigsStrings
             .map((arr: string[]): string[] =>
                 arr.map((option: string): string => option + "_EMOJI"));
     }
@@ -64,17 +64,17 @@ export class GameService extends ModuleBaseService {
 
     public async ffa(interaction: CommandInteraction) {
         await interaction.deferReply();
-        let users: User[] = CoreServiceUsers.getFromVoice(interaction);
+        let users: User[] = UtilsServiceUsers.getFromVoice(interaction);
 
-        let gameFFAMainFlags: number[] = await this.getManySettingNumber(interaction, ...CoreServiceGameTags.FFAHeaderConfigsStrings);
+        let gameFFAMainFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsServiceGameTags.FFAHeaderConfigsStrings);
         let gameFFAOptionsFlags: number[][] = [];
 
-        let headers: string[] =  await this.getManyText(interaction, CoreServiceGameTags.FFAHeaderConfigsStrings);
+        let headers: string[] =  await this.getManyText(interaction, UtilsServiceGameTags.FFAHeaderConfigsStrings);
         let options: string[][] = [], emojis: string[][] = [];
 
-        for(let i in CoreServiceGameTags.FFAOptionsConfigsStrings) {
-            gameFFAOptionsFlags.push(await this.getManySettingNumber(interaction, ...CoreServiceGameTags.FFAOptionsConfigsStrings[i]));
-            options.push(await this.getManyText(interaction, CoreServiceGameTags.FFAOptionsConfigsStrings[i]));
+        for(let i in UtilsServiceGameTags.FFAOptionsConfigsStrings) {
+            gameFFAOptionsFlags.push(await this.getManySettingNumber(interaction, ...UtilsServiceGameTags.FFAOptionsConfigsStrings[i]));
+            options.push(await this.getManyText(interaction, UtilsServiceGameTags.FFAOptionsConfigsStrings[i]));
             emojis.push(await this.getManySettingString(interaction, ...this.getFFAEmojisConfigsStrings()[i]));
         }
         this.filterOptions(gameFFAMainFlags, gameFFAOptionsFlags, headers, options, emojis);
@@ -82,8 +82,8 @@ export class GameService extends ModuleBaseService {
         let draftHeaders: string[] = await this.getManyText(interaction, [
             "GAME_BANS_START", "GAME_BANS_PROCESSING"
         ]);
-        let draftFlags: number[] = await this.getManySettingNumber(interaction, ...CoreServiceCivilizations.civilizationsTags);
-        let draftOptions: string[] = await this.getManyText(interaction, CoreServiceCivilizations.civilizationsTags.map(text => text + "_TEXT"))
+        let draftFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsServiceCivilizations.civilizationsTags);
+        let draftOptions: string[] = await this.getManyText(interaction, UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT"))
         let draftEmojis: string[] = draftOptions.map(str => str.slice(str.indexOf("<"), str.indexOf(">")+1));
         for(let i: number = 0; i < draftFlags.length; i++)
             if(draftFlags[i] === 0) {
@@ -103,7 +103,7 @@ export class GameService extends ModuleBaseService {
             "GAME_READY_DESCRIPTION_PROCESSING", "GAME_READY_DESCRIPTION_FINISH",
             "GAME_RESULT_TIMEOUT_DESCRIPTION"
         ], [
-            [CoreGeneratorTimestamp.getRelativeTime(voteTimeMs)]
+            [UtilsGeneratorTimestamp.getRelativeTime(voteTimeMs)]
         ]);
         let readyFieldTitles: string[] = await this.getManyText(interaction, [
             "GAME_READY_FIELD_PLAYERS_TITLE", "GAME_READY_FIELD_READY_TITLE",
@@ -142,7 +142,7 @@ export class GameService extends ModuleBaseService {
                 game.entities[i].message = message;
                 game.entities[i].messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
                 game.entities[i].messageReactionCollector?.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
-                await CoreServiceEmojis.reactOrder(message, game.entities[i].emojis);
+                await UtilsServiceEmojis.reactOrder(message, game.entities[i].emojis);
             }
 
             message = await interaction.channel.send(game.entityDraft.getContent());
@@ -176,17 +176,17 @@ export class GameService extends ModuleBaseService {
 
     public async teamers(interaction: CommandInteraction) {
         await interaction.deferReply();
-        let users: User[] = CoreServiceUsers.getFromVoice(interaction);
+        let users: User[] = UtilsServiceUsers.getFromVoice(interaction);
 
-        let gameTeamersMainFlags: number[] = await this.getManySettingNumber(interaction, ...CoreServiceGameTags.teamersHeaderConfigsStrings);
+        let gameTeamersMainFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsServiceGameTags.teamersHeaderConfigsStrings);
         let gameTeamersOptionsFlags: number[][] = [];
 
-        let headers: string[] =  await this.getManyText(interaction, CoreServiceGameTags.teamersHeaderConfigsStrings);
+        let headers: string[] =  await this.getManyText(interaction, UtilsServiceGameTags.teamersHeaderConfigsStrings);
         let options: string[][] = [], emojis: string[][] = [];
 
-        for(let i in CoreServiceGameTags.teamersOptionsConfigsStrings) {
-            gameTeamersOptionsFlags.push(await this.getManySettingNumber(interaction, ...CoreServiceGameTags.teamersOptionsConfigsStrings[i]));
-            options.push(await this.getManyText(interaction, CoreServiceGameTags.teamersOptionsConfigsStrings[i]));
+        for(let i in UtilsServiceGameTags.teamersOptionsConfigsStrings) {
+            gameTeamersOptionsFlags.push(await this.getManySettingNumber(interaction, ...UtilsServiceGameTags.teamersOptionsConfigsStrings[i]));
+            options.push(await this.getManyText(interaction, UtilsServiceGameTags.teamersOptionsConfigsStrings[i]));
             emojis.push(await this.getManySettingString(interaction, ...this.getTeamersEmojisConfigsStrings()[i]))
         }
         this.filterOptions(gameTeamersMainFlags, gameTeamersOptionsFlags, headers, options, emojis);
@@ -196,8 +196,8 @@ export class GameService extends ModuleBaseService {
         let draftHeaders: string[] = await this.getManyText(interaction, [
             "GAME_BANS_START", "GAME_BANS_PROCESSING"
         ]);
-        let draftFlags: number[] = await this.getManySettingNumber(interaction, ...CoreServiceCivilizations.civilizationsTags);
-        let draftOptions: string[] = await this.getManyText(interaction, CoreServiceCivilizations.civilizationsTags.map(text => text + "_TEXT"))
+        let draftFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsServiceCivilizations.civilizationsTags);
+        let draftOptions: string[] = await this.getManyText(interaction, UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT"))
         let draftEmojis: string[] = draftOptions.map(str => str.slice(str.indexOf("<"), str.indexOf(">")+1));
         for(let i: number = 0; i < draftFlags.length; i++)
             if(draftFlags[i] === 0) {
@@ -217,7 +217,7 @@ export class GameService extends ModuleBaseService {
             "GAME_READY_DESCRIPTION_PROCESSING", "GAME_READY_DESCRIPTION_FINISH",
             "GAME_RESULT_TIMEOUT_DESCRIPTION"
         ], [
-            [CoreGeneratorTimestamp.getRelativeTime(voteTimeMs)]
+            [UtilsGeneratorTimestamp.getRelativeTime(voteTimeMs)]
         ]);
         let readyFieldTitles: string[] = await this.getManyText(interaction, [
             "GAME_READY_FIELD_PLAYERS_TITLE", "GAME_READY_FIELD_READY_TITLE",
@@ -258,14 +258,14 @@ export class GameService extends ModuleBaseService {
                 game.entities[i].message = message;
                 game.entities[i].messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
                 game.entities[i].messageReactionCollector?.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
-                await CoreServiceEmojis.reactOrder(message, game.entities[i].emojis);
+                await UtilsServiceEmojis.reactOrder(message, game.entities[i].emojis);
             }
 
             message = await interaction.channel.send(game.entityCaptains.getContent());
             game.entityCaptains.message = message;
             game.entityCaptains.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityCaptains.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
-            await CoreServiceEmojis.reactOrder(message, game.entityCaptains.emojis);
+            await UtilsServiceEmojis.reactOrder(message, game.entityCaptains.emojis);
 
             message = await interaction.channel.send(game.entityDraft.getContent());
             game.entityDraft.message = message;
@@ -347,13 +347,13 @@ export class GameService extends ModuleBaseService {
         if(!gameEntityDraft.message)
             return;
 
-        let {bans, errors} = CoreServiceCivilizations.parseBans(message.content, gameEntityDraft.options);
+        let {bans, errors} = UtilsServiceCivilizations.parseBans(message.content, gameEntityDraft.options);
         if(bans.length === 0)
             return;
 
         try {
             // @ts-ignore
-            await CoreServiceEmojis.reactOrder(gameEntityDraft.message, bans.map(banIndex => gameEntityDraft.emojis[banIndex]));
+            await UtilsServiceEmojis.reactOrder(gameEntityDraft.message, bans.map(banIndex => gameEntityDraft.emojis[banIndex]));
         } catch {}
         gameEntityDraft.collectedMessages.push(message);
         await message.react("📝");

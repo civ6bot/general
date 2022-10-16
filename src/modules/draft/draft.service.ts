@@ -2,9 +2,9 @@ import {ModuleBaseService} from "../base/base.service";
 import {DraftUI} from "./draft.ui";
 import {ButtonInteraction, CommandInteraction, DMChannel, Message, User} from "discord.js";
 import {Draft, DraftBlind, DraftFFA, DraftTeamers} from "./draft.models";
-import {CoreGeneratorTimestamp} from "../../core/generators/core.generator.timestamp";
-import {CoreServiceCivilizations} from "../../core/services/core.service.civilizations";
-import {CoreServiceUsers} from "../../core/services/core.service.users";
+import {UtilsGeneratorTimestamp} from "../../utils/generators/utils.generator.timestamp";
+import {UtilsServiceCivilizations} from "../../utils/services/utils.service.civilizations";
+import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
 
 export class DraftService extends ModuleBaseService {
     private draftUI: DraftUI = new DraftUI();
@@ -29,11 +29,11 @@ export class DraftService extends ModuleBaseService {
                 ? await this.getManySettingNumber(interaction, "DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT", "DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT")
                 : [civAmount, civAmount];
             if(users.length === 0)
-                users = CoreServiceUsers.getFromVoice(interaction);
+                users = UtilsServiceUsers.getFromVoice(interaction);
             draft = new DraftFFA(
                 interaction, bans,
-                await this.getManySettingNumber(interaction, ...CoreServiceCivilizations.civilizationsTags),
-                await this.getManyText(interaction, CoreServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
+                await this.getManySettingNumber(interaction, ...UtilsServiceCivilizations.civilizationsTags),
+                await this.getManyText(interaction, UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
                 users, minCivilizations, maxCivilizations
             );
         }
@@ -82,16 +82,16 @@ export class DraftService extends ModuleBaseService {
             draft = outerDraft;
         else {
             if(users.length === 0)
-                users = CoreServiceUsers.getFromVoice(interaction);
-            let forbiddenPairs: number[][] = CoreServiceCivilizations.getForbiddenPairs(
+                users = UtilsServiceUsers.getFromVoice(interaction);
+            let forbiddenPairs: number[][] = UtilsServiceCivilizations.getForbiddenPairs(
                 await this.getOneSettingString(interaction, "DRAFT_TEAMERS_FORBIDDEN_PAIRS")
             );
 
             draft = new DraftTeamers(
                 interaction,
                 bans,
-                await this.getManySettingNumber(interaction, ...CoreServiceCivilizations.civilizationsTags),
-                await this.getManyText(interaction, CoreServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
+                await this.getManySettingNumber(interaction, ...UtilsServiceCivilizations.civilizationsTags),
+                await this.getManyText(interaction, UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
                 users,
                 teamAmount,
                 forbiddenPairs
@@ -152,11 +152,11 @@ export class DraftService extends ModuleBaseService {
                 ? await this.getManySettingNumber(interaction, "DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT", "DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT")
                 : [civAmount, civAmount];
             if(users.length === 0)
-                users = CoreServiceUsers.getFromVoice(interaction);
+                users = UtilsServiceUsers.getFromVoice(interaction);
             draft = new DraftBlind(
                 interaction, bans,
-                await this.getManySettingNumber(interaction, ...CoreServiceCivilizations.civilizationsTags),
-                await this.getManyText(interaction, CoreServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
+                await this.getManySettingNumber(interaction, ...UtilsServiceCivilizations.civilizationsTags),
+                await this.getManyText(interaction, UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
                 users, minCivilizations, maxCivilizations
             );
         }
@@ -178,7 +178,7 @@ export class DraftService extends ModuleBaseService {
                 "DRAFT_BLIND_DESCRIPTION_PROCESSING", "DRAFT_DRAFT_BANS_DESCRIPTION",
                 "DRAFT_DRAFT_ERRORS_DESCRIPTION", "DRAFT_BLIND_FIELD_PLAYERS_TITLE",
                 "DRAFT_BLIND_FIELD_READY_TITLE", "DRAFT_BLIND_BUTTON_DELETE"],
-            [null, [draft.users.length], [CoreGeneratorTimestamp.getRelativeTime(pickTimeMs)], [draft.bans.length]]
+            [null, [draft.users.length], [UtilsGeneratorTimestamp.getRelativeTime(pickTimeMs)], [draft.bans.length]]
         );
 
         if(draft.runTimes > 1)
@@ -218,7 +218,7 @@ export class DraftService extends ModuleBaseService {
         textStrings = await this.getManyText(
             draft.interaction,
             ["DRAFT_BLIND_PM_TITLE", "DRAFT_BLIND_PM_DESCRIPTION_PROCESSING"],
-            [null, [CoreGeneratorTimestamp.getRelativeTime(pickTimeMs)]]
+            [null, [UtilsGeneratorTimestamp.getRelativeTime(pickTimeMs)]]
         );
 
         for(let i: number = 0; i < draft.users.length; i++) {
@@ -320,7 +320,7 @@ export class DraftService extends ModuleBaseService {
                 "DRAFT_BLIND_DESCRIPTION_PROCESSING", "DRAFT_DRAFT_BANS_DESCRIPTION",
                 "DRAFT_DRAFT_ERRORS_DESCRIPTION", "DRAFT_BLIND_FIELD_PLAYERS_TITLE",
                 "DRAFT_BLIND_FIELD_READY_TITLE", "DRAFT_BLIND_FIELD_CIVILIZATION_TITLE"],
-            [null, [draft.users.length], [CoreGeneratorTimestamp.getRelativeTime(pickTimeMs+draft.date.getTime()-Date.now())], [draft.bans.length]]
+            [null, [draft.users.length], [UtilsGeneratorTimestamp.getRelativeTime(pickTimeMs+draft.date.getTime()-Date.now())], [draft.bans.length]]
         );  // здесь должна оставаться разность времени,
         // чтобы в сообщении показывало правильное время, а не начинало отчет заново
         let emojis: string[] = await this.getManySettingString(interaction, "BASE_EMOJI_YES", "BASE_EMOJI_NO");
@@ -424,7 +424,7 @@ export class DraftService extends ModuleBaseService {
                 "DRAFT_REDRAFT_FIELD_YES", "DRAFT_REDRAFT_FIELD_UNKNOWN",
                 "DRAFT_REDRAFT_FIELD_NO", "DRAFT_REDRAFT_BUTTON_YES",
                 "DRAFT_REDRAFT_BUTTON_NO", "DRAFT_REDRAFT_FIELD_ZERO_USERS"
-            ], [[draft.runTimes], [draft.thresholdUsers, draft.users.length, CoreGeneratorTimestamp.getRelativeTime(settings[3])],
+            ], [[draft.runTimes], [draft.thresholdUsers, draft.users.length, UtilsGeneratorTimestamp.getRelativeTime(settings[3])],
                 [emojis[0], draft.redraftStatus.filter(value => value === 1).length], [draft.redraftStatus.filter(value => value === -1).length],
                 [emojis[1], draft.redraftStatus.filter(value => value === 0).length]
             ]
@@ -519,7 +519,7 @@ export class DraftService extends ModuleBaseService {
                 "DRAFT_REDRAFT_FIELD_NO", "DRAFT_REDRAFT_FIELD_ZERO_USERS"
             ], [
                 [draft.runTimes],
-                [draft.thresholdUsers, draft.users.length, CoreGeneratorTimestamp.getRelativeTime(redraftTimeMs)],
+                [draft.thresholdUsers, draft.users.length, UtilsGeneratorTimestamp.getRelativeTime(redraftTimeMs)],
                 [emojis[0]],
                 [emojis[1]],
                 [emojis[0], draft.redraftStatus.filter(value => value === 1).length],

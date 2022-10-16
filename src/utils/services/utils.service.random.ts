@@ -1,6 +1,6 @@
 import {HexColorString} from "discord.js";
 
-export class CoreServiceRandom {
+export class UtilsServiceRandom {
     public static shuffle<T>(array: T[]): T[] {
         let shuffledArray: T[] = [];
         while(array.length > 0)

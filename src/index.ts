@@ -2,26 +2,18 @@ import {importx} from "@discordx/importer";
 import * as dotenv from "dotenv";
 import {httpsServer} from "./server/server.app";
 import {discordClient} from "./discord/discord.client";
-import {dataSource, outerDataSource} from "./database/database.datasource";
+import {localDataSource, outerDataSource} from "./database/database.datasources";
 import {DatabaseServiceText} from "./database/services/service.Text";
-import {loadTextEntities} from "./core/loaders/core.loader.text";
+import {loadTextEntities} from "./utils/loaders/utils.loader.text";
 import {DatabaseServiceConfig} from "./database/services/service.Config";
-import {loadDefaultConfigs} from "./core/loaders/core.loader.config";
+import {loadDefaultConfigs} from "./utils/loaders/utils.loader.config";
 import {ActivityType} from "discord.js";
 
 dotenv.config({path: 'general.env'});
-const isDebug: boolean = Boolean(Number(process.env.DEBUG_TEST_MODE) || 0);
+const isTesting: boolean = Boolean(Number(process.env.TEST_MODE) || 0);
 
 importx(__dirname + "/modules/*/*.interactions.{js,ts}").then(() => {
-    discordClient.login(process.env.BOT_TOKEN as string).then(() => {
-        try {
-            discordClient.user?.setAvatar(
-                isDebug
-                    ? __dirname + "/../images/avatar-test.png"
-                    : __dirname + "/../images/avatar-general.png"
-            );
-        } catch {}
-
+    discordClient.login((isTesting ? process.env.TEST_BOT_TOKEN : process.env.BOT_TOKEN) as string).then(() => {
         setInterval(() => {
             let guildsAmount: number = discordClient.guilds.cache.size;
             let usersAmount: number = discordClient.guilds.cache
@@ -44,14 +36,14 @@ importx(__dirname + "/modules/*/*.interactions.{js,ts}").then(() => {
         }, 60*1000);
 
         console.log(
-            isDebug
+            isTesting
                 ? "Civilization VI \"Test\" started"
                 : "Civilization VI \"General\" started"
         );
     });
 });
 
-dataSource.initialize().then(async () => {
+localDataSource.initialize().then(async () => {
     let databaseServiceText: DatabaseServiceText = new DatabaseServiceText();
     let databaseServiceConfig: DatabaseServiceConfig = new DatabaseServiceConfig();
 

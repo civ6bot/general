@@ -2,9 +2,9 @@ import {ModuleBaseService} from "../base/base.service";
 import {ButtonInteraction, CommandInteraction, GuildMember, MessageReaction, User} from "discord.js";
 import {SplitUI} from "./split.ui";
 import {Split, SplitClassic, SplitCWC, SplitDouble, SplitRandom} from "./split.models";
-import {CoreGeneratorTimestamp} from "../../core/generators/core.generator.timestamp";
-import {CoreServiceEmojis} from "../../core/services/core.service.emojis";
-import {CoreServiceUsers} from "../../core/services/core.service.users";
+import {UtilsGeneratorTimestamp} from "../../utils/generators/utils.generator.timestamp";
+import {UtilsServiceEmojis} from "../../utils/services/utils.service.emojis";
+import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
 import {SplitAdapter} from "./split.adapter";
 
 export class SplitService extends ModuleBaseService {
@@ -33,7 +33,7 @@ export class SplitService extends ModuleBaseService {
             split = outerSplit;
         else {
             if(users.length === 0)
-                users = CoreServiceUsers.getFromVoice(interaction);
+                users = UtilsServiceUsers.getFromVoice(interaction);
             split = new SplitRandom(interaction, [captain1.user, captain2?.user || null], users);
         }
         this.checkSplit(split);
@@ -77,7 +77,7 @@ export class SplitService extends ModuleBaseService {
         else {
             await interaction.deferReply();
             if(users.length === 0)
-                users = CoreServiceUsers.getFromVoice(interaction);
+                users = UtilsServiceUsers.getFromVoice(interaction);
             switch(type) {
                 case "Classic":
                     split = new SplitClassic(interaction, [captain1.user, captain2?.user || null], users);
@@ -126,7 +126,7 @@ export class SplitService extends ModuleBaseService {
         textStrings.push(...await this.getManyText(split.interaction, [
             "SPLIT_DESCRIPTION_START", "SPLIT_BUTTON_DELETE"
         ], [
-            [split.captains[split.currentCaptainIndex].toString(), CoreGeneratorTimestamp.getRelativeTime(split.pickTimeMs)]
+            [split.captains[split.currentCaptainIndex].toString(), UtilsGeneratorTimestamp.getRelativeTime(split.pickTimeMs)]
         ]));
         let fieldHeaders: string[] = [await this.getOneText(split.interaction, "SPLIT_FIELD_TITLE_USERS")];
         for(let i: number = 0; i < split.teams.length; i++)
@@ -152,7 +152,7 @@ export class SplitService extends ModuleBaseService {
         split.reactionCollector = split.message?.createReactionCollector({time: 16*split.pickTimeMs});  // максимальное число игроков
         split.reactionCollector.on("collect", async (reaction: MessageReaction, user: User) => SplitService.reactionCollectorFunction(reaction, user));
         try {   // если оно будет удалено до выставления всех эмодзи
-            await CoreServiceEmojis.reactOrder(split.message, split.emojis);
+            await UtilsServiceEmojis.reactOrder(split.message, split.emojis);
         } catch {
             SplitService.splits.delete(split.guildID);
         }
@@ -212,7 +212,7 @@ export class SplitService extends ModuleBaseService {
                 ? "SPLIT_DESCRIPTION_FINISH"
                 : "SPLIT_DESCRIPTION_PROCESSING",
             split.currentCaptainIndex+1, split.captains[split.currentCaptainIndex]?.toString() || "",   // если -1, то всё равно выполнится
-            CoreGeneratorTimestamp.getRelativeTime(split.pickTimeMs)
+            UtilsGeneratorTimestamp.getRelativeTime(split.pickTimeMs)
         ));
         fieldHeaders.push(await splitService.getOneText(split.interaction,
             (split.currentCaptainIndex === -1)

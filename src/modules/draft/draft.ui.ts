@@ -1,9 +1,9 @@
 import {ModuleBaseUI} from "../base/base.ui";
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, User} from "discord.js";
-import {CoreGeneratorEmbed} from "../../core/generators/core.generator.embed";
-import {CoreServiceRandom} from "../../core/services/core.service.random";
+import {UtilsGeneratorEmbed} from "../../utils/generators/utils.generator.embed";
+import {UtilsServiceRandom} from "../../utils/services/utils.service.random";
 import {Draft, DraftBlind, DraftFFA, DraftTeamers} from "./draft.models";
-import {CoreGeneratorButton} from "../../core/generators/core.generator.button";
+import {UtilsGeneratorButton} from "../../utils/generators/utils.generator.button";
 
 export class DraftUI extends ModuleBaseUI {
     public draftFFAEmbed(
@@ -19,9 +19,9 @@ export class DraftUI extends ModuleBaseUI {
             .map((value: string[], index: number): string => `**${draft.users[index].tag}** (${draft.users[index].toString()})\n` + value.join("\n"))
             .join("\n\n");
 
-        return CoreGeneratorEmbed.getSingle(
+        return UtilsGeneratorEmbed.getSingle(
             title,
-            CoreServiceRandom.getBrightColor(),
+            UtilsServiceRandom.getBrightColor(),
             description,
             [],
             draft.interaction.user.tag,
@@ -48,9 +48,9 @@ export class DraftUI extends ModuleBaseUI {
             "https://media.discordapp.net/attachments/698295115063492758/837417222732644372/768px-Antu_flag-purple.svg.png?width=599&height=599",
             "https://cdn.discordapp.com/attachments/698295115063492758/838985443642310666/768px-Antu_flag-grey.svg.png",
         ];
-        return CoreGeneratorEmbed.getList(
+        return UtilsGeneratorEmbed.getList(
             [title],
-            new Array(teamDescriptionHeaders.length).fill(CoreServiceRandom.getBrightColor()),
+            new Array(teamDescriptionHeaders.length).fill(UtilsServiceRandom.getBrightColor()),
             descriptions,
             [],
             draft.interaction.user.tag,
@@ -70,9 +70,9 @@ export class DraftUI extends ModuleBaseUI {
         if(draft.bans.length > 0)
             description = bansHeader + "\n" + draft.getBansText().join("\n") + "\n\n" + description;
 
-        return CoreGeneratorEmbed.getSingle(
+        return UtilsGeneratorEmbed.getSingle(
             title,
-            draft.isProcessing ? "#FFFFFF" : CoreServiceRandom.getBrightColor(),      // белый, если в процессе; случайный яркий, если готово
+            draft.isProcessing ? "#FFFFFF" : UtilsServiceRandom.getBrightColor(),      // белый, если в процессе; случайный яркий, если готово
             description,
             [{name: playersHeader, value: draft.users.map((user: User): string => user.toString()).join("\n")},
             {name: readyHeader, value:
@@ -89,7 +89,7 @@ export class DraftUI extends ModuleBaseUI {
         title: string, description: string,
         draft: DraftBlind
     ): EmbedBuilder[] {
-        return CoreGeneratorEmbed.getSingle(
+        return UtilsGeneratorEmbed.getSingle(
             title,
             draft.isProcessing ? "#FFFFFF" : "#FFAA00",
             description,
@@ -100,7 +100,7 @@ export class DraftUI extends ModuleBaseUI {
     }
 
     public draftBlindPMCivilizationsButtons(draft: Draft, index: number): ActionRowBuilder<ButtonBuilder>[] {
-        return CoreGeneratorButton.getList(
+        return UtilsGeneratorButton.getList(
             draft.getPoolsText()[index].map(text => text.slice(0, text.indexOf("<")) + " – " + text.slice(text.indexOf(">") + 1)),
             draft.getPoolsText()[index].map(text => text.slice(text.indexOf("<"), text.indexOf(">") + 1)),
             [],
@@ -111,7 +111,7 @@ export class DraftUI extends ModuleBaseUI {
     }
 
     public draftBlindDeleteButton(label: string,): ActionRowBuilder<ButtonBuilder>[] {
-        return CoreGeneratorButton.getSingle(
+        return UtilsGeneratorButton.getSingle(
             label,
             "✖️",
             ButtonStyle.Danger,
@@ -124,7 +124,7 @@ export class DraftUI extends ModuleBaseUI {
         yesHeader: string, unknownHeader: string, noHeader: string,
         zeroUsersValue: string, draft: Draft
     ): EmbedBuilder[] {
-        return CoreGeneratorEmbed.getSingle(
+        return UtilsGeneratorEmbed.getSingle(
             title,
             "#AAAAAA",
             description,
@@ -137,7 +137,7 @@ export class DraftUI extends ModuleBaseUI {
     }
 
     public redraftButtons(labels: string[], emojis: string[]) {
-        return CoreGeneratorButton.getList(
+        return UtilsGeneratorButton.getList(
             labels,
             emojis,
             [ButtonStyle.Success, ButtonStyle.Danger],

@@ -1,6 +1,6 @@
 import {ModuleBaseModel} from "../base/base.models";
 import {ButtonInteraction, CommandInteraction, Message, User} from "discord.js";
-import {CoreServiceCivilizations} from "../../core/services/core.service.civilizations";
+import {UtilsServiceCivilizations} from "../../utils/services/utils.service.civilizations";
 
 export abstract class Draft extends ModuleBaseModel {
     public abstract readonly type: string;
@@ -49,7 +49,7 @@ export abstract class Draft extends ModuleBaseModel {
             return;
         }
         this.civilizationsMainPool = [...Array(civilizationsConfigs.length).keys()].filter(x => civilizationsConfigs[x] === 1);
-        let {bans, errors} = CoreServiceCivilizations.parseBans(rawBans, civilizationsTexts);
+        let {bans, errors} = UtilsServiceCivilizations.parseBans(rawBans, civilizationsTexts);
         this.bans = bans;
         this.errors = errors;
         this.civilizationsMainPool = this.civilizationsMainPool.filter(mainPoolIndex => bans.indexOf(mainPoolIndex) === -1);

@@ -1,7 +1,7 @@
 import axios from "axios";
 import {SteamAPIData} from "../types/type.SteamAPIData";
 import {DecorateAll} from "decorate-all";
-import {SafeRequest} from "../core/decorators/core.decorators.SafeRequest";
+import {SafeRequest} from "../utils/decorators/utils.decorators.SafeRequest";
 
 @DecorateAll(SafeRequest)
 export class RequestsSteam {

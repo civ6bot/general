@@ -1,6 +1,6 @@
 import {CommandInteraction, GuildChannel, GuildMember, User} from "discord.js";
 
-export class CoreServiceUsers {
+export class UtilsServiceUsers {
     public static getFromVoice(interaction: CommandInteraction): User[] {
         let member = interaction.member as GuildMember;
         let channel = member.voice.channel as GuildChannel;

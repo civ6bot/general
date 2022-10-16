@@ -1,4 +1,4 @@
-export class CoreServiceCivilizations {
+export class UtilsServiceCivilizations {
     public static readonly civilizationsTags: string[] = [
         "DRAFT_AUSTRALIA", "DRAFT_AMERICA", "DRAFT_ENGLAND", "DRAFT_ENGLAND_ELEANOR",
         "DRAFT_ARABIA", "DRAFT_AZTECS", "DRAFT_BRAZIL", "DRAFT_HUNGARY",

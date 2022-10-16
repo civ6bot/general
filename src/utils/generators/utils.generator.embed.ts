@@ -1,6 +1,6 @@
 import {ColorResolvable, EmbedBuilder, APIEmbedField} from "discord.js";
 
-export class CoreGeneratorEmbed {
+export class UtilsGeneratorEmbed {
     public static getSingle(
         title: string | null = null,
         color: ColorResolvable = "#FFFFFF",

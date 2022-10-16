@@ -1,8 +1,8 @@
 import {ModuleBaseUI} from "../base/base.ui";
 import {ActionRowBuilder, APIEmbedField, ButtonBuilder, ButtonStyle, EmbedBuilder} from "discord.js";
 import {Split} from "./split.models";
-import {CoreGeneratorEmbed} from "../../core/generators/core.generator.embed";
-import {CoreGeneratorButton} from "../../core/generators/core.generator.button";
+import {UtilsGeneratorEmbed} from "../../utils/generators/utils.generator.embed";
+import {UtilsGeneratorButton} from "../../utils/generators/utils.generator.button";
 
 export class SplitUI extends ModuleBaseUI {
     public splitEmbed(
@@ -14,7 +14,7 @@ export class SplitUI extends ModuleBaseUI {
         let teamValues: string[] = split.getTeamsText();
         if(teamValues.length < teamHeaders.length)
             teamHeaders.shift();
-        return CoreGeneratorEmbed.getSingle(
+        return UtilsGeneratorEmbed.getSingle(
             title,
             split.currentCaptainIndex === -1 ? "#00ff40" : "#008221",
             description,
@@ -25,7 +25,7 @@ export class SplitUI extends ModuleBaseUI {
     }
 
     public splitDeleteButton(label: string): ActionRowBuilder<ButtonBuilder>[] {
-        return CoreGeneratorButton.getSingle(
+        return UtilsGeneratorButton.getSingle(
             label,
             "✖️",
             ButtonStyle.Danger,

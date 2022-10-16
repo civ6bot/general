@@ -2,7 +2,7 @@ import {CommandInteraction, EmbedBuilder} from "discord.js";
 import {DatabaseServiceConfig} from "../../database/services/service.Config";
 import {DatabaseServiceText} from "../../database/services/service.Text";
 import {ModuleBaseUI} from "../../modules/base/base.ui";
-import {CoreServicePM} from "../services/core.service.PM";
+import {UtilsServicePM} from "../services/utils.service.PM";
 
 export const SafeModuleService: MethodDecorator = (
     target: any,
@@ -30,7 +30,7 @@ export const SafeModuleService: MethodDecorator = (
                     interaction.deferred
                         ? await interaction.editReply({embeds: errorEmbed})
                         : await interaction.reply({embeds: errorEmbed});
-                    await CoreServicePM.send(userID, errorEmbed);
+                    await UtilsServicePM.send(userID, errorEmbed);
                 } catch {}
         }
     }

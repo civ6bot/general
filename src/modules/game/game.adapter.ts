@@ -2,7 +2,7 @@ import {ModuleBaseService} from "../base/base.service";
 import {GameFFA, GameTeamers} from "./game.models";
 import {DraftService} from "../draft/draft.service";
 import {DraftFFA, DraftBlind} from "../draft/draft.models";
-import {CoreServiceCivilizations} from "../../core/services/core.service.civilizations";
+import {UtilsServiceCivilizations} from "../../utils/services/utils.service.civilizations";
 import {CommandInteraction, GuildMember, User} from "discord.js";
 import {SplitService} from "../split/split.service";
 import {SplitClassic, SplitCWC, SplitDouble, SplitRandom} from "../split/split.models";
@@ -22,8 +22,8 @@ export class GameAdapter extends ModuleBaseService {
             );
             let draftFFA: DraftFFA = new DraftFFA(
                 game.interaction, bans,
-                await this.getManySettingNumber(game.interaction, ...CoreServiceCivilizations.civilizationsTags),
-                await this.getManyText(game.interaction, CoreServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
+                await this.getManySettingNumber(game.interaction, ...UtilsServiceCivilizations.civilizationsTags),
+                await this.getManyText(game.interaction, UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
                 game.users,
                 minCivilizations, maxCivilizations
             );
@@ -34,8 +34,8 @@ export class GameAdapter extends ModuleBaseService {
             );
             let draftBlind: DraftBlind = new DraftBlind(
                 game.interaction, bans,
-                await this.getManySettingNumber(game.interaction, ...CoreServiceCivilizations.civilizationsTags),
-                await this.getManyText(game.interaction, CoreServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
+                await this.getManySettingNumber(game.interaction, ...UtilsServiceCivilizations.civilizationsTags),
+                await this.getManyText(game.interaction, UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
                 game.users,
                 minCivilizations, maxCivilizations
             );

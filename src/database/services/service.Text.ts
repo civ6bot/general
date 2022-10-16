@@ -1,9 +1,9 @@
 import {EntityText} from "../entities/entity.Text";
 import {EntityManager} from "typeorm";
-import {dataSource} from "../database.datasource";
+import {localDataSource} from "../database.datasources";
 
 export class DatabaseServiceText {
-    protected database: EntityManager = dataSource.manager;
+    protected database: EntityManager = localDataSource.manager;
 
     public async getOne(lang: string, tag: string, args: (string|number)[] = []): Promise<string> {
 
@@ -41,9 +41,9 @@ export class DatabaseServiceText {
     }
 
     public static async getLanguages(): Promise<string[]> {
-        let database: EntityManager = dataSource.manager;
+        let database: EntityManager = localDataSource.manager;
         let entitiesText: EntityText[] = await database.find(EntityText);
-        return Array<string>.from(new Set<string>(entitiesText
+        return Array.from(new Set<string>(entitiesText
             .map((entity: EntityText): string => entity.lang) || [])
         );
     }

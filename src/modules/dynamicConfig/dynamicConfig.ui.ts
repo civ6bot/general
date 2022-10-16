@@ -1,10 +1,10 @@
 import {ModuleBaseUI} from "../base/base.ui";
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ModalBuilder, SelectMenuBuilder, TextInputStyle} from "discord.js";
 import {DynamicConfig, DynamicConfigEntityTeamersForbiddenPairs} from "./dynamicConfig.models";
-import {CoreGeneratorEmbed} from "../../core/generators/core.generator.embed";
-import {CoreGeneratorMenu} from "../../core/generators/core.generator.menu";
-import {CoreGeneratorButton} from "../../core/generators/core.generator.button";
-import {CoreGeneratorModal} from "../../core/generators/core.generator.modal";
+import {UtilsGeneratorEmbed} from "../../utils/generators/utils.generator.embed";
+import {UtilsGeneratorMenu} from "../../utils/generators/utils.generator.menu";
+import {UtilsGeneratorButton} from "../../utils/generators/utils.generator.button";
+import {UtilsGeneratorModal} from "../../utils/generators/utils.generator.modal";
 
 export class DynamicConfigUI extends ModuleBaseUI {
     public configEmbed(
@@ -26,7 +26,7 @@ export class DynamicConfigUI extends ModuleBaseUI {
             options = [`__**${options[0]}**__`];
         }
 
-        return CoreGeneratorEmbed.getSingle(
+        return UtilsGeneratorEmbed.getSingle(
             (dynamicConfig.pageTotal > 1)
                 ? `${titleEmoji} ${title}, ${titlePage} ${dynamicConfig.pageCurrent}/${dynamicConfig.pageTotal}`
                 : `${titleEmoji} ${title}`,
@@ -46,7 +46,7 @@ export class DynamicConfigUI extends ModuleBaseUI {
         emojis: string[],
         descriptions: string[] = []
     ): ActionRowBuilder<SelectMenuBuilder>[] {
-        return CoreGeneratorMenu.build(
+        return UtilsGeneratorMenu.build(
             "dynamicConfig-menu",
             placeholder,
             labels,
@@ -92,7 +92,7 @@ export class DynamicConfigUI extends ModuleBaseUI {
             ButtonStyle.Danger
         ].filter(filterFunction);
 
-        return CoreGeneratorButton.getList(labels, emojis, styles, customIDArray);
+        return UtilsGeneratorButton.getList(labels, emojis, styles, customIDArray);
     }
 
     public configModal(
@@ -103,7 +103,7 @@ export class DynamicConfigUI extends ModuleBaseUI {
         isStyleParagraphText: boolean = false,
         zeroCharactersInput: boolean = false
     ): ModalBuilder {
-        return CoreGeneratorModal.build(
+        return UtilsGeneratorModal.build(
             "dynamicConfig-modal",
             title,
             [configTag],
@@ -119,7 +119,7 @@ export class DynamicConfigUI extends ModuleBaseUI {
         title: string,
         description: string
     ): EmbedBuilder[] {
-        return CoreGeneratorEmbed.getSingle(
+        return UtilsGeneratorEmbed.getSingle(
             title,
             "#F4900C",
             description,
@@ -133,6 +133,6 @@ export class DynamicConfigUI extends ModuleBaseUI {
         let styles: ButtonStyle[] = [ButtonStyle.Success, ButtonStyle.Danger];
         let emojis: string[] = ["🔄", "✖️"];
         let customIDs: string[] = ["dynamicConfig-button-reset-confirm", "dynamicConfig-button-reset-deny"];
-        return CoreGeneratorButton.getList(labels, emojis, styles, customIDs);
+        return UtilsGeneratorButton.getList(labels, emojis, styles, customIDs);
     }
 }

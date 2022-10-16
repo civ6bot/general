@@ -1,12 +1,12 @@
 import {ModuleBaseUI} from "../base/base.ui";
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, User} from "discord.js";
-import {CoreGeneratorButton} from "../../core/generators/core.generator.button";
+import {UtilsGeneratorButton} from "../../utils/generators/utils.generator.button";
 import {Game, GameEntityReady, GameTeamers} from "./game.models";
-import {CoreGeneratorEmbed} from "../../core/generators/core.generator.embed";
+import {UtilsGeneratorEmbed} from "../../utils/generators/utils.generator.embed";
 
 export class GameUI extends ModuleBaseUI {
     public readyEmbed(gameEntityReady: GameEntityReady): EmbedBuilder[] {
-        return CoreGeneratorEmbed.getSingle(
+        return UtilsGeneratorEmbed.getSingle(
             gameEntityReady.header,
             "#5865F2",
             gameEntityReady.descriptions[0],
@@ -20,7 +20,7 @@ export class GameUI extends ModuleBaseUI {
     }
 
     public readyAllFinishedEmbed(gameEntityReady: GameEntityReady): EmbedBuilder[] {
-        return CoreGeneratorEmbed.getSingle(
+        return UtilsGeneratorEmbed.getSingle(
             gameEntityReady.header,
             "#5865F2",
             gameEntityReady.descriptions[0],
@@ -49,7 +49,7 @@ export class GameUI extends ModuleBaseUI {
             description += "\n" + gameTeamers.entityCaptains.getContent();
         }
 
-        return CoreGeneratorEmbed.getSingle(
+        return UtilsGeneratorEmbed.getSingle(
             title,
             (isTimeout) ? "#FFFFFF" : "#5865F2",
             description,
@@ -60,7 +60,7 @@ export class GameUI extends ModuleBaseUI {
     }
 
     public gameReadyButton(labels: string[]): ActionRowBuilder<ButtonBuilder>[] {
-        return CoreGeneratorButton.getList(
+        return UtilsGeneratorButton.getList(
             labels,
             ["⚡", "✖️"],
             [ButtonStyle.Primary, ButtonStyle.Danger],

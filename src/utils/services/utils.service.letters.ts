@@ -1,4 +1,4 @@
-export class CoreServiceLetters {
+export class UtilsServiceLetters {
     private static letters: string[] = ["🇦", "🇧", "🇨", "🇩", "🇪", "🇫", "🇬", "🇭", "🇮", "🇯", "🇰", "🇱", "🇲", "🇳", "🇴", "🇵"];
 
     public static getLetters(): string[] {

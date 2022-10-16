@@ -3,7 +3,7 @@ import {Client} from "discordx";
 import * as dotenv from "dotenv";
 
 dotenv.config({path: 'general.env'});
-const isDebug: boolean = Boolean(Number(process.env.DEBUG_TEST_MODE) || 0);
+const isTesting: boolean = Boolean(Number(process.env.TEST_MODE) || 0);
 
 export const discordClient: Client = new Client({
     intents: [
@@ -14,20 +14,20 @@ export const discordClient: Client = new Client({
         IntentsBitField.Flags.GuildVoiceStates,
         IntentsBitField.Flags.GuildPresences,
         IntentsBitField.Flags.DirectMessages,
-        IntentsBitField.Flags.MessageContent,
+        IntentsBitField.Flags.MessageContent
     ],
-    botGuilds: isDebug
-        ? [(client) => client.guilds.cache.map((guild) => guild.id).filter((guild) => guild !== "663144077818331186")]
+    botGuilds: isTesting
+        ? ["795264927974555648"]    // test guild
         : [(client) => client.guilds.cache.map((guild) => guild.id)],
-    silent: !isDebug,
+    silent: !isTesting,
     shards: "auto",
-    rest: {offset: 0},
+    rest: {offset: 0}
 });
 
 discordClient.once("ready", async () => {
-    await discordClient.initApplicationCommands({ global: { log: isDebug } });
+    await discordClient.initApplicationCommands({ global: { log: isTesting } });
 });
 
 discordClient.on("interactionCreate", (interaction: Interaction) => {
-    discordClient.executeInteraction(interaction, isDebug);
+    discordClient.executeInteraction(interaction, isTesting);
 });

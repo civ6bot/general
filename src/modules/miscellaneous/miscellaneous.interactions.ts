@@ -9,11 +9,11 @@ export abstract class MiscellaneousInteractions {
     @Slash({name: "random", description: "Random number from 1 to N" })
     public async random(
         @SlashOption({
-            name: "n-value",
+            name: "max-value",
             description: "Max value",
             type: ApplicationCommandOptionType.Number,
-            required: true
-        }) n: number,
+            required: false
+        }) n: number = NaN,
         interaction: CommandInteraction
     ) { await this.miscellaneousService.random(interaction, n); }
 

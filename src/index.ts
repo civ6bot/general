@@ -57,7 +57,7 @@ localDataSource.initialize().then(async () => {
 
 outerDataSource.initialize().then(async () => {
     console.log(`Outer database started`);
-})
+});
 
 httpsServer.listen(process.env.SERVER_HTTPS_PORT, () => {
     console.log(`HTTPS server listening on PORT=${process.env.SERVER_HTTPS_PORT}`);

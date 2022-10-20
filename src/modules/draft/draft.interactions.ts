@@ -5,7 +5,7 @@ import {DraftService} from "./draft.service";
 @Discord()
 @SlashGroup({name: "draft", description: "Get civilizations for players"})
 @SlashGroup("draft")
-export abstract class DraftInteractionsGrouped {
+export abstract class DraftGeneratorInteractions {
     private draftService: DraftService = new DraftService();
 
     @Slash( { name: "ffa", description: "Draft for FFA game" })

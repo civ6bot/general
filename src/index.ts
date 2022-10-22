@@ -20,7 +20,7 @@ importx(__dirname + "/modules/*/*.interactions.{js,ts}").then(() => {
                 .map((guild): number => guild.memberCount)
                 .reduce((a, b) => a+b);
             discordClient.user?.setActivity({
-                name: `${guildsAmount} 🏘️, ${usersAmount} 👥`,
+                name: `${guildsAmount} 🏰, ${usersAmount} 👥`,
                 type: ActivityType.Listening
             });
             setTimeout(() => {

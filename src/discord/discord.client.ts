@@ -16,9 +16,7 @@ export const discordClient: Client = new Client({
         IntentsBitField.Flags.DirectMessages,
         IntentsBitField.Flags.MessageContent
     ],
-    botGuilds: isTesting
-        ? ["795264927974555648"]    // test guild
-        : [(client) => client.guilds.cache.map((guild) => guild.id)],
+    botGuilds: isTesting ? ["795264927974555648"] : undefined,  // test guild or all guilds
     silent: !isTesting,
     shards: "auto",
     rest: {offset: 0}

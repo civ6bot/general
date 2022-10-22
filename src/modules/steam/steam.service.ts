@@ -1,7 +1,6 @@
 import {ModuleBaseService} from "../base/base.service";
 import {CommandInteraction} from "discord.js";
 import {SteamUI} from "./steam.ui";
-import {SafeModuleServiceDeferReply} from "../../utils/decorators/utils.decorators.SaveModuleServiceDeferReply";
 import {SteamAPIData} from "../../types/type.SteamAPIData";
 import {DatabaseServiceUserSteam} from "../../database/services/service.UserSteam";
 import {UserSteam} from "../../types/type.UserSteam";
@@ -12,7 +11,6 @@ export class SteamService extends ModuleBaseService {
     private databaseServiceUserSteam: DatabaseServiceUserSteam = new DatabaseServiceUserSteam();
     private requestsSteam: RequestsSteam = new RequestsSteam();
 
-    @SafeModuleServiceDeferReply()
     async link(interaction: CommandInteraction, description: string) {
         let gameIDArray: string[] = ["289070", "480"];
         let textStringsError: string[] = await this.getManyText(interaction,
@@ -26,18 +24,18 @@ export class SteamService extends ModuleBaseService {
             return this.connect(interaction);
         let steamAPIData: SteamAPIData | null = await this.requestsSteam.getSteamLinkData(userSteam.steamID);
         if((steamAPIData === null))
-            return interaction.editReply({embeds: this.steamUI.error(textStringsError[0], textStringsError[1])});
+            return interaction.reply({embeds: this.steamUI.error(textStringsError[0], textStringsError[1])});
         if(steamAPIData.gameID === undefined)
-            return interaction.editReply({embeds: this.steamUI.error(textStringsError[0], textStringsError[1])});
+            return interaction.reply({embeds: this.steamUI.error(textStringsError[0], textStringsError[1])});
         if(gameIDArray.indexOf(steamAPIData.gameID as string) === -1)
-            return interaction.editReply({embeds: this.steamUI.error(textStringsError[0], textStringsError[2])});
+            return interaction.reply({embeds: this.steamUI.error(textStringsError[0], textStringsError[2])});
         let link: string = `steam://joinlobby/${steamAPIData.gameID}/${steamAPIData.lobbySteamID}/${steamAPIData.steamID}`;
 
         let textStrings: string[] = await this.getManyText(interaction, [
             "STEAM_LINK_TITLE", "STEAM_LINK_DESCRIPTION_LICENSE",
             "STEAM_LINK_DESCRIPTION_PIRATE", "STEAM_LINK_FIELD_TITLE",
         ], [null, [link], [link]]);
-        await interaction.editReply({ embeds: this.steamUI.link(
+        await interaction.reply({ embeds: this.steamUI.link(
             textStrings[0],
                 steamAPIData.gameID === gameIDArray[0]
                 ? textStrings[1]
@@ -55,7 +53,8 @@ export class SteamService extends ModuleBaseService {
 
         await interaction.reply({
             embeds: this.steamUI.connectEmbed(textStrings[0], textStrings[1]),
-            components: this.steamUI.connectButton(textStrings[2], textStrings[3], process.env.OAUTH2_REDIRECT_LINK as string)
+            components: this.steamUI.connectButton(textStrings[2], textStrings[3], process.env.OAUTH2_REDIRECT_LINK as string),
+            ephemeral: true
         });
     }
 }

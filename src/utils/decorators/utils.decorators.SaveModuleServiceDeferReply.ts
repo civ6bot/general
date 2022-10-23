@@ -1,4 +1,4 @@
-// Если первый аргумент метода типа CommandInteraction, то удерживает его в тайминге больше 5 секунд interaction.deferReply();
+// Если первый аргумент метода типа CommandInteraction, то удерживает его в тайминг больше 5 секунд interaction.deferReply();
 // оборачивает в конструкцию try-catch для избежания отключения бота.
 import {CommandInteraction, EmbedBuilder} from "discord.js";
 import {UtilsServicePM} from "../services/utils.service.PM";

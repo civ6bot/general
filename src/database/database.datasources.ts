@@ -1,6 +1,5 @@
 import { DataSource } from "typeorm"
 import * as dotenv from "dotenv";
-
 dotenv.config({path: 'general.env'});
 
 export const outerDataSource: DataSource = new DataSource({
@@ -21,7 +20,7 @@ export const outerDataSource: DataSource = new DataSource({
 
 export const localDataSource: DataSource = new DataSource({
     type: "sqlite",
-    database: __dirname + "/../../database.sqlite",
+    database: __dirname + "/../../localDatabase.sqlite",
     entities: [
         __dirname + "/entities/entity.Config.{js,ts}",
         __dirname + "/entities/entity.Text.{js,ts}"

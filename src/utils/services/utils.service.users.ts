@@ -14,10 +14,4 @@ export class UtilsServiceUsers {
     public static isAdmin(member: GuildMember): boolean {
         return member.permissions.has("Administrator");
     }
-
-    // Раньше Modals не работали
-    // сейчас этот метод не нужен
-    public static isUserPhone(member: GuildMember): boolean {
-        return Boolean(member.presence?.clientStatus?.web);
-    }
 }

@@ -5,6 +5,8 @@ import {SteamAPIData} from "../../types/type.SteamAPIData";
 import {DatabaseServiceUserSteam} from "../../database/services/service.UserSteam";
 import {UserSteam} from "../../types/type.UserSteam";
 import {RequestsSteam} from "../../requests/requests.steam";
+import * as dotenv from "dotenv";
+dotenv.config({path: 'general.env'});
 
 export class SteamService extends ModuleBaseService {
     private steamUI: SteamUI = new SteamUI();

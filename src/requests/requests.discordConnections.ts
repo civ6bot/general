@@ -1,6 +1,8 @@
 import axios from "axios";
 import {DecorateAll} from "decorate-all";
 import {SafeRequest} from "../utils/decorators/utils.decorators.SafeRequest";
+import * as dotenv from "dotenv";
+dotenv.config({path: 'general.env'});
 
 @DecorateAll(SafeRequest)
 export class RequestsDiscordConnections {

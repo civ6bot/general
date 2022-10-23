@@ -14,8 +14,8 @@ export const discordClient: Client = new Client({
         IntentsBitField.Flags.DirectMessages,
         IntentsBitField.Flags.MessageContent
     ],
-    botGuilds: process.env.TEST_MODE ? ["795264927974555648"] : undefined,  // test guild or all guilds
-    silent: !process.env.TEST_MODE,
+    botGuilds: (process.env.TEST_MODE === '1') ? ["795264927974555648"] : undefined,  // test guild or all guilds
+    silent: !((process.env.TEST_MODE == '1')),
     shards: "auto",
     rest: {offset: 0}
 });

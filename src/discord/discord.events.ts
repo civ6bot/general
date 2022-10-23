@@ -7,7 +7,7 @@ dotenv.config({path: 'general.env'});
 export abstract class DiscordEvents {
     @Once({event: "ready"})
     public async onceReady([clientArg]: ArgsOf<"ready">, client: Client) {
-        await client.initApplicationCommands({ global: { log: Boolean((process.env.TEST_MODE)) } });
+        await client.initApplicationCommands({ global: { log: (process.env.TEST_MODE == '1') } });
 
         setInterval(() => {
             let guildsAmount: number = client.guilds.cache.size;

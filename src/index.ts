@@ -1,5 +1,5 @@
 import {importx} from "@discordx/importer";
-import {httpsServer} from "./server/server.app";
+import {httpServer} from "./server/server.app";
 import {discordClient} from "./discord/discord.client";
 import {localDataSource, outerDataSource} from "./database/database.datasources";
 import {DatabaseServiceText} from "./database/services/service.Text";
@@ -35,8 +35,8 @@ outerDataSource.initialize().then(async () => {
     console.log(`Outer database started`);
 });
 
-httpsServer.listen(process.env.SERVER_HTTPS_PORT, () => {
-    console.log(`HTTPS server listening on PORT=${process.env.SERVER_HTTPS_PORT}`);
+httpServer.listen(process.env.SERVER_HTTP_PORT, () => {
+    console.log(`HTTP server listening on PORT=${process.env.SERVER_HTTP_PORT}`);
 });
 
 process.on('uncaughtException', error => {

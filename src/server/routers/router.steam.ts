@@ -2,14 +2,12 @@ import {Router} from "express";
 import {DatabaseServiceUserSteam} from "../../database/services/service.UserSteam";
 import {RequestsDiscordConnections} from "../../requests/requests.discordConnections";
 
-// Этот маршрут необходим, чтобы сайт посылал сюда запрос и возвращал
-// пользователю ответ. Вообще, необходимо это переделать на PHP со стороны сайта.
-// Посылать объект типа RequestResponseUserSteam
+// Возвращает объект типа RequestResponseUserSteam
 export const routerSteam: Router = Router();
 routerSteam.post('/', async (req, res) => {
     let requestsDiscordConnections: RequestsDiscordConnections = new RequestsDiscordConnections();
     let databaseServiceUserSteam: DatabaseServiceUserSteam = new DatabaseServiceUserSteam();
-    let code: string = req.body.code || "";
+    let code: string = req?.body?.code || "";
 
     let authorizationToken: string | null = await requestsDiscordConnections.getDiscordAuthorizationToken(code);
     if(authorizationToken === null)

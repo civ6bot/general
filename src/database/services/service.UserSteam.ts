@@ -15,5 +15,5 @@ export class DatabaseServiceUserSteam {
         return await this.outerDatabase.save(EntityUserSteam, userSteam);
     }
 
-    public async isExists(discordID: string): Promise<boolean> { return Boolean(this.getOne(discordID)); }
+    public async isExists(discordID: string): Promise<boolean> { return Boolean(await this.getOne(discordID)); }
 }

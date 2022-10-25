@@ -10,7 +10,6 @@ export class RequestsSteam {
     // поэтому выбираются отдельные свойства объекта типа any.
     // Steam Web API гарантирует объекты с необходимыми свойствами.
     public async getSteamLinkData(steamID: string): Promise<SteamAPIData|null>{
-        console.log("RequestsSteam, steamAPIUrl_NoSteamID: ", this.steamAPIUrl_NoSteamID);
         let {data, status} = await axios.get<any>(this.steamAPIUrl_NoSteamID + steamID);
         return {
             steamID: data.response.players[0].steamid as string,            // as string

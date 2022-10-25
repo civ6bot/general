@@ -11,15 +11,19 @@ export class RequestsDiscordConnections {
     private discordUserConnectionsUrl: string = 'https://discord.com/api/users/@me/connections';
 
     public async getDiscordAuthorizationToken(specialCode: string): Promise<string|null> {
-        let {data, status} = await axios.post<any>(this.discordAuthorizationTokenUrl, new URLSearchParams({
+        let discordSendData = {
             client_id: process.env.OAUTH2_BOT_CLIENT_ID as string,
             client_secret: process.env.OAUTH2_BOT_SECRET as string,
-            specialCode,
             grant_type: 'authorization_code',
+            code: specialCode,
             redirect_uri: process.env.OAUTH2_REDIRECT_URI_FOR_TOKEN as string,
             scope: 'identify',
-        }), { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }} );
-        console.log("getDiscordAuthorizationToken: ", data);
+        };
+        let {data, status} = await axios.post<any>(
+            this.discordAuthorizationTokenUrl,
+            new URLSearchParams(discordSendData),
+            { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }}
+        );
         return `${data?.token_type} ${data?.access_token}` || null;
     }
 

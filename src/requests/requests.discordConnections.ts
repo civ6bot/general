@@ -19,6 +19,7 @@ export class RequestsDiscordConnections {
             redirect_uri: process.env.OAUTH2_REDIRECT_URI_FOR_TOKEN as string,
             scope: 'identify',
         }), { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }} );
+        console.log("getDiscordAuthorizationToken: ", data);
         return `${data?.token_type} ${data?.access_token}` || null;
     }
 

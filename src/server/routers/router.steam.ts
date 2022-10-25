@@ -9,19 +9,25 @@ routerSteam.post('/', async (req, res) => {
     let databaseServiceUserSteam: DatabaseServiceUserSteam = new DatabaseServiceUserSteam();
     let code: string = req?.body?.code || "";
 
+    console.log("body: ", req.body);
+    console.log("code: ", code);
     let authorizationToken: string | null = await requestsDiscordConnections.getDiscordAuthorizationToken(code);
+    console.log("authorizationToken: ", authorizationToken);
     if(authorizationToken === null)
         return res.send({status: "error_unknown", discordID: null, steamID: null});
 
     let discordID: string | null = await requestsDiscordConnections.getDiscordUserID(authorizationToken);
+    console.log("discordID: ", discordID);
     if(discordID === null)
         return res.send({status: "error_incorrect", discordID: null, steamID: null});
 
     let steamID: string | null = await requestsDiscordConnections.getDiscordConnectedSteam(authorizationToken);
+    console.log("steamID: ", steamID);
     if(steamID == null)
         return res.send({status: "error_no_steam", discordID: null, steamID: null});
 
     let isUserSteamExists: boolean = await databaseServiceUserSteam.isExists(discordID);
+    console.log("isUserSteamExists: ", isUserSteamExists);
     await databaseServiceUserSteam.insertOne({
         discordID: discordID,
         steamID: steamID

@@ -94,9 +94,9 @@ export class DraftUI extends ModuleBaseUI {
             draft.isProcessing ? "#FFFFFF" : "#FFAA00",
             description,
             [],
-            draft.interaction.guild?.toString() as string,
-            draft.interaction.guild?.icon as string
-        )
+            draft.interaction.guild?.name,
+            draft.interaction.guild?.iconURL()
+        );
     }
 
     public draftBlindPMCivilizationsButtons(draft: Draft, index: number): ActionRowBuilder<ButtonBuilder>[] {

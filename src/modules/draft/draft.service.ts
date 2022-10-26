@@ -223,13 +223,14 @@ export class DraftService extends ModuleBaseService {
 
         for(let i: number = 0; i < draft.users.length; i++) {
             try {
-                draft.pmMessages.push(await draft.users[i].send({
+                let message = await draft.users[i].send({
                     embeds: this.draftUI.draftBlindPMEmbed(
                         textStrings[0],
                         textStrings[1],
                         draft
-                    ), components: this.draftUI.draftBlindPMCivilizationsButtons(draft, i)
-                }));
+                    ), components: this.draftUI.draftBlindPMCivilizationsButtons(draft, i),
+                });
+                draft.pmMessages.push(message);
             } catch {
                 DraftService.drafts.delete(draft.guildID+draft.type);
                 draft.isProcessing = false;
@@ -302,7 +303,7 @@ export class DraftService extends ModuleBaseService {
         let index: number = draft.users.indexOf(draft.users.filter(user => user.id === interaction.user.id)[0]);
         draft.civilizationsPool[index] = [Number(civID)];
         let textStrings = await this.getManyText(
-            interaction,
+            draft.interaction,
             ["DRAFT_BLIND_PM_TITLE", "DRAFT_BLIND_PM_DESCRIPTION_READY"],
             [null, [draft.getPoolsText()[index][0]]]
         );
@@ -315,7 +316,7 @@ export class DraftService extends ModuleBaseService {
 
         let pickTimeMs: number = await this.getOneSettingNumber(interaction, "DRAFT_BLIND_PICK_TIME_MS");
         textStrings = await this.getManyText(
-            interaction,
+            draft.interaction,
             ["DRAFT_BLIND_TITLE_ONE_PLAYER", "DRAFT_BLIND_TITLE_MANY_PLAYERS",
                 "DRAFT_BLIND_DESCRIPTION_PROCESSING", "DRAFT_DRAFT_BANS_DESCRIPTION",
                 "DRAFT_DRAFT_ERRORS_DESCRIPTION", "DRAFT_BLIND_FIELD_PLAYERS_TITLE",
@@ -323,7 +324,7 @@ export class DraftService extends ModuleBaseService {
             [null, [draft.users.length], [UtilsGeneratorTimestamp.getRelativeTime(pickTimeMs+draft.date.getTime()-Date.now())], [draft.bans.length]]
         );  // здесь должна оставаться разность времени,
         // чтобы в сообщении показывало правильное время, а не начинало отчет заново
-        let emojis: string[] = await this.getManySettingString(interaction, "BASE_EMOJI_YES", "BASE_EMOJI_NO");
+        let emojis: string[] = await this.getManySettingString(draft.interaction, "BASE_EMOJI_YES", "BASE_EMOJI_NO");
 
         if(draft.civilizationsPool.every((pool: number[]): boolean => pool.length === 1)) {
             if(draft.setTimeoutID !== null) {

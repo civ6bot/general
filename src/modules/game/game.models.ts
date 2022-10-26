@@ -160,11 +160,15 @@ export class GameEntityDefault extends GameEntity {
         if(user.bot)
             return false;
         if(this.users.map(user => user.id).indexOf(user.id) === -1) {
-            await reaction.message.reactions.resolve(reaction).users.remove(user);
+            try {
+                await reaction.message.reactions.resolve(reaction).users.remove(user);
+            } catch {}
             return false;
         }
         if(this.emojis.indexOf(reaction.emoji.toString().toLowerCase()) === -1) {
-            await reaction.remove();
+            try {
+                await reaction.remove();
+            } catch {}
             return false;
         }
         return false;
@@ -237,16 +241,22 @@ export class GameEntityDraft extends GameEntity {
         if(user.bot)
             return false;
         if(this.users.map(user => user.id).indexOf(user.id) === -1) {
-            await reaction.message.reactions.resolve(reaction).users.remove(user);
+            try {
+                await reaction.message.reactions.resolve(reaction).users.remove(user);
+            } catch {}
             return false;
         }
         if(reaction.emoji.toString() === "🤔") {
-            await reaction.message.reactions.resolve(reaction).users.remove(user);
+            try {
+                await reaction.message.reactions.resolve(reaction).users.remove(user);
+            } catch {}
             return false;
         }
         let emojiIndex: number = this.emojis.indexOf(reaction.emoji.toString().toLowerCase());
         if(emojiIndex === -1) {
-            await reaction.remove();
+            try {
+                await reaction.remove();
+            } catch {}
             return false;
         }
         await this.setVotesCount();
@@ -255,7 +265,9 @@ export class GameEntityDraft extends GameEntity {
         this.banStrings.push(this.options.splice(emojiIndex, 1)[0]);
         this.emojis.splice(emojiIndex, 1);
         this.header = this.headerProcessing;    // если хотя бы 1 забанена, то заголовок меняется
-        await reaction.remove();
+        try {
+            await reaction.remove();
+        } catch {}
         return true;    // сообщение редактируется во внешнем методе
     }
 
@@ -292,11 +304,15 @@ export class GameEntityCaptains extends GameEntity {
         if(user.bot)
             return false;
         if(this.users.map(user => user.id).indexOf(user.id) === -1) {
-            await reaction.message.reactions.resolve(reaction).users.remove(user);
+            try {
+                await reaction.message.reactions.resolve(reaction).users.remove(user);
+            } catch {}
             return false;
         }
         if(this.emojis.indexOf(reaction.emoji.toString().toLowerCase()) === -1) {
-            await reaction.remove();
+            try {
+                await reaction.remove();
+            } catch {}
             return false;
         }
         return false;
@@ -344,7 +360,9 @@ export class GameEntityReady extends GameEntity {
 
     // call every time when reacted
     public override async resolveProcessing(reaction: MessageReaction, user: User): Promise<false> {
-        await reaction.remove();
+        try {
+            await reaction.remove();
+        } catch {}
         return false;
     }
 

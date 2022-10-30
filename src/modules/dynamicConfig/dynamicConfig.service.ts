@@ -731,16 +731,33 @@ export class DynamicConfigService extends ModuleBaseService {
             |JSONDynamicConfigEntityTeamersForbiddenPairs
             |JSONDynamicConfigEntityBooleanLanguage)[]
             |undefined = DynamicConfigService.configsMap.get(dynamicConfig.getOptionTags()[valueIndex]);
+        // Изменение языка, нужно смотреть локальную БД для отображения списка
         if(dynamicConfig.getOptionTags()[valueIndex] === "DYNAMIC_CONFIG_LANGUAGE")
             configs = (await DatabaseServiceText.getLanguages()).map((language: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
                 configTag: "BASE_LANGUAGE",
                 textTag: language,
                 type: "BooleanLanguage",
             }});
+        // Если это действительно последняя категория конфигурация, то вывести
         if(configs) {
             await interaction.deferUpdate();
+            // Если все Boolean, то отсортировать
+            if(configs.every(config => config.type === "Boolean")) {
+                let textStrings: string[] = await this.getManyText(
+                    dynamicConfig.interaction,
+                    configs.map(config => config.textTag)
+                );
+                let pairsTextConfig: {text: string, config: JSONDynamicConfigEntityBoolean}[] = textStrings
+                    .map((text: string, index: number): {text: string, config: JSONDynamicConfigEntityBoolean} => {
+                        return {text: text, config: configs?.[index] as JSONDynamicConfigEntityBoolean}
+                    });
+                pairsTextConfig.sort((a, b) => a.text.localeCompare(b.text));
+                configs = pairsTextConfig.map(pair => pair.config);
+            }
             let dynamicConfigEntities: DynamicConfigEntity[] = await this.createDynamicConfigEntities(configs, dynamicConfig);
             dynamicConfig.createChild(valueIndex, [], dynamicConfigEntities);
+            // Сортировка для Boolean (цивилизации)
+            let dynamicConfigChild: DynamicConfig = dynamicConfig.getLastChild();
             await this.sendDynamicConfigMessage(dynamicConfig);
             return;
         }

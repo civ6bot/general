@@ -16,12 +16,14 @@ export class UtilsGeneratorButton {
         emoji: string = "",
         style: ButtonStyle = ButtonStyle.Secondary,
         customID: string = "",
+        isDisabled: boolean = false
     ): ActionRowBuilder<ButtonBuilder>[] {
         return this.getList(
             [label],
             [emoji],
             [style],
             [customID],
+            [isDisabled]
         );
     }
 
@@ -44,6 +46,7 @@ export class UtilsGeneratorButton {
         emojiArray: string[] = [],
         styleArray: ButtonStyle[] = [],
         customIDArray: string[] = [],
+        isDisabledArray: boolean[] = [],
         buttonsPerRow: number = this.maxButtonsPerRow
     ): ActionRowBuilder<ButtonBuilder>[] {
         buttonsPerRow = (buttonsPerRow > this.maxButtonsPerRow) ? this.maxButtonsPerRow : buttonsPerRow;
@@ -51,7 +54,8 @@ export class UtilsGeneratorButton {
             this.formData(labelArray, buttonsPerRow),
             this.formData(emojiArray, buttonsPerRow),
             this.formData(styleArray, buttonsPerRow),
-            this.formData(customIDArray, buttonsPerRow)
+            this.formData(customIDArray, buttonsPerRow),
+            this.formData(isDisabledArray, buttonsPerRow)
         );
     }
 
@@ -60,6 +64,7 @@ export class UtilsGeneratorButton {
         formedEmojiArray: string[][],
         formedStyleArray: ButtonStyle[][],
         formedCustomIDArray: string[][],
+        formedIsDisabledArray: boolean[][]
     ): ActionRowBuilder<ButtonBuilder>[] {
         let rows: ActionRowBuilder<ButtonBuilder>[] = [];
         for(let i in formedLabelArray) {
@@ -71,6 +76,7 @@ export class UtilsGeneratorButton {
                         .setEmoji(formedEmojiArray?.[i]?.[j] || "")
                         .setStyle(formedStyleArray?.[i]?.[j] || ButtonStyle.Secondary) // grey button
                         .setCustomId(formedCustomIDArray?.[i]?.[j] || "")
+                        .setDisabled(formedIsDisabledArray?.[i]?.[j] || false)
                 );
             rows.push(new ActionRowBuilder<ButtonBuilder>().addComponents(buttonArray));
         }

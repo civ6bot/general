@@ -1,6 +1,7 @@
 import {ArgsOf, Client, Discord, On, Once} from "discordx";
 import {ActivityType} from "discord.js";
 import * as dotenv from "dotenv";
+import {UtilsServiceTime} from "../utils/services/utils.service.time";
 dotenv.config({path: 'general.env'});
 
 @Discord()
@@ -22,13 +23,13 @@ export abstract class DiscordEvents {
                 client.user?.setActivity({
                     name: `⭐ Support us!`
                 });
-            }, 30*1000);
+            }, UtilsServiceTime.getMs(30, "s"));
             setTimeout(() => {
                 client.user?.setActivity({
                     name: `📄 /help to check commands.`,
                 });
-            }, 45*1000);
-        }, 60*1000);
+            }, UtilsServiceTime.getMs(45, "s"));
+        }, UtilsServiceTime.getMs(60, "s"));
     }
 
     @On({event: "interactionCreate"})

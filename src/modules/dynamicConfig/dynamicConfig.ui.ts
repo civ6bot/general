@@ -69,9 +69,18 @@ export class DynamicConfigUI extends ModuleBaseUI {
         }
         if(!dynamicConfig.hasAnyChild())
             indexes.splice(0, 1);
-        let filterFunction = (value: any, index: number): boolean => (indexes.indexOf(index) !== -1);
 
+        let filterFunction = (value: any, index: number): boolean => (indexes.indexOf(index) !== -1);
         labels = labels.filter(filterFunction);
+        let isDisabledArray: boolean[] = [
+            false,
+            dynamicConfig.pageCurrent === 1,
+            dynamicConfig.pageCurrent === 1,
+            dynamicConfig.pageCurrent === dynamicConfig.pageTotal,
+            dynamicConfig.pageCurrent === dynamicConfig.pageTotal,
+            false,
+            false
+        ].filter(filterFunction);
         let emojis: string[] = ["⬅", "⏮", "◀", "▶", "⏭", "🔄", "✖️"].filter(filterFunction);
         let customIDArray: string[] = [
             "dynamicConfig-button-back",
@@ -92,7 +101,7 @@ export class DynamicConfigUI extends ModuleBaseUI {
             ButtonStyle.Danger
         ].filter(filterFunction);
 
-        return UtilsGeneratorButton.getList(labels, emojis, styles, customIDArray);
+        return UtilsGeneratorButton.getList(labels, emojis, styles, customIDArray, isDisabledArray);
     }
 
     public configModal(

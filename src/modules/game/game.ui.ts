@@ -67,4 +67,38 @@ export class GameUI extends ModuleBaseUI {
             ["game-ready", "game-delete"]
         );
     }
+
+    public notificationFFAPMEmbed(
+        title: string,
+        description: string,
+        messageURL: string,
+        guildName: string,
+        guildAvatarURL: string | null
+    ): EmbedBuilder[] {
+        return UtilsGeneratorEmbed.getSingle(
+            title,
+            "#389fff",
+            `${description}\n${messageURL}`,
+            [],
+            guildName,
+            guildAvatarURL,
+        );
+    }
+
+    public notificationTeamersPMEmbed(
+        title: string,
+        description: string,
+        messageURL: string,
+        guildName: string,
+        guildAvatarURL: string | null
+    ): EmbedBuilder[] {
+        return UtilsGeneratorEmbed.getSingle(
+            title,
+            "#00ff40",
+            `${description}\n${messageURL}`,
+            [],
+            guildName,
+            guildAvatarURL,
+        );
+    }
 }

@@ -1,5 +1,5 @@
 import {ModuleBaseService} from "../base/base.service";
-import {ButtonInteraction, CommandInteraction, GuildMember, MessageReaction, User} from "discord.js";
+import {ButtonInteraction, CommandInteraction, Guild, GuildMember, MessageReaction, User} from "discord.js";
 import {SplitUI} from "./split.ui";
 import {Split, SplitClassic, SplitCWC, SplitDouble, SplitRandom} from "./split.models";
 import {UtilsGeneratorTimestamp} from "../../utils/generators/utils.generator.timestamp";
@@ -39,9 +39,13 @@ export class SplitService extends ModuleBaseService {
         this.checkSplit(split);
         if(split.errorReturnTag !== ""){
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", split.errorReturnTag]);
-            return (outerSplit)
-                ? await interaction.channel?.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
-                : await interaction.reply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
+            if(outerSplit) {
+                (split.thread)
+                    ? await split.thread.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
+                    : await interaction.channel?.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
+            } else
+                await interaction.reply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
+            return;
         }
 
         let title: string = await this.getOneText(split.interaction, "SPLIT_RANDOM_TITLE");
@@ -49,19 +53,29 @@ export class SplitService extends ModuleBaseService {
         for(let i: number = 0; i < split.teams.length; i++)
             fieldHeaders.push(await this.getOneText(split.interaction, "SPLIT_FIELD_TITLE_TEAM", i+1));
 
-        (outerSplit)
-            ? await interaction.channel?.send({embeds: this.splitUI.splitEmbed(
+
+        if (outerSplit) {
+            if(split.thread)
+                await split.thread.send({embeds: this.splitUI.splitEmbed(
+                        title,
+                        null,
+                        fieldHeaders,
+                        split
+                    )});
+            else
+                await interaction.channel?.send({embeds: this.splitUI.splitEmbed(
+                    title,
+                        null,
+                        fieldHeaders,
+                        split
+                    )})
+        } else
+            await interaction.reply({embeds: this.splitUI.splitEmbed(
                 title,
                     null,
                     fieldHeaders,
                     split
                 )})
-            : await interaction.reply({embeds: this.splitUI.splitEmbed(
-                    title,
-                    null,
-                    fieldHeaders,
-                    split
-                )});
     }
 
     public async allLongSplits(
@@ -94,9 +108,13 @@ export class SplitService extends ModuleBaseService {
         this.checkSplit(split);
         if(split.errorReturnTag !== ""){
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", split.errorReturnTag]);
-            return (outerSplit)
-                ? await interaction.channel?.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
-                : await interaction.editReply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
+            if(outerSplit) {
+                (split.thread)
+                    ? await split.thread.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
+                    : await interaction.channel?.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
+            } else
+                await interaction.editReply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
+            return;
         }
         SplitService.splits.set(split.guildID, split);
 
@@ -134,14 +152,23 @@ export class SplitService extends ModuleBaseService {
 
         if(!interaction.channel)
             throw "Interaction no channel!";
-        split.message = (outerSplit)
-            ? await interaction.channel?.send({embeds: this.splitUI.splitEmbed(
-                    textStrings[0],
-                    textStrings[1],
-                    fieldHeaders,
-                    split
-                ), components: this.splitUI.splitDeleteButton(textStrings[2])})
-            : await interaction.editReply({embeds: this.splitUI.splitEmbed(
+        if(outerSplit) {
+            if(split.thread)
+                split.message = await split.thread.send({embeds: this.splitUI.splitEmbed(
+                        textStrings[0],
+                        textStrings[1],
+                        fieldHeaders,
+                        split
+                    ), components: this.splitUI.splitDeleteButton(textStrings[2])});
+            else
+                split.message = await interaction.channel?.send({embeds: this.splitUI.splitEmbed(
+                        textStrings[0],
+                        textStrings[1],
+                        fieldHeaders,
+                        split
+                    ), components: this.splitUI.splitDeleteButton(textStrings[2])});
+        } else
+            split.message = await interaction.editReply({embeds: this.splitUI.splitEmbed(
                 textStrings[0],
                 textStrings[1],
                 fieldHeaders,

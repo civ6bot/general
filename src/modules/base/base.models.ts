@@ -1,4 +1,4 @@
-import {ButtonInteraction, CommandInteraction} from "discord.js";
+import {ButtonInteraction, CommandInteraction, ThreadChannel} from "discord.js";
 
 export class ModuleBaseModel {
     public guildID: string;
@@ -7,6 +7,7 @@ export class ModuleBaseModel {
     public errorReturnTag: string = "";
     public date: Date = new Date();
     public setTimeoutID: NodeJS.Timeout | number | null = null;
+    public thread: ThreadChannel | null = null;
 
     constructor(interaction: CommandInteraction | ButtonInteraction) {
         this.guildID = interaction.guild?.id as string;

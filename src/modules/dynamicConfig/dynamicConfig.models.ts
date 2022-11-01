@@ -2,8 +2,8 @@ import {ModuleBaseModel} from "../base/base.models";
 import {CommandInteraction} from "discord.js";
 import {
     JSONDynamicConfigEntityBoolean,
-    JSONDynamicConfigEntityBooleanLanguage,
-    JSONDynamicConfigEntityNumber,
+    JSONDynamicConfigEntityBooleanLanguage, JSONDynamicConfigEntityChannelMany,
+    JSONDynamicConfigEntityNumber, JSONDynamicConfigEntityNumberMany, JSONDynamicConfigEntityRoleMany,
     JSONDynamicConfigEntityString,
     JSONDynamicConfigEntityTeamersForbiddenPairs
 } from "../../types/type.JSON.DynamicConfigEntities";
@@ -272,9 +272,9 @@ export class DynamicConfigEntityTeamersForbiddenPairs extends DynamicConfigEntit
                 ).length !== 0
             );
         if(civParseResult.map((civDoubleArrayResult: number[][]): boolean =>
-            (civDoubleArrayResult.length === 2) && civDoubleArrayResult.every((civOneArrayResult: number[]): boolean =>
-                civOneArrayResult.length === 1
-            )
+                (civDoubleArrayResult.length === 2) && civDoubleArrayResult.every((civOneArrayResult: number[]): boolean =>
+                    civOneArrayResult.length === 1
+                )
         ).some(result => !result) && civParseResult.length !== 0)
             return false;
 
@@ -353,5 +353,103 @@ export class DynamicConfigEntityBooleanLanguage extends DynamicConfigEntityBoole
         });
         this.value = true;
         return true;
+    }
+}
+
+export class DynamicConfigEntityNumberMany extends DynamicConfigEntity {
+    public readonly type: string = "NumberMany";
+    public value: number[];
+    public readonly properties: JSONDynamicConfigEntityNumberMany;
+
+    constructor(properties: JSONDynamicConfigEntityNumberMany, value: string) {
+        super();
+        this.value = value
+            .split(" ")
+            .map(str => Number(str));
+        this.properties = properties;
+    }
+
+    public check(value: string): boolean {
+        let valueNumberArray: number[] = value
+            .replace(",", " ")
+            .split(" ")
+            .filter(str => str !== "")
+            .map(str => Number(str));
+        if(
+            (valueNumberArray.length < this.properties.minAmount)
+            || (valueNumberArray.length > this.properties.maxAmount)
+            || (valueNumberArray.some(value => value < this.properties.minValue))
+            || (valueNumberArray.some(value => value > this.properties.maxValue))
+        ) return false;
+        this.value = valueNumberArray;
+        return true;
+    }
+
+    public get stringifiedValue(): string { return this.value.join(", "); }
+}
+
+export class DynamicConfigEntityRoleMany extends DynamicConfigEntity {
+    public readonly type: string = "RoleMany";
+    public value: string[];
+    public readonly properties: JSONDynamicConfigEntityRoleMany;
+
+    constructor(properties: JSONDynamicConfigEntityRoleMany, value: string) {
+        super();
+        this.value = value
+            .split(" ")
+            .filter(str => str !== "");
+        this.properties = properties;
+    }
+
+    public check(value: string): boolean {
+        let valueStringArray: string[] = value
+            .replace(",", " ")
+            .split(" ")
+            .filter(str => str !== "");
+        if(
+            (valueStringArray.length < this.properties.minAmount)
+            || (valueStringArray.length > this.properties.maxAmount)
+        ) return false;
+        this.value = valueStringArray;
+        return true;
+    }
+
+    public get stringifiedValue(): string {
+        return this.value
+            .map(roleID => `<@&${roleID}>`)
+            .join(", ");
+    }
+}
+
+export class DynamicConfigEntityChannelMany extends DynamicConfigEntity {
+    public readonly type: string = "ChannelMany";
+    public value: string[];
+    public readonly properties: JSONDynamicConfigEntityChannelMany;
+
+    constructor(properties: JSONDynamicConfigEntityChannelMany, value: string) {
+        super();
+        this.value = value
+            .split(" ")
+            .filter(str => str !== "");
+        this.properties = properties;
+    }
+
+    public check(value: string): boolean {
+        let valueStringArray: string[] = value
+            .replace(",", " ")
+            .split(" ")
+            .filter(str => str !== "")
+        if(
+            (valueStringArray.length < this.properties.minAmount)
+            || (valueStringArray.length > this.properties.maxAmount)
+        ) return false;
+        this.value = valueStringArray;
+        return true;
+    }
+
+    public get stringifiedValue(): string {
+        return this.value
+            .map(roleID => `<#${roleID}>`)
+            .join(", ");
     }
 }

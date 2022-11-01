@@ -7,6 +7,15 @@
     { "tag": "GAME_ERROR_TOO_MUCH_USERS", "value": "Too much users to run this command." },
     { "tag": "GAME_ERROR_READY_BUTTON_NOT_MEMBER", "value": "You cannot vote there." },
     { "tag": "GAME_ERROR_DELETE_BUTTON_NOT_OWNER", "value": "You are not author of this new game vote." },
+    { "tag": "GAME_ERROR_THREAD", "value": "Bot hasn't permission to create thread." },
+
+    { "tag": "GAME_NOTIFY_THREAD", "value": "Thread for new game vote created successfully." },
+    { "tag": "GAME_FFA_THREAD_NAME", "value": "\uD83D\uDDFF FFA game vote by [USER_TAG]" },
+    { "tag": "GAME_TEAMERS_THREAD_NAME", "value": "\uD83D\uDC32 Teamers game vote by [USER_TAG]" },
+
+    { "tag": "GAME_NOTIFY_FFA_PM_TITLE", "value": "\uD83D\uDDFF New FFA Game" },
+    { "tag": "GAME_NOTIFY_TEAMERS_PM_TITLE", "value": "\uD83D\uDC32 New Teamers Game" },
+    { "tag": "GAME_NOTIFY_PM_DESCRIPTION", "value": "New game vote begins! Follow link below to check it." },
 
     { "tag": "GAME_BANS_START", "value": "\uD83E\uDD14 **Civilization bans:** none.\n*Add reactions or write to chat civilization name.*" },
     { "tag": "GAME_BANS_PROCESSING", "value": "\uD83E\uDD14 **Civilization bans:**" },

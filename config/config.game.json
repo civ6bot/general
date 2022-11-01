@@ -1,6 +1,14 @@
 [
   { "setting": "GAME_VOTE_TIME_MS", "value": 90000 },
 
+  { "setting": "GAME_THREAD", "value": 0 },
+  { "setting": "GAME_SEND_PM_NOTIFICATION", "value": 1 },
+  { "setting": "GAME_MOVE_TO_VOICE_CHANNELS", "value": 1 },
+  { "setting": "GAME_FFA_HOME_VOICE_CHANNELS", "value": "" },
+  { "setting": "GAME_FFA_VOICE_CHANNELS", "value": "" },
+  { "setting": "GAME_TEAMERS_HOME_VOICE_CHANNELS", "value": "" },
+  { "setting": "GAME_TEAMERS_VOICE_CHANNELS", "value": "" },
+
   { "setting": "GAME_FFA_MAP", "value": 1 },
   { "setting": "GAME_FFA_MAP_PANGAEA", "value": 1 },
   { "setting": "GAME_FFA_MAP_PANGAEA_EMOJI", "value": "\uD83C\uDDF5" },

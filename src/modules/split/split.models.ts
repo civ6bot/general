@@ -80,7 +80,7 @@ export abstract class Split extends ModuleBaseModel {
             }
             this.currentCaptainIndex = -1;
         } else
-            this.currentCaptainIndex = this.pickSequence[this.currentStep-1] || -1;
+            this.currentCaptainIndex = this.pickSequence[this.currentStep-1] ?? -1;     // 0 is valid value
         return this.emojis.pop() as string;
     }
 }

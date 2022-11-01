@@ -1,5 +1,6 @@
 export class UtilsServiceTime {
     public static getMs(timeAmount: number, timeUnit: string): number {
+        // noinspection FallThroughInSwitchStatementJS
         switch (timeUnit) {
             case "y":
                 timeAmount *= 365;

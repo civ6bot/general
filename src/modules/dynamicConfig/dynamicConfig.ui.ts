@@ -12,7 +12,7 @@ export class DynamicConfigUI extends ModuleBaseUI {
         titleEmoji: string, title: string, titlePage: string,
         description: string,
         emojis: string[], options: string[],
-        noValue: string = ""
+        noValue: string = ""    // для страницы самого верхнего уровня не нужно пустое значение
     ): EmbedBuilder[] {
         let values: string[] = dynamicConfig.getStringifiedValues();
         if(dynamicConfig.isConfig && dynamicConfig.getLastChild().configs[0]?.type === "TeamersForbiddenPairs") {
@@ -31,9 +31,12 @@ export class DynamicConfigUI extends ModuleBaseUI {
                 ? `${titleEmoji} ${title}, ${titlePage} ${dynamicConfig.pageCurrent}/${dynamicConfig.pageTotal}`
                 : `${titleEmoji} ${title}`,
             "#F4900C",
-            description + "\n\n" + emojis.map((value: string, index: number): string => (values[index])
-                ? `${emojis[index]} ${options[index]}: ${values[index]}`
-                : `${emojis[index]} ${options[index]}`).join("\n") + "\n" + "⠀",    // невидимый пробел для следующей строки
+            description + "\n\n" + emojis.map(
+                (value: string, index: number): string =>
+                    (dynamicConfig.isConfig)
+                        ? `${emojis[index]} ${options[index]}: ${values[index] || noValue}`
+                        : `${emojis[index]} ${options[index]}`
+            ).join("\n") + "\n" + "⠀",    // невидимый пробел для следующей строки
             [],
             dynamicConfig.interaction.user.tag,
             dynamicConfig.interaction.user.avatarURL()

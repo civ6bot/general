@@ -40,9 +40,13 @@ export class DraftService extends ModuleBaseService {
         this.checkDraft(draft);
         if(draft.errorReturnTag !== "") {
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
-            return (outerDraft)
-                ? await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
-                : await interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+            if(outerDraft) {
+                (draft.thread)
+                    ? await draft.thread.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+                    : await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+            } else
+                await interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+            return;
         }
         DraftService.drafts.set(draft.guildID+draft.type, draft);
 
@@ -60,20 +64,28 @@ export class DraftService extends ModuleBaseService {
                     textStrings[3],
                     draft
                 )});
-        else
-            (outerDraft)
-                ? await draft.interaction.channel?.send({embeds: this.draftUI.draftFFAEmbed(
+        else if(outerDraft) {
+            if(draft.thread)
+                await draft.thread.send({embeds: this.draftUI.draftFFAEmbed(
+                        draft.users.length === 1 ? textStrings[0] : textStrings[1],
+                        textStrings[2],
+                        textStrings[3],
+                        draft
+                    )});
+            else
+                await draft.interaction.channel?.send({embeds: this.draftUI.draftFFAEmbed(
                         draft.users.length === 1 ? textStrings[0] : textStrings[1],
                         textStrings[2],
                         textStrings[3],
                         draft
                     )})
-                : await draft.interaction.reply({embeds: this.draftUI.draftFFAEmbed(
-                    draft.users.length === 1 ? textStrings[0] : textStrings[1],
-                        textStrings[2],
-                        textStrings[3],
-                        draft
-                    )});
+        } else
+            await draft.interaction.reply({embeds: this.draftUI.draftFFAEmbed(
+                draft.users.length === 1 ? textStrings[0] : textStrings[1],
+                    textStrings[2],
+                    textStrings[3],
+                    draft
+                )});
     }
 
     public async teamers(interaction: CommandInteraction, teamAmount: number, bans: string, users: User[] = [], outerDraft: DraftTeamers | null = null) {
@@ -100,9 +112,13 @@ export class DraftService extends ModuleBaseService {
         this.checkDraft(draft);
         if(draft.errorReturnTag !== "") {
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
-            return (outerDraft)
-                ? await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
-                : await interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+            if(outerDraft) {
+                (draft.thread)
+                    ? await draft.thread.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+                    : await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+            } else
+                await interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+            return;
         }
         DraftService.drafts.set(draft.guildID+draft.type, draft);
 
@@ -124,22 +140,31 @@ export class DraftService extends ModuleBaseService {
                     textStrings[2],
                     draft
                 )});
-        else
-            (outerDraft)
-                ? await draft.interaction.channel?.send({embeds: this.draftUI.draftTeamersEmbed(
+        else if(outerDraft){
+            if(draft.thread)
+                await draft.thread.send({embeds: this.draftUI.draftTeamersEmbed(
                         textStrings[0],
                         teamDescriptionHeader,
                         textStrings[1],
                         textStrings[2],
                         draft
-                    )})
-                : await draft.interaction.reply({embeds: this.draftUI.draftTeamersEmbed(
-                    textStrings[0],
+                    )});
+            else
+                await draft.interaction.channel?.send({embeds: this.draftUI.draftTeamersEmbed(
+                        textStrings[0],
                         teamDescriptionHeader,
                         textStrings[1],
                         textStrings[2],
                         draft
                     )});
+        } else
+            await draft.interaction.reply({embeds: this.draftUI.draftTeamersEmbed(
+                textStrings[0],
+                    teamDescriptionHeader,
+                    textStrings[1],
+                    textStrings[2],
+                    draft
+                )});
     }
 
     public async blind(interaction: CommandInteraction, civAmount: number, bans: string, users: User[] = [], outerDraft: DraftBlind | null = null) {
@@ -163,9 +188,13 @@ export class DraftService extends ModuleBaseService {
         this.checkDraft(draft);
         if(draft.errorReturnTag !== "") {
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
-            return (outerDraft)
-                ? await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
-                : await interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+            if(outerDraft) {
+                (draft.thread)
+                    ? await draft.thread.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+                    : await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+            } else
+                await interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+            return;
         }
         draft.isProcessing = true;
         DraftService.drafts.set(draft.guildID+draft.type, draft);
@@ -192,9 +221,9 @@ export class DraftService extends ModuleBaseService {
                     emojis,
                     draft
                 ), components: this.draftUI.draftBlindDeleteButton(textStrings[7])});
-        else
-            (outerDraft)
-                ? draft.message = await interaction.channel?.send({embeds: this.draftUI.draftBlindEmbed(
+        else if(outerDraft) {
+            if(draft.thread)
+                draft.message = await draft.thread.send({embeds: this.draftUI.draftBlindEmbed(
                         draft.users.length === 1 ? textStrings[0] : textStrings[1],
                         textStrings[2],
                         textStrings[3],
@@ -203,8 +232,9 @@ export class DraftService extends ModuleBaseService {
                         textStrings[6],
                         emojis,
                         draft
-                    ), components: this.draftUI.draftBlindDeleteButton(textStrings[7])}) as Message
-                : draft.message = await interaction.editReply({embeds: this.draftUI.draftBlindEmbed(
+                    ), components: this.draftUI.draftBlindDeleteButton(textStrings[7])})
+            else
+                draft.message = await interaction.channel?.send({embeds: this.draftUI.draftBlindEmbed(
                     draft.users.length === 1 ? textStrings[0] : textStrings[1],
                         textStrings[2],
                         textStrings[3],
@@ -213,8 +243,18 @@ export class DraftService extends ModuleBaseService {
                         textStrings[6],
                         emojis,
                         draft
-                    ), components: this.draftUI.draftBlindDeleteButton(textStrings[7])});
-
+                    ), components: this.draftUI.draftBlindDeleteButton(textStrings[7])}) as Message
+        } else
+            draft.message = await interaction.editReply({embeds: this.draftUI.draftBlindEmbed(
+                    draft.users.length === 1 ? textStrings[0] : textStrings[1],
+                    textStrings[2],
+                    textStrings[3],
+                    textStrings[4],
+                    textStrings[5],
+                    textStrings[6],
+                    emojis,
+                    draft
+                ), components: this.draftUI.draftBlindDeleteButton(textStrings[7])});
         textStrings = await this.getManyText(
             draft.interaction,
             ["DRAFT_BLIND_PM_TITLE", "DRAFT_BLIND_PM_DESCRIPTION_PROCESSING"],

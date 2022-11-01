@@ -10,6 +10,9 @@
     { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_PARSE", "value": "Настройка не была изменена. Список содержит ошибки.\n\nВы ввели:\n```txt\n[CIVILIZATIONS_INPUT_TEXT]\n```\nУбедитесь, что вы вводите пары цивилизации корректно:\n  – каждая пара цивилизаций записана с новой строки;\n  – цивилизации разделены запятой;\n  – ни одна пара не содержит двух одинаковых лидеров;\n  – текст не содержит специальных символов, кроме запятой и дефиса." },
     { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_SAME_IN_PAIR", "value": "Настройка не была изменена. Список содержит пару, в которой записана одна и та же цивилизация.\n\n[CIVILIZATION_ERROR]\n\nВы ввели:\n```txt\n[CIVILIZATIONS_INPUT_TEXT]\n```\nУбедитесь, что вы вводите пары цивилизации корректно:\n  – каждая пара цивилизаций записана с новой строки;\n  – цивилизации разделены запятой;\n  – ни одна пара не содержит двух одинаковых лидеров;\n  – текст не содержит специальных символов, кроме запятой и дефиса." },
     { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_TRIANGLE", "value": "Настройка не была изменена. В списке присутствуют цивилизации, которые не могут быть разделены между двумя командами.\n\n[CIVILIZATIONS_ERRORS]\n\nВы ввели:\n```txt\n[CIVILIZATIONS_INPUT_TEXT]\n```\nУбедитесь, что перечисленные цивилизации не образуют всевозможные пары, и повторите попытку." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_NUMBER_MANY", "value": "Введите от [MIN_AMOUNT] до [MAX_AMOUNT] целых чисел в диапазоне от от [MIN_VALUE] до [MAX_VALUE]." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_ROLE_MANY", "value": "Введите от [MIN_AMOUNT] до [MAX_AMOUNT] ролей или ID ролей." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_CHANNEL_MANY", "value": "Введите от [MIN_AMOUNT] до [MAX_AMOUNT] каналов или ID каналов." },
 
     { "tag": "DYNAMIC_CONFIG_BUTTON_BACK", "value": "Назад" },
     { "tag": "DYNAMIC_CONFIG_BUTTON_FIRST", "value": "На первую страницу" },
@@ -223,6 +226,20 @@
 
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TIME", "value": "Время на голосование, мс" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TIME_EMOJI", "value": "⏰" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_THREAD", "value": "Создавать ветку для голосования" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_THREAD_EMOJI", "value": "#️⃣" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_SEND_PM_NOTIFICATION", "value": "Уведомление о голосовании в ЛС" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_SEND_PM_NOTIFICATION_EMOJI", "value": "\uD83D\uDCF2" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_MOVE_TO_VOICE_CHANNELS", "value": "Перемещать игроков при голосовании" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_MOVE_TO_VOICE_CHANNELS_EMOJI", "value": "↪" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_HOME_VOICE_CHANNELS", "value": "Из каких каналов перемещать для FFA" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_HOME_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDDFF" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_VOICE_CHANNELS", "value": "Голосовые каналы для FFA" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDDFF" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_HOME_VOICE_CHANNELS", "value": "Из каких каналов перемещать для Teamers" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_HOME_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDC32" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_VOICE_CHANNELS", "value": "Голосовые каналы для Teamers" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDC32" },
 
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD", "value": "Добавить в голосование за настройки" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD_EMOJI", "value": "❔" },
@@ -270,7 +287,5 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_REMAPS_EMOJI", "value": "\uD83D\uDD04" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_SPLIT", "value": "Способ разделения на команды" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_SPLIT_EMOJI", "value": "\uD83D\uDC65" }
-
-
   ]
 }

@@ -27,6 +27,8 @@ export class GameAdapter extends ModuleBaseService {
                 game.users,
                 minCivilizations, maxCivilizations
             );
+            if(game.thread)
+                draftFFA.thread = game.thread;
             await draftService.ffa(game.interaction as CommandInteraction, 0, "", [], draftFFA);
         } else if(typeDraftResultsIndexes[0] === 1) {   // FFA Blind
             let [minCivilizations, maxCivilizations]: number[] = await this.getManySettingNumber(game.interaction,
@@ -39,6 +41,8 @@ export class GameAdapter extends ModuleBaseService {
                 game.users,
                 minCivilizations, maxCivilizations
             );
+            if(game.thread)
+                draftBlind.thread = game.thread;
             await draftService.blind(game.interaction as CommandInteraction, 0, "", [], draftBlind);
         }
     }
@@ -71,15 +75,23 @@ export class GameAdapter extends ModuleBaseService {
         switch(splitType) {
             case "Random":
                 let splitRandom: SplitRandom = new SplitRandom(interaction, captains, game.users, bans);
+                if(game.thread)
+                    splitRandom.thread = game.thread;
                 return await splitService.random(interaction, dummyMember, dummyMember, [], splitRandom);
             case "Classic":
                 let splitClassic: SplitClassic = new SplitClassic(interaction, captains, game.users, bans);
+                if(game.thread)
+                    splitClassic.thread = game.thread;
                 return await splitService.allLongSplits(interaction, splitType, dummyMember, dummyMember, [], splitClassic);
             case "Double":
                 let splitDouble: SplitDouble = new SplitDouble(interaction, captains, game.users, bans);
+                if(game.thread)
+                    splitDouble.thread = game.thread;
                 return await splitService.allLongSplits(interaction, splitType, dummyMember, dummyMember, [], splitDouble);
             case "CWC":
                 let splitCWC: SplitCWC = new SplitCWC(interaction, captains, game.users, bans);
+                if(game.thread)
+                    splitCWC.thread = game.thread;
                 return await splitService.allLongSplits(interaction, splitType, dummyMember, dummyMember, [], splitCWC);
         }
     }

@@ -5,427 +5,30 @@ import {
     DynamicConfig,
     DynamicConfigEntity,
     DynamicConfigEntityBoolean,
-    DynamicConfigEntityBooleanGameSetting, DynamicConfigEntityBooleanLanguage,
-    DynamicConfigEntityNumber,
+    DynamicConfigEntityBooleanGameSetting, DynamicConfigEntityBooleanLanguage, DynamicConfigEntityChannelMany,
+    DynamicConfigEntityNumber, DynamicConfigEntityNumberMany, DynamicConfigEntityRoleMany,
     DynamicConfigEntityString, DynamicConfigEntityTeamersForbiddenPairs
 } from "./dynamicConfig.models";
 import {
-    JSONDynamicConfigEntityBoolean, JSONDynamicConfigEntityBooleanGameSetting, JSONDynamicConfigEntityBooleanLanguage,
+    JSONDynamicConfigEntityBoolean,
+    JSONDynamicConfigEntityBooleanGameSetting,
+    JSONDynamicConfigEntityBooleanLanguage,
+    JSONDynamicConfigEntityChannelMany,
     JSONDynamicConfigEntityNumber,
-    JSONDynamicConfigEntityString, JSONDynamicConfigEntityTeamersForbiddenPairs
+    JSONDynamicConfigEntityNumberMany,
+    JSONDynamicConfigEntityRoleMany,
+    JSONDynamicConfigEntityString,
+    JSONDynamicConfigEntityTeamersForbiddenPairs
 } from "../../types/type.JSON.DynamicConfigEntities";
 import {UtilsServiceCivilizations} from "../../utils/services/utils.service.civilizations";
-import {UtilsServiceGameTags} from "../../utils/services/utils.service.gameTags";
 import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
 import {DatabaseServiceText} from "../../database/services/service.Text";
+import {tagsMap, configsMap} from "./dynamicConfig.dictionaries";
 
 export class DynamicConfigService extends ModuleBaseService {
     private dynamicConfigUI: DynamicConfigUI = new DynamicConfigUI();
 
     public static dynamicConfigs: Map<string, DynamicConfig> = new Map<string, DynamicConfig>();    // guildID
-    private tagsMap: Map<string, string[]> = new Map<string, string[]>([
-        ["DYNAMIC_CONFIG_TITLE", [
-            "DYNAMIC_CONFIG_CATEGORY_MISCELLANEOUS", "DYNAMIC_CONFIG_CATEGORY_SPLIT",
-            "DYNAMIC_CONFIG_CATEGORY_DRAFT", "DYNAMIC_CONFIG_CATEGORY_GAME",
-            "DYNAMIC_CONFIG_LANGUAGE"
-        ]],
-        ["DYNAMIC_CONFIG_CATEGORY_DRAFT", [
-            "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_CIVILIZATIONS", "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_FFA",
-            "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_TEAMERS", "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_BLIND",
-            "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_REDRAFT"
-        ]],
-        ["DYNAMIC_CONFIG_CATEGORY_GAME", [
-            "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA",
-            "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS"
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA", [
-            "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MAP", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_DISASTERS",
-            "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BONUS_RESOURCES", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_STRATEGIC_RESOURCES",
-            "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_WONDERS", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_AGE",
-            "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_GOLD_TRADING", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_STRATEGIC_TRADING",
-            "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_FRIENDS", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MILITARY_ALLIANCE",
-            "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_CHATTING", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_DRAFT"
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS", [
-            "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_MAP", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_DISASTERS",
-            "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BONUS_RESOURCES", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_STRATEGIC_RESOURCES",
-            "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_WONDERS", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_AGE",
-            "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_RELIC", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_REMAPS",
-            "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_SPLIT"
-        ]]
-    ]);
-    public static configsMap = new Map<string, (JSONDynamicConfigEntityNumber
-        |JSONDynamicConfigEntityString
-        |JSONDynamicConfigEntityBoolean
-        |JSONDynamicConfigEntityTeamersForbiddenPairs
-        |JSONDynamicConfigEntityBooleanGameSetting
-        )[]>([
-        ["DYNAMIC_CONFIG_LANGUAGE", []],
-        ["DYNAMIC_CONFIG_CATEGORY_MISCELLANEOUS", [
-            {
-                configTag: "MISCELLANEOUS_RANDOM_MAX",
-                textTag: "DYNAMIC_CONFIG_SETTING_MISCELLANEOUS_RANDOM_MAX",
-                type: "Number",
-                minValue: 2,
-                maxValue: Math.pow(10, 6)
-            }
-        ]],
-        ["DYNAMIC_CONFIG_CATEGORY_SPLIT", [
-            {
-                configTag: "SPLIT_PICK_TIME_MS",
-                textTag: "DYNAMIC_CONFIG_SETTING_SPLIT_TIME",
-                type: "Number",
-                minValue: 20*1000,
-                maxValue: 900*1000
-            }
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_CIVILIZATIONS",
-            UtilsServiceCivilizations.civilizationsTags.map((tag: string): JSONDynamicConfigEntityBoolean => { return {
-                configTag: tag,
-                textTag: tag+"_CONFIG_TEXT",
-                type: "Boolean",
-            }})
-        ],  // DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_CIVILIZATIONS (комментарий для свёрнутого кода)
-        ["DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_FFA", [
-            {
-                configTag: "DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT",
-                textTag: "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT",
-                type: "Number",
-                minValue: 1,
-                maxValue: 16
-            },
-            {
-                configTag: "DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT",
-                textTag: "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT",
-                type: "Number",
-                minValue: 1,
-                maxValue: 16
-            },
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_TEAMERS", [
-            {
-                configTag: "DRAFT_TEAMERS_FORBIDDEN_PAIRS",
-                textTag: "DYNAMIC_CONFIG_SETTING_DRAFT_TEAMERS_FORBIDDEN_PAIRS",
-                type: "TeamersForbiddenPairs",
-            },
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_BLIND", [
-            {
-                configTag: "DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT",
-                textTag: "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT",
-                type: "Number",
-                minValue: 1,
-                maxValue: 16
-            },
-            {
-                configTag: "DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT",
-                textTag: "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT",
-                type: "Number",
-                minValue: 1,
-                maxValue: 16
-            },
-            {
-                configTag: "DRAFT_BLIND_PICK_TIME_MS",
-                textTag: "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_TIME",
-                type: "Number",
-                minValue: 20*1000,
-                maxValue: 900*1000
-            },
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_REDRAFT", [
-            {
-                configTag: "REDRAFT_FFA_THRESHOLD_PERCENT",
-                textTag: "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_FFA_THRESHOLD_PERCENT",
-                type: "Number",
-                minValue: 33,
-                maxValue: 100
-            },
-            {
-                configTag: "REDRAFT_TEAMERS_THRESHOLD_PERCENT",
-                textTag: "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_TEAMERS_THRESHOLD_PERCENT",
-                type: "Number",
-                minValue: 33,
-                maxValue: 100
-            },
-            {
-                configTag: "REDRAFT_BLIND_THRESHOLD_PERCENT",
-                textTag: "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_BLIND_THRESHOLD_PERCENT",
-                type: "Number",
-                minValue: 33,
-                maxValue: 100
-            },
-            {
-                configTag: "REDRAFT_VOTE_TIME_MS",
-                textTag: "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_TIME",
-                type: "Number",
-                minValue: 15*1000,
-                maxValue: 900*1000
-            },
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL", [
-            {
-                configTag: "GAME_VOTE_TIME_MS",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TIME",
-                type: "Number",
-                minValue: 30*1000,
-                maxValue: 900*1000
-            }
-        ]],
-
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MAP", [
-            {
-                configTag: "GAME_FFA_MAP",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.FFAOptionsConfigsStrings[0].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_DISASTERS", [
-            {
-                configTag: "GAME_FFA_DISASTERS",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.FFAOptionsConfigsStrings[1].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BONUS_RESOURCES", [
-            {
-                configTag: "GAME_FFA_BONUS_RESOURCES",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.FFAOptionsConfigsStrings[2].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_STRATEGIC_RESOURCES", [
-            {
-                configTag: "GAME_FFA_STRATEGIC_RESOURCES",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.FFAOptionsConfigsStrings[3].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_WONDERS", [
-            {
-                configTag: "GAME_FFA_WONDERS",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.FFAOptionsConfigsStrings[4].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_AGE", [
-            {
-                configTag: "GAME_FFA_AGE",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.FFAOptionsConfigsStrings[5].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_GOLD_TRADING", [
-            {
-                configTag: "GAME_FFA_GOLD_TRADING",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.FFAOptionsConfigsStrings[6].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_STRATEGIC_TRADING", [
-            {
-                configTag: "GAME_FFA_STRATEGIC_TRADING",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.FFAOptionsConfigsStrings[7].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_FRIENDS", [
-            {
-                configTag: "GAME_FFA_FRIENDS",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.FFAOptionsConfigsStrings[8].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MILITARY_ALLIANCE", [
-            {
-                configTag: "GAME_FFA_MILITARY_ALLIANCE",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.FFAOptionsConfigsStrings[9].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_CHATTING", [
-            {
-                configTag: "GAME_FFA_CHATTING",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.FFAOptionsConfigsStrings[10].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_DRAFT", [
-            {
-                configTag: "GAME_FFA_DRAFT",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.FFAOptionsConfigsStrings[11].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_MAP", [
-            {
-                configTag: "GAME_TEAMERS_MAP",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.teamersOptionsConfigsStrings[0].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_DISASTERS", [
-            {
-                configTag: "GAME_TEAMERS_DISASTERS",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.teamersOptionsConfigsStrings[1].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BONUS_RESOURCES", [
-            {
-                configTag: "GAME_TEAMERS_BONUS_RESOURCES",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.teamersOptionsConfigsStrings[2].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_STRATEGIC_RESOURCES", [
-            {
-                configTag: "GAME_TEAMERS_STRATEGIC_RESOURCES",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.teamersOptionsConfigsStrings[3].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_WONDERS", [
-            {
-                configTag: "GAME_TEAMERS_WONDERS",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.teamersOptionsConfigsStrings[4].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_AGE", [
-            {
-                configTag: "GAME_TEAMERS_AGE",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.teamersOptionsConfigsStrings[5].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_RELIC", [
-            {
-                configTag: "GAME_TEAMERS_RELIC",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.teamersOptionsConfigsStrings[6].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_REMAPS", [
-            {
-                configTag: "GAME_TEAMERS_REMAPS",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.teamersOptionsConfigsStrings[7].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-        ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_SPLIT", [
-            {
-                configTag: "GAME_TEAMERS_SPLIT",
-                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-                type: "Boolean",
-            },
-            ...UtilsServiceGameTags.teamersOptionsConfigsStrings[8].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
-                configTag: tag,
-                textTag: tag,
-                type: "BooleanGameSetting",
-            }})
-        ]],
-    ]);
 
     // нельзя использовать ModalSubmitInteraction
     private async checkDynamicConfigComponent(interaction: SelectMenuInteraction | ButtonInteraction, deferUpdate: boolean = true): Promise<DynamicConfig | undefined> {
@@ -502,18 +105,18 @@ export class DynamicConfigService extends ModuleBaseService {
                 ]
             });
         else await dynamicConfig.interaction.editReply({
-                embeds: this.dynamicConfigUI.configEmbed(
-                    dynamicConfig,
-                    textStrings[0], textStrings[1], textStrings[2], textStrings[3],
-                    emojiStrings,
-                    optionStrings,
-                    textStrings[4]
-                ),
-                components: [
-                    ...this.dynamicConfigUI.configButtons(dynamicConfig, buttonStrings),
-                    ...this.dynamicConfigUI.configMenu(placeholderString, optionStrings, emojiStrings)
-                ]
-            });
+            embeds: this.dynamicConfigUI.configEmbed(
+                dynamicConfig,
+                textStrings[0], textStrings[1], textStrings[2], textStrings[3],
+                emojiStrings,
+                optionStrings,
+                textStrings[4]
+            ),
+            components: [
+                ...this.dynamicConfigUI.configButtons(dynamicConfig, buttonStrings),
+                ...this.dynamicConfigUI.configMenu(placeholderString, optionStrings, emojiStrings)
+            ]
+        });
     }
 
     protected updateTimeoutTimer(dynamicConfig: DynamicConfig): void {
@@ -602,6 +205,21 @@ export class DynamicConfigService extends ModuleBaseService {
                     tags.push(dynamicConfigEntityBooleanLanguage.properties.configTag);
                     values.push(dynamicConfigEntityBooleanLanguage.properties.textTag);
                     break;
+                case "NumberMany":
+                    let dynamicConfigEntityNumberMany: DynamicConfigEntityNumberMany = entities[i] as DynamicConfigEntityNumberMany;
+                    tags.push(dynamicConfigEntityNumberMany.properties.configTag);
+                    values.push(dynamicConfigEntityNumberMany.value.join(" "));
+                    break;
+                case "RoleMany":
+                    let dynamicConfigEntityRoleMany: DynamicConfigEntityRoleMany = entities[i] as DynamicConfigEntityRoleMany;
+                    tags.push(dynamicConfigEntityRoleMany.properties.configTag);
+                    values.push(dynamicConfigEntityRoleMany.value.join(" "));
+                    break;
+                case "ChannelMany":
+                    let dynamicConfigEntityChannelMany: DynamicConfigEntityChannelMany = entities[i] as DynamicConfigEntityChannelMany;
+                    tags.push(dynamicConfigEntityChannelMany.properties.configTag);
+                    values.push(dynamicConfigEntityChannelMany.value.join(" "));
+                    break;
             }
         await this.updateManySetting(interaction, tags, values);
     }
@@ -612,7 +230,11 @@ export class DynamicConfigService extends ModuleBaseService {
             |JSONDynamicConfigEntityString
             |JSONDynamicConfigEntityBoolean
             |JSONDynamicConfigEntityTeamersForbiddenPairs
-            |JSONDynamicConfigEntityBooleanGameSetting)[],
+            |JSONDynamicConfigEntityBooleanGameSetting
+            |JSONDynamicConfigEntityNumberMany
+            |JSONDynamicConfigEntityRoleMany
+            |JSONDynamicConfigEntityChannelMany
+            )[],
         dynamicConfig: DynamicConfig
     ): Promise<DynamicConfigEntity[]> {
         let dynamicConfigEntities: DynamicConfigEntity[] = [];
@@ -660,7 +282,26 @@ export class DynamicConfigService extends ModuleBaseService {
                         dynamicConfig
                     ));
                     break;
+                case "NumberMany":
+                    dynamicConfigEntities.push(new DynamicConfigEntityNumberMany(
+                        config as JSONDynamicConfigEntityNumberMany,
+                        await this.getOneSettingString(dynamicConfig.interaction, config.configTag)
+                    ));
+                    break;
+                case "RoleMany":
+                    dynamicConfigEntities.push(new DynamicConfigEntityRoleMany(
+                        config as JSONDynamicConfigEntityRoleMany,
+                        await this.getOneSettingString(dynamicConfig.interaction, config.configTag)
+                    ));
+                    break;
+                case "ChannelMany":
+                    dynamicConfigEntities.push(new DynamicConfigEntityChannelMany(
+                        config as JSONDynamicConfigEntityChannelMany,
+                        await this.getOneSettingString(dynamicConfig.interaction, config.configTag)
+                    ));
+                    break;
                 default:
+                    console.log("Type not found:", config.type);
                     break;
             }
         return dynamicConfigEntities;
@@ -680,7 +321,7 @@ export class DynamicConfigService extends ModuleBaseService {
         let dynamicConfig: DynamicConfig | undefined = DynamicConfigService.dynamicConfigs.get(key);
         if(!dynamicConfig) {
             let entitiesPerPage: number = await this.getOneSettingNumber(interaction, "DYNAMIC_CONFIG_PAGINATION_SIZE");
-            let optionsTags: string[] = this.tagsMap.get("DYNAMIC_CONFIG_TITLE") || [];
+            let optionsTags: string[] = tagsMap.get("DYNAMIC_CONFIG_TITLE") || [];
             let lifeTimeMs: number = await this.getOneSettingNumber(interaction, "DYNAMIC_CONFIG_LIFE_TIME_MS");
             dynamicConfig = new DynamicConfig(interaction, entitiesPerPage, lifeTimeMs, "DYNAMIC_CONFIG_TITLE", optionsTags);
             DynamicConfigService.dynamicConfigs.set(key, dynamicConfig);
@@ -692,7 +333,6 @@ export class DynamicConfigService extends ModuleBaseService {
         }
         this.updateTimeoutTimer(dynamicConfig);
         await this.sendDynamicConfigMessage(dynamicConfig, true);
-
     }
 
     // dynamicConfig-modal
@@ -713,7 +353,7 @@ export class DynamicConfigService extends ModuleBaseService {
         this.updateTimeoutTimer(dynamicConfig);
 
         // Новая категория
-        let categories: string[] | undefined = this.tagsMap.get(dynamicConfig.getOptionTags()[valueIndex]);
+        let categories: string[] | undefined = tagsMap.get(dynamicConfig.getOptionTags()[valueIndex]);
         if(categories) {
             await interaction.deferUpdate();
             dynamicConfig.createChild(valueIndex, categories);
@@ -725,39 +365,39 @@ export class DynamicConfigService extends ModuleBaseService {
 
         // Последняя категория, получили конфигурацию
         let configs: (JSONDynamicConfigEntityNumber
-            |JSONDynamicConfigEntityString
-            |JSONDynamicConfigEntityBoolean
-            |JSONDynamicConfigEntityBooleanGameSetting
-            |JSONDynamicConfigEntityTeamersForbiddenPairs
-            |JSONDynamicConfigEntityBooleanLanguage)[]
-            |undefined = DynamicConfigService.configsMap.get(dynamicConfig.getOptionTags()[valueIndex]);
-        // Изменение языка, нужно смотреть локальную БД для отображения списка
+                |JSONDynamicConfigEntityString
+                |JSONDynamicConfigEntityBoolean
+                |JSONDynamicConfigEntityBooleanGameSetting
+                |JSONDynamicConfigEntityTeamersForbiddenPairs
+                |JSONDynamicConfigEntityBooleanLanguage
+                |JSONDynamicConfigEntityNumberMany
+                |JSONDynamicConfigEntityRoleMany
+                |JSONDynamicConfigEntityChannelMany)[]
+            |undefined = configsMap.get(dynamicConfig.getOptionTags()[valueIndex]);
+        // Настройка для изменения языка, нужно смотреть локальную БД для отображения списка
         if(dynamicConfig.getOptionTags()[valueIndex] === "DYNAMIC_CONFIG_LANGUAGE")
             configs = (await DatabaseServiceText.getLanguages()).map((language: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
                 configTag: "BASE_LANGUAGE",
                 textTag: language,
                 type: "BooleanLanguage",
             }});
-        // Если это действительно последняя категория конфигурация, то вывести
+        // Если это действительно последняя подкатегория перед настройками, то вывести
         if(configs) {
             await interaction.deferUpdate();
             // Если все Boolean, то отсортировать
-            if(configs.every(config => config.type === "Boolean")) {
-                let textStrings: string[] = await this.getManyText(
-                    dynamicConfig.interaction,
-                    configs.map(config => config.textTag)
-                );
-                let pairsTextConfig: {text: string, config: JSONDynamicConfigEntityBoolean}[] = textStrings
-                    .map((text: string, index: number): {text: string, config: JSONDynamicConfigEntityBoolean} => {
-                        return {text: text, config: configs?.[index] as JSONDynamicConfigEntityBoolean}
-                    });
-                pairsTextConfig.sort((a, b) => a.text.localeCompare(b.text));
-                configs = pairsTextConfig.map(pair => pair.config);
-            }
+            if(configs.every(config => config.type === "Boolean"))
+                configs = (await this.getManyText(
+                    dynamicConfig.interaction, configs.map(config => config.textTag)
+                )).map((text: string, index: number): {text: string, config: JSONDynamicConfigEntityBoolean} => {
+                    return {text: text, config: configs?.[index] as JSONDynamicConfigEntityBoolean}
+                }).sort((
+                        a: {text: string, config: JSONDynamicConfigEntityBoolean},
+                        b: {text: string, config: JSONDynamicConfigEntityBoolean}
+                    ) =>
+                        a.text.localeCompare(b.text)
+                ).map(pair => pair.config);
             let dynamicConfigEntities: DynamicConfigEntity[] = await this.createDynamicConfigEntities(configs, dynamicConfig);
             dynamicConfig.createChild(valueIndex, [], dynamicConfigEntities);
-            // Сортировка для Boolean (цивилизации)
-            let dynamicConfigChild: DynamicConfig = dynamicConfig.getLastChild();
             await this.sendDynamicConfigMessage(dynamicConfig);
             return;
         }
@@ -765,6 +405,8 @@ export class DynamicConfigService extends ModuleBaseService {
         let dynamicConfigEntity: DynamicConfigEntity | undefined = dynamicConfig.getLastChild().configs[valueIndex];
         if(!dynamicConfigEntity)
             return;
+
+        // ================================
 
         // Вызов изменения конфигурации для булевых значений
         if(dynamicConfigEntity.type === "Boolean") {
@@ -857,15 +499,64 @@ export class DynamicConfigService extends ModuleBaseService {
                     .map((value: number[]): string =>
                         `${dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationTexts[value[0]]}, ${dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationTexts[value[1]]}`)
                     .join("\n")
-                    .replaceAll(/<.+?>/g, "-"),     // ? - ленивый поиск
+                    .replaceAll(/<.+?>/g, "-"),     // ? означает ленивый поиск в JS-regex
                 true,
                 true
             ));
             return;
         }
 
+        if(dynamicConfigEntity.type === "NumberMany") {
+            let dynamicConfigEntityNumberMany: DynamicConfigEntityNumberMany = dynamicConfigEntity as DynamicConfigEntityNumberMany;
+            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
+                dynamicConfigEntityNumberMany.properties.textTag, dynamicConfigEntityNumberMany.properties.textTag+"_EMOJI",
+                "DYNAMIC_CONFIG_MODAL_LABEL"
+            ]);
+            await interaction.showModal(this.dynamicConfigUI.configModal(
+                `${textStrings[1] + " "}${textStrings[0]}`,
+                String(valueIndex),
+                textStrings[2],
+                dynamicConfigEntityNumberMany.value.join(" ")
+            ));
+            return;
+        }
+
+        if(dynamicConfigEntity.type === "RoleMany") {
+            let dynamicConfigEntityRoleMany: DynamicConfigEntityRoleMany = dynamicConfigEntity as DynamicConfigEntityRoleMany;
+            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
+                dynamicConfigEntityRoleMany.properties.textTag, dynamicConfigEntityRoleMany.properties.textTag+"_EMOJI",
+                "DYNAMIC_CONFIG_MODAL_LABEL"
+            ]);
+            await interaction.showModal(this.dynamicConfigUI.configModal(
+                `${textStrings[1] + " "}${textStrings[0]}`,
+                String(valueIndex),
+                textStrings[2],
+                dynamicConfigEntityRoleMany.value.join(" "),
+                false,
+                true
+            ));
+            return;
+        }
+
+        if(dynamicConfigEntity.type === "ChannelMany") {
+            let dynamicConfigEntityChannelMany: DynamicConfigEntityChannelMany = dynamicConfigEntity as DynamicConfigEntityChannelMany;
+            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
+                dynamicConfigEntityChannelMany.properties.textTag, dynamicConfigEntityChannelMany.properties.textTag+"_EMOJI",
+                "DYNAMIC_CONFIG_MODAL_LABEL"
+            ]);
+            await interaction.showModal(this.dynamicConfigUI.configModal(
+                `${textStrings[1] + " "}${textStrings[0]}`,
+                String(valueIndex),
+                textStrings[2],
+                dynamicConfigEntityChannelMany.value.join(" "),
+                false,
+                true
+            ));
+            return;
+        }
+
         // Если ничего не совпало, то ничего не делать
-        await interaction.deferUpdate();
+        await interaction.reply({content: `Menu is not implemented. Index=${valueIndex}.`, ephemeral: true});
     }
 
     public async modalSetting(interaction: ModalSubmitInteraction) {
@@ -882,12 +573,14 @@ export class DynamicConfigService extends ModuleBaseService {
         }
         this.updateTimeoutTimer(dynamicConfig);
 
+        // ================================
+
         if(dynamicConfigEntity.type === "Number") {
             let dynamicConfigEntityNumber: DynamicConfigEntityNumber = dynamicConfigEntity as DynamicConfigEntityNumber;
             if(!dynamicConfigEntityNumber.check(value)) {
                 let textStrings: string[] = await this.getManyText(interaction, [
                     "BASE_ERROR_TITLE", "DYNAMIC_CONFIG_ERROR_TYPE_NUMBER"], [
-                        null, [dynamicConfigEntityNumber.properties.minValue, dynamicConfigEntityNumber.properties.maxValue]
+                    null, [dynamicConfigEntityNumber.properties.minValue, dynamicConfigEntityNumber.properties.maxValue]
                 ]);
                 await interaction.reply({embeds: this.dynamicConfigUI.error(textStrings[0], textStrings[1]), ephemeral: true});
                 await this.sendDynamicConfigMessage(dynamicConfig);
@@ -931,9 +624,9 @@ export class DynamicConfigService extends ModuleBaseService {
                     ));
                 else if(dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationErrorIndexes.length === 3)
                     textStrings.push(await this.getOneText(interaction, "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_TRIANGLE",
-                        dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationErrorIndexes.map((value: number): string =>
-                            dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationTexts[value]).join("\n"),
-                        value
+                            dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationErrorIndexes.map((value: number): string =>
+                                dynamicConfigEntityEntityTeamersForbiddenPairs.civilizationTexts[value]).join("\n"),
+                            value
                         )
                     );
                 else textStrings.push(await this.getOneText(interaction, "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_PARSE", value));
@@ -950,8 +643,79 @@ export class DynamicConfigService extends ModuleBaseService {
             return;
         }
 
+        if(dynamicConfigEntity.type === "NumberMany") {
+            let dynamicConfigEntityNumberMany: DynamicConfigEntityNumberMany = dynamicConfigEntity as DynamicConfigEntityNumberMany;
+            if(!dynamicConfigEntityNumberMany.check(value)) {
+                let textStrings: string[] = await this.getManyText(interaction, [
+                    "BASE_ERROR_TITLE", "DYNAMIC_CONFIG_ERROR_TYPE_NUMBER_MANY"], [
+                    null, [
+                        dynamicConfigEntityNumberMany.properties.minAmount,
+                        dynamicConfigEntityNumberMany.properties.maxAmount,
+                        dynamicConfigEntityNumberMany.properties.minValue,
+                        dynamicConfigEntityNumberMany.properties.maxValue
+                    ]
+                ]);
+                await interaction.reply({embeds: this.dynamicConfigUI.error(textStrings[0], textStrings[1]), ephemeral: true});
+                await this.sendDynamicConfigMessage(dynamicConfig);
+                return;
+            }
+            await this.updateOneDynamicConfigEntity(interaction, dynamicConfigEntityNumberMany);
+            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
+                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
+            ]);
+            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await this.sendDynamicConfigMessage(dynamicConfig);
+            return;
+        }
+
+        if(dynamicConfigEntity.type === "RoleMany") {
+            let dynamicConfigEntityRoleMany: DynamicConfigEntityRoleMany = dynamicConfigEntity as DynamicConfigEntityRoleMany;
+            if(!dynamicConfigEntityRoleMany.check(value)) {
+                let textStrings: string[] = await this.getManyText(interaction, [
+                    "BASE_ERROR_TITLE", "DYNAMIC_CONFIG_ERROR_TYPE_ROLE_MANY"], [
+                    null, [
+                        dynamicConfigEntityRoleMany.properties.minAmount,
+                        dynamicConfigEntityRoleMany.properties.maxAmount
+                    ]
+                ]);
+                await interaction.reply({embeds: this.dynamicConfigUI.error(textStrings[0], textStrings[1]), ephemeral: true});
+                await this.sendDynamicConfigMessage(dynamicConfig);
+                return;
+            }
+            await this.updateOneDynamicConfigEntity(interaction, dynamicConfigEntityRoleMany);
+            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
+                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
+            ]);
+            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await this.sendDynamicConfigMessage(dynamicConfig);
+            return;
+        }
+
+        if(dynamicConfigEntity.type === "ChannelMany") {
+            let dynamicConfigEntityChannelMany: DynamicConfigEntityChannelMany = dynamicConfigEntity as DynamicConfigEntityChannelMany;
+            if(!dynamicConfigEntityChannelMany.check(value)) {
+                let textStrings: string[] = await this.getManyText(interaction, [
+                    "BASE_ERROR_TITLE", "DYNAMIC_CONFIG_ERROR_TYPE_CHANNEL_MANY"], [
+                    null, [
+                        dynamicConfigEntityChannelMany.properties.minAmount,
+                        dynamicConfigEntityChannelMany.properties.maxAmount
+                    ]
+                ]);
+                await interaction.reply({embeds: this.dynamicConfigUI.error(textStrings[0], textStrings[1]), ephemeral: true});
+                await this.sendDynamicConfigMessage(dynamicConfig);
+                return;
+            }
+            await this.updateOneDynamicConfigEntity(interaction, dynamicConfigEntityChannelMany);
+            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
+                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
+            ]);
+            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await this.sendDynamicConfigMessage(dynamicConfig);
+            return;
+        }
+
         // Если ничего не совпало, то ничего не делать
-        await interaction.reply(`Modal is not implemented. Index=${index}, value=${value}.`);
+        await interaction.reply({content: `ModalSetting is not implemented. Index=${index}, value=${value}.`, ephemeral: true});
     }
 
     public async deleteButton(interaction: ButtonInteraction) {
@@ -1030,12 +794,12 @@ export class DynamicConfigService extends ModuleBaseService {
             for(let i: number = 0; i < categories.length; i++) {
                 categories = categories
                     .slice(0, i)
-                    .concat(this.tagsMap.get(categories[i]) || [categories[i]])
+                    .concat(tagsMap.get(categories[i]) || [categories[i]])
                     .concat(categories.slice(i+1))
             }
             configs = await this.createDynamicConfigEntities(categories
-                .map((category: string) => DynamicConfigService.configsMap.get(category) || [])
-                .reduce((a, b) => a.concat(b), []),
+                    .map((category: string) => configsMap.get(category) || [])
+                    .reduce((a, b) => a.concat(b), []),
                 dynamicConfig
             );
         }
@@ -1043,7 +807,7 @@ export class DynamicConfigService extends ModuleBaseService {
         await this.resetManyDynamicConfigEntity(interaction, configs);
         if(dynamicConfig.isConfig)
             dynamicConfig.updateConfigs(await this.createDynamicConfigEntities(
-                DynamicConfigService.configsMap.get(dynamicConfig.getTitleTag()) || [],
+                configsMap.get(dynamicConfig.getTitleTag()) || [],
                 dynamicConfig)
             );
         let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [

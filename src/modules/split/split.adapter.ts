@@ -27,6 +27,8 @@ export class SplitAdapter extends ModuleBaseService {
             split.captains.length,
             teamDraftForbiddenPairs
         );
+        if(split.thread)
+            draft.thread = split.thread;
         await draftService.teamers(split.interaction as CommandInteraction, 0, "", [], draft);
     }
 }

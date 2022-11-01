@@ -20,3 +20,21 @@ export interface JSONDynamicConfigEntityTeamersForbiddenPairs extends JSONDynami
 export interface JSONDynamicConfigEntityBooleanGameSetting extends JSONDynamicConfigEntity {}
 
 export interface JSONDynamicConfigEntityBooleanLanguage extends JSONDynamicConfigEntityBooleanGameSetting {}
+
+export interface JSONDynamicConfigEntityNumberMany extends JSONDynamicConfigEntity {
+    minAmount: number,
+    maxAmount: number,
+
+    minValue: number,
+    maxValue: number
+}
+
+export interface JSONDynamicConfigEntityRoleMany extends JSONDynamicConfigEntity {
+    minAmount: number,
+    maxAmount: number
+}
+
+export interface JSONDynamicConfigEntityChannelMany extends JSONDynamicConfigEntity {
+    minAmount: number,
+    maxAmount: number
+}

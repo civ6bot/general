@@ -1,6 +1,15 @@
 import {ModuleBaseService} from "../base/base.service";
 import {GameUI} from "./game.ui";
-import {ButtonInteraction, CommandInteraction, Message, MessageReaction, User} from "discord.js";
+import {
+    ButtonInteraction,
+    CommandInteraction,
+    Message,
+    MessageReaction,
+    User,
+    VoiceChannel,
+    ChannelType,
+    TextChannel, GuildMember
+} from "discord.js";
 import {Game, GameEntity, GameEntityDraft, GameEntityReady, GameFFA, GameTeamers} from "./game.models";
 import {UtilsGeneratorTimestamp} from "../../utils/generators/utils.generator.timestamp";
 import {UtilsServiceCivilizations} from "../../utils/services/utils.service.civilizations";
@@ -8,6 +17,8 @@ import {UtilsServiceEmojis} from "../../utils/services/utils.service.emojis";
 import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
 import {GameAdapter} from "./game.adapter";
 import {UtilsServiceGameTags} from "../../utils/services/utils.service.gameTags";
+import {UtilsServicePM} from "../../utils/services/utils.service.PM";
+import {UtilsServiceTime} from "../../utils/services/utils.service.time";
 
 export class GameService extends ModuleBaseService {
     private gameUI: GameUI = new GameUI();
@@ -133,19 +144,91 @@ export class GameService extends ModuleBaseService {
         if(interaction.channel === null)
             throw "Interaction called from PM";
 
-        let message: Message;
+        // ======== Все проверки объекта пройдены
+
+        let [isMoveToChannels, isThread, isNotificationPM] = (await this.getManySettingNumber(interaction,
+            "GAME_MOVE_TO_VOICE_CHANNELS", "GAME_THREAD", "GAME_SEND_PM_NOTIFICATION"
+        )).map(flag => Boolean(flag));
+        isThread = isThread && (interaction.channel.type === ChannelType.GuildText);
+
+        if(isThread) {
+            try {
+                game.thread = await (interaction.channel as TextChannel).threads.create({
+                    name: await this.getOneText(interaction, "GAME_FFA_THREAD_NAME", interaction.user.tag)
+                });
+                let textStrings: string[] = await this.getManyText(interaction, [
+                    "BASE_NOTIFY_TITLE", "GAME_NOTIFY_THREAD"
+                ]);
+                await interaction.editReply({embeds: this.gameUI.notify(textStrings[0], textStrings[1])});
+                setTimeout(
+                    async () => await interaction.deleteReply(),
+                    UtilsServiceTime.getMs(10, "s")
+                );
+            } catch {
+                let textStrings: string[] = await this.getManyText(interaction, [
+                    "BASE_ERROR_TITLE", "GAME_ERROR_THREAD"
+                ]);
+                await interaction.editReply({embeds: this.gameUI.error(textStrings[0], textStrings[1])});
+                GameService.games.delete(game.guildID);
+                clearTimeout(game.setTimeoutID);
+                return;
+            }
+        }
+
+        if(isMoveToChannels) {
+            let destinationChannel: VoiceChannel | undefined = (await this.getOneSettingString(interaction, "GAME_FFA_VOICE_CHANNELS"))
+                .split(" ")
+                .filter(id => id !== "")
+                .map(id => interaction.guild?.channels.cache.get(id))
+                .filter(channel => !!channel && (channel?.type === ChannelType.GuildVoice))
+                .map(channel => channel as VoiceChannel)
+                .filter(channel => Array.from(channel.members.keys()).length === 0)[0];
+            if(destinationChannel) {
+                let channelsDepartureID: string[] = (await this.getOneSettingString(interaction, "GAME_FFA_HOME_VOICE_CHANNELS"))
+                    .split(" ")
+                    .filter(id => id !== "");
+                users.forEach(user => {
+                    let member: GuildMember | undefined = interaction.guild?.members.cache.get(user.id);
+                    if (channelsDepartureID.indexOf(member?.voice.channel?.id as string) !== -1)
+                        try {
+                            member?.voice.setChannel(destinationChannel as VoiceChannel);
+                        } catch {}
+                });
+            }
+        }
+
+        if(interaction.channel === null)
+            throw "Interaction called from PM";
         try {
+            let message: Message;
             for(let i: number = 0; i < game.entities.length; i++) {
-                message = (i === 0)
-                    ? await interaction.editReply(game.entities[i].getContent())
-                    : await interaction.channel.send(game.entities[i].getContent());
+                if(game.thread)
+                    message = await game.thread.send(game.entities[i].getContent());
+                else if(i === 0)
+                    message = await interaction.editReply(game.entities[i].getContent());
+                else
+                    message = await interaction.channel.send(game.entities[i].getContent());
+                if((i === 0) && isNotificationPM) {
+                    let textStrings: string[] = await this.getManyText(interaction, [
+                        "GAME_NOTIFY_FFA_PM_TITLE", "GAME_NOTIFY_PM_DESCRIPTION"
+                    ]);
+                    let embed = this.gameUI.notificationFFAPMEmbed(
+                        textStrings[0],
+                        textStrings[1],
+                        message.url,
+                        interaction.guild?.name as string,
+                        interaction.guild?.iconURL() || null
+                    );
+                    users.forEach(user => UtilsServicePM.send(user, embed));
+                }
                 game.entities[i].message = message;
                 game.entities[i].messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
                 game.entities[i].messageReactionCollector?.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
                 await UtilsServiceEmojis.reactOrder(message, game.entities[i].emojis);
             }
-
-            message = await interaction.channel.send(game.entityDraft.getContent());
+            message = (game.thread)
+                ? await game.thread.send(game.entityDraft.getContent())
+                : await interaction.channel.send(game.entityDraft.getContent());
             game.entityDraft.message = message;
             game.entityDraft.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityDraft.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
@@ -153,10 +236,15 @@ export class GameService extends ModuleBaseService {
             game.entityDraft.messageCollector.on("collect", async (message: Message) => GameService.messageCollectorFunction(message));
             await message.react("🤔");
 
-            message = await interaction.channel.send({
-                embeds: this.gameUI.readyEmbed(game.entityReady),
-                components: this.gameUI.gameReadyButton(buttonLabels)
-            });
+            message = (game.thread)
+                ? await game.thread.send({
+                    embeds: this.gameUI.readyEmbed(game.entityReady),
+                    components: this.gameUI.gameReadyButton(buttonLabels)
+                })
+                : await interaction.channel.send({
+                    embeds: this.gameUI.readyEmbed(game.entityReady),
+                    components: this.gameUI.gameReadyButton(buttonLabels)
+                });
             game.entityReady.message = message;
             game.entityReady.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityReady.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
@@ -171,6 +259,8 @@ export class GameService extends ModuleBaseService {
             await game.entityDraft.destroy();
             await game.entityReady.destroy();
             GameService.games.delete(game.guildID);
+            if(game.thread)
+                await game.thread.delete();
         }
     }
 
@@ -249,25 +339,98 @@ export class GameService extends ModuleBaseService {
         if(interaction.channel === null)
             throw "Interaction called from PM";
 
-        let message: Message;
+        // ======== Все проверки объекта пройдены
+
+        let [isMoveToChannels, isThread, isNotificationPM] = (await this.getManySettingNumber(interaction,
+            "GAME_MOVE_TO_VOICE_CHANNELS", "GAME_THREAD", "GAME_SEND_PM_NOTIFICATION"
+        )).map(flag => Boolean(flag));
+        isThread = isThread && (interaction.channel.type === ChannelType.GuildText);
+
+        if(isThread) {
+            try {
+                game.thread = await (interaction.channel as TextChannel).threads.create({
+                    name: await this.getOneText(interaction, "GAME_TEAMERS_THREAD_NAME", interaction.user.tag)
+                });
+                let textStrings: string[] = await this.getManyText(interaction, [
+                    "BASE_NOTIFY_TITLE", "GAME_NOTIFY_THREAD"
+                ]);
+                await interaction.editReply({embeds: this.gameUI.notify(textStrings[0], textStrings[1])});
+                setTimeout(
+                    async () => await interaction.deleteReply(),
+                    UtilsServiceTime.getMs(10, "s")
+                );
+            } catch {
+                let textStrings: string[] = await this.getManyText(interaction, [
+                    "BASE_ERROR_TITLE", "GAME_ERROR_THREAD"
+                ]);
+                await interaction.editReply({embeds: this.gameUI.error(textStrings[0], textStrings[1])});
+                GameService.games.delete(game.guildID);
+                clearTimeout(game.setTimeoutID);
+                return;
+            }
+        }
+
+        if(isMoveToChannels) {
+            let destinationChannel: VoiceChannel | undefined = (await this.getOneSettingString(interaction, "GAME_TEAMERS_VOICE_CHANNELS"))
+                .split(" ")
+                .filter(id => id !== "")
+                .map(id => interaction.guild?.channels.cache.get(id))
+                .filter(channel => !!channel && (channel?.type === ChannelType.GuildVoice))
+                .map(channel => channel as VoiceChannel)
+                .filter(channel => Array.from(channel.members.keys()).length === 0)[0];
+            if(destinationChannel) {
+                let channelsDepartureID: string[] = (await this.getOneSettingString(interaction, "GAME_TEAMERS_HOME_VOICE_CHANNELS"))
+                    .split(" ")
+                    .filter(id => id !== "");
+                users.forEach(user => {
+                    let member: GuildMember | undefined = interaction.guild?.members.cache.get(user.id);
+                    if (channelsDepartureID.indexOf(member?.voice.channel?.id as string) !== -1)
+                        try {
+                            member?.voice.setChannel(destinationChannel as VoiceChannel);
+                        } catch {}
+                });
+            }
+        }
+
         try {
+            let message: Message;
             for(let i: number = 0; i < game.entities.length; i++) {
-                message = (i === 0)
-                    ? await interaction.editReply(game.entities[i].getContent())
-                    : await interaction.channel.send(game.entities[i].getContent());
+                if(game.thread)
+                    message = await game.thread.send(game.entities[i].getContent());
+                else if(i === 0)
+                    message = await interaction.editReply(game.entities[i].getContent());
+                else
+                    message = await interaction.channel.send(game.entities[i].getContent());
+                if((i === 0) && isNotificationPM) {
+                    let textStrings: string[] = await this.getManyText(interaction, [
+                        "GAME_NOTIFY_TEAMERS_PM_TITLE", "GAME_NOTIFY_PM_DESCRIPTION"
+                    ]);
+                    let embed = this.gameUI.notificationTeamersPMEmbed(
+                        textStrings[0],
+                        textStrings[1],
+                        message.url,
+                        interaction.guild?.name as string,
+                        interaction.guild?.iconURL() || null
+                    );
+                    users.forEach(user => UtilsServicePM.send(user, embed));
+                }
                 game.entities[i].message = message;
                 game.entities[i].messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
                 game.entities[i].messageReactionCollector?.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
                 await UtilsServiceEmojis.reactOrder(message, game.entities[i].emojis);
             }
 
-            message = await interaction.channel.send(game.entityCaptains.getContent());
+            message = (game.thread)
+                ? await game.thread.send(game.entityCaptains.getContent())
+                : await interaction.channel.send(game.entityCaptains.getContent());
             game.entityCaptains.message = message;
             game.entityCaptains.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityCaptains.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
             await UtilsServiceEmojis.reactOrder(message, game.entityCaptains.emojis);
 
-            message = await interaction.channel.send(game.entityDraft.getContent());
+            message = (game.thread)
+                ? await game.thread.send( game.entityDraft.getContent())
+                : await interaction.channel.send(game.entityDraft.getContent());
             game.entityDraft.message = message;
             game.entityDraft.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityDraft.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
@@ -275,10 +438,15 @@ export class GameService extends ModuleBaseService {
             game.entityDraft.messageCollector.on("collect", async (message: Message) => GameService.messageCollectorFunction(message));
             await message.react("🤔");
 
-            message = await interaction.channel.send({
-                embeds: this.gameUI.readyEmbed(game.entityReady),
-                components: this.gameUI.gameReadyButton(buttonLabels)
-            });
+            message = (game.thread)
+                ? await game.thread.send({
+                    embeds: this.gameUI.readyEmbed(game.entityReady),
+                    components: this.gameUI.gameReadyButton(buttonLabels)
+                })
+                : await interaction.channel.send({
+                    embeds: this.gameUI.readyEmbed(game.entityReady),
+                    components: this.gameUI.gameReadyButton(buttonLabels)
+                });
             game.entityReady.message = message;
             game.entityReady.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityReady.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
@@ -395,10 +563,16 @@ export class GameService extends ModuleBaseService {
                 : "GAME_TEAMERS_RESULT_TITLE",
                 "GAME_RESULT_UNKNOWN", "GAME_RESULT_TIMEOUT_DESCRIPTION"]
         );
-        await game.interaction.channel?.send({embeds: gameService.gameUI.resultEmbed(
-            game, textStrings[0], textStrings[1],
-                isTimeout, textStrings[2]
-            )});
+        if(game.thread)
+            await game.thread.send({embeds: gameService.gameUI.resultEmbed(
+                    game, textStrings[0], textStrings[1],
+                    isTimeout, textStrings[2]
+                )});
+        else
+            await game.interaction.channel?.send({embeds: gameService.gameUI.resultEmbed(
+                    game, textStrings[0], textStrings[1],
+                    isTimeout, textStrings[2]
+                )});
 
         if(game.type === "FFA") {
             let gameFFA: GameFFA = game as GameFFA;
@@ -478,7 +652,10 @@ export class GameService extends ModuleBaseService {
             await gameTeamers.entityDraft.destroy();
             await gameTeamers.entityCaptains.destroy();
         }
-        for(let entity of game.entities)
-            await entity.destroy();
+        if(game.thread)
+            await game.thread.delete();
+        else
+            for(let entity of game.entities)
+                await entity.destroy();
     }
 }

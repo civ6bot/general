@@ -7,7 +7,8 @@
     "build": "tsc",
     "start": "node build/index.js",
     "all": "tsc && node build/index.js",
-    "nodemon": "nodemon --watch src --exec \"npm run all\""
+    "nodemon": "nodemon --watch src --exec \"npm run all\"",
+    "git": "git pull && tsc && node build/index.js"
   },
   "dependencies": {
     "@discordx/importer": "^1.1.10",

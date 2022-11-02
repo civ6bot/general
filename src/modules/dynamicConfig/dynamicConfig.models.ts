@@ -2,8 +2,12 @@ import {ModuleBaseModel} from "../base/base.models";
 import {CommandInteraction} from "discord.js";
 import {
     JSONDynamicConfigEntityBoolean,
-    JSONDynamicConfigEntityBooleanLanguage, JSONDynamicConfigEntityChannelMany,
-    JSONDynamicConfigEntityNumber, JSONDynamicConfigEntityNumberMany, JSONDynamicConfigEntityRoleMany,
+    JSONDynamicConfigEntityBooleanLanguage,
+    JSONDynamicConfigEntityChannelMany,
+    JSONDynamicConfigEntityNumber,
+    JSONDynamicConfigEntityNumberMany,
+    JSONDynamicConfigEntityNumberTimeSeconds,
+    JSONDynamicConfigEntityRoleMany,
     JSONDynamicConfigEntityString,
     JSONDynamicConfigEntityTeamersForbiddenPairs
 } from "../../types/type.JSON.DynamicConfigEntities";
@@ -84,7 +88,7 @@ export class DynamicConfig extends ModuleBaseModel {
                     this.interaction as CommandInteraction,
                     this.entitiesPerPage,
                     this.lifeTimeMs,
-                    this.optionTags[index],
+                    this.optionTags[index+this.entitiesPerPage*(this._pageCurrent-1)],
                     optionTags,
                     configs
                 ) : null;
@@ -371,7 +375,7 @@ export class DynamicConfigEntityNumberMany extends DynamicConfigEntity {
 
     public check(value: string): boolean {
         let valueNumberArray: number[] = value
-            .replace(",", " ")
+            .replaceAll(",", " ")
             .split(" ")
             .filter(str => str !== "")
             .map(str => Number(str));
@@ -403,7 +407,7 @@ export class DynamicConfigEntityRoleMany extends DynamicConfigEntity {
 
     public check(value: string): boolean {
         let valueStringArray: string[] = value
-            .replace(",", " ")
+            .replaceAll(",", " ")
             .split(" ")
             .filter(str => str !== "");
         if(
@@ -436,7 +440,7 @@ export class DynamicConfigEntityChannelMany extends DynamicConfigEntity {
 
     public check(value: string): boolean {
         let valueStringArray: string[] = value
-            .replace(",", " ")
+            .replaceAll(",", " ")
             .split(" ")
             .filter(str => str !== "")
         if(
@@ -451,5 +455,28 @@ export class DynamicConfigEntityChannelMany extends DynamicConfigEntity {
         return this.value
             .map(roleID => `<#${roleID}>`)
             .join(", ");
+    }
+}
+
+export class DynamicConfigEntityNumberTimeSeconds extends DynamicConfigEntity {
+    public readonly type: string = "NumberTimeSeconds";
+    public value: number;
+    public readonly properties: JSONDynamicConfigEntityNumberTimeSeconds;
+
+    constructor(properties: JSONDynamicConfigEntityNumberTimeSeconds, value: number) {
+        super();
+        this.value = value/1000;
+        this.properties = properties;
+    }
+
+    public get stringifiedValue(): string { return String(this.value); }
+
+    public check(value: string): boolean {
+        let numberValue: number = Math.floor(Number(value));
+        if((numberValue >= this.properties.minValue) && (numberValue <= this.properties.maxValue)) {
+            this.value = numberValue;
+            return true;
+        }
+        return false;
     }
 }

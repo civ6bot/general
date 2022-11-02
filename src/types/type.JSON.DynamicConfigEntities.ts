@@ -1,3 +1,5 @@
+import {DynamicConfigEntityNumberTimeSeconds} from "../modules/dynamicConfig/dynamicConfig.models";
+
 export interface JSONDynamicConfigEntity {
     configTag: string,
     textTag: string,
@@ -38,3 +40,5 @@ export interface JSONDynamicConfigEntityChannelMany extends JSONDynamicConfigEnt
     minAmount: number,
     maxAmount: number
 }
+
+export interface JSONDynamicConfigEntityNumberTimeSeconds extends JSONDynamicConfigEntityNumber {}

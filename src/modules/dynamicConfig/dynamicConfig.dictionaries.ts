@@ -60,9 +60,9 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
         {
             configTag: "SPLIT_PICK_TIME_MS",
             textTag: "DYNAMIC_CONFIG_SETTING_SPLIT_TIME",
-            type: "Number",
-            minValue: 20*1000,
-            maxValue: 900*1000
+            type: "NumberTimeSeconds",
+            minValue: 20,
+            maxValue: 900
         }
     ]],
     ["DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_CIVILIZATIONS",
@@ -113,9 +113,9 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
         {
             configTag: "DRAFT_BLIND_PICK_TIME_MS",
             textTag: "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_TIME",
-            type: "Number",
-            minValue: 20*1000,
-            maxValue: 900*1000
+            type: "NumberTimeSeconds",
+            minValue: 20,
+            maxValue: 900
         },
     ]],
     ["DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_REDRAFT", [
@@ -143,18 +143,18 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
         {
             configTag: "REDRAFT_VOTE_TIME_MS",
             textTag: "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_TIME",
-            type: "Number",
-            minValue: 15*1000,
-            maxValue: 900*1000
+            type: "NumberTimeSeconds",
+            minValue: 15,
+            maxValue: 900
         },
     ]],
     ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL", [
         {
             configTag: "GAME_VOTE_TIME_MS",
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TIME",
-            type: "Number",
-            minValue: 30*1000,
-            maxValue: 900*1000
+            type: "NumberTimeSeconds",
+            minValue: 30,
+            maxValue: 900
         },
         {
             configTag: "GAME_THREAD",

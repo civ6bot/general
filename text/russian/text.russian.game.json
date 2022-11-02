@@ -10,8 +10,8 @@
     { "tag": "GAME_ERROR_THREAD", "value": "Бот не может создать ветку для начала голосования." },
 
     { "tag": "GAME_NOTIFY_THREAD", "value": "Ветка для голосования успешно создана." },
-    { "tag": "GAME_FFA_THREAD_NAME", "value": "\uD83D\uDDFF Голосование FFA от [USER_TAG]" },
-    { "tag": "GAME_TEAMERS_THREAD_NAME", "value": "\uD83D\uDC32 Голосование Teamers от [USER_TAG]" },
+    { "tag": "GAME_FFA_THREAD_NAME", "value": "\uD83D\uDDFF FFA от [USER_TAG]" },
+    { "tag": "GAME_TEAMERS_THREAD_NAME", "value": "\uD83D\uDC32 Teamers от [USER_TAG]" },
 
     { "tag": "GAME_NOTIFY_FFA_PM_TITLE", "value": "\uD83D\uDDFF Новая игра в режиме FFA" },
     { "tag": "GAME_NOTIFY_TEAMERS_PM_TITLE", "value": "\uD83D\uDC32 Новая игра в режиме Teamers" },

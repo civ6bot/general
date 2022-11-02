@@ -53,7 +53,7 @@
 
     { "tag": "DYNAMIC_CONFIG_CATEGORY_SPLIT", "value": "Split" },
     { "tag": "DYNAMIC_CONFIG_CATEGORY_SPLIT_EMOJI", "value": "\uD83D\uDC65" },
-    { "tag": "DYNAMIC_CONFIG_SETTING_SPLIT_TIME", "value": "Choice time, ms" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_SPLIT_TIME", "value": "Choice time, seconds" },
     { "tag": "DYNAMIC_CONFIG_SETTING_SPLIT_TIME_EMOJI", "value": "⏰" },
 
 
@@ -201,7 +201,7 @@
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT_EMOJI", "value": "\uD83D\uDD3D" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT", "value": "Maximum civilizations for draft" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT_EMOJI", "value": "\uD83D\uDD3C" },
-    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_TIME", "value": "Choice time, ms" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_TIME", "value": "Choice time, seconds" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_TIME_EMOJI", "value": "⏰" },
 
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_FFA_THRESHOLD_PERCENT", "value": "% of players for 1st redraft, FFA" },
@@ -210,7 +210,7 @@
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_TEAMERS_THRESHOLD_PERCENT_EMOJI", "value": "\uD83D\uDC32" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_BLIND_THRESHOLD_PERCENT", "value": "% of players for 1st redraft, Blind" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_BLIND_THRESHOLD_PERCENT_EMOJI", "value": "\uD83C\uDFA9" },
-    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_TIME", "value": "Choice time, ms" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_TIME", "value": "Choice time, seconds" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_TIME_EMOJI", "value": "⏰" },
 
 
@@ -224,7 +224,7 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS", "value": "New game Teamers vote" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_EMOJI", "value": "\uD83D\uDC32" },
 
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TIME", "value": "Vote time, ms" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TIME", "value": "Vote time, seconds" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TIME_EMOJI", "value": "⏰" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_THREAD", "value": "Create thread of vote" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_THREAD_EMOJI", "value": "#️⃣" },
@@ -232,13 +232,13 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_SEND_PM_NOTIFICATION_EMOJI", "value": "\uD83D\uDCF2" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_MOVE_TO_VOICE_CHANNELS", "value": "Move player on new game vote" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_MOVE_TO_VOICE_CHANNELS_EMOJI", "value": "↪" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_HOME_VOICE_CHANNELS", "value": "FFA departure channels" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_HOME_VOICE_CHANNELS", "value": "FFA departure channels (ID)" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_HOME_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDDFF" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_VOICE_CHANNELS", "value": "FFA destination channels" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_VOICE_CHANNELS", "value": "FFA destination channels (ID)" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDDFF" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_HOME_VOICE_CHANNELS", "value": "Teamers departure channels" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_HOME_VOICE_CHANNELS", "value": "Teamers departure channels (ID)" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_HOME_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDC32" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_VOICE_CHANNELS", "value": "Teamers destination channels" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_VOICE_CHANNELS", "value": "Teamers destination channels (ID)" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDC32" },
 
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD", "value": "Add this vote to new game vote" },

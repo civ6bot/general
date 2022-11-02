@@ -53,7 +53,7 @@
 
     { "tag": "DYNAMIC_CONFIG_CATEGORY_SPLIT", "value": "Разделение на команды" },
     { "tag": "DYNAMIC_CONFIG_CATEGORY_SPLIT_EMOJI", "value": "\uD83D\uDC65" },
-    { "tag": "DYNAMIC_CONFIG_SETTING_SPLIT_TIME", "value": "Время на выбор игрока, мс" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_SPLIT_TIME", "value": "Время на выбор игрока, секунд" },
     { "tag": "DYNAMIC_CONFIG_SETTING_SPLIT_TIME_EMOJI", "value": "⏰" },
 
 
@@ -201,7 +201,7 @@
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT_EMOJI", "value": "\uD83D\uDD3D" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT", "value": "Максимум цивилизаций в драфте" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT_EMOJI", "value": "\uD83D\uDD3C" },
-    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_TIME", "value": "Время на выбор цивилизации, мс" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_TIME", "value": "Время на выбор цивилизации, секунд" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_TIME_EMOJI", "value": "⏰" },
 
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_FFA_THRESHOLD_PERCENT", "value": "% игроков на 1-ый редрафт FFA" },
@@ -210,7 +210,7 @@
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_TEAMERS_THRESHOLD_PERCENT_EMOJI", "value": "\uD83D\uDC32" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_BLIND_THRESHOLD_PERCENT", "value": "% игроков на 1-ый редрафт взакрытую" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_BLIND_THRESHOLD_PERCENT_EMOJI", "value": "\uD83C\uDFA9" },
-    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_TIME", "value": "Время на принятие решения, мс" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_TIME", "value": "Время на принятие решения, секунд" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_TIME_EMOJI", "value": "⏰" },
 
 
@@ -224,7 +224,7 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS", "value": "Голосование Teamers" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_EMOJI", "value": "\uD83D\uDC32" },
 
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TIME", "value": "Время на голосование, мс" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TIME", "value": "Время на голосование, секунд" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TIME_EMOJI", "value": "⏰" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_THREAD", "value": "Создавать ветку для голосования" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_THREAD_EMOJI", "value": "#️⃣" },
@@ -232,13 +232,13 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_SEND_PM_NOTIFICATION_EMOJI", "value": "\uD83D\uDCF2" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_MOVE_TO_VOICE_CHANNELS", "value": "Перемещать игроков при голосовании" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_MOVE_TO_VOICE_CHANNELS_EMOJI", "value": "↪" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_HOME_VOICE_CHANNELS", "value": "Из каких каналов перемещать для FFA" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_HOME_VOICE_CHANNELS", "value": "Из каких каналов перемещать для FFA (ID)" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_HOME_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDDFF" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_VOICE_CHANNELS", "value": "Голосовые каналы для FFA" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_VOICE_CHANNELS", "value": "Голосовые каналы для FFA (ID)" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDDFF" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_HOME_VOICE_CHANNELS", "value": "Из каких каналов перемещать для Teamers" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_HOME_VOICE_CHANNELS", "value": "Из каких каналов перемещать для Teamers (ID)" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_HOME_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDC32" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_VOICE_CHANNELS", "value": "Голосовые каналы для Teamers" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_VOICE_CHANNELS", "value": "Голосовые каналы для Teamers (ID)" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDC32" },
 
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD", "value": "Добавить в голосование за настройки" },

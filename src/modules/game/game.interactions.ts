@@ -1,5 +1,5 @@
-import {ButtonComponent, Discord, Slash, SlashGroup} from "discordx";
-import {ButtonInteraction, CommandInteraction} from "discord.js";
+import {ButtonComponent, Discord, Slash, SlashGroup, SlashOption} from "discordx";
+import {ApplicationCommandOptionType, ButtonInteraction, CommandInteraction} from "discord.js";
 import {GameService} from "./game.service";
 
 @Discord()
@@ -10,13 +10,37 @@ export abstract class GameInteractionsGrouped {
 
     @Slash({ name: "ffa", description: "Vote for new FFA game" })
     public async ffa(
+        @SlashOption({
+            name: "include",
+            description: "add players to vote",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersInclude: string = "",
+        @SlashOption({
+            name: "exclude",
+            description: "remove players from vote",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersExclude: string = "",
         interaction: CommandInteraction
-    ) { await this.gameService.ffa(interaction); }
+    ) { await this.gameService.ffa(interaction, usersInclude, usersExclude); }
 
     @Slash( { name: "teamers", description: "Vote for new Teamers game" })
     public async teamers(
+        @SlashOption({
+            name: "include",
+            description: "add players to vote",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersInclude: string = "",
+        @SlashOption({
+            name: "exclude",
+            description: "remove players from vote",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersExclude: string = "",
         interaction: CommandInteraction
-    ) { await this.gameService.teamers(interaction); }
+    ) { await this.gameService.teamers(interaction, usersInclude, usersExclude); }
 }
 
 @Discord()

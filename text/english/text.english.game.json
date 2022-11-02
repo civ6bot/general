@@ -10,8 +10,8 @@
     { "tag": "GAME_ERROR_THREAD", "value": "Bot hasn't permission to create thread." },
 
     { "tag": "GAME_NOTIFY_THREAD", "value": "Thread for new game vote created successfully." },
-    { "tag": "GAME_FFA_THREAD_NAME", "value": "\uD83D\uDDFF FFA game vote by [USER_TAG]" },
-    { "tag": "GAME_TEAMERS_THREAD_NAME", "value": "\uD83D\uDC32 Teamers game vote by [USER_TAG]" },
+    { "tag": "GAME_FFA_THREAD_NAME", "value": "\uD83D\uDDFF FFA vote by [USER_TAG]" },
+    { "tag": "GAME_TEAMERS_THREAD_NAME", "value": "\uD83D\uDC32 Teamers vote by [USER_TAG]" },
 
     { "tag": "GAME_NOTIFY_FFA_PM_TITLE", "value": "\uD83D\uDDFF New FFA Game" },
     { "tag": "GAME_NOTIFY_TEAMERS_PM_TITLE", "value": "\uD83D\uDC32 New Teamers Game" },

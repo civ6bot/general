@@ -73,9 +73,26 @@ export class GameService extends ModuleBaseService {
                 }
     }
 
-    public async ffa(interaction: CommandInteraction) {
+    public async ffa(interaction: CommandInteraction, usersInclude: string, usersExclude: string) {
         await interaction.deferReply();
         let users: User[] = UtilsServiceUsers.getFromVoice(interaction);
+        let usersIncludeID: string[] = usersInclude
+            .replaceAll("<@", " ")
+            .replaceAll(">", " ")
+            .split(" ")
+            .filter(id => id !== "");
+        let includeUser: User | undefined;
+        for(let id of usersIncludeID) {
+             includeUser = interaction.guild?.members.cache.get(id)?.user;
+            if(includeUser)
+                users.push(includeUser);
+        }
+        let usersExcludeID: string[] = usersExclude
+            .replaceAll("<@", "")
+            .replaceAll(">", "")
+            .split(" ")
+            .filter(id => (id !== "") && (id !== interaction.user.id));
+        users = users.filter(user => usersExcludeID.indexOf(user.id) === -1);
 
         let gameFFAMainFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsServiceGameTags.FFAHeaderConfigsStrings);
         let gameFFAOptionsFlags: number[][] = [];
@@ -161,8 +178,9 @@ export class GameService extends ModuleBaseService {
                 ]);
                 await interaction.editReply({embeds: this.gameUI.notify(textStrings[0], textStrings[1])});
                 setTimeout(
-                    async () => await interaction.deleteReply(),
-                    UtilsServiceTime.getMs(10, "s")
+                    async (interaction: CommandInteraction) => await interaction.deleteReply(),
+                    UtilsServiceTime.getMs(5, "s"),
+                    interaction
                 );
             } catch {
                 let textStrings: string[] = await this.getManyText(interaction, [
@@ -264,9 +282,26 @@ export class GameService extends ModuleBaseService {
         }
     }
 
-    public async teamers(interaction: CommandInteraction) {
+    public async teamers(interaction: CommandInteraction, usersInclude: string, usersExclude: string) {
         await interaction.deferReply();
         let users: User[] = UtilsServiceUsers.getFromVoice(interaction);
+        let usersIncludeID: string[] = usersInclude
+            .replaceAll("<@", " ")
+            .replaceAll(">", " ")
+            .split(" ")
+            .filter(id => id !== "");
+        let includeUser: User | undefined;
+        for(let id of usersIncludeID) {
+            includeUser = interaction.guild?.members.cache.get(id)?.user;
+            if(includeUser)
+                users.push(includeUser);
+        }
+        let usersExcludeID: string[] = usersExclude
+            .replaceAll("<@", "")
+            .replaceAll(">", "")
+            .split(" ")
+            .filter(id => (id !== "") && (id !== interaction.user.id))
+        users = users.filter(user => usersExcludeID.indexOf(user.id) === -1);
 
         let gameTeamersMainFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsServiceGameTags.teamersHeaderConfigsStrings);
         let gameTeamersOptionsFlags: number[][] = [];
@@ -356,8 +391,9 @@ export class GameService extends ModuleBaseService {
                 ]);
                 await interaction.editReply({embeds: this.gameUI.notify(textStrings[0], textStrings[1])});
                 setTimeout(
-                    async () => await interaction.deleteReply(),
-                    UtilsServiceTime.getMs(10, "s")
+                    async (interaction: CommandInteraction) => await interaction.deleteReply(),
+                    UtilsServiceTime.getMs(5, "s"),
+                    interaction
                 );
             } catch {
                 let textStrings: string[] = await this.getManyText(interaction, [

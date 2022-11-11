@@ -43,7 +43,7 @@ export class DynamicConfigService extends ModuleBaseService {
             await interaction.message.delete();
             return undefined;
         }
-        if(!UtilsServiceUsers.isAdmin(interaction.member as GuildMember)) {
+        if(!await this.isModerator(interaction)) {
             await interaction.deferUpdate();
             return undefined;
         }
@@ -123,6 +123,16 @@ export class DynamicConfigService extends ModuleBaseService {
                 ...this.dynamicConfigUI.configMenu(placeholderString, optionStrings, emojiStrings)
             ]
         });
+    }
+
+    private async isModerator(interaction: CommandInteraction | ButtonInteraction | SelectMenuInteraction): Promise<boolean> {
+        let member: GuildMember = interaction.member as GuildMember;
+        if(UtilsServiceUsers.isAdmin(member))
+            return true;
+        let moderationRolesID: string[] = (await this.getOneSettingString(
+            interaction, "MODERATION_ROLE_MODERATORS_ID"
+        )).split(" ");
+        return member.roles.cache.some((value, key) => (moderationRolesID.indexOf(key) !== -1));
     }
 
     protected updateTimeoutTimer(dynamicConfig: DynamicConfig): void {
@@ -354,7 +364,7 @@ export class DynamicConfigService extends ModuleBaseService {
     //dynamicConfig-menu
     //values=numbers i
     public async config(interaction: CommandInteraction) {
-        if(!UtilsServiceUsers.isAdmin(interaction.member as GuildMember)) {
+        if(!await this.isModerator(interaction)) {
             let textStrings = await this.getManyText(
                 interaction,
                 ["BASE_ERROR_TITLE", "DYNAMIC_CONFIG_ERROR_COMMAND_NOT_ADMIN"],

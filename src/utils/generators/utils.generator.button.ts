@@ -69,15 +69,18 @@ export class UtilsGeneratorButton {
         let rows: ActionRowBuilder<ButtonBuilder>[] = [];
         for(let i in formedLabelArray) {
             let buttonArray: ButtonBuilder[] = []
-            for (let j in formedLabelArray[i])
-                buttonArray.push(
-                    new ButtonBuilder()
-                        .setLabel(formedLabelArray?.[i]?.[j] || "")
-                        .setEmoji(formedEmojiArray?.[i]?.[j] || "")
-                        .setStyle(formedStyleArray?.[i]?.[j] || ButtonStyle.Secondary) // grey button
-                        .setCustomId(formedCustomIDArray?.[i]?.[j] || "")
-                        .setDisabled(formedIsDisabledArray?.[i]?.[j] || false)
-                );
+            for (let j in formedLabelArray[i]) {
+                let buttonBuilder: ButtonBuilder = new ButtonBuilder()
+                    .setStyle(formedStyleArray?.[i]?.[j] || ButtonStyle.Secondary)
+                    .setDisabled(formedIsDisabledArray?.[i]?.[j] || false);
+                if(!!formedLabelArray?.[i]?.[j] && (formedLabelArray?.[i]?.[j] !== ""))
+                    buttonBuilder.setLabel(formedLabelArray[i][j]);
+                if(!!formedEmojiArray?.[i]?.[j] && (formedEmojiArray?.[i]?.[j] !== ""))
+                    buttonBuilder.setEmoji(formedEmojiArray[i][j]);
+                if(!!formedCustomIDArray?.[i]?.[j] && (formedCustomIDArray?.[i]?.[j] !== ""))
+                    buttonBuilder.setCustomId(formedCustomIDArray[i][j]);
+                buttonArray.push(buttonBuilder);
+            }
             rows.push(new ActionRowBuilder<ButtonBuilder>().addComponents(buttonArray));
         }
         rows.splice(this.maxRows+1);

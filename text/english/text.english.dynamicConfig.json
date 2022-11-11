@@ -51,6 +51,11 @@
     { "tag": "DYNAMIC_CONFIG_LANGUAGE", "value": "Language" },
     { "tag": "DYNAMIC_CONFIG_LANGUAGE_EMOJI", "value": "\uD83C\uDF0D" },
 
+    { "tag": "DYNAMIC_CONFIG_MODERATION", "value": "Moderation" },
+    { "tag": "DYNAMIC_CONFIG_MODERATION_EMOJI", "value": "\uD83D\uDD28" },
+    { "tag": "DYNAMIC_CONFIG_MODERATION_ROLE_MODERATORS_ID", "value": "Moderator roles to change configs (ID)" },
+    { "tag": "DYNAMIC_CONFIG_MODERATION_ROLE_MODERATORS_ID_EMOJI", "value": "⚙" },
+
     { "tag": "DYNAMIC_CONFIG_CATEGORY_SPLIT", "value": "Split" },
     { "tag": "DYNAMIC_CONFIG_CATEGORY_SPLIT_EMOJI", "value": "\uD83D\uDC65" },
     { "tag": "DYNAMIC_CONFIG_SETTING_SPLIT_TIME", "value": "Choice time, seconds" },

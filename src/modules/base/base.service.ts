@@ -74,7 +74,7 @@ export class ModuleBaseService {
     }
 
     protected async getManyText(
-        interaction: CommandInteraction | ButtonInteraction | SelectMenuInteraction | ModalSubmitInteraction,
+        interaction: CommandInteraction | ButtonInteraction | SelectMenuInteraction | ModalSubmitInteraction | string,
         tags: string[],
         args: (((string|number)[])|null)[] = []
     ): Promise<string[]> {

@@ -1,6 +1,6 @@
 import {importx} from "@discordx/importer";
 import {httpServer} from "./server/server.app";
-import {discordClient} from "./discord/discord.client";
+import {discordClient} from "./client/client";
 import {localDataSource, outerDataSource} from "./database/database.datasources";
 import {DatabaseServiceText} from "./database/services/service.Text";
 import {loadTextEntities} from "./utils/loaders/utils.loader.text";
@@ -10,8 +10,7 @@ import * as dotenv from "dotenv";
 dotenv.config({path: 'general.env'});
 
 importx(
-    __dirname + "/modules/*/*.interactions.{js,ts}",
-    __dirname + "/discord/discord.events.{js,ts}",
+    __dirname + "/modules/*/*.{events,interactions}.{js,ts}"
 ).then(() => {
     discordClient.login(((process.env.TEST_MODE == '1') ? process.env.TEST_BOT_TOKEN : process.env.BOT_TOKEN) as string).then(() => {
         console.log((process.env.TEST_MODE == '1') ? "Civilization VI \"Test\" started" : "Civilization VI \"General\" started");
@@ -31,7 +30,7 @@ localDataSource.initialize().then(async () => {
     console.log(`Local database started`);
 });
 
-outerDataSource.initialize().then(async () => {
+outerDataSource.initialize().then(() => {
     console.log(`Outer database started`);
 });
 

@@ -1,0 +1,32 @@
+{
+  "lang": "Russian",
+  "text": [
+    { "tag": "RULES_ERROR_MAX_PAGES", "value": "Слишком много страниц! Поддерживается до [PAGES_MAX_NUMBER] страниц." },
+    { "tag": "RULES_ERROR_EMPTY_INPUT", "value": "Введите непустые значения заголовка, содержания и тегов страницы." },
+
+    { "tag": "RULES_TITLE", "value": "\uD83D\uDCD5 #[PAGE_NUMBER] | [PAGE_TITLE]" },
+    { "tag": "RULES_FIELD_TAGS_TITLE", "value": "Теги" },
+
+    { "tag": "RULES_COVER_TITLE", "value": "\uD83D\uDCD5 Правила" },
+    { "tag": "RULES_COVER_DESCRIPTION_HEADER", "value": "Используйте кнопки навигации или команду `/rules <abc>`, чтобы перейти к странице по её тегу или номеру." },
+    { "tag": "RULES_COVER_DESCRIPTION_HEADER_ZERO", "value": "Здесь пока ничего нет." },
+
+    { "tag": "RULES_BUTTON_FIRST", "value": "На первую страницу" },
+    { "tag": "RULES_BUTTON_PREVIOUS", "value": "Пред. страница" },
+    { "tag": "RULES_BUTTON_NEXT", "value": "След. страница" },
+    { "tag": "RULES_BUTTON_LAST", "value": "На последнюю страницу" },
+    { "tag": "RULES_BUTTON_DELETE_MESSAGE", "value": "Удалить сообщение" },
+
+    { "tag": "RULES_BUTTON_ADD", "value": "Добавить" },
+    { "tag": "RULES_BUTTON_EDIT", "value": "Изменить" },
+    { "tag": "RULES_BUTTON_SHIFT_LEFT", "value": "Сдвинуть влево" },
+    { "tag": "RULES_BUTTON_SHIFT_RIGHT", "value": "Сдвинуть вправо" },
+    { "tag": "RULES_BUTTON_REMOVE", "value": "Удалить страницу" },
+
+    { "tag": "RULES_BUTTON_MODAL_ADD", "value": "Добавить новую страницу" },
+    { "tag": "RULES_BUTTON_MODAL_EDIT", "value": "Изменить страницу" },
+    { "tag": "RULES_MODAL_TITLE", "value": "Заголовок страницы" },
+    { "tag": "RULES_MODAL_TEXT", "value": "Текст страницы" },
+    { "tag": "RULES_MODAL_TAGS", "value": "Теги (через пробел)" }
+  ]
+}

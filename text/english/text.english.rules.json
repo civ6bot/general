@@ -1,0 +1,32 @@
+{
+  "lang": "English",
+  "text": [
+    { "tag": "RULES_ERROR_MAX_PAGES", "value": "Too many pages! Rulebook can contain up to [PAGES_MAX_NUMBER] pages." },
+    { "tag": "RULES_ERROR_EMPTY_INPUT", "value": "Input non-empty title, text and tags or page." },
+
+    { "tag": "RULES_TITLE", "value": "\uD83D\uDCD5 #[PAGE_NUMBER] | [PAGE_TITLE]" },
+    { "tag": "RULES_FIELD_TAGS_TITLE", "value": "Tags" },
+
+    { "tag": "RULES_COVER_TITLE", "value": "\uD83D\uDCD5 Rules" },
+    { "tag": "RULES_COVER_DESCRIPTION_HEADER", "value": "Use navigation buttons or `/rules <abc>` command to get page." },
+    { "tag": "RULES_COVER_DESCRIPTION_HEADER_ZERO", "value": "Pages not found." },
+
+    { "tag": "RULES_BUTTON_FIRST", "value": "First page" },
+    { "tag": "RULES_BUTTON_PREVIOUS", "value": "Prev. page" },
+    { "tag": "RULES_BUTTON_NEXT", "value": "Next Page" },
+    { "tag": "RULES_BUTTON_LAST", "value": "Last page" },
+    { "tag": "RULES_BUTTON_DELETE_MESSAGE", "value": "Delete message" },
+
+    { "tag": "RULES_BUTTON_ADD", "value": "Add" },
+    { "tag": "RULES_BUTTON_EDIT", "value": "Edit" },
+    { "tag": "RULES_BUTTON_SHIFT_LEFT", "value": "Shift left" },
+    { "tag": "RULES_BUTTON_SHIFT_RIGHT", "value": "Shift right" },
+    { "tag": "RULES_BUTTON_REMOVE", "value": "Delete page" },
+
+    { "tag": "RULES_BUTTON_MODAL_ADD", "value": "Add new page" },
+    { "tag": "RULES_BUTTON_MODAL_EDIT", "value": "Edit page" },
+    { "tag": "RULES_MODAL_TITLE", "value": "Page title" },
+    { "tag": "RULES_MODAL_TEXT", "value": "Page text" },
+    { "tag": "RULES_MODAL_TAGS", "value": "Tags" }
+  ]
+}

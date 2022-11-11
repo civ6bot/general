@@ -10,7 +10,7 @@ export const tagsMap: Map<string, string[]> = new Map<string, string[]>([
     ["DYNAMIC_CONFIG_TITLE", [
         "DYNAMIC_CONFIG_CATEGORY_MISCELLANEOUS", "DYNAMIC_CONFIG_CATEGORY_SPLIT",
         "DYNAMIC_CONFIG_CATEGORY_DRAFT", "DYNAMIC_CONFIG_CATEGORY_GAME",
-        "DYNAMIC_CONFIG_LANGUAGE"
+        "DYNAMIC_CONFIG_MODERATION", "DYNAMIC_CONFIG_LANGUAGE"
     ]],
     ["DYNAMIC_CONFIG_CATEGORY_DRAFT", [
         "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_CIVILIZATIONS", "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_FFA",
@@ -47,6 +47,15 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
     |JSONDynamicConfigEntityChannelMany
     )[]>([
     ["DYNAMIC_CONFIG_LANGUAGE", []],
+    ["DYNAMIC_CONFIG_MODERATION", [
+        {
+            configTag: "MODERATION_ROLE_MODERATORS_ID",
+            textTag: "DYNAMIC_CONFIG_MODERATION_ROLE_MODERATORS_ID",
+            type: "RoleMany",
+            minAmount: 0,
+            maxAmount: 10
+        }
+    ]],
     ["DYNAMIC_CONFIG_CATEGORY_MISCELLANEOUS", [
         {
             configTag: "MISCELLANEOUS_RANDOM_MAX",

@@ -1,5 +1,5 @@
 import {GuildMember, EmbedBuilder, User} from "discord.js";
-import {discordClient} from "../../discord/discord.client";
+import {discordClient} from "../../client/client";
 
 export class UtilsServicePM {
     public static async send(

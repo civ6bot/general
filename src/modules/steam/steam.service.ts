@@ -43,7 +43,8 @@ export class SteamService extends ModuleBaseService {
                 ? textStrings[1]
                     : textStrings[2],
                 textStrings[3],
-                description
+                description,
+                interaction.user
             )});
     }
 

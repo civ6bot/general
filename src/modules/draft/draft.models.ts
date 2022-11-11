@@ -113,17 +113,15 @@ export class DraftTeamers extends Draft {
                 this.civilizationsPool[i].push(
                     this.civilizationsMainPool.splice(Math.floor(Math.random() * this.civilizationsMainPool.length), 1)[0]
                 );
-
         let correctDraft: boolean = true;
         let tempValue: number;
-        let indexA: number, indexB: number, indexAB: number,
-            indexSwap: number, indexNextPool: number;
+        let indexA: number, indexB: number, indexAB: number, indexSwap: number, indexNextPool: number;
         do {
             correctDraft = true;
             for (let i: number = 0; i < this.civilizationsPool.length; i++) {
-                for (let j: number = 0; j < teamersDraftForbiddenPairs.length; j++) {
-                    indexA = this.civilizationsPool[i].indexOf(teamersDraftForbiddenPairs[j][0]);
-                    indexB = this.civilizationsPool[i].indexOf(teamersDraftForbiddenPairs[j][1]);
+                for (let j: number = 0; j < this.teamersDraftForbiddenPairs.length; j++) {
+                    indexA = this.civilizationsPool[i].indexOf(this.teamersDraftForbiddenPairs[j][0]);
+                    indexB = this.civilizationsPool[i].indexOf(this.teamersDraftForbiddenPairs[j][1]);
                     if ((indexA !== -1) && (indexB !== -1)) {
                         correctDraft = false;
                         indexAB = Math.random() >= 0.5 ? indexA : indexB;

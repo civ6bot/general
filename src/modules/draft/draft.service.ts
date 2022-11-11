@@ -98,7 +98,6 @@ export class DraftService extends ModuleBaseService {
             let forbiddenPairs: number[][] = UtilsServiceCivilizations.getForbiddenPairs(
                 await this.getOneSettingString(interaction, "DRAFT_TEAMERS_FORBIDDEN_PAIRS")
             );
-
             draft = new DraftTeamers(
                 interaction,
                 bans,

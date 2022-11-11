@@ -199,7 +199,7 @@
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT", "value": "Maximum civilizations for draft" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT_EMOJI", "value": "\uD83D\uDD3C" },
 
-    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_TEAMERS_FORBIDDEN_PAIRS", "value": "Forbidden civilization pairs for Teamers draft" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_TEAMERS_FORBIDDEN_PAIRS", "value": "Forbidden pairs for Teamers draft" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_TEAMERS_FORBIDDEN_PAIRS_EMOJI", "value": "\uD83D\uDD00" },
 
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT", "value": "Minimum civilizations for draft" },

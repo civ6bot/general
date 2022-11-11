@@ -53,7 +53,7 @@
 
     { "tag": "DYNAMIC_CONFIG_MODERATION", "value": "Модерация" },
     { "tag": "DYNAMIC_CONFIG_MODERATION_EMOJI", "value": "\uD83D\uDD28" },
-    { "tag": "DYNAMIC_CONFIG_MODERATION_ROLE_MODERATORS_ID", "value": "Роли модераторов для изменения настроек (ID)" },
+    { "tag": "DYNAMIC_CONFIG_MODERATION_ROLE_MODERATORS_ID", "value": "Роли модераторов для настроек (ID)" },
     { "tag": "DYNAMIC_CONFIG_MODERATION_ROLE_MODERATORS_ID_EMOJI", "value": "⚙" },
 
     { "tag": "DYNAMIC_CONFIG_CATEGORY_SPLIT", "value": "Разделение на команды" },
@@ -237,11 +237,11 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_SEND_PM_NOTIFICATION_EMOJI", "value": "\uD83D\uDCF2" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_MOVE_TO_VOICE_CHANNELS", "value": "Перемещать игроков при голосовании" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_MOVE_TO_VOICE_CHANNELS_EMOJI", "value": "↪" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_HOME_VOICE_CHANNELS", "value": "Из каких каналов перемещать для FFA (ID)" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_HOME_VOICE_CHANNELS", "value": "Из каких каналов перемещать, FFA (ID)" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_HOME_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDDFF" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_VOICE_CHANNELS", "value": "Голосовые каналы для FFA (ID)" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDDFF" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_HOME_VOICE_CHANNELS", "value": "Из каких каналов перемещать для Teamers (ID)" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_HOME_VOICE_CHANNELS", "value": "Из каких каналов перемещать, Teamers (ID)" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_HOME_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDC32" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_VOICE_CHANNELS", "value": "Голосовые каналы для Teamers (ID)" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_VOICE_CHANNELS_EMOJI", "value": "\uD83D\uDC32" },

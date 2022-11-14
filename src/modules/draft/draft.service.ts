@@ -192,7 +192,7 @@ export class DraftService extends ModuleBaseService {
                     ? await draft.thread.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
                     : await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
             } else
-                await interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+                await interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
             return;
         }
         draft.isProcessing = true;

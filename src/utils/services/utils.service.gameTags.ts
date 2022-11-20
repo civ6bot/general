@@ -3,9 +3,15 @@ export class UtilsServiceGameTags {
         "GAME_FFA_MAP", "GAME_FFA_DISASTERS",
         "GAME_FFA_BONUS_RESOURCES", "GAME_FFA_STRATEGIC_RESOURCES",
         "GAME_FFA_WONDERS", "GAME_FFA_AGE",
+        "GAME_FFA_THERMONUCLEAR_DEVICE", "GAME_FFA_GREAT_PEOPLE_PASS",
+        "GAME_FFA_MONOPOLY", "GAME_FFA_BARBARIAN_CLANS",
+        "GAME_FFA_SHUFFLE",
+
         "GAME_FFA_GOLD_TRADING", "GAME_FFA_STRATEGIC_TRADING",
         "GAME_FFA_FRIENDS", "GAME_FFA_MILITARY_ALLIANCE",
-        "GAME_FFA_CHATTING", "GAME_FFA_DRAFT"
+        "GAME_FFA_CHATTING", 
+        
+        "GAME_FFA_DRAFT"
     ];
 
     public static readonly FFAOptionsConfigsStrings: string[][] = [
@@ -18,6 +24,7 @@ export class UtilsServiceGameTags {
             "GAME_FFA_MAP_TILTED_AXIS",
         ],
         [
+            "GAME_FFA_DISASTERS_0",
             "GAME_FFA_DISASTERS_1", "GAME_FFA_DISASTERS_2",
             "GAME_FFA_DISASTERS_3", "GAME_FFA_DISASTERS_4"
         ],
@@ -26,13 +33,28 @@ export class UtilsServiceGameTags {
         ],
         [
             "GAME_FFA_STRATEGIC_RESOURCES_STANDARD", "GAME_FFA_STRATEGIC_RESOURCES_ABUNDANT",
-            "GAME_FFA_STRATEGIC_RESOURCES_GUARANTEED"
+            "GAME_FFA_STRATEGIC_RESOURCES_EPIC", "GAME_FFA_STRATEGIC_RESOURCES_GUARANTEED"
         ],
         [
             "GAME_FFA_WONDERS_STANDARD", "GAME_FFA_WONDERS_ABUNDANT"
         ],
         [
             "GAME_FFA_AGE_STANDARD", "GAME_FFA_AGE_NEW"
+        ],
+        [
+            "GAME_FFA_THERMONUCLEAR_DEVICE_NO", "GAME_FFA_THERMONUCLEAR_DEVICE_YES"
+        ],
+        [
+            "GAME_FFA_GREAT_PEOPLE_PASS_NO", "GAME_FFA_GREAT_PEOPLE_PASS_YES"
+        ],
+        [
+            "GAME_FFA_MONOPOLY_NO", "GAME_FFA_MONOPOLY_YES"
+        ],
+        [
+            "GAME_FFA_BARBARIAN_CLANS_NO", "GAME_FFA_BARBARIAN_CLANS_YES"
+        ],
+        [
+            "GAME_FFA_SHUFFLE_NO", "GAME_FFA_SHUFFLE_YES"
         ],
         [
             "GAME_FFA_GOLD_TRADING_NO", "GAME_FFA_GOLD_TRADING_ALLIES",
@@ -76,6 +98,7 @@ export class UtilsServiceGameTags {
             "GAME_TEAMERS_MAP_PRIMORDIAL"
         ],
         [
+            "GAME_TEAMERS_DISASTERS_0",
             "GAME_TEAMERS_DISASTERS_1", "GAME_TEAMERS_DISASTERS_2",
             "GAME_TEAMERS_DISASTERS_3", "GAME_TEAMERS_DISASTERS_4"
         ],
@@ -84,7 +107,7 @@ export class UtilsServiceGameTags {
         ],
         [
             "GAME_TEAMERS_STRATEGIC_RESOURCES_STANDARD", "GAME_TEAMERS_STRATEGIC_RESOURCES_ABUNDANT",
-            "GAME_TEAMERS_STRATEGIC_RESOURCES_GUARANTEED"
+            "GAME_TEAMERS_STRATEGIC_RESOURCES_EPIC", "GAME_TEAMERS_STRATEGIC_RESOURCES_GUARANTEED"
         ],
         [
             "GAME_TEAMERS_WONDERS_STANDARD", "GAME_TEAMERS_WONDERS_ABUNDANT"

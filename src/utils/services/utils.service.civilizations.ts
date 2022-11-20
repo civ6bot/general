@@ -30,7 +30,7 @@ export class UtilsServiceCivilizations {
     // rawBans - просматриваемая строка, civilizationsTexts = const
     // возвращает индексы по const
     public static parseBans(rawBans: string, civilizationTexts: string[]) {
-        let rawBansArray: string[] = rawBans.replaceAll("\n", " ").split(" ").filter(str => str.length > 0);
+        let rawBansArray: string[] = rawBans.replaceAll("\n", " ").replaceAll("><", "> <").split(" ").filter(str => str.length > 0);
         let bans: number[] = [], errors: string[] = [];
 
         for(let i: number = 0; i < rawBansArray.length; i++) {

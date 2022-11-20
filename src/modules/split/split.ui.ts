@@ -32,4 +32,21 @@ export class SplitUI extends ModuleBaseUI {
             "split-delete"
         );
     }
+
+    public notificationSplitPMEmbed(
+        title: string, 
+        description: string,
+        messageURL: string,
+        guildName: string,
+        guildAvatarURL: string | null
+        ): EmbedBuilder[] {
+        return UtilsGeneratorEmbed.getSingle(
+            title,
+            "#008221",
+            `${description}\n${messageURL}`,
+            [],
+            guildName,
+            guildAvatarURL
+        );
+    }
 }

@@ -4,12 +4,12 @@ import {localDataSource, outerDataSource} from "../database.datasources";
 import {loadDefaultConfigs} from "../../utils/loaders/utils.loader.config";
 
 export class DatabaseServiceConfig {
-    protected localDatabase: EntityManager = localDataSource.manager;
+    protected innerDatabase: EntityManager = localDataSource.manager;
     protected outerDatabase: EntityManager = outerDataSource.manager;
 
     public async getOneString(guildID: string, setting: string): Promise<string> {
         // Ищем значение в локальной базе данных
-        let entityConfig: EntityConfig | null = await this.localDatabase.findOneBy(EntityConfig, {
+        let entityConfig: EntityConfig | null = await this.innerDatabase.findOneBy(EntityConfig, {
             guildID: guildID,
             setting: setting,
         });
@@ -19,14 +19,15 @@ export class DatabaseServiceConfig {
         // Если в локальной нет значения,
         // то импортируем внешнюю в локальную
         // и затем ищем в локальной
-        let localDefaultConfigSettings: string[] = loadDefaultConfigs().map(defaultEntityConfig => defaultEntityConfig.setting);
-
-        let entitiesConfig: EntityConfig[] = (await this.outerDatabase.findBy(EntityConfig, {
+        let localDefaultConfigSettings: string[] = loadDefaultConfigs().map(defaultEntityConfig => defaultEntityConfig.setting);    // массив всех строк с настройками
+        
+        let entitiesConfig: EntityConfig[] = (await this.outerDatabase.findBy(EntityConfig, {   // получаем из внешней
             guildID: guildID
         })) || [];
-        entitiesConfig.filter(entityConfig => localDefaultConfigSettings.indexOf(entityConfig.setting) !== -1)
-        await this.insertAll(entitiesConfig);
-        entityConfig = await this.localDatabase.findOneBy(EntityConfig, {
+        entitiesConfig.filter(entityConfig => localDefaultConfigSettings.indexOf(entityConfig.setting) !== -1)  // убираем лишнее для данного бота
+        await this.innerDatabase.save(entitiesConfig);  // сохраняем во внутреннюю
+        // Ищем значение в локальной базе данных
+        entityConfig = await this.innerDatabase.findOneBy(EntityConfig, {
             guildID: guildID,
             setting: setting,
         });
@@ -34,19 +35,26 @@ export class DatabaseServiceConfig {
             return entityConfig.value;
 
         // Если во внешней нет значения,
-        // то генерируем данные из DEFAULT для нужной GuildID,
+        // то добавляем недостающие данные из DEFAULT для нужной GuildID,
+        // получаем из внешней,
         // затем возвращаем значение
         let defaultEntitiesConfig: EntityConfig[] = await this.outerDatabase.findBy(EntityConfig, {
             guildID: "DEFAULT"
-        }) as EntityConfig[];
+        }) as EntityConfig[];   // DEFAULT config
         defaultEntitiesConfig
-            .filter(defaultEntityConfig => localDefaultConfigSettings.indexOf(defaultEntityConfig.setting) !== -1)
-            .forEach(x => x.guildID = guildID);
-        await this.insertAll(defaultEntitiesConfig);
-        await this.outerDatabase.save(defaultEntitiesConfig);
-        entityConfig = await this.localDatabase.findOneBy(EntityConfig,  {
+            .filter(defaultEntityConfig => localDefaultConfigSettings.indexOf(defaultEntityConfig.setting) !== -1)  // убираем лишнее
+            .forEach(x => x.guildID = guildID);     // заменяем DEFAULT на guildID
+        await this.insertOrIgnoreOuter(defaultEntitiesConfig);  // добавляем недостающие во внешнюю
+
+        entitiesConfig = (await this.outerDatabase.findBy(EntityConfig, {   // получаем из внешней
+            guildID: guildID
+        })) || [];
+        entitiesConfig.filter(entityConfig => localDefaultConfigSettings.indexOf(entityConfig.setting) !== -1)  // убираем лишнее для данного бота
+        await this.innerDatabase.save(entitiesConfig);  // сохраняем во внутреннюю
+        // Ищем значение в локальной базе данных
+        entityConfig = await this.innerDatabase.findOneBy(EntityConfig, {
             guildID: guildID,
-            setting: setting
+            setting: setting,
         });
         return entityConfig?.value as string;
     }
@@ -69,8 +77,8 @@ export class DatabaseServiceConfig {
         return values;
     }
 
-    // Можно использовать для обновления конфигурации
-    // Метод localDatabase.save позволяет перезаписать
+    // Можно использовать для сброса,
+    // database.save() позволяет перезаписать
     public async insertAll(entitiesConfig: EntityConfig[]): Promise<boolean> {
         let normalizedEntitiesConfig: EntityConfig[] = entitiesConfig.map((x: EntityConfig): EntityConfig => {
             let normalizedEntity: EntityConfig = new EntityConfig();
@@ -79,14 +87,31 @@ export class DatabaseServiceConfig {
             normalizedEntity.value = x.value;
             return normalizedEntity;
         });
-        normalizedEntitiesConfig = await this.localDatabase.save(normalizedEntitiesConfig, { chunk: 750 });
-        normalizedEntitiesConfig = await this.outerDatabase.save(normalizedEntitiesConfig, { chunk: 750 });
-        return normalizedEntitiesConfig.length > 0;
+        return !!(await this.innerDatabase.save(normalizedEntitiesConfig, { chunk: 750 }))
+            && !!(await this.outerDatabase.save(normalizedEntitiesConfig, { chunk: 750 }));
+    }
+
+    // Для корректного обновления конфигов
+    // иначе существующие сбрасываются
+    public async insertOrIgnoreOuter(entitiesConfig: EntityConfig[]): Promise<void> {
+        let normalizedEntitiesConfig: EntityConfig[] = entitiesConfig.map((x: EntityConfig): EntityConfig => {
+            let normalizedEntity: EntityConfig = new EntityConfig();
+            normalizedEntity.guildID = x.guildID;
+            normalizedEntity.setting = x.setting;
+            normalizedEntity.value = x.value;
+            return normalizedEntity;
+        });
+        await this.outerDatabase.connection.createQueryBuilder()
+            .insert()
+            .orIgnore()
+            .into(EntityConfig)
+            .values(normalizedEntitiesConfig)
+            .execute();
     }
 
     // используется каждый раз при включении/перезапуске
     // для очистки локальной базы данных
     public async clearAll(): Promise<void> {
-        await this.localDatabase.clear(EntityConfig);
+        await this.innerDatabase.clear(EntityConfig);
     }
 }

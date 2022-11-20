@@ -88,8 +88,8 @@ export class GameService extends ModuleBaseService {
                 users.push(includeUser);
         }
         let usersExcludeID: string[] = usersExclude
-            .replaceAll("<@", "")
-            .replaceAll(">", "")
+            .replaceAll("<@", " ")
+            .replaceAll(">", " ")
             .split(" ")
             .filter(id => (id !== "") && (id !== interaction.user.id));
         users = users.filter(user => usersExcludeID.indexOf(user.id) === -1);
@@ -122,7 +122,7 @@ export class GameService extends ModuleBaseService {
             }
 
         let voteTimeMs: number = await this.getOneSettingNumber(interaction, "GAME_VOTE_TIME_MS");
-        let banThreshold: number = Math.round(await this.getOneSettingNumber(interaction,
+        let banThreshold: number = Math.ceil(await this.getOneSettingNumber(interaction,
             "GAME_FFA_DRAFT_BAN_THRESHOLD_PERCENT"
         )*users.length/100);
 
@@ -242,7 +242,7 @@ export class GameService extends ModuleBaseService {
                 game.entities[i].message = message;
                 game.entities[i].messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
                 game.entities[i].messageReactionCollector?.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
-                await UtilsServiceEmojis.reactOrder(message, game.entities[i].emojis);
+                UtilsServiceEmojis.reactOrder(message, game.entities[i].emojis);
             }
             message = (game.thread)
                 ? await game.thread.send(game.entityDraft.getContent())
@@ -252,7 +252,7 @@ export class GameService extends ModuleBaseService {
             game.entityDraft.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
             game.entityDraft.messageCollector = message.channel.createMessageCollector({time: voteTimeMs});
             game.entityDraft.messageCollector.on("collect", async (message: Message) => GameService.messageCollectorFunction(message));
-            await message.react("🤔");
+            message.react("🤔");
 
             message = (game.thread)
                 ? await game.thread.send({
@@ -297,8 +297,8 @@ export class GameService extends ModuleBaseService {
                 users.push(includeUser);
         }
         let usersExcludeID: string[] = usersExclude
-            .replaceAll("<@", "")
-            .replaceAll(">", "")
+            .replaceAll("<@", " ")
+            .replaceAll(">", " ")
             .split(" ")
             .filter(id => (id !== "") && (id !== interaction.user.id))
         users = users.filter(user => usersExcludeID.indexOf(user.id) === -1);
@@ -333,7 +333,7 @@ export class GameService extends ModuleBaseService {
             }
 
         let voteTimeMs: number = await this.getOneSettingNumber(interaction, "GAME_VOTE_TIME_MS");
-        let banThreshold: number = Math.round(await this.getOneSettingNumber(interaction,
+        let banThreshold: number = Math.ceil(await this.getOneSettingNumber(interaction,
             "GAME_TEAMERS_DRAFT_BAN_THRESHOLD_PERCENT"
         )*users.length/100);
 
@@ -453,7 +453,7 @@ export class GameService extends ModuleBaseService {
                 game.entities[i].message = message;
                 game.entities[i].messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
                 game.entities[i].messageReactionCollector?.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
-                await UtilsServiceEmojis.reactOrder(message, game.entities[i].emojis);
+                UtilsServiceEmojis.reactOrder(message, game.entities[i].emojis);
             }
 
             message = (game.thread)
@@ -462,7 +462,7 @@ export class GameService extends ModuleBaseService {
             game.entityCaptains.message = message;
             game.entityCaptains.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityCaptains.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
-            await UtilsServiceEmojis.reactOrder(message, game.entityCaptains.emojis);
+            UtilsServiceEmojis.reactOrder(message, game.entityCaptains.emojis);
 
             message = (game.thread)
                 ? await game.thread.send( game.entityDraft.getContent())
@@ -472,7 +472,7 @@ export class GameService extends ModuleBaseService {
             game.entityDraft.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
             game.entityDraft.messageCollector = message.channel.createMessageCollector({time: voteTimeMs});
             game.entityDraft.messageCollector.on("collect", async (message: Message) => GameService.messageCollectorFunction(message));
-            await message.react("🤔");
+            message.react("🤔");
 
             message = (game.thread)
                 ? await game.thread.send({
@@ -557,10 +557,10 @@ export class GameService extends ModuleBaseService {
 
         try {
             // @ts-ignore
-            await UtilsServiceEmojis.reactOrder(gameEntityDraft.message, bans.map(banIndex => gameEntityDraft.emojis[banIndex]));
+            UtilsServiceEmojis.reactOrder(gameEntityDraft.message, bans.map(banIndex => gameEntityDraft.emojis[banIndex]));
         } catch {}
         gameEntityDraft.collectedMessages.push(message);
-        await message.react("📝");
+        message.react("📝");
     }
 
     public static async timeoutFunction(game: Game): Promise<void> {
@@ -597,17 +597,21 @@ export class GameService extends ModuleBaseService {
             [(game.type === "FFA")
                 ? "GAME_FFA_RESULT_TITLE"
                 : "GAME_TEAMERS_RESULT_TITLE",
-                "GAME_RESULT_UNKNOWN", "GAME_RESULT_TIMEOUT_DESCRIPTION"]
+                "GAME_RESULT_UNKNOWN", "GAME_RESULT_TIMEOUT_DESCRIPTION",
+                "GAME_BANS_NONE"
+            ]
         );
         if(game.thread)
             await game.thread.send({embeds: gameService.gameUI.resultEmbed(
                     game, textStrings[0], textStrings[1],
-                    isTimeout, textStrings[2]
+                    isTimeout, textStrings[2],
+                    textStrings[3]
                 )});
         else
             await game.interaction.channel?.send({embeds: gameService.gameUI.resultEmbed(
                     game, textStrings[0], textStrings[1],
-                    isTimeout, textStrings[2]
+                    isTimeout, textStrings[2],
+                    textStrings[3]
                 )});
 
         if(game.type === "FFA") {
@@ -673,25 +677,34 @@ export class GameService extends ModuleBaseService {
 
         game.isProcessing = false;
         GameService.games.delete(game.guildID);
+
         let textStrings = await this.getManyText(
             game.interaction,
             ["BASE_NOTIFY_TITLE", "GAME_NOTIFY_DELETED"]
         );
         await interaction.reply({embeds: this.gameUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+        if(game.setTimeoutID !== null) {
+            clearTimeout(game.setTimeoutID);
+            game.setTimeoutID = null;
+        }
+        if(game.thread) {
+            try {
+                await game.thread.delete();
+                return;
+            } catch {}
+        }
+
         if(game.type === "FFA") {
             let gameFFA: GameFFA = game as GameFFA;
-            await gameFFA.entityReady.destroy();
-            await gameFFA.entityDraft.destroy();
+            gameFFA.entityReady.destroy();
+            gameFFA.entityDraft.destroy();
         } else if (game.type === "Teamers") {
             let gameTeamers: GameTeamers = game as GameTeamers;
-            await gameTeamers.entityReady.destroy();
-            await gameTeamers.entityDraft.destroy();
-            await gameTeamers.entityCaptains.destroy();
+            gameTeamers.entityReady.destroy();
+            gameTeamers.entityDraft.destroy();
+            gameTeamers.entityCaptains.destroy();
         }
-        if(game.thread)
-            await game.thread.delete();
-        else
-            for(let entity of game.entities)
-                await entity.destroy();
+        for(let entity of game.entities)
+            entity.destroy();
     }
 }

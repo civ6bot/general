@@ -60,6 +60,8 @@
     { "tag": "DYNAMIC_CONFIG_CATEGORY_SPLIT_EMOJI", "value": "\uD83D\uDC65" },
     { "tag": "DYNAMIC_CONFIG_SETTING_SPLIT_TIME", "value": "Время на выбор игрока, секунд" },
     { "tag": "DYNAMIC_CONFIG_SETTING_SPLIT_TIME_EMOJI", "value": "⏰" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_SPLIT_SEND_PM_NOTIFICATION", "value": "Уведомление в ЛС" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_SPLIT_SEND_PM_NOTIFICATION_EMOJI", "value": "\uD83D\uDCF2" },
 
 
 
@@ -261,6 +263,16 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_WONDERS_EMOJI", "value": "⭐" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_AGE", "value": "Возраст мира" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_AGE_EMOJI", "value": "\uD83C\uDFDE" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_THERMONUCLEAR_DEVICE", "value": "Термоядерные устройства" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_THERMONUCLEAR_DEVICE_EMOJI", "value": "🚀" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_GREAT_PEOPLE_PASS", "value": "Отказ от Великих людей" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_GREAT_PEOPLE_PASS_EMOJI", "value": "🧐" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MONOPOLY", "value": "Режим \"Монополии и Корпорации\"" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MONOPOLY_EMOJI", "value": "🏭" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BARBARIAN_CLANS", "value": "Режим \"Варварские кланы\"" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BARBARIAN_CLANS_EMOJI", "value": "🧌" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_SHUFFLE", "value": "Режим \"Случайные тех. и соц. институты\"" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_SHUFFLE_EMOJI", "value": "🔀" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_GOLD_TRADING", "value": "Торговля золотом" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_GOLD_TRADING_EMOJI", "value": "\uD83E\uDE99" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_STRATEGIC_TRADING", "value": "Торговля стратегическими ресурсами" },
@@ -273,6 +285,11 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_CHATTING_EMOJI", "value": "\uD83D\uDCAC" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_DRAFT", "value": "Тип драфта" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_DRAFT_EMOJI", "value": "\uD83C\uDCCF" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BANS_THRESHOLD", "value": "Пороговое значение для бана" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BANS_THRESHOLD_EMOJI", "value": "⏏️" },
+
+    { "tag": "DYNAMIC_CONFIG_SETTING_GAME_FFA_BANS_THRESHOLD", "value": "Пороговое значение для бана, %" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_GAME_FFA_BANS_THRESHOLD_EMOJI", "value": "⏏️" },
 
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_MAP", "value": "Карта" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_MAP_EMOJI", "value": "\uD83C\uDF0D" },
@@ -291,6 +308,11 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_REMAPS", "value": "Ремапы (на 8 ходу)" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_REMAPS_EMOJI", "value": "\uD83D\uDD04" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_SPLIT", "value": "Способ разделения на команды" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_SPLIT_EMOJI", "value": "\uD83D\uDC65" }
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_SPLIT_EMOJI", "value": "\uD83D\uDC65" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BANS_THRESHOLD", "value": "Пороговое значение для бана" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BANS_THRESHOLD_EMOJI", "value": "⏏️" },
+
+    { "tag": "DYNAMIC_CONFIG_SETTING_GAME_TEAMERS_BANS_THRESHOLD", "value": "Пороговое значение для бана, %" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_GAME_TEAMERS_BANS_THRESHOLD_EMOJI", "value": "⏏️" }
   ]
 }

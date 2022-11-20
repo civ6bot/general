@@ -6,6 +6,7 @@ import {UtilsGeneratorTimestamp} from "../../utils/generators/utils.generator.ti
 import {UtilsServiceEmojis} from "../../utils/services/utils.service.emojis";
 import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
 import {SplitAdapter} from "./split.adapter";
+import { UtilsServicePM } from "../../utils/services/utils.service.PM";
 
 export class SplitService extends ModuleBaseService {
     private splitUI: SplitUI = new SplitUI();
@@ -174,7 +175,19 @@ export class SplitService extends ModuleBaseService {
                 fieldHeaders,
                 split
                 ), components: this.splitUI.splitDeleteButton(textStrings[2])});
-
+        let pmTextStrings: string[] = await this.getManyText(split.interaction, [
+            "SPLIT_NOTIFY_PM_TITLE", "SPLIT_NOTIFY_PM_DESCRIPTION"
+        ]);
+        let pmEmbed = this.splitUI.notificationSplitPMEmbed(
+            pmTextStrings[0], pmTextStrings[1],
+            split.message.url, split.interaction.guild?.name as string,
+            split.interaction.guild?.iconURL() || null
+        );
+        if(await this.getOneSettingNumber(split.interaction, "SPLIT_SEND_PM_NOTIFICATION"))
+            split.captains.forEach(user => {
+                if(outerSplit || (user.id !== split.interaction.user.id)) 
+                    UtilsServicePM.send(user, pmEmbed);
+            });
         split.setTimeoutID = setTimeout(SplitService.timeoutFunction, split.pickTimeMs, split);
         split.reactionCollector = split.message?.createReactionCollector({time: 16*split.pickTimeMs});  // максимальное число игроков
         split.reactionCollector.on("collect", async (reaction: MessageReaction, user: User) => SplitService.reactionCollectorFunction(reaction, user));

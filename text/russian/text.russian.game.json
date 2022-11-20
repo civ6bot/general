@@ -19,6 +19,7 @@
 
     { "tag": "GAME_BANS_START", "value": "\uD83E\uDD14 **Баны цивилизаций:** нет.\n*Добавьте реакцию к этому сообщению или напишите название цивилизации в этом канале; если проголосует большинство игроков, то цивилизация окажется в бане.*" },
     { "tag": "GAME_BANS_PROCESSING", "value": "\uD83E\uDD14 **Баны цивилизаций:**" },
+    { "tag": "GAME_BANS_NONE", "value": "нет" },
 
     { "tag": "GAME_BUTTON_READY", "value": "Готов!" },
     { "tag": "GAME_BUTTON_DELETE", "value": "Удалить (для автора)" },
@@ -49,6 +50,7 @@
     { "tag": "GAME_FFA_MAP_TILTED_AXIS", "value": "Наклонная ось" },
 
     { "tag": "GAME_FFA_DISASTERS", "value": "\uD83C\uDF0B **Стихийные бедствия**" },
+    { "tag": "GAME_FFA_DISASTERS_0", "value": "Минимальные" },
     { "tag": "GAME_FFA_DISASTERS_1", "value": "Слабые" },
     { "tag": "GAME_FFA_DISASTERS_2", "value": "Стандартные" },
     { "tag": "GAME_FFA_DISASTERS_3", "value": "Усиленные" },
@@ -61,6 +63,7 @@
     { "tag": "GAME_FFA_STRATEGIC_RESOURCES", "value": "\uD83D\uDC0E **Стратегические ресурсы**" },
     { "tag": "GAME_FFA_STRATEGIC_RESOURCES_STANDARD", "value": "Стандартные" },
     { "tag": "GAME_FFA_STRATEGIC_RESOURCES_ABUNDANT", "value": "Изобильные" },
+    { "tag": "GAME_FFA_STRATEGIC_RESOURCES_EPIC", "value": "Эпические" },
     { "tag": "GAME_FFA_STRATEGIC_RESOURCES_GUARANTEED", "value": "Гарантированные" },
 
     { "tag": "GAME_FFA_WONDERS", "value": "⭐ **Количество чудес природы**" },
@@ -70,6 +73,26 @@
     { "tag": "GAME_FFA_AGE", "value": "\uD83C\uDFDE **Возраст мира**" },
     { "tag": "GAME_FFA_AGE_STANDARD", "value": "Стандартный" },
     { "tag": "GAME_FFA_AGE_NEW", "value": "Новый" },
+
+    { "tag": "GAME_FFA_THERMONUCLEAR_DEVICE", "value": "🚀 **Термоядерные устройства**" },
+    { "tag": "GAME_FFA_THERMONUCLEAR_DEVICE_NO", "value": "Запрещены" },
+    { "tag": "GAME_FFA_THERMONUCLEAR_DEVICE_YES", "value": "Разрешены" },
+
+    { "tag": "GAME_FFA_GREAT_PEOPLE_PASS", "value": "🧐 **Отказ от Великих людей**" },
+    { "tag": "GAME_FFA_GREAT_PEOPLE_PASS_NO", "value": "Запрещен" },
+    { "tag": "GAME_FFA_GREAT_PEOPLE_PASS_YES", "value": "Разрешен" },
+
+    { "tag": "GAME_FFA_MONOPOLY", "value": "🏭 **Режим \"Монополии и Корпорации\"**" },
+    { "tag": "GAME_FFA_MONOPOLY_NO", "value": "Отключен" },
+    { "tag": "GAME_FFA_MONOPOLY_YES", "value": "Включен" },
+
+    { "tag": "GAME_FFA_BARBARIAN_CLANS", "value": "🧌 **Режим \"Варварские кланы\"**" },
+    { "tag": "GAME_FFA_BARBARIAN_CLANS_NO", "value": "Отключен" },
+    { "tag": "GAME_FFA_BARBARIAN_CLANS_YES", "value": "Включен" },
+
+    { "tag": "GAME_FFA_SHUFFLE", "value": "🔀 **Режим \"Случайные технологии и соц. институты\"**" },
+    { "tag": "GAME_FFA_SHUFFLE_NO", "value": "Отключен" },
+    { "tag": "GAME_FFA_SHUFFLE_YES", "value": "Включен" },
 
     { "tag": "GAME_FFA_GOLD_TRADING", "value": "\uD83E\uDE99 **Торговля золотом**" },
     { "tag": "GAME_FFA_GOLD_TRADING_NO", "value": "Запрещена" },
@@ -120,6 +143,7 @@
     { "tag": "GAME_TEAMERS_MAP_TILTED_AXIS", "value": "Наклонная ось" },
 
     { "tag": "GAME_TEAMERS_DISASTERS", "value": "\uD83C\uDF0B **Стихийные бедствия**" },
+    { "tag": "GAME_TEAMERS_DISASTERS_0", "value": "Минимальные" },
     { "tag": "GAME_TEAMERS_DISASTERS_1", "value": "Слабые" },
     { "tag": "GAME_TEAMERS_DISASTERS_2", "value": "Стандартные" },
     { "tag": "GAME_TEAMERS_DISASTERS_3", "value": "Усиленные" },
@@ -132,6 +156,7 @@
     { "tag": "GAME_TEAMERS_STRATEGIC_RESOURCES", "value": "\uD83D\uDC0E **Стратегические ресурсы**" },
     { "tag": "GAME_TEAMERS_STRATEGIC_RESOURCES_STANDARD", "value": "Стандартные" },
     { "tag": "GAME_TEAMERS_STRATEGIC_RESOURCES_ABUNDANT", "value": "Изобильные" },
+    { "tag": "GAME_TEAMERS_STRATEGIC_RESOURCES_EPIC", "value": "Эпические" },
     { "tag": "GAME_TEAMERS_STRATEGIC_RESOURCES_GUARANTEED", "value": "Гарантированные" },
 
     { "tag": "GAME_TEAMERS_WONDERS", "value": "⭐ **Количество чудес природы**" },

@@ -586,7 +586,7 @@ export class DraftService extends ModuleBaseService {
                     draft
                 )});
             draft.redraftStatus = [];
-            await setTimeout(DraftService.redraftTimeoutSuccess, 2000, draft);
+            setTimeout(DraftService.redraftTimeoutSuccess, 2000, draft);
         } else if(draft.redraftStatus.filter(value => value === 0).length >= draft.users.length-draft.thresholdUsers+1) {
             draft.isProcessing = false;
             draft.runTimes = 0;

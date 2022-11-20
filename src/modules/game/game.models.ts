@@ -260,7 +260,7 @@ export class GameEntityDraft extends GameEntity {
             return false;
         }
         await this.setVotesCount();
-        if(this.votesResults[emojiIndex] < this.banThreshold + Number(Array.from(reaction.users.cache.values()).some(user => user.bot)))    // если проголосовал бот
+        if(this.votesResults[emojiIndex] < this.banThreshold + Number(Array.from(reaction.users.cache.values()).some(user => user.bot)))    // поправка на бота
             return false;
         this.banStrings.push(this.options.splice(emojiIndex, 1)[0]);
         this.emojis.splice(emojiIndex, 1);

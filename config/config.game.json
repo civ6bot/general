@@ -34,6 +34,8 @@
   { "setting": "GAME_FFA_MAP_PRIMORDIAL_EMOJI", "value": "\uD83C\uDF0B" },
 
   { "setting": "GAME_FFA_DISASTERS", "value": 1 },
+  { "setting": "GAME_FFA_DISASTERS_0", "value": 1 },
+  { "setting": "GAME_FFA_DISASTERS_0_EMOJI", "value": "0️⃣" },
   { "setting": "GAME_FFA_DISASTERS_1", "value": 1 },
   { "setting": "GAME_FFA_DISASTERS_1_EMOJI", "value": "1️⃣" },
   { "setting": "GAME_FFA_DISASTERS_2", "value": 1 },
@@ -54,6 +56,8 @@
   { "setting": "GAME_FFA_STRATEGIC_RESOURCES_STANDARD_EMOJI", "value": "\uD83C\uDDF8" },
   { "setting": "GAME_FFA_STRATEGIC_RESOURCES_ABUNDANT", "value": 1 },
   { "setting": "GAME_FFA_STRATEGIC_RESOURCES_ABUNDANT_EMOJI", "value": "\uD83D\uDC0E" },
+  { "setting": "GAME_FFA_STRATEGIC_RESOURCES_EPIC", "value": 1 },
+  { "setting": "GAME_FFA_STRATEGIC_RESOURCES_EPIC_EMOJI", "value": "🛡️" },
   { "setting": "GAME_FFA_STRATEGIC_RESOURCES_GUARANTEED", "value": 1 },
   { "setting": "GAME_FFA_STRATEGIC_RESOURCES_GUARANTEED_EMOJI", "value": "<:Yes:808418109710794843>" },
 
@@ -68,6 +72,36 @@
   { "setting": "GAME_FFA_AGE_STANDARD_EMOJI", "value": "\uD83C\uDFD5" },
   { "setting": "GAME_FFA_AGE_NEW", "value": 1 },
   { "setting": "GAME_FFA_AGE_NEW_EMOJI", "value": "\uD83C\uDFD4" },
+
+  { "setting": "GAME_FFA_THERMONUCLEAR_DEVICE", "value": 0 },
+  { "setting": "GAME_FFA_THERMONUCLEAR_DEVICE_NO", "value": 1 },
+  { "setting": "GAME_FFA_THERMONUCLEAR_DEVICE_NO_EMOJI", "value": "<:no:808418109319938099>" },
+  { "setting": "GAME_FFA_THERMONUCLEAR_DEVICE_YES", "value": 1 },
+  { "setting": "GAME_FFA_THERMONUCLEAR_DEVICE_YES_EMOJI", "value": "🚀" },
+
+  { "setting": "GAME_FFA_GREAT_PEOPLE_PASS", "value": 0 },
+  { "setting": "GAME_FFA_GREAT_PEOPLE_PASS_NO", "value": 1 },
+  { "setting": "GAME_FFA_GREAT_PEOPLE_PASS_NO_EMOJI", "value": "<:no:808418109319938099>" },
+  { "setting": "GAME_FFA_GREAT_PEOPLE_PASS_YES", "value": 1 },
+  { "setting": "GAME_FFA_GREAT_PEOPLE_PASS_YES_EMOJI", "value": "🧐" },
+
+  { "setting": "GAME_FFA_MONOPOLY", "value": 0 },
+  { "setting": "GAME_FFA_MONOPOLY_NO", "value": 1 },
+  { "setting": "GAME_FFA_MONOPOLY_NO_EMOJI", "value": "<:no:808418109319938099>" },
+  { "setting": "GAME_FFA_MONOPOLY_YES", "value": 1 },
+  { "setting": "GAME_FFA_MONOPOLY_YES_EMOJI", "value": "🏭" },
+
+  { "setting": "GAME_FFA_BARBARIAN_CLANS", "value": 0 },
+  { "setting": "GAME_FFA_BARBARIAN_CLANS_NO", "value": 1 },
+  { "setting": "GAME_FFA_BARBARIAN_CLANS_NO_EMOJI", "value": "<:no:808418109319938099>" },
+  { "setting": "GAME_FFA_BARBARIAN_CLANS_YES", "value": 1 },
+  { "setting": "GAME_FFA_BARBARIAN_CLANS_YES_EMOJI", "value": "🧌" },
+
+  { "setting": "GAME_FFA_SHUFFLE", "value": 0 },
+  { "setting": "GAME_FFA_SHUFFLE_NO", "value": 1 },
+  { "setting": "GAME_FFA_SHUFFLE_NO_EMOJI", "value": "<:no:808418109319938099>" },
+  { "setting": "GAME_FFA_SHUFFLE_YES", "value": 1 },
+  { "setting": "GAME_FFA_SHUFFLE_YES_EMOJI", "value": "🔀" },
 
   { "setting": "GAME_FFA_GOLD_TRADING", "value": 1 },
   { "setting": "GAME_FFA_GOLD_TRADING_NO", "value": 1 },
@@ -148,6 +182,8 @@
   { "setting": "GAME_TEAMERS_MAP_PRIMORDIAL_EMOJI", "value": "\uD83C\uDF0B" },
 
   { "setting": "GAME_TEAMERS_DISASTERS", "value": 1 },
+  { "setting": "GAME_TEAMERS_DISASTERS_0", "value": 1 },
+  { "setting": "GAME_TEAMERS_DISASTERS_0_EMOJI", "value": "0️⃣" },
   { "setting": "GAME_TEAMERS_DISASTERS_1", "value": 1 },
   { "setting": "GAME_TEAMERS_DISASTERS_1_EMOJI", "value": "1️⃣" },
   { "setting": "GAME_TEAMERS_DISASTERS_2", "value": 1 },
@@ -168,6 +204,8 @@
   { "setting": "GAME_TEAMERS_STRATEGIC_RESOURCES_STANDARD_EMOJI", "value": "\uD83C\uDDF8" },
   { "setting": "GAME_TEAMERS_STRATEGIC_RESOURCES_ABUNDANT", "value": 1 },
   { "setting": "GAME_TEAMERS_STRATEGIC_RESOURCES_ABUNDANT_EMOJI", "value": "\uD83D\uDC0E" },
+  { "setting": "GAME_TEAMERS_STRATEGIC_RESOURCES_EPIC", "value": 1 },
+  { "setting": "GAME_TEAMERS_STRATEGIC_RESOURCES_EPIC_EMOJI", "value": "🛡️" },
   { "setting": "GAME_TEAMERS_STRATEGIC_RESOURCES_GUARANTEED", "value": 1 },
   { "setting": "GAME_TEAMERS_STRATEGIC_RESOURCES_GUARANTEED_EMOJI", "value": "<:Yes:808418109710794843>" },
 
@@ -206,6 +244,5 @@
   { "setting": "GAME_TEAMERS_SPLIT_RANDOM_EMOJI", "value": "\uD83C\uDFB2" },
 
   { "setting": "GAME_TEAMERS_CAPTAINS", "value": 1 },
-
   { "setting": "GAME_TEAMERS_DRAFT_BAN_THRESHOLD_PERCENT", "value": 50 }
 ]

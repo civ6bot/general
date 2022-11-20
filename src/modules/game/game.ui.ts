@@ -33,7 +33,8 @@ export class GameUI extends ModuleBaseUI {
     public resultEmbed(
         game: Game, title: string,
         unknownResultDescription: string,
-        isTimeout: boolean, timeoutDescription: string
+        isTimeout: boolean, timeoutDescription: string,
+        draftTeamersEmptyBans: string = ""
     ): EmbedBuilder[] {
         let description: string = "";
         for(let i: number = 0; i < game.entities.length; i++){
@@ -46,7 +47,9 @@ export class GameUI extends ModuleBaseUI {
             description = timeoutDescription + "\n\n" + description;
         if(game.type === "Teamers") {
             let gameTeamers: GameTeamers = game as GameTeamers;
-            description += "\n" + gameTeamers.entityCaptains.getContent();
+            description += "\n" + gameTeamers.entityCaptains.getContent() + "\n\n" + gameTeamers.entityDraft.getContent();
+            if(gameTeamers.entityDraft.banStrings.length === 0)
+                description += ` ${draftTeamersEmptyBans}`
         }
 
         return UtilsGeneratorEmbed.getSingle(

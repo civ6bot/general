@@ -77,7 +77,22 @@ export abstract class SplitInteractions {
     ) { await this.splitService.allLongSplits(interaction, "CWC", captain1, captain2); }
 
     @ButtonComponent({id: "split-delete"})
-    public async splitDelete(
+    public async splitDeleteButton(
         interaction: ButtonInteraction
-    ) { await this.splitService.splitDelete(interaction); }
+    ) { await this.splitService.splitDeleteButton(interaction); }
+
+    @ButtonComponent({id: "split-restart"})
+    public async splitRestartButton(
+        interaction: ButtonInteraction
+    ) { await this.splitService.splitRestartButton(interaction); }
+
+    @ButtonComponent({id: "split-continue"})
+    public async splitContinueButton(
+        interaction: ButtonInteraction
+    ) { await this.splitService.splitContinueButton(interaction); }
+
+    @ButtonComponent({id: "split-skip"})
+    public async splitSkipButton(
+        interaction: ButtonInteraction
+    ) { await this.splitService.splitSkipButton(interaction); }
 }

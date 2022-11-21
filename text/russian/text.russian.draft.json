@@ -5,7 +5,7 @@
     { "tag": "DRAFT_AMERICA_TEXT", "value": "Америка <:America:701066550412836894> Теодор Рузвельт (Прогрессивист)" },
     { "tag": "DRAFT_ENGLAND_TEXT", "value": "Англия <:England:701066628489674772> Виктория" },
     { "tag": "DRAFT_ENGLAND_ELEANOR_TEXT", "value": "Англия <:England_Eleanor:935611499274182696> Алиенора Аквитанская" },
-    { "tag": "DRAFT_ARABIA_TEXT", "value": "Аравия <:Arabia:701066550442065970> Саладин" },
+    { "tag": "DRAFT_ARABIA_TEXT", "value": "Аравия <:Arabia:701066550442065970> Саладин (Визирь)" },
     { "tag": "DRAFT_AZTECS_TEXT", "value": "Ацтеки <:Aztecs:701066550169436302> Монтесума" },
     { "tag": "DRAFT_BRAZIL_TEXT", "value": "Бразилия <:Brazil:701066699537121281> Педру II" },
     { "tag": "DRAFT_HUNGARY_TEXT", "value": "Венгрия <:Hungary:701066628674224128> Матьяш I" },
@@ -59,7 +59,10 @@
     { "tag": "DRAFT_MONGOLIA_KUBLAI_TEXT", "value": "Монголия <:Mongolia_Kublai:935611499051896843> Хубилай" },
     { "tag": "DRAFT_VIETNAM_TEXT", "value": "Вьетнам <:Vietnam:804417073140334603> Госпожа Чьеу" },
     { "tag": "DRAFT_PORTUGAL_TEXT", "value": "Португалия <:Portugal:825055292629844001> Жуан III" },
-
+    { "tag": "DRAFT_ROME_CAESAR_TEXT", "value": "Рим <:Rome_Caesar:1044345323356704880> Юлий Цезарь" },
+    { "tag": "DRAFT_ARABIA_SALADIN_SULTAN_TEXT", "value": "Аравия <:Arabia_Saladin_Sultan:1044345328050131024> Саладин (Султан)" },
+    { "tag": "DRAFT_KONGO_ANNA_NZINGA_TEXT", "value": "Конго <:Kongo_Anna_Nzinga:1044345320961740891> Анна Нзинга" },
+    { "tag": "DRAFT_AMERICA_LINCOLN_TEXT", "value": "Америка <:America_Lincoln:1044345325445468300> Авраам Линкольн" },
 
 
     { "tag": "DRAFT_ERROR_NOT_ENOUGH_CIVILIZATIONS", "value": "Для такого драфта недостаточно цивилизаций." },

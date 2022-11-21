@@ -14,7 +14,8 @@ export class UtilsServiceCivilizations {
         "DRAFT_SUMERIA", "DRAFT_JAPAN", "DRAFT_MAYA", "DRAFT_COLOMBIA",
         "DRAFT_ETHIOPIA", "DRAFT_AMERICA_ROUGH_RIDER", "DRAFT_FRANCE_MAGNIFICENCE", "DRAFT_BYZANTIUM",
         "DRAFT_GAUL", "DRAFT_BABYLON", "DRAFT_CHINA_KUBLAI", "DRAFT_MONGOLIA_KUBLAI",
-        "DRAFT_VIETNAM", "DRAFT_PORTUGAL"
+        "DRAFT_VIETNAM", "DRAFT_PORTUGAL", "DRAFT_ROME_CAESAR", "DRAFT_ARABIA_SALADIN_SULTAN",
+        "DRAFT_KONGO_ANNA_NZINGA", "DRAFT_AMERICA_LINCOLN"
     ];
 
     private static searchTexts(substr: string, civilizationsTexts: string[]): number[] {

@@ -315,7 +315,7 @@ export class SplitService extends ModuleBaseService {
         await split.message?.reactions.removeAll();
     }
 
-    public async splitDelete(interaction: ButtonInteraction) {
+    public async splitDeleteButton(interaction: ButtonInteraction) {
         let key: string = interaction.guild?.id as string;
         let split: Split | undefined = SplitService.splits.get(key);
         if(!split)
@@ -341,5 +341,17 @@ export class SplitService extends ModuleBaseService {
         );
         await interaction.reply({embeds: this.splitUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
         await interaction.message.delete();
+    }
+
+    public async splitRestartButton(interaction: ButtonInteraction) {
+        
+    }
+
+    public async splitContinueButton(interaction: ButtonInteraction) {
+        
+    }
+
+    public async splitSkipButton(interaction: ButtonInteraction) {
+        
     }
 }

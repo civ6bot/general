@@ -5,7 +5,7 @@
     { "tag": "DRAFT_AMERICA_TEXT", "value": "America <:America:701066550412836894> Teddy Roosevelt (Bull Moose)" },
     { "tag": "DRAFT_ENGLAND_TEXT", "value": "England <:England:701066628489674772> Victoria" },
     { "tag": "DRAFT_ENGLAND_ELEANOR_TEXT", "value": "England <:England_Eleanor:935611499274182696> Eleanor of Aquitaine" },
-    { "tag": "DRAFT_ARABIA_TEXT", "value": "Arabia <:Arabia:701066550442065970> Saladin" },
+    { "tag": "DRAFT_ARABIA_TEXT", "value": "Arabia <:Arabia:701066550442065970> Saladin (Vizier)" },
     { "tag": "DRAFT_AZTECS_TEXT", "value": "Aztec <:Aztecs:701066550169436302> Montezuma" },
     { "tag": "DRAFT_BRAZIL_TEXT", "value": "Brazil <:Brazil:701066699537121281> Pedro II" },
     { "tag": "DRAFT_HUNGARY_TEXT", "value": "Hungary <:Hungary:701066628674224128> Matthias Corvinus" },
@@ -59,6 +59,10 @@
     { "tag": "DRAFT_MONGOLIA_KUBLAI_TEXT", "value": "Mongolia <:Mongolia_Kublai:935611499051896843> Kublai Khan" },
     { "tag": "DRAFT_VIETNAM_TEXT", "value": "Vietnam <:Vietnam:804417073140334603> Ba Trieu" },
     { "tag": "DRAFT_PORTUGAL_TEXT", "value": "Portugal <:Portugal:825055292629844001> Joao III" },
+    { "tag": "DRAFT_ROME_CAESAR_TEXT", "value": "Rome <:Rome_Caesar:1044345323356704880> Julius Caesar" },
+    { "tag": "DRAFT_ARABIA_SALADIN_SULTAN_TEXT", "value": "Arabia <:Arabia_Saladin_Sultan:1044345328050131024> Saladin (Sultan)" },
+    { "tag": "DRAFT_KONGO_ANNA_NZINGA_TEXT", "value": "Kongo <:Kongo_Anna_Nzinga:1044345320961740891> Mbande Nzinga" },
+    { "tag": "DRAFT_AMERICA_LINCOLN_TEXT", "value": "America <:America_Lincoln:1044345325445468300> Abraham Lincoln" },
 
 
 

@@ -82,7 +82,7 @@
     { "tag": "DRAFT_BLIND_TITLE_ONE_PLAYER", "value": "\uD83C\uDFA9 Draft blind for 1 player" },
     { "tag": "DRAFT_BLIND_TITLE_MANY_PLAYERS", "value": "\uD83C\uDFA9 Draft blind for [PLAYER_AMOUNT] players" },
     { "tag": "DRAFT_BLIND_DESCRIPTION_PROCESSING", "value": "⏳ Players are picking civilizations.\nPick time ends [TIMESTAMP]." },
-    { "tag": "DRAFT_BLIND_DESCRIPTION_PROCESSING_TIMEOUT", "value": "⏰❗ Time up! Players who didn't pick civilization get random one from their draft pool." },
+    { "tag": "DRAFT_BLIND_DESCRIPTION_PROCESSING_TIMEOUT", "value": "⏰❗ Time out! Players who didn't pick civilization get random one from their draft pool." },
     { "tag": "DRAFT_BLIND_FIELD_PLAYERS_TITLE", "value": "Player:" },
     { "tag": "DRAFT_BLIND_FIELD_READY_TITLE", "value": "Ready?" },
     { "tag": "DRAFT_BLIND_FIELD_CIVILIZATION_TITLE", "value": "Leader:" },
@@ -90,16 +90,16 @@
     { "tag": "DRAFT_BLIND_PM_TITLE", "value": "\uD83C\uDFA9 Draft blind" },
     { "tag": "DRAFT_BLIND_PM_DESCRIPTION_PROCESSING", "value": "\uD83E\uDD14 **Status: choosing civilization.**\nClick a button to pick leader.\n\n⏳ **__Hurry up!!__** Pick time ends [TIMESTAMP]." },
     { "tag": "DRAFT_BLIND_PM_DESCRIPTION_READY", "value": "**Status: ready.**\nNow wait results.\n\nYour choice — [PICKED_CIVILIZATION]." },
-    { "tag": "DRAFT_BLIND_PM_DESCRIPTION_TIMEOUT", "value": "⏰ **Status: time up!**\nYou got random civilization from your draft pool.\n\nYour civilization — [PICKED_CIVILIZATION]." },
+    { "tag": "DRAFT_BLIND_PM_DESCRIPTION_TIMEOUT", "value": "⏰ **Status: time out!**\nYou got random civilization from your draft pool.\n\nYour civilization — [PICKED_CIVILIZATION]." },
 
-    { "tag": "DRAFT_BLIND_BUTTON_DELETE", "value": "Delete (for author)" },
+    { "tag": "DRAFT_BLIND_BUTTON_DELETE", "value": "Delete" },
     { "tag": "DRAFT_BLIND_NOTIFY_DELETED", "value": "Draft blind deleted successfully." },
 
     { "tag": "DRAFT_BLIND_ERROR_PM", "value": "One of you ([USER_NAME]) blocked bot or restricted private messages from guild's users. The draft is unable to run." },
 
     { "tag": "DRAFT_REDRAFT_TITLE", "value": "\uD83D\uDD04 Redraft #[REDRAFT_AMOUNT]" },
     { "tag": "DRAFT_REDRAFT_DESCRIPTION_PROCESSING", "value": "⏳ This redraft requires **[PLAYERS_NEED_AMOUNT]/[PLAYERS_TOTAL_AMOUNT] votes.**. Time for vote ends [TIMESTAMP]." },
-    { "tag": "DRAFT_REDRAFT_DESCRIPTION_TIMEOUT", "value": "⏰ Time up! Redraft denied." },
+    { "tag": "DRAFT_REDRAFT_DESCRIPTION_TIMEOUT", "value": "⏰ Time out! Redraft denied." },
     { "tag": "DRAFT_REDRAFT_DESCRIPTION_YES", "value": "[EMOJI_YES] Redraft confirmed." },
     { "tag": "DRAFT_REDRAFT_DESCRIPTION_NO", "value": "[EMOJI_NO] Redraft denied." },
     { "tag": "DRAFT_REDRAFT_FIELD_YES", "value": "[EMOJI_YES] Yes ([YES_AMOUNT])" },

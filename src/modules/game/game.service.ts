@@ -92,7 +92,8 @@ export class GameService extends ModuleBaseService {
             .replaceAll(">", " ")
             .split(" ")
             .filter(id => (id !== "") && (id !== interaction.user.id));
-        users = users.filter(user => usersExcludeID.indexOf(user.id) === -1);
+        users = Array.from(new Set(users
+            .filter(user => usersExcludeID.indexOf(user.id) === -1)));
 
         let gameFFAMainFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsServiceGameTags.FFAHeaderConfigsStrings);
         let gameFFAOptionsFlags: number[][] = [];
@@ -129,7 +130,7 @@ export class GameService extends ModuleBaseService {
         let readyTitle: string = await this.getOneText(interaction, "GAME_READY_TITLE");
         let readyDescriptions: string[] = await this.getManyText(interaction, [
             "GAME_READY_DESCRIPTION_PROCESSING", "GAME_READY_DESCRIPTION_FINISH",
-            "GAME_RESULT_TIMEOUT_DESCRIPTION"
+            "GAME_RESULT_TIMEOUT_DESCRIPTION", "GAME_READY_DESCRIPTION_FORCE_END"
         ], [
             [UtilsGeneratorTimestamp.getRelativeTime(voteTimeMs)]
         ]);
@@ -140,9 +141,8 @@ export class GameService extends ModuleBaseService {
             "BASE_EMOJI_YES", "BASE_EMOJI_NO"
         );
         let buttonLabels: string[] = await this.getManyText(interaction, [
-            "GAME_BUTTON_READY", "GAME_BUTTON_DELETE"
+            "GAME_BUTTON_READY", "GAME_BUTTON_SKIP", "GAME_BUTTON_DELETE"
         ]);
-
         let game: GameFFA = new GameFFA(
             interaction, users, voteTimeMs,
             headers, options, emojis,
@@ -248,6 +248,8 @@ export class GameService extends ModuleBaseService {
                 ? await game.thread.send(game.entityDraft.getContent())
                 : await interaction.channel.send(game.entityDraft.getContent());
             game.entityDraft.message = message;
+            if(await this.getOneSettingString(game.interaction, "BASE_LANGUAGE") !== await this.getOneSettingString("DEFAULT", "BASE_LANGUAGE"))
+                game.entityDraft.englishLanguageOptions = await this.getManyText("DEFAULT", UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT"));
             game.entityDraft.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityDraft.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
             game.entityDraft.messageCollector = message.channel.createMessageCollector({time: voteTimeMs});
@@ -301,7 +303,8 @@ export class GameService extends ModuleBaseService {
             .replaceAll(">", " ")
             .split(" ")
             .filter(id => (id !== "") && (id !== interaction.user.id))
-        users = users.filter(user => usersExcludeID.indexOf(user.id) === -1);
+        users = Array.from(new Set(users
+            .filter(user => usersExcludeID.indexOf(user.id) === -1)));
 
         let gameTeamersMainFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsServiceGameTags.teamersHeaderConfigsStrings);
         let gameTeamersOptionsFlags: number[][] = [];
@@ -340,7 +343,7 @@ export class GameService extends ModuleBaseService {
         let readyTitle: string = await this.getOneText(interaction, "GAME_READY_TITLE");
         let readyDescriptions: string[] = await this.getManyText(interaction, [
             "GAME_READY_DESCRIPTION_PROCESSING", "GAME_READY_DESCRIPTION_FINISH",
-            "GAME_RESULT_TIMEOUT_DESCRIPTION"
+            "GAME_RESULT_TIMEOUT_DESCRIPTION", "GAME_READY_DESCRIPTION_FORCE_END"
         ], [
             [UtilsGeneratorTimestamp.getRelativeTime(voteTimeMs)]
         ]);
@@ -351,7 +354,7 @@ export class GameService extends ModuleBaseService {
             "BASE_EMOJI_YES", "BASE_EMOJI_NO"
         );
         let buttonLabels: string[] = await this.getManyText(interaction, [
-            "GAME_BUTTON_READY", "GAME_BUTTON_DELETE"
+            "GAME_BUTTON_READY", "GAME_BUTTON_SKIP", "GAME_BUTTON_DELETE"
         ]);
 
         let game: GameTeamers = new GameTeamers(
@@ -468,6 +471,8 @@ export class GameService extends ModuleBaseService {
                 ? await game.thread.send( game.entityDraft.getContent())
                 : await interaction.channel.send(game.entityDraft.getContent());
             game.entityDraft.message = message;
+            if(await this.getOneSettingString(game.interaction, "BASE_LANGUAGE") !== await this.getOneSettingString("DEFAULT", "BASE_LANGUAGE"))
+                game.entityDraft.englishLanguageOptions = await this.getManyText("DEFAULT", UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT"));
             game.entityDraft.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityDraft.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
             game.entityDraft.messageCollector = message.channel.createMessageCollector({time: voteTimeMs});
@@ -526,8 +531,57 @@ export class GameService extends ModuleBaseService {
             await reaction.message.delete();
             return;
         }
-        if ((await entity.resolveProcessing(reaction, user)) && (entity.type === "Draft"))
+        if(entity.type !== "Draft") {
+            await entity.resolveProcessing(reaction, user);
+            return;
+        }
+
+        // тупое решение для парсинга названия эмодзи представлено ниже
+
+        if(UtilsServiceCivilizations.parseBans(reaction.emoji.toString(), entity.options).bans.length === 1) {
+            if (await entity.resolveProcessing(reaction, user))
+                await entity.message?.edit(entity.getContent());
+            return;
+        }
+
+        let parsedEmojiName: string = reaction.emoji.toString()
+            .slice(
+                reaction.emoji.toString().indexOf(":")+1, 
+                reaction.emoji.toString().indexOf(":", reaction.emoji.toString().indexOf(":")+1))
+            .replaceAll("_", " ")
+            .replaceAll("-", " ")
+            .split("")
+            .map((character: string, index: number, array: string[]): string => {
+                if(
+                    (index !== 0)
+                    && (character.toUpperCase() === character)
+                    && (character !== " ")
+                    && (array[index-1].toLowerCase() === array[index-1])
+                    && (array[index-1] !== " ")
+                ) return " " + character;
+                return character;
+            }).join("");
+        let bans = UtilsServiceCivilizations.parseBans(parsedEmojiName, entity.options).bans;
+        if(bans.length === 0)
+            bans = UtilsServiceCivilizations.parseBans(parsedEmojiName, (entity as GameEntityDraft).englishLanguageOptions).bans;
+        if(bans.length !== 1) {
+            await entity.resolveProcessing(reaction, user);     // если эмодзи :thinking: по умолчанию
+            return;
+        }
+        
+        let emojiIndex: number = bans[0];
+        let entityDraft: GameEntityDraft = entity as GameEntityDraft;
+        if(Array.from(reaction.users.cache.values()).filter(user => !user.bot).length < entityDraft.banThreshold)
+            return;
+        entityDraft.banStrings.push(entityDraft.options.splice(emojiIndex, 1)[0]);
+        entityDraft.emojis.splice(emojiIndex, 1);
+        entityDraft.header = entityDraft.headerProcessing;
+        try {
+            await reaction.remove();
+        } catch {}
+        try {
             await entity.message?.edit(entity.getContent());
+        } catch {}
     }
 
     public static async messageCollectorFunction(message: Message): Promise<void> {
@@ -551,9 +605,12 @@ export class GameService extends ModuleBaseService {
         if(!gameEntityDraft.message)
             return;
 
-        let {bans, errors} = UtilsServiceCivilizations.parseBans(message.content, gameEntityDraft.options);
-        if(bans.length === 0)
-            return;
+        let bans = UtilsServiceCivilizations.parseBans(message.content, gameEntityDraft.options).bans;
+        if(bans.length === 0) {
+            bans = UtilsServiceCivilizations.parseBans(message.content, gameEntityDraft.englishLanguageOptions).bans;
+            if(bans.length === 0)
+                return;
+        }
 
         try {
             // @ts-ignore
@@ -585,6 +642,10 @@ export class GameService extends ModuleBaseService {
             return;
 
         await game.resolve();
+        if((game.date.getTime() < Date.now()) && gameEntityReady.usersReadyStatus.some(status => status === 0))
+            gameEntityReady.descriptions[0] = gameEntityReady.descriptions[1];
+        else
+            gameEntityReady.descriptions.pop();
         let gameService: GameService = new GameService();
         await gameEntityReady.message.edit({
             components: [],
@@ -706,5 +767,19 @@ export class GameService extends ModuleBaseService {
         }
         for(let entity of game.entities)
             entity.destroy();
+    }
+
+    public async buttonSkip(interaction: ButtonInteraction) {
+        let game: Game | undefined = GameService.games.get(interaction.guild?.id as string);
+        if(!game || !game.isProcessing)
+            return await interaction.message.delete();
+        if(interaction.user.id !== game.interaction.user.id) {
+            let textStrings = await this.getManyText(
+                game.interaction,
+                ["BASE_ERROR_TITLE", "GAME_ERROR_DELETE_BUTTON_NOT_OWNER"]
+            );
+            return await interaction.reply({embeds: this.gameUI.error(textStrings[0], textStrings[1]), ephemeral: true});
+        }
+        await GameService.timeoutFunction(game);
     }
 }

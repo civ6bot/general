@@ -17,21 +17,23 @@
     { "tag": "GAME_NOTIFY_TEAMERS_PM_TITLE", "value": "\uD83D\uDC32 New Teamers Game" },
     { "tag": "GAME_NOTIFY_PM_DESCRIPTION", "value": "New game vote begins! Follow link below to check it." },
 
-    { "tag": "GAME_BANS_START", "value": "\uD83E\uDD14 **Civilization bans:** none.\n*Add reactions or write to chat civilization name.*" },
+    { "tag": "GAME_BANS_START", "value": "\uD83E\uDD14 **Civilization bans:** none.\n*Add reactions or write civilization names below.*" },
     { "tag": "GAME_BANS_PROCESSING", "value": "\uD83E\uDD14 **Civilization bans:**" },
     { "tag": "GAME_BANS_NONE", "value": "none" },
 
     { "tag": "GAME_BUTTON_READY", "value": "Ready!" },
-    { "tag": "GAME_BUTTON_DELETE", "value": "Delete (for author)" },
+    { "tag": "GAME_BUTTON_DELETE", "value": "Delete" },
+    { "tag": "GAME_BUTTON_SKIP", "value": "Force end" },
     { "tag": "GAME_NOTIFY_DELETED", "value": "New game vote deleted successfully." },
 
     { "tag": "GAME_READY_TITLE", "value": "⚡ Are you ready?" },
     { "tag": "GAME_READY_DESCRIPTION_PROCESSING", "value": "⏳ **__Hurry up!__** Vote time ends [TIMESTAMP]." },
     { "tag": "GAME_READY_DESCRIPTION_FINISH", "value": "⚡ **Everyone is ready!**" },
+    { "tag": "GAME_READY_DESCRIPTION_FORCE_END", "value": "⏭️ **Force end of new game vote.**" },
     { "tag": "GAME_READY_FIELD_PLAYERS_TITLE", "value": "Player:" },
     { "tag": "GAME_READY_FIELD_READY_TITLE", "value": "Ready?" },
 
-    { "tag": "GAME_RESULT_TIMEOUT_DESCRIPTION", "value": "⏰❗ Time up! Some players didn't vote on time." },
+    { "tag": "GAME_RESULT_TIMEOUT_DESCRIPTION", "value": "⏰❗ Time out! Some players didn't vote on time." },
     { "tag": "GAME_RESULT_UNKNOWN", "value": "❔ Unknown" },
 
     { "tag": "GAME_FFA_RESULT_TITLE", "value": "⚖ New game vote - FFA" },

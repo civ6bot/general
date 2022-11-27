@@ -21,18 +21,25 @@
     { "tag": "SPLIT_DESCRIPTION_START", "value": "\uD83C\uDF40 Roll dice... captain [CAPTAIN_USER] is first captain.\n⏳ Pick time ends [TIMESTAMP]." },
     { "tag": "SPLIT_DESCRIPTION_PROCESSING", "value": "Now chooses captain #[TEAM_NUMBER] ([CAPTAIN_USER]).\n⏳ Pick time ends [TIMESTAMP]." },
     { "tag": "SPLIT_DESCRIPTION_FINISH", "value": "Split was completed." },
-    { "tag": "SPLIT_DESCRIPTION_TIMEOUT", "value": "⏰❗ Time up! Split was canceled." },
+    { "tag": "SPLIT_DESCRIPTION_TIMEOUT", "value": "⏰❗ Time out! Split was canceled." },
 
     { "tag": "SPLIT_FIELD_TITLE_USERS", "value": "Players:" },
     { "tag": "SPLIT_FIELD_TITLE_USERS_NOT_PICKED", "value": "Not picked:" },
     { "tag": "SPLIT_FIELD_TITLE_TEAM", "value": "Team #[TEAM_NUMBER]" },
 
     { "tag": "SPLIT_BUTTON_DELETE", "value": "Delete (for author and captains)" },
+    { "tag": "SPLIT_BUTTON_UNDO", "value": "Undo" },
     { "tag": "SPLIT_NOTIFY_DELETED", "value": "Split deleted successfully." },
 
     { "tag": "SPLIT_ERROR_DELETE_BUTTON_NOT_OWNER_OR_CAPTAIN", "value": "You are neither a capitan nor author of this split." },
 
     { "tag": "SPLIT_NOTIFY_PM_TITLE", "value": "👥 Split" },
-    { "tag": "SPLIT_NOTIFY_PM_DESCRIPTION", "value": "You are the team 👑 captain! Follow link below to choose your teammates." }
+    { "tag": "SPLIT_NOTIFY_PM_DESCRIPTION", "value": "You are the team 👑 captain! Follow link below to choose your teammates." },
+
+    { "tag": "SPLIT_BUTTON_RESTART", "value": "Restart" },
+    { "tag": "SPLIT_BUTTON_CONTINUE", "value": "Continue from last step" },
+    { "tag": "SPLIT_BUTTON_SKIP", "value": "Skip to draft" },
+
+    { "tag": "SPLIT_ERROR_NOT_FOUND", "value": "Your split hasn't found. Use **/split** command instead." }
   ]
 }

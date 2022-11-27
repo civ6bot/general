@@ -24,13 +24,35 @@ export class SplitUI extends ModuleBaseUI {
         );
     }
 
-    public splitDeleteButton(label: string): ActionRowBuilder<ButtonBuilder>[] {
-        return UtilsGeneratorButton.getSingle(
-            label,
-            "✖️",
-            ButtonStyle.Danger,
-            "split-delete"
-        );
+    public splitProcessingButtons(labels: string[], isFirstStep: boolean): ActionRowBuilder<ButtonBuilder>[] {
+        let emojis: string[] = ["⬅️", "✖️"];
+        let styles: ButtonStyle[] = [ButtonStyle.Secondary, ButtonStyle.Danger];
+        let ids: string[] = ["split-undo", "split-delete"];
+        if(isFirstStep) {
+            labels.splice(0, 1);
+            emojis.splice(0, 1);
+            styles.splice(0, 1);
+            ids.splice(0, 1);
+        }
+        return UtilsGeneratorButton.getList(labels, emojis, styles, ids);
+    }
+
+    public splitFailedButtons(labels: string[], hasSkipToDraft: boolean = false): ActionRowBuilder<ButtonBuilder>[] {
+        if(!hasSkipToDraft)
+            labels.splice(2, 1);
+        return hasSkipToDraft 
+            ? UtilsGeneratorButton.getList(
+                labels,
+                ["▶️", "🔄", "⏩", "✖️"],
+                [ButtonStyle.Primary, ButtonStyle.Secondary, ButtonStyle.Secondary, ButtonStyle.Danger],
+                ["split-restart", "split-continue", "split-skip", "split-delete"]
+            )
+            : UtilsGeneratorButton.getList(
+                labels,
+                ["▶️", "🔄", "✖️"],
+                [ButtonStyle.Primary, ButtonStyle.Secondary, ButtonStyle.Danger],
+                ["split-restart", "split-continue", "split-delete"]
+            );
     }
 
     public notificationSplitPMEmbed(

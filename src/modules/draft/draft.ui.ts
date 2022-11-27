@@ -1,5 +1,5 @@
 import {ModuleBaseUI} from "../base/base.ui";
-import {ActionRowBuilder, APIEmbedField, ButtonBuilder, ButtonStyle, EmbedBuilder, User} from "discord.js";
+import {ActionRowBuilder, APIEmbedField, ButtonBuilder, ButtonStyle, ChannelType, EmbedBuilder, User} from "discord.js";
 import {UtilsGeneratorEmbed} from "../../utils/generators/utils.generator.embed";
 import {UtilsServiceRandom} from "../../utils/services/utils.service.random";
 import {Draft, DraftBlind, DraftFFA, DraftTeamers} from "./draft.models";
@@ -16,28 +16,43 @@ export class DraftUI extends ModuleBaseUI {
         if(draft.errors.length > 0)
             description += (errorsHeader + "\n" + draft.errors.join(", ") + "\n\n");
 
-        let fields: APIEmbedField[] = draft.getPoolsText()
-            .map((value: string[], index: number): APIEmbedField => { return {
-                name: `**${draft.users[index].tag}**`,
-                value: value.join("\n")
-            }
-        });
-        let tempFields: APIEmbedField[] = [];
-        for(let i: number = 0; i < fields.length; i++) {
-            tempFields.push(fields[i]);
-            if((i%2 === 0))
-                tempFields.push({name: "​", value: "​"});
-        }
-        fields = tempFields;
+        if(draft.interaction.channel?.type === ChannelType.PublicThread) {
+            description += draft.getPoolsText()
+                .map((value: string[], index: number): string => `**${draft.users[index].tag}** (${draft.users[index].toString()})\n` + value.join("\n"))
+                .join("\n\n");
 
-        return UtilsGeneratorEmbed.getSingle(
-            title,
-            UtilsServiceRandom.getBrightColor(),
-            description,
-            fields,
-            draft.interaction.user.tag,
-            draft.interaction.user.avatarURL()
-        );
+            return UtilsGeneratorEmbed.getSingle(
+                title,
+                UtilsServiceRandom.getBrightColor(),
+                description,
+                [],
+                draft.interaction.user.tag,
+                draft.interaction.user.avatarURL()
+            );
+        } else {
+            let fields: APIEmbedField[] = draft.getPoolsText()
+                .map((value: string[], index: number): APIEmbedField => { return {
+                    name: `**${draft.users[index].tag}**`,
+                    value: value.join("\n")
+                }
+            });
+            let tempFields: APIEmbedField[] = [];
+            for(let i: number = 0; i < fields.length; i++) {
+                tempFields.push(fields[i]);
+                if((i%2 === 0))
+                    tempFields.push({name: "​", value: "​"});
+            }
+            fields = tempFields;
+
+            return UtilsGeneratorEmbed.getSingle(
+                title,
+                UtilsServiceRandom.getBrightColor(),
+                description,
+                fields,
+                draft.interaction.user.tag,
+                draft.interaction.user.avatarURL()
+            );
+        }
     }
 
     public draftTeamersEmbed(
@@ -45,77 +60,106 @@ export class DraftUI extends ModuleBaseUI {
         bansHeader: string, errorsHeader: string,
         draft: DraftTeamers
     ): EmbedBuilder[] {
-        let description: string = "";
-        if(draft.bans.length > 0)
-            description += (bansHeader + "\n" + draft.getBansText().join("\n") + "\n\n");
-        if(draft.errors.length > 0)
-            description += (errorsHeader + "\n" + draft.errors.join(", ") + "\n\n");
-
-        let poolText: string[][] = draft.getPoolsText();
-        let fields: APIEmbedField[] = [];
-
-        if(poolText[0].length > 20) {
-            let thirdLength: number = Math.ceil(poolText[0].length/3);
-            for(let i: number = 0; i < poolText.length-poolText.length%2; i+=2) 
-            fields.push(
-                {name: `**${teamDescriptionHeaders[i]}**`, value: poolText[i].slice(0, thirdLength).join("\n")},
-                {name: "​", value: "​"},
-                {name: `**${teamDescriptionHeaders[i+1]}**`, value: poolText[i+1].slice(0, thirdLength).join("\n")},
-
-                {name: "​", value: poolText[i].slice(thirdLength, 2*thirdLength).join("\n")},
-                {name: "​", value: "​"},
-                {name: "​", value: poolText[i+1].slice(thirdLength, 2*thirdLength).join("\n")},
-
-                {name: "​", value: poolText[i].slice(2*thirdLength).join("\n") },
-                {name: "​", value: "​"},
-                {name: "​", value: poolText[i+1].slice(2*thirdLength).join("\n") + (i+2 < poolText.length ? "\n​" : "")},
+        if(draft.interaction.channel?.type === ChannelType.PublicThread) {
+            let descriptions: string[] = draft.getPoolsText().map( (value: string[], index: number): string => teamDescriptionHeaders[index] + "\n" + value.join("\n"));
+            if(draft.errors.length > 0)
+                descriptions[0] = errorsHeader + "\n" + draft.errors.join(", ") + "\n\n" + descriptions[0];
+            if(draft.bans.length > 0)
+                descriptions[0] = bansHeader + "\n" + draft.getBansText().join("\n") + "\n\n" + descriptions[0];
+    
+            let teamersThumbnailsURL: string[] = [
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Antu_flag-red.svg/768px-Antu_flag-red.svg.png",
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Antu_flag-blue.svg/768px-Antu_flag-blue.svg.png",
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Antu_flag-green.svg/768px-Antu_flag-green.svg.png",
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Antu_flag-yellow.svg/768px-Antu_flag-yellow.svg.png",
+                "https://media.discordapp.net/attachments/698295115063492758/837417222732644372/768px-Antu_flag-purple.svg.png?width=599&height=599",
+                "https://cdn.discordapp.com/attachments/698295115063492758/838985443642310666/768px-Antu_flag-grey.svg.png",
+            ];
+            return UtilsGeneratorEmbed.getList(
+                [title],
+                new Array(teamDescriptionHeaders.length).fill(UtilsServiceRandom.getBrightColor()),
+                descriptions,
+                [],
+                draft.interaction.user.tag,
+                draft.interaction.user.avatarURL(),
+                teamersThumbnailsURL
             );
-            if(poolText.length%2)
-                fields.push(
-                    {name: `**${teamDescriptionHeaders[teamDescriptionHeaders.length-1]}**`, value: poolText[poolText.length-1].slice(0, thirdLength).join("\n")},
-                    {name: "​", value: "​"},
-                    {name: "​", value: "​"},
-                    
-                    {name: "​", value: poolText[poolText.length-1].slice(thirdLength, 2*thirdLength).join("\n")},
-                    {name: "​", value: "​"},
-                    {name: "​", value: "​"},
-
-                    {name: "​", value: poolText[poolText.length-1].slice(2*thirdLength).join("\n")},
-                    {name: "​", value: "​"},
-                    {name: "​", value: "​"}
-                );
         } else {
-            let halfLength: number = Math.ceil(poolText[0].length/2);
-            for(let i: number = 0; i < poolText.length-poolText.length%2; i+=2) 
-            fields.push(
-                {name: `**${teamDescriptionHeaders[i]}**`, value: poolText[i].slice(0, halfLength).join("\n")},
-                {name: "​", value: "​"},
-                {name: `**${teamDescriptionHeaders[i+1]}**`, value: poolText[i+1].slice(0, halfLength).join("\n")},
+            let description: string = "";
+            if(draft.bans.length > 0)
+                description += (bansHeader + "\n" + draft.getBansText().join("\n") + "\n\n");
+            if(draft.errors.length > 0)
+                description += (errorsHeader + "\n" + draft.errors.join(", ") + "\n\n");
 
-                {name: "​", value: poolText[i].slice(halfLength).join("\n")},
-                {name: "​", value: "​"},
-                {name: "​", value: poolText[i+1].slice(halfLength).join("\n") + (i+2 < poolText.length ? "\n​" : "")},
-            );
-            if(poolText.length%2)
+
+            let poolText: string[][] = draft.getPoolsText();
+            let fields: APIEmbedField[] = [];
+
+            if(poolText[0].length > 20) {
+                let thirdLength: number = Math.ceil(poolText[0].length/3);
+                for(let i: number = 0; i < poolText.length-poolText.length%2; i+=2) 
                 fields.push(
-                    {name: `**${teamDescriptionHeaders[teamDescriptionHeaders.length-1]}**`, value: poolText[poolText.length-1].slice(0, halfLength).join("\n")},
+                    {name: `**${teamDescriptionHeaders[i]}**`, value: poolText[i].slice(0, thirdLength).join("\n")},
                     {name: "​", value: "​"},
+                    {name: `**${teamDescriptionHeaders[i+1]}**`, value: poolText[i+1].slice(0, thirdLength).join("\n")},
+
+                    {name: "​", value: poolText[i].slice(thirdLength, 2*thirdLength).join("\n")},
                     {name: "​", value: "​"},
-                    
-                    {name: "​", value: poolText[poolText.length-1].slice(halfLength).join("\n")},
+                    {name: "​", value: poolText[i+1].slice(thirdLength, 2*thirdLength).join("\n")},
+
+                    {name: "​", value: poolText[i].slice(2*thirdLength).join("\n") },
                     {name: "​", value: "​"},
-                    {name: "​", value: "​"},
+                    {name: "​", value: poolText[i+1].slice(2*thirdLength).join("\n") + (i+2 < poolText.length ? "\n​" : "")},
                 );
+                if(poolText.length%2)
+                    fields.push(
+                        {name: `**${teamDescriptionHeaders[teamDescriptionHeaders.length-1]}**`, value: poolText[poolText.length-1].slice(0, thirdLength).join("\n")},
+                        {name: "​", value: "​"},
+                        {name: "​", value: "​"},
+                        
+                        {name: "​", value: poolText[poolText.length-1].slice(thirdLength, 2*thirdLength).join("\n")},
+                        {name: "​", value: "​"},
+                        {name: "​", value: "​"},
+
+                        {name: "​", value: poolText[poolText.length-1].slice(2*thirdLength).join("\n")},
+                        {name: "​", value: "​"},
+                        {name: "​", value: "​"}
+                    );
+            } else {
+                let halfLength: number = Math.ceil(poolText[0].length/2);
+                for(let i: number = 0; i < poolText.length-poolText.length%2; i+=2) 
+                fields.push(
+                    {name: `**${teamDescriptionHeaders[i]}**`, value: poolText[i].slice(0, halfLength).join("\n")},
+                    {name: "​", value: "​"},
+                    {name: `**${teamDescriptionHeaders[i+1]}**`, value: poolText[i+1].slice(0, halfLength).join("\n")},
+
+                    {name: "​", value: poolText[i].slice(halfLength).join("\n")},
+                    {name: "​", value: "​"},
+                    {name: "​", value: poolText[i+1].slice(halfLength).join("\n") + (i+2 < poolText.length ? "\n​" : "")},
+                );
+                if(poolText.length%2)
+                    fields.push(
+                        {name: `**${teamDescriptionHeaders[teamDescriptionHeaders.length-1]}**`, value: poolText[poolText.length-1].slice(0, halfLength).join("\n")},
+                        {name: "​", value: "​"},
+                        {name: "​", value: "​"},
+                        
+                        {name: "​", value: poolText[poolText.length-1].slice(halfLength).join("\n")},
+                        {name: "​", value: "​"},
+                        {name: "​", value: "​"},
+                    );
+            }
+
+            return UtilsGeneratorEmbed.getSingle(
+                title,
+                UtilsServiceRandom.getBrightColor(),
+                description,
+                fields,
+                draft.interaction.user.tag,
+                draft.interaction.user.avatarURL()
+            );
         }
 
-        return UtilsGeneratorEmbed.getSingle(
-            title,
-            UtilsServiceRandom.getBrightColor(),
-            description,
-            fields,
-            draft.interaction.user.tag,
-            draft.interaction.user.avatarURL()
-        );
+        
     }
 
     public draftBlindEmbed(

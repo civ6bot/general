@@ -7,12 +7,25 @@ import {UtilsServiceEmojis} from "../../utils/services/utils.service.emojis";
 import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
 import {SplitAdapter} from "./split.adapter";
 import { UtilsServicePM } from "../../utils/services/utils.service.PM";
+import { UtilsServiceLetters } from "../../utils/services/utils.service.letters";
 
 export class SplitService extends ModuleBaseService {
     private splitUI: SplitUI = new SplitUI();
     public splitAdapter: SplitAdapter = new SplitAdapter();
 
     public static splits: Map<string, Split> = new Map<string, Split>();    // guildID
+
+    private async checkButtonPermission(interaction: ButtonInteraction, split: Split): Promise<boolean> {
+        if((interaction.user.id === split.interaction.user.id) || (split.captains.map((captain: User): string => captain.id).indexOf(interaction.user.id) !== -1)) 
+            return true;
+        
+        let textStrings = await this.getManyText(
+            split.interaction,
+            ["BASE_ERROR_TITLE", "SPLIT_ERROR_DELETE_BUTTON_NOT_OWNER_OR_CAPTAIN"]
+        );
+        await interaction.reply({embeds: this.splitUI.error(textStrings[0], textStrings[1]), ephemeral: true});
+        return false;
+    }
 
     private checkSplit(split: Split): void {
         if(split.errorReturnTag !== "")
@@ -143,7 +156,7 @@ export class SplitService extends ModuleBaseService {
         }
 
         textStrings.push(...await this.getManyText(split.interaction, [
-            "SPLIT_DESCRIPTION_START", "SPLIT_BUTTON_DELETE"
+            "SPLIT_DESCRIPTION_START", "SPLIT_BUTTON_UNDO", "SPLIT_BUTTON_DELETE",
         ], [
             [split.captains[split.currentCaptainIndex].toString(), UtilsGeneratorTimestamp.getRelativeTime(split.pickTimeMs)]
         ]));
@@ -160,34 +173,36 @@ export class SplitService extends ModuleBaseService {
                         textStrings[1],
                         fieldHeaders,
                         split
-                    ), components: this.splitUI.splitDeleteButton(textStrings[2])});
+                    ), components: this.splitUI.splitProcessingButtons(textStrings.slice(2), split.currentStep === 1)});
             else
                 split.message = await interaction.channel?.send({embeds: this.splitUI.splitEmbed(
                         textStrings[0],
                         textStrings[1],
                         fieldHeaders,
                         split
-                    ), components: this.splitUI.splitDeleteButton(textStrings[2])});
+                    ), components: this.splitUI.splitProcessingButtons(textStrings.slice(2), split.currentStep === 1)});
         } else
             split.message = await interaction.editReply({embeds: this.splitUI.splitEmbed(
                 textStrings[0],
                 textStrings[1],
                 fieldHeaders,
                 split
-                ), components: this.splitUI.splitDeleteButton(textStrings[2])});
-        let pmTextStrings: string[] = await this.getManyText(split.interaction, [
-            "SPLIT_NOTIFY_PM_TITLE", "SPLIT_NOTIFY_PM_DESCRIPTION"
-        ]);
-        let pmEmbed = this.splitUI.notificationSplitPMEmbed(
-            pmTextStrings[0], pmTextStrings[1],
-            split.message.url, split.interaction.guild?.name as string,
-            split.interaction.guild?.iconURL() || null
-        );
-        if(await this.getOneSettingNumber(split.interaction, "SPLIT_SEND_PM_NOTIFICATION"))
+                ), components: this.splitUI.splitProcessingButtons(textStrings.slice(2), split.currentStep === 1)});
+
+        if(await this.getOneSettingNumber(split.interaction, "SPLIT_SEND_PM_NOTIFICATION")) {
+            let pmTextStrings: string[] = await this.getManyText(split.interaction, [
+                "SPLIT_NOTIFY_PM_TITLE", "SPLIT_NOTIFY_PM_DESCRIPTION"
+            ]);
+            let pmEmbed = this.splitUI.notificationSplitPMEmbed(
+                pmTextStrings[0], pmTextStrings[1],
+                split.message.url, split.interaction.guild?.name as string,
+                split.interaction.guild?.iconURL() || null
+            );
             split.captains.forEach(user => {
                 if(outerSplit || (user.id !== split.interaction.user.id)) 
                     UtilsServicePM.send(user, pmEmbed);
             });
+        }
         split.setTimeoutID = setTimeout(SplitService.timeoutFunction, split.pickTimeMs, split);
         split.reactionCollector = split.message?.createReactionCollector({time: 16*split.pickTimeMs});  // максимальное число игроков
         split.reactionCollector.on("collect", async (reaction: MessageReaction, user: User) => SplitService.reactionCollectorFunction(reaction, user));
@@ -264,13 +279,11 @@ export class SplitService extends ModuleBaseService {
                 "SPLIT_FIELD_TITLE_TEAM",
                 i+1
             ));
-
-        await reaction.message.edit({embeds: splitService.splitUI.splitEmbed(
-            textStrings[0],
-                textStrings[1],
-                fieldHeaders,
-                split
-            )});
+        let labels: string[] = await splitService.getManyText(split.interaction, ["SPLIT_BUTTON_UNDO", "SPLIT_BUTTON_DELETE"]);
+        await reaction.message.edit({
+            embeds: splitService.splitUI.splitEmbed(textStrings[0], textStrings[1], fieldHeaders, split),
+            components: splitService.splitUI.splitProcessingButtons(labels, split.currentStep === 1)
+        });
         if(split.currentCaptainIndex === -1) {
             await reaction.message.edit({components: []});
             split.reactionCollector?.stop();
@@ -278,9 +291,8 @@ export class SplitService extends ModuleBaseService {
             await reaction.message.reactions.removeAll();
             if(split.bansForDraft !== null)
                 await splitService.splitAdapter.callDraft(split);
-        } else {
-            split.setTimeoutID = await setTimeout(SplitService.timeoutFunction, split.pickTimeMs, split);
-        }
+        } else
+            split.setTimeoutID = setTimeout(SplitService.timeoutFunction, split.pickTimeMs, split);
     }
 
     // Если не успели
@@ -306,12 +318,22 @@ export class SplitService extends ModuleBaseService {
         let fieldHeaders: string[] = [await splitService.getOneText(split.interaction, "SPLIT_FIELD_TITLE_USERS")];
         for(let i: number = 0; i < split.teams.length; i++)
             fieldHeaders.push(await splitService.getOneText(split.interaction, "SPLIT_FIELD_TITLE_TEAM", i+1));
-        await split.message?.edit({components: [], embeds: splitService.splitUI.splitEmbed(
-            textStrings[0],
+        let buttonLabels: string[] = await splitService.getManyText(split.interaction, [
+            "SPLIT_BUTTON_RESTART", "SPLIT_BUTTON_CONTINUE",
+            "SPLIT_BUTTON_SKIP", "SPLIT_BUTTON_DELETE", 
+        ]);
+        await split.message?.edit({
+            components: splitService.splitUI.splitFailedButtons(
+                buttonLabels, 
+                split.bansForDraft !== null
+            ),
+            embeds: splitService.splitUI.splitEmbed(
+                textStrings[0],
                 textStrings[1],
                 fieldHeaders,
                 split
-            )});
+            )
+        });
         await split.message?.reactions.removeAll();
     }
 
@@ -320,14 +342,8 @@ export class SplitService extends ModuleBaseService {
         let split: Split | undefined = SplitService.splits.get(key);
         if(!split)
             return await interaction.message.delete();
-
-        if((interaction.user.id !== split.interaction.user.id) && (split.captains.map((captain: User): string => captain.id).indexOf(interaction.user.id) === -1)) {
-            let textStrings = await this.getManyText(
-                split.interaction,
-                ["BASE_ERROR_TITLE", "SPLIT_ERROR_DELETE_BUTTON_NOT_OWNER_OR_CAPTAIN"]
-            );
-            return await interaction.reply({embeds: this.splitUI.error(textStrings[0], textStrings[1]), ephemeral: true});
-        }
+        if(!await this.checkButtonPermission(interaction, split))
+            return;
 
         if(split.setTimeoutID !== null) {
             clearTimeout(split.setTimeoutID);
@@ -343,15 +359,139 @@ export class SplitService extends ModuleBaseService {
         await interaction.message.delete();
     }
 
+    private async replyNotFound(interaction: ButtonInteraction): Promise<void> {
+        let textStrings: string[] = await this.getManyText(interaction, [
+            "BASE_ERROR_TITLE", "SPLIT_ERROR_NOT_FOUND"
+        ]);
+        await interaction.reply({
+            embeds: this.splitUI.error(textStrings[0], textStrings[1]),
+            ephemeral: true
+        });
+        await interaction.message.edit({components: []});
+    }
+
     public async splitRestartButton(interaction: ButtonInteraction) {
-        
+        let key: string = interaction.guild?.id as string;
+        let split: Split | undefined = SplitService.splits.get(key);
+        if(!split || split.isProcessing || split.captains.map(user => user.id).indexOf(interaction.user.id) === -1)
+            return await this.replyNotFound(interaction);
+        if(!await this.checkButtonPermission(interaction, split))
+            return;
+        split.teams.forEach((team: string[]) => { (split as Split).users.push(...team.splice(1)); });
+        split.emojis = UtilsServiceLetters.getLetters().slice(0, split.users.length);
+        split.currentStep = 1;
+        split.currentCaptainIndex = 0;
+        this.allLongSplits(split.interaction as CommandInteraction, split.type, split.interaction?.member as GuildMember, null, [], split);
+        interaction.message.delete();
     }
 
     public async splitContinueButton(interaction: ButtonInteraction) {
-        
+        let key: string = interaction.guild?.id as string;
+        let split: Split | undefined = SplitService.splits.get(key);
+        if(!split || split.isProcessing || split.captains.map(user => user.id).indexOf(interaction.user.id) === -1)
+            return await this.replyNotFound(interaction);
+        if(!await this.checkButtonPermission(interaction, split))
+            return;
+
+        await interaction.message.delete();
+        await this.allLongSplits(split.interaction as CommandInteraction, split.type, split.interaction?.member as GuildMember, null, [], split);
     }
 
     public async splitSkipButton(interaction: ButtonInteraction) {
-        
+        let key: string = interaction.guild?.id as string;
+        let split: Split | undefined = SplitService.splits.get(key);
+        if(!split || split.isProcessing || split.captains.map(user => user.id).indexOf(interaction.user.id) === -1)
+            return await this.replyNotFound(interaction);
+        if(!await this.checkButtonPermission(interaction, split))
+            return;
+        if(split.bansForDraft === null) {
+            let buttonLabels: string[] = await this.getManyText(split.interaction, [
+                "SPLIT_BUTTON_RESTART", "SPLIT_BUTTON_CONTINUE",
+                "SPLIT_BUTTON_SKIP", "SPLIT_BUTTON_DELETE", 
+            ]);
+            interaction.message.edit({components: this.splitUI.splitFailedButtons(buttonLabels)});
+            await interaction.deferUpdate();
+            return;
+        }
+        interaction.deferUpdate();
+        interaction.message.edit({components: []});
+        this.splitAdapter.callDraft(split);
+    }
+
+    public async splitUndoButton(interaction: ButtonInteraction) {
+        let key: string = interaction.guild?.id as string;
+        let split: Split | undefined = SplitService.splits.get(key);
+        if(!split) {
+            await interaction.message.delete();    // удалить сообщение
+            return;
+        }
+        if(!await this.checkButtonPermission(interaction, split))
+            return;
+        if(interaction.user.id !== split.captains[split.pickSequence[split.currentStep-2]].id) {
+            let textStrings = await this.getManyText(
+                split.interaction,
+                ["BASE_ERROR_TITLE", "SPLIT_ERROR_DELETE_BUTTON_NOT_OWNER_OR_CAPTAIN"]
+            );
+            await interaction.reply({embeds: this.splitUI.error(textStrings[0], textStrings[1]), ephemeral: true});
+            return;
+        }
+        split.currentStep--;
+        split.currentCaptainIndex = split.pickSequence[split.currentStep-1];
+        await interaction.deferUpdate();
+        split.users.push(split.teams[split.currentCaptainIndex].pop() as string);
+        let lastEmoji: string = UtilsServiceLetters.getLetters().slice(split.users.length-1, split.users.length)[0];
+        split.emojis.push(lastEmoji);
+        await interaction.message.react(lastEmoji);
+        if(split.setTimeoutID !== null)
+            clearTimeout(split.setTimeoutID);
+        split.setTimeoutID = setTimeout(SplitService.timeoutFunction, split.pickTimeMs, split);
+        split.reactionCollector?.stop();
+        if(split.message) {
+            split.reactionCollector = split.message?.createReactionCollector({time: 16*split.pickTimeMs});  // максимальное число игроков
+            split.reactionCollector.on("collect", async (reaction: MessageReaction, user: User) => SplitService.reactionCollectorFunction(reaction, user));
+        }
+
+        let textStrings: string[] = [], fieldHeaders: string[] = [];
+        switch(split.type) {
+            case "Classic":
+                textStrings.push(await this.getOneText(split.interaction,
+                    (split.currentCaptainIndex === -1)
+                        ? "SPLIT_CLASSIC_TITLE_FINISH"
+                        : "SPLIT_CLASSIC_TITLE_PROCESSING",
+                    split.currentStep, split.totalStepAmount)
+                );
+                break;
+            case "Double":
+                textStrings.push(await this.getOneText(split.interaction,
+                    (split.currentCaptainIndex === -1)
+                        ? "SPLIT_DOUBLE_TITLE_FINISH"
+                        : "SPLIT_DOUBLE_TITLE_PROCESSING",
+                    split.currentStep, split.totalStepAmount)
+                );
+                break;
+            case "CWC":
+                textStrings.push(await this.getOneText(split.interaction,
+                    (split.currentCaptainIndex === -1)
+                        ? "SPLIT_CWC_TITLE_FINISH"
+                        : "SPLIT_CWC_TITLE_PROCESSING",
+                    split.currentStep, split.totalStepAmount)
+                );
+                break;
+        }
+        textStrings.push(await this.getOneText(split.interaction,
+            (split.currentCaptainIndex === -1)
+                ? "SPLIT_DESCRIPTION_FINISH"
+                : "SPLIT_DESCRIPTION_PROCESSING",
+            split.currentCaptainIndex+1, split.captains[split.currentCaptainIndex]?.toString() || "",   // если -1, то всё равно выполнится
+            UtilsGeneratorTimestamp.getRelativeTime(split.pickTimeMs)
+        ));
+        fieldHeaders = [await this.getOneText(split.interaction, "SPLIT_FIELD_TITLE_USERS")];
+        for(let i: number = 0; i < split.teams.length; i++)
+            fieldHeaders.push(await this.getOneText(split.interaction, "SPLIT_FIELD_TITLE_TEAM", i+1));
+        let labels: string[] = await this.getManyText(split.interaction, ["SPLIT_BUTTON_UNDO", "SPLIT_BUTTON_DELETE"]);
+        await interaction.message.edit({
+            embeds: this.splitUI.splitEmbed(textStrings[0], textStrings[1], fieldHeaders, split),
+            components: this.splitUI.splitProcessingButtons(labels, split.currentStep === 1)
+        });
     }
 }

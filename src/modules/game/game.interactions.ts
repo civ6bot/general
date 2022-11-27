@@ -56,4 +56,9 @@ export abstract class GameInteractions {
     public async buttonDelete(
         interaction: ButtonInteraction
     ) { await this.gameService.buttonDelete(interaction); }
+
+    @ButtonComponent({id: "game-skip"})
+    public async buttonSkip(
+        interaction: ButtonInteraction
+    ) { await this.gameService.buttonSkip(interaction); }
 }

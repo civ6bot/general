@@ -235,7 +235,7 @@
 
   { "setting": "GAME_TEAMERS_SPLIT", "value": 1 },
   { "setting": "GAME_TEAMERS_SPLIT_CLASSIC", "value": 1 },
-  { "setting": "GAME_TEAMERS_SPLIT_CLASSIC_EMOJI", "value": "\uD83C\uDFA9" },
+  { "setting": "GAME_TEAMERS_SPLIT_CLASSIC_EMOJI", "value": "🧭" },
   { "setting": "GAME_TEAMERS_SPLIT_DOUBLE", "value": 1 },
   { "setting": "GAME_TEAMERS_SPLIT_DOUBLE_EMOJI", "value": "⏫" },
   { "setting": "GAME_TEAMERS_SPLIT_CWC", "value": 1 },

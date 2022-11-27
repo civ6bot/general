@@ -17,17 +17,19 @@
     { "tag": "GAME_NOTIFY_TEAMERS_PM_TITLE", "value": "\uD83D\uDC32 Новая игра в режиме Teamers" },
     { "tag": "GAME_NOTIFY_PM_DESCRIPTION", "value": "На голосование можно перейти по ссылке ниже." },
 
-    { "tag": "GAME_BANS_START", "value": "\uD83E\uDD14 **Баны цивилизаций:** нет.\n*Добавьте реакцию к этому сообщению или напишите название цивилизации в этом канале; если проголосует большинство игроков, то цивилизация окажется в бане.*" },
+    { "tag": "GAME_BANS_START", "value": "\uD83E\uDD14 **Баны цивилизаций:** нет.\n*Добавьте реакцию или напишите названия цивилизаций ниже.*" },
     { "tag": "GAME_BANS_PROCESSING", "value": "\uD83E\uDD14 **Баны цивилизаций:**" },
     { "tag": "GAME_BANS_NONE", "value": "нет" },
 
     { "tag": "GAME_BUTTON_READY", "value": "Готов!" },
-    { "tag": "GAME_BUTTON_DELETE", "value": "Удалить (для автора)" },
+    { "tag": "GAME_BUTTON_DELETE", "value": "Удалить" },
+    { "tag": "GAME_BUTTON_SKIP", "value": "Досрочно завершить" },
     { "tag": "GAME_NOTIFY_DELETED", "value": "Голосование успешно удалено." },
 
     { "tag": "GAME_READY_TITLE", "value": "⚡ Вы готовы?" },
     { "tag": "GAME_READY_DESCRIPTION_PROCESSING", "value": "⏳ **__Поторопитесь!__** Время на голосование закончится [TIMESTAMP]." },
     { "tag": "GAME_READY_DESCRIPTION_FINISH", "value": "⚡ **Все готовы!**" },
+    { "tag": "GAME_READY_DESCRIPTION_FORCE_END", "value": "⏭️ **Голосование завершено досрочно.**" },
     { "tag": "GAME_READY_FIELD_PLAYERS_TITLE", "value": "Игрок:" },
     { "tag": "GAME_READY_FIELD_READY_TITLE", "value": "Готов?" },
 

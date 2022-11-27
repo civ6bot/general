@@ -95,4 +95,9 @@ export abstract class SplitInteractions {
     public async splitSkipButton(
         interaction: ButtonInteraction
     ) { await this.splitService.splitSkipButton(interaction); }
+
+    @ButtonComponent({id: "split-undo"})
+    public async splitUndoButton(
+        interaction: ButtonInteraction
+    ) { await this.splitService.splitUndoButton(interaction); }
 }

@@ -1,6 +1,7 @@
 import {ModuleBaseModel} from "../base/base.models";
 import {CommandInteraction, Message, MessageCollector, MessageReaction, ReactionCollector, User} from "discord.js";
 import {UtilsServiceLetters} from "../../utils/services/utils.service.letters";
+import { UtilsServiceCivilizations } from "../../utils/services/utils.service.civilizations";
 
 export abstract class Game extends ModuleBaseModel {
     public abstract readonly type: string;
@@ -132,7 +133,7 @@ export abstract class GameEntity {
     }
 
     // map: emoji => votesResults
-    protected async setVotesCount(): Promise<void> {
+    public async setVotesCount(): Promise<void> {
         let msg: Message = await this.message?.channel.messages.fetch(this.message?.id) as Message;
         let results: Array<[string, MessageReaction]> = Array.from(msg.reactions.cache);
         this.votesResults = this.emojis.map((emoji: string): number => results.filter(x => x[1].emoji.toString().toLowerCase() == emoji)[0]?.[1].count || 0);
@@ -197,6 +198,8 @@ export class GameEntityDraft extends GameEntity {
     public messageCollector: MessageCollector | null = null;
     public collectedMessages: Message[] = [];
 
+    public englishLanguageOptions: string[] = [];
+
     constructor(
         headers: string[], options: string[], emojis: string[], users: User[],
         banThreshold: number,
@@ -208,7 +211,7 @@ export class GameEntityDraft extends GameEntity {
 
     public override async destroy(): Promise<void> {
         try {
-            await this.messageReactionCollector?.stop();
+            this.messageReactionCollector?.stop();
         } catch {} finally {
             this.messageReactionCollector = null;
         }
@@ -218,7 +221,7 @@ export class GameEntityDraft extends GameEntity {
             this.message = null;
         }
         try {
-            await this.messageCollector?.stop();
+            this.messageCollector?.stop();
         } catch {} finally {
             this.messageCollector = null;
         }
@@ -240,35 +243,33 @@ export class GameEntityDraft extends GameEntity {
     public async resolveProcessing(reaction: MessageReaction, user: User): Promise<boolean> {
         if(user.bot)
             return false;
-        if(this.users.map(user => user.id).indexOf(user.id) === -1) {
+        if((reaction.emoji.toString() === "🤔") || (this.users.map(user => user.id).indexOf(user.id) === -1)) {
             try {
                 await reaction.message.reactions.resolve(reaction).users.remove(user);
             } catch {}
             return false;
         }
-        if(reaction.emoji.toString() === "🤔") {
-            try {
-                await reaction.message.reactions.resolve(reaction).users.remove(user);
-            } catch {}
-            return false;
-        }
-        let emojiIndex: number = this.emojis.indexOf(reaction.emoji.toString().toLowerCase());
+        
+        let emojiName = reaction.emoji.toString().toLowerCase();
+        let emojiIndex: number = this.emojis.indexOf(emojiName);
         if(emojiIndex === -1) {
             try {
                 await reaction.remove();
             } catch {}
             return false;
         }
+
         await this.setVotesCount();
         if(this.votesResults[emojiIndex] < this.banThreshold + Number(Array.from(reaction.users.cache.values()).some(user => user.bot)))    // поправка на бота
             return false;
         this.banStrings.push(this.options.splice(emojiIndex, 1)[0]);
         this.emojis.splice(emojiIndex, 1);
+        this.englishLanguageOptions.splice(emojiIndex, 1);
         this.header = this.headerProcessing;    // если хотя бы 1 забанена, то заголовок меняется
         try {
             await reaction.remove();
         } catch {}
-        return true;    // сообщение редактируется во внешнем методе
+        return true;                            // сообщение редактируется во внешнем методе
     }
 
     // call 1 time (when all ready)
@@ -369,6 +370,9 @@ export class GameEntityReady extends GameEntity {
     // call 1 time (when all ready)
     public override async resolve(): Promise<void> {
         if(this.descriptions.length > 1)
-            this.descriptions = [this.descriptions[(this.usersReadyStatus.every(status => status === 1)) ? 1 : 2]];
+            this.descriptions = [
+                this.descriptions[(this.usersReadyStatus.every(status => status === 1)) ? 1 : 2],
+                this.descriptions[3]
+            ];
     }
 }

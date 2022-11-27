@@ -22,7 +22,7 @@ export class GameUI extends ModuleBaseUI {
     public readyAllFinishedEmbed(gameEntityReady: GameEntityReady): EmbedBuilder[] {
         return UtilsGeneratorEmbed.getSingle(
             gameEntityReady.header,
-            "#5865F2",
+            (gameEntityReady.descriptions.length === 1) ? "#5865F2" : "#2D7D46",
             gameEntityReady.descriptions[0],
             [],
             gameEntityReady.author.tag,
@@ -65,9 +65,9 @@ export class GameUI extends ModuleBaseUI {
     public gameReadyButton(labels: string[]): ActionRowBuilder<ButtonBuilder>[] {
         return UtilsGeneratorButton.getList(
             labels,
-            ["⚡", "✖️"],
-            [ButtonStyle.Primary, ButtonStyle.Danger],
-            ["game-ready", "game-delete"]
+            ["⚡", "⏭️", "✖️"],
+            [ButtonStyle.Primary, ButtonStyle.Success, ButtonStyle.Danger],
+            ["game-ready", "game-skip", "game-delete"]
         );
     }
 

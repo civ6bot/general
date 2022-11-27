@@ -91,7 +91,7 @@
     { "tag": "DRAFT_BLIND_PM_DESCRIPTION_READY", "value": "**Статус: решение принято.**\nВозвращайтесь в канал с драфтом и ожидайте результата.\n\nВы выбрали — [PICKED_CIVILIZATION]." },
     { "tag": "DRAFT_BLIND_PM_DESCRIPTION_TIMEOUT", "value": "⏰ **Статус: время вышло!**\nВы не успели выбрать цивилизацию, поэтому вы получаете случайную из вашего драфта.\n\nВам достается — [PICKED_CIVILIZATION]." },
 
-    { "tag": "DRAFT_BLIND_BUTTON_DELETE", "value": "Удалить (для автора)" },
+    { "tag": "DRAFT_BLIND_BUTTON_DELETE", "value": "Удалить" },
     { "tag": "DRAFT_BLIND_NOTIFY_DELETED", "value": "Драфт взакрытую успешно удален." },
 
     { "tag": "DRAFT_BLIND_ERROR_PM", "value": "Один из игроков ([USER_NAME]) заблокировал бота или запретил личные сообщения от участников сервера. Провести драфт невозможно." },

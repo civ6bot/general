@@ -463,16 +463,13 @@ export class DynamicConfigService extends ModuleBaseService {
             return;
 
         // ================================
-
+        
         // Вызов изменения конфигурации для булевых значений
         if(dynamicConfigEntity.type === "Boolean") {
             let dynamicConfigEntityBoolean: DynamicConfigEntityBoolean = dynamicConfigEntity as DynamicConfigEntityBoolean;
             dynamicConfigEntityBoolean.check(String(!dynamicConfigEntityBoolean.value));
             await this.updateOneDynamicConfigEntity(dynamicConfig.interaction, dynamicConfigEntityBoolean);
-            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
-                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
-            ]);
-            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await interaction.deferUpdate();
             await this.sendDynamicConfigMessage(dynamicConfig);
             return;
         }
@@ -488,10 +485,7 @@ export class DynamicConfigService extends ModuleBaseService {
                 return;
             }
             await this.updateOneDynamicConfigEntity(dynamicConfig.interaction, dynamicConfigEntityBooleanGameSetting);
-            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
-                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
-            ]);
-            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await interaction.deferUpdate();
             await this.sendDynamicConfigMessage(dynamicConfig);
             return;
         }
@@ -501,10 +495,7 @@ export class DynamicConfigService extends ModuleBaseService {
             let dynamicConfigEntityBooleanLanguage: DynamicConfigEntityBooleanLanguage = dynamicConfigEntity as DynamicConfigEntityBooleanLanguage;
             dynamicConfigEntityBooleanLanguage.check("true");
             await this.updateOneDynamicConfigEntity(dynamicConfig.interaction, dynamicConfigEntityBooleanLanguage);
-            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
-                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
-            ]);
-            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await interaction.deferUpdate();
             await this.sendDynamicConfigMessage(dynamicConfig);
             return;
         }
@@ -658,10 +649,7 @@ export class DynamicConfigService extends ModuleBaseService {
                 return;
             }
             await this.updateOneDynamicConfigEntity(interaction, dynamicConfigEntityNumber);
-            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
-                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
-            ]);
-            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await interaction.deferUpdate();
             await this.sendDynamicConfigMessage(dynamicConfig);
             return;
         }
@@ -675,11 +663,8 @@ export class DynamicConfigService extends ModuleBaseService {
                 await this.sendDynamicConfigMessage(dynamicConfig);
                 return;
             }
-            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
-                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
-            ]);
             await this.updateOneDynamicConfigEntity(interaction, dynamicConfigEntityString);
-            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await interaction.deferUpdate();
             await this.sendDynamicConfigMessage(dynamicConfig);
             return;
         }
@@ -731,10 +716,7 @@ export class DynamicConfigService extends ModuleBaseService {
                 return;
             }
             await this.updateOneDynamicConfigEntity(interaction, dynamicConfigEntityNumberMany);
-            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
-                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
-            ]);
-            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await interaction.deferUpdate();
             await this.sendDynamicConfigMessage(dynamicConfig);
             return;
         }
@@ -797,10 +779,7 @@ export class DynamicConfigService extends ModuleBaseService {
                 return;
             }
             await this.updateOneDynamicConfigEntity(interaction, dynamicConfigEntityNumberTimeSeconds);
-            let textStrings: string[] = await this.getManyText(dynamicConfig.interaction, [
-                "BASE_NOTIFY_TITLE", "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS"
-            ]);
-            await interaction.reply({embeds: this.dynamicConfigUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
+            await interaction.deferUpdate();
             await this.sendDynamicConfigMessage(dynamicConfig);
             return;
         }

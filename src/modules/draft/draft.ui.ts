@@ -16,7 +16,7 @@ export class DraftUI extends ModuleBaseUI {
         if(draft.errors.length > 0)
             description += (errorsHeader + "\n" + draft.errors.join(", ") + "\n\n");
 
-        if(draft.interaction.channel?.type === ChannelType.PublicThread) {
+        if(draft.thread || (draft.interaction.channel?.type === ChannelType.PublicThread)) {
             description += draft.getPoolsText()
                 .map((value: string[], index: number): string => `**${draft.users[index].tag}** (${draft.users[index].toString()})\n` + value.join("\n"))
                 .join("\n\n");
@@ -60,7 +60,7 @@ export class DraftUI extends ModuleBaseUI {
         bansHeader: string, errorsHeader: string,
         draft: DraftTeamers
     ): EmbedBuilder[] {
-        if(draft.interaction.channel?.type === ChannelType.PublicThread) {
+        if(draft.thread || (draft.interaction.channel?.type === ChannelType.PublicThread)) {
             let descriptions: string[] = draft.getPoolsText().map( (value: string[], index: number): string => teamDescriptionHeaders[index] + "\n" + value.join("\n"));
             if(draft.errors.length > 0)
                 descriptions[0] = errorsHeader + "\n" + draft.errors.join(", ") + "\n\n" + descriptions[0];

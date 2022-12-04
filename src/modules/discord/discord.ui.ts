@@ -9,12 +9,12 @@ export class DiscordUI extends ModuleBaseUI {
     ): EmbedBuilder[] {
         return UtilsGeneratorEmbed.getSingle(
             title,
-            "#FF0000",
+            "#920000",
             description,
             [],
             null,
             null,
-            "https://media.discordapp.net/attachments/1022446755532525608/1040630186015739975/general-neon-circled.png"
+            "https://media.discordapp.net/attachments/795265098159357953/1048989911241461831/general.png?width=494&height=494"
         );
     }
 }

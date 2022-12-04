@@ -1,4 +1,5 @@
 [
   { "setting": "SPLIT_SEND_PM_NOTIFICATION", "value": 1 },
-  { "setting": "SPLIT_PICK_TIME_MS", "value": 45000 }
+  { "setting": "SPLIT_PICK_TIME_MS", "value": 45000 },
+  { "setting": "SPLIT_MOVE_TEAM_VOICE_CHANNEL", "value": 1 }
 ]

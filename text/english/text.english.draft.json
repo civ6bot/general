@@ -88,7 +88,7 @@
     { "tag": "DRAFT_BLIND_FIELD_CIVILIZATION_TITLE", "value": "Leader:" },
 
     { "tag": "DRAFT_BLIND_PM_TITLE", "value": "\uD83C\uDFA9 Draft blind" },
-    { "tag": "DRAFT_BLIND_PM_DESCRIPTION_PROCESSING", "value": "\uD83E\uDD14 **Status: choosing civilization.**\nClick a button to pick leader.\n\n⏳ **__Hurry up!!__** Pick time ends [TIMESTAMP]." },
+    { "tag": "DRAFT_BLIND_PM_DESCRIPTION_PROCESSING", "value": "\uD83E\uDD14 **Status: choosing civilization.**\nClick a button to pick leader.\n\n⏳ **__Hurry up!__** Pick time ends [TIMESTAMP]." },
     { "tag": "DRAFT_BLIND_PM_DESCRIPTION_READY", "value": "**Status: ready.**\nNow wait results.\n\nYour choice — [PICKED_CIVILIZATION]." },
     { "tag": "DRAFT_BLIND_PM_DESCRIPTION_TIMEOUT", "value": "⏰ **Status: time out!**\nYou got random civilization from your draft pool.\n\nYour civilization — [PICKED_CIVILIZATION]." },
 

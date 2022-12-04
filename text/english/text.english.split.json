@@ -27,7 +27,7 @@
     { "tag": "SPLIT_FIELD_TITLE_USERS_NOT_PICKED", "value": "Not picked:" },
     { "tag": "SPLIT_FIELD_TITLE_TEAM", "value": "Team #[TEAM_NUMBER]" },
 
-    { "tag": "SPLIT_BUTTON_DELETE", "value": "Delete (for author and captains)" },
+    { "tag": "SPLIT_BUTTON_DELETE", "value": "Delete" },
     { "tag": "SPLIT_BUTTON_UNDO", "value": "Undo" },
     { "tag": "SPLIT_NOTIFY_DELETED", "value": "Split deleted successfully." },
 

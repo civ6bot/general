@@ -365,8 +365,7 @@ export class DynamicConfigService extends ModuleBaseService {
     //values=numbers i
     public async config(interaction: CommandInteraction) {
         if(!await this.isModerator(interaction)) {
-            let textStrings = await this.getManyText(
-                interaction,
+            let textStrings = await this.getManyText(interaction,
                 ["BASE_ERROR_TITLE", "DYNAMIC_CONFIG_ERROR_COMMAND_NOT_ADMIN"],
             );
             return await interaction.reply({embeds: this.dynamicConfigUI.error(textStrings[0], textStrings[1]), ephemeral: true});

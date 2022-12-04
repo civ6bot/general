@@ -76,6 +76,11 @@
     { "tag": "GAME_FFA_AGE_STANDARD", "value": "Standard" },
     { "tag": "GAME_FFA_AGE_NEW", "value": "New" },
 
+    { "tag": "GAME_FFA_CITY_CENTER", "value": "🏙️ **City Center additional yields**" },
+    { "tag": "GAME_FFA_CITY_CENTER_NO", "value": "Disabled" },
+    { "tag": "GAME_FFA_CITY_CENTER_CAPITAL", "value": "Enabled for Capital" },
+    { "tag": "GAME_FFA_CITY_CENTER_YES", "value": "Enabled for all cities" },
+
     { "tag": "GAME_FFA_THERMONUCLEAR_DEVICE", "value": "🚀 **Thermonuclear devices**" },
     { "tag": "GAME_FFA_THERMONUCLEAR_DEVICE_NO", "value": "Banned" },
     { "tag": "GAME_FFA_THERMONUCLEAR_DEVICE_YES", "value": "Allowed" },
@@ -168,6 +173,11 @@
     { "tag": "GAME_TEAMERS_AGE", "value": "\uD83C\uDFDE **World age**" },
     { "tag": "GAME_TEAMERS_AGE_STANDARD", "value": "Standard" },
     { "tag": "GAME_TEAMERS_AGE_NEW", "value": "New" },
+
+    { "tag": "GAME_TEAMERS_CITY_CENTER", "value": "🏙️ **City Center additional yields**" },
+    { "tag": "GAME_TEAMERS_CITY_CENTER_NO", "value": "Disabled" },
+    { "tag": "GAME_TEAMERS_CITY_CENTER_CAPITAL", "value": "Enabled for Capital" },
+    { "tag": "GAME_TEAMERS_CITY_CENTER_YES", "value": "Enabled for all cities" },
 
     { "tag": "GAME_TEAMERS_RELIC", "value": "\uD83D\uDDFF **Relic trading**" },
     { "tag": "GAME_TEAMERS_RELIC_TURN_20", "value": "Allowed from turn 20" },

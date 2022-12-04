@@ -3,6 +3,7 @@ export class UtilsServiceGameTags {
         "GAME_FFA_MAP", "GAME_FFA_DISASTERS",
         "GAME_FFA_BONUS_RESOURCES", "GAME_FFA_STRATEGIC_RESOURCES",
         "GAME_FFA_WONDERS", "GAME_FFA_AGE",
+        "GAME_FFA_CITY_CENTER",
         "GAME_FFA_THERMONUCLEAR_DEVICE", "GAME_FFA_GREAT_PEOPLE_PASS",
         "GAME_FFA_MONOPOLY", "GAME_FFA_BARBARIAN_CLANS",
         "GAME_FFA_SHUFFLE",
@@ -40,6 +41,10 @@ export class UtilsServiceGameTags {
         ],
         [
             "GAME_FFA_AGE_STANDARD", "GAME_FFA_AGE_NEW"
+        ],
+        [
+            "GAME_FFA_CITY_CENTER_NO", "GAME_FFA_CITY_CENTER_CAPITAL",
+            "GAME_FFA_CITY_CENTER_YES"
         ],
         [
             "GAME_FFA_THERMONUCLEAR_DEVICE_NO", "GAME_FFA_THERMONUCLEAR_DEVICE_YES"
@@ -84,6 +89,7 @@ export class UtilsServiceGameTags {
         "GAME_TEAMERS_MAP", "GAME_TEAMERS_DISASTERS",
         "GAME_TEAMERS_BONUS_RESOURCES", "GAME_TEAMERS_STRATEGIC_RESOURCES",
         "GAME_TEAMERS_WONDERS", "GAME_TEAMERS_AGE",
+        "GAME_TEAMERS_CITY_CENTER",
         "GAME_TEAMERS_RELIC", "GAME_TEAMERS_REMAPS",
         "GAME_TEAMERS_SPLIT"
     ];
@@ -114,6 +120,10 @@ export class UtilsServiceGameTags {
         ],
         [
             "GAME_TEAMERS_AGE_STANDARD", "GAME_TEAMERS_AGE_NEW"
+        ],
+        [
+            "GAME_TEAMERS_CITY_CENTER_NO", "GAME_TEAMERS_CITY_CENTER_CAPITAL",
+            "GAME_TEAMERS_CITY_CENTER_YES"
         ],
         [
             "GAME_TEAMERS_RELIC_TURN_20", "GAME_TEAMERS_RELIC_YES"

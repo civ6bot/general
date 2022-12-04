@@ -27,7 +27,7 @@
     { "tag": "SPLIT_FIELD_TITLE_USERS_NOT_PICKED", "value": "Не выбран:" },
     { "tag": "SPLIT_FIELD_TITLE_TEAM", "value": "Команда #[TEAM_NUMBER]" },
 
-    { "tag": "SPLIT_BUTTON_DELETE", "value": "Удалить (для автора и капитанов)" },
+    { "tag": "SPLIT_BUTTON_DELETE", "value": "Удалить" },
     { "tag": "SPLIT_BUTTON_UNDO", "value": "Отменить последний шаг" },
     { "tag": "SPLIT_NOTIFY_DELETED", "value": "Разделение на команды успешно удалено." },
 

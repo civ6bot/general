@@ -1,13 +1,13 @@
 import {ModuleBaseService} from "../base/base.service";
-import {ButtonInteraction, CommandInteraction, Guild, GuildMember, MessageReaction, User} from "discord.js";
+import {ButtonInteraction, ChannelType, CommandInteraction, GuildMember, MessageReaction, User, VoiceChannel} from "discord.js";
 import {SplitUI} from "./split.ui";
 import {Split, SplitClassic, SplitCWC, SplitDouble, SplitRandom} from "./split.models";
 import {UtilsGeneratorTimestamp} from "../../utils/generators/utils.generator.timestamp";
 import {UtilsServiceEmojis} from "../../utils/services/utils.service.emojis";
 import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
 import {SplitAdapter} from "./split.adapter";
-import { UtilsServicePM } from "../../utils/services/utils.service.PM";
-import { UtilsServiceLetters } from "../../utils/services/utils.service.letters";
+import {UtilsServicePM} from "../../utils/services/utils.service.PM";
+import {UtilsServiceLetters} from "../../utils/services/utils.service.letters";
 
 export class SplitService extends ModuleBaseService {
     private splitUI: SplitUI = new SplitUI();
@@ -67,7 +67,6 @@ export class SplitService extends ModuleBaseService {
         for(let i: number = 0; i < split.teams.length; i++)
             fieldHeaders.push(await this.getOneText(split.interaction, "SPLIT_FIELD_TITLE_TEAM", i+1));
 
-
         if (outerSplit) {
             if(split.thread)
                 await split.thread.send({embeds: this.splitUI.splitEmbed(
@@ -82,14 +81,35 @@ export class SplitService extends ModuleBaseService {
                         null,
                         fieldHeaders,
                         split
-                    )})
+                    )});
         } else
             await interaction.reply({embeds: this.splitUI.splitEmbed(
                 title,
                     null,
                     fieldHeaders,
                     split
-                )})
+                )});
+        if(split.bansForDraft !== null) {
+            if(await this.getOneSettingNumber(split.interaction, "SPLIT_MOVE_TEAM_VOICE_CHANNEL")) {
+                let destinationChannel: VoiceChannel | undefined = (await this.getOneSettingString(split.interaction, "GAME_TEAMERS_VOICE_CHANNELS"))
+                    .split(" ")
+                    .filter(id => id !== "")
+                    .map(id => split.interaction.guild?.channels.cache.get(id))
+                    .filter(channel => !!channel && (channel?.type === ChannelType.GuildVoice))
+                    .map(channel => channel as VoiceChannel)
+                    .filter(channel => Array.from(channel.members.keys()).length === 0)[0];
+                if(destinationChannel) {
+                    split.teams[1].forEach(id => {
+                        let member: GuildMember | undefined = (split as Split).interaction.guild?.members.cache.get(id.slice(2, -1));
+                        if(member?.voice.channel?.id)
+                            try {
+                                member?.voice.setChannel(destinationChannel as VoiceChannel);
+                            } catch {}
+                    });
+                }
+            }
+            await this.splitAdapter.callDraft(split);
+        }
     }
 
     public async allLongSplits(
@@ -284,15 +304,35 @@ export class SplitService extends ModuleBaseService {
             embeds: splitService.splitUI.splitEmbed(textStrings[0], textStrings[1], fieldHeaders, split),
             components: splitService.splitUI.splitProcessingButtons(labels, split.currentStep === 1)
         });
-        if(split.currentCaptainIndex === -1) {
-            await reaction.message.edit({components: []});
-            split.reactionCollector?.stop();
-            split.isProcessing = false;
-            await reaction.message.reactions.removeAll();
-            if(split.bansForDraft !== null)
-                await splitService.splitAdapter.callDraft(split);
-        } else
+        if(split.currentCaptainIndex !== -1) {
             split.setTimeoutID = setTimeout(SplitService.timeoutFunction, split.pickTimeMs, split);
+            return;
+        }
+
+        await reaction.message.edit({components: []});
+        split.reactionCollector?.stop();
+        split.isProcessing = false;
+        await reaction.message.reactions.removeAll();
+        if(await splitService.getOneSettingNumber(split.interaction, "SPLIT_MOVE_TEAM_VOICE_CHANNEL")) {
+            let destinationChannel: VoiceChannel | undefined = (await splitService.getOneSettingString(split.interaction, "GAME_TEAMERS_VOICE_CHANNELS"))
+                .split(" ")
+                .filter(id => id !== "")
+                .map(id => (split as Split).interaction.guild?.channels.cache.get(id))
+                .filter(channel => !!channel && (channel?.type === ChannelType.GuildVoice))
+                .map(channel => channel as VoiceChannel)
+                .filter(channel => Array.from(channel.members.keys()).length === 0)[0];
+            if(destinationChannel) {
+                (split as Split).teams[1].forEach(id => {
+                    let member: GuildMember | undefined = (split as Split).interaction.guild?.members.cache.get(id.slice(2, -1));
+                    if(member?.voice.channel?.id)
+                        try {
+                            member?.voice.setChannel(destinationChannel as VoiceChannel);
+                        } catch {}
+                });
+            }
+        }
+        if(split.bansForDraft !== null)
+            await splitService.splitAdapter.callDraft(split);
     }
 
     // Если не успели

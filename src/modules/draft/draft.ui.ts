@@ -66,23 +66,13 @@ export class DraftUI extends ModuleBaseUI {
                 descriptions[0] = errorsHeader + "\n" + draft.errors.join(", ") + "\n\n" + descriptions[0];
             if(draft.bans.length > 0)
                 descriptions[0] = bansHeader + "\n" + draft.getBansText().join("\n") + "\n\n" + descriptions[0];
-    
-            let teamersThumbnailsURL: string[] = [
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Antu_flag-red.svg/768px-Antu_flag-red.svg.png",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Antu_flag-blue.svg/768px-Antu_flag-blue.svg.png",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Antu_flag-green.svg/768px-Antu_flag-green.svg.png",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Antu_flag-yellow.svg/768px-Antu_flag-yellow.svg.png",
-                "https://media.discordapp.net/attachments/698295115063492758/837417222732644372/768px-Antu_flag-purple.svg.png?width=599&height=599",
-                "https://cdn.discordapp.com/attachments/698295115063492758/838985443642310666/768px-Antu_flag-grey.svg.png",
-            ];
             return UtilsGeneratorEmbed.getList(
                 [title],
                 new Array(teamDescriptionHeaders.length).fill(UtilsServiceRandom.getBrightColor()),
                 descriptions,
                 [],
                 draft.interaction.user.tag,
-                draft.interaction.user.avatarURL(),
-                teamersThumbnailsURL
+                draft.interaction.user.avatarURL()
             );
         } else {
             let description: string = "";

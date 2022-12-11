@@ -1,10 +1,6 @@
 {
   "lang": "Russian",
   "text": [
-    { "tag": "FEEDBACK_ABOUT_TITLE", "value": "ℹ️ Справка" },
-    { "tag": "FEEDBACK_ABOUT_DESCRIPTION", "value": "• Сайт: https://civ6bot.xyz\n• ссылка на проект GitHub: https://github.com/civ6bot\n• все команды бота и их описание перечислены при написании символа \"/\" (слеш)\n• для отзывов и обратной связи используйте команду: **/feedback**\n• вы можете поддержать проект и задонатить на хостинг бота (напишите в ЛС)\n• для связи с разработчиком в Discord: **ZhenjaMax#3594**" },
-    { "tag": "FEEDBACK_ABOUT_IMAGE_URL", "value": "https://raw.githubusercontent.com/ZhenjaMax/civ6bot/main/docs/images/header.png" },
-
     { "tag": "FEEDBACK_FEEDBACK_TITLE", "value": "✍ Обратная связь" },
     { "tag": "FEEDBACK_FEEDBACK_SERVER_FIELD_TITLE", "value": "🏰 Сервер" },
     { "tag": "FEEDBACK_FEEDBACK_SERVER_FIELD_CONTENT", "value": "[GUILD_NAME]\n(ID: [GUILD_ID])" },

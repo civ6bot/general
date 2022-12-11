@@ -1,16 +1,14 @@
-import { ActivityType, ChannelType, Guild, TextChannel } from "discord.js";
+import { ActivityType, ChannelType, CommandInteraction, Guild, TextChannel } from "discord.js";
 import { Client } from "discordx";
 import { UtilsServiceTime } from "../../utils/services/utils.service.time";
 import { ModuleBaseService } from "../base/base.service";
 import { DiscordUI } from "./discord.ui";
-import * as dotenv from "dotenv";
-dotenv.config({path: 'general.env'});
 
 export class DiscordService extends ModuleBaseService {
     private discordUI: DiscordUI = new DiscordUI();
 
     public async onceReady(client: Client) {
-        await client.initApplicationCommands({ global: { log: (process.env.TEST_MODE == '1') } });
+        await client.initApplicationCommands();
 
         setTimeout(() => setInterval(() => {
             let guildsAmount: number = client.guilds.cache.size;
@@ -56,5 +54,12 @@ export class DiscordService extends ModuleBaseService {
                 }
             } catch {}
         }
+    }
+
+    public async about(interaction: CommandInteraction) {
+        let textStrings: string[] = await this.getManyText(interaction.guild?.id as string, [
+            "DISCORD_ON_GUILD_CREATE_TITLE", "DISCORD_ON_GUILD_CREATE_DESCRIPTION"
+        ]);
+        await interaction.reply({embeds: this.discordUI.onGuildCreate(textStrings[0], textStrings[1])});
     }
 }

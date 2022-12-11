@@ -1,7 +1,6 @@
 import {ModuleBaseModel} from "../base/base.models";
 import {CommandInteraction, Message, MessageCollector, MessageReaction, ReactionCollector, User} from "discord.js";
 import {UtilsServiceLetters} from "../../utils/services/utils.service.letters";
-import { UtilsServiceCivilizations } from "../../utils/services/utils.service.civilizations";
 
 export abstract class Game extends ModuleBaseModel {
     public abstract readonly type: string;

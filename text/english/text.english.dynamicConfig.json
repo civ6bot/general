@@ -113,7 +113,7 @@
     { "tag": "DRAFT_NETHERLANDS_CONFIG_TEXT", "value": "Netherlands - Wilhelmina" },
     { "tag": "DRAFT_NORWAY_CONFIG_TEXT", "value": "Norway - Harald Hardrada" },
     { "tag": "DRAFT_NUBIA_CONFIG_TEXT", "value": "Nubia - Amanitore" },
-    { "tag": "DRAFT_OTTOMAN_CONFIG_TEXT", "value": "Ottoman - Suleiman" },
+    { "tag": "DRAFT_OTTOMAN_CONFIG_TEXT", "value": "Ottoman - Suleiman (Lawgiver)" },
     { "tag": "DRAFT_PERSIA_CONFIG_TEXT", "value": "Persia - Cyrus" },
     { "tag": "DRAFT_POLAND_CONFIG_TEXT", "value": "Poland - Jadwiga" },
     { "tag": "DRAFT_ROME_CONFIG_TEXT", "value": "Rome - Trajan" },
@@ -130,7 +130,7 @@
     { "tag": "DRAFT_COLOMBIA_CONFIG_TEXT", "value": "Gran Colombia - Simon BolivarSimon Bolivar" },
     { "tag": "DRAFT_ETHIOPIA_CONFIG_TEXT", "value": "Ethiopia - Menelik II" },
     { "tag": "DRAFT_AMERICA_ROUGH_RIDER_CONFIG_TEXT", "value": "America - Teddy Roosevelt (Rough Rider)" },
-    { "tag": "DRAFT_FRANCE_MAGNIFICENCE_CONFIG_TEXT", "value": "France - Magnificence Catherine" },
+    { "tag": "DRAFT_FRANCE_MAGNIFICENCE_CONFIG_TEXT", "value": "France - Magnificent Catherine" },
     { "tag": "DRAFT_BYZANTIUM_CONFIG_TEXT", "value": "Byzantium - Basil II" },
     { "tag": "DRAFT_GAUL_CONFIG_TEXT", "value": "Gaul - Ambiorix" },
     { "tag": "DRAFT_BABYLON_CONFIG_TEXT", "value": "Babylon - Hammurabi" },
@@ -142,6 +142,9 @@
     { "tag": "DRAFT_ARABIA_SALADIN_SULTAN_CONFIG_TEXT", "value": "Arabia - Saladin (Sultan)" },
     { "tag": "DRAFT_KONGO_ANNA_NZINGA_CONFIG_TEXT", "value": "Kongo - Mbande Nzinga" },
     { "tag": "DRAFT_AMERICA_LINCOLN_CONFIG_TEXT", "value": "America - Abraham Lincoln" },
+    { "tag": "DRAFT_PERSIA_NADER_SHAH_CONFIG_TEXT", "value": "Persia - Nader Shah" },
+    { "tag": "DRAFT_JAPAN_TOKUGAWA_CONFIG_TEXT", "value": "Japan - Tokugawa" },
+    { "tag": "DRAFT_OTTOMAN_SULEIMAN_MAGNIFICENT_CONFIG_TEXT", "value": "Ottoman - Suleiman (Magnificent)" },
 
     { "tag": "DRAFT_AUSTRALIA_CONFIG_TEXT_EMOJI", "value": "<:Australia:701066628523098183>" },
     { "tag": "DRAFT_AMERICA_CONFIG_TEXT_EMOJI", "value": "<:America:701066550412836894>" },
@@ -205,6 +208,9 @@
     { "tag": "DRAFT_ARABIA_SALADIN_SULTAN_CONFIG_TEXT_EMOJI", "value": "<:Arabia_Saladin_Sultan:1044345328050131024>" },
     { "tag": "DRAFT_KONGO_ANNA_NZINGA_CONFIG_TEXT_EMOJI", "value": "<:Kongo_Anna_Nzinga:1044345320961740891>" },
     { "tag": "DRAFT_AMERICA_LINCOLN_CONFIG_TEXT_EMOJI", "value": "<:America_Lincoln:1044345325445468300>" },
+    { "tag": "DRAFT_PERSIA_NADER_SHAH_CONFIG_TEXT_EMOJI", "value": "<:Persia_Nader_Shah:1053016018865356851>" },
+    { "tag": "DRAFT_JAPAN_TOKUGAWA_CONFIG_TEXT_EMOJI", "value": "<:Japan_Tokugawa:1053016016604643410>" },
+    { "tag": "DRAFT_OTTOMAN_SULEIMAN_MAGNIFICENT_CONFIG_TEXT_EMOJI", "value": "<:Suleiman_Magnificent:1053016021344206918>" },
 
 
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT", "value": "Minimum civilizations for draft" },

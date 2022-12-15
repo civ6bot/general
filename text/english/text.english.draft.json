@@ -34,7 +34,7 @@
     { "tag": "DRAFT_NETHERLANDS_TEXT", "value": "Netherlands <:Nederlands:701066724111548476> Wilhelmina" },
     { "tag": "DRAFT_NORWAY_TEXT", "value": "Norway <:Norway:701066723721216011> Harald Hardrada" },
     { "tag": "DRAFT_NUBIA_TEXT", "value": "Nubia <:Nubia:701066699700699136> Amanitore" },
-    { "tag": "DRAFT_OTTOMAN_TEXT", "value": "Ottoman <:Ottoman:701066699230674976> Suleiman" },
+    { "tag": "DRAFT_OTTOMAN_TEXT", "value": "Ottoman <:Ottoman:701066699230674976> Suleiman (Lawgiver)" },
     { "tag": "DRAFT_PERSIA_TEXT", "value": "Persia <:Persia:701066723713089608> Cyrus" },
     { "tag": "DRAFT_POLAND_TEXT", "value": "Poland <:Poland:701066699486789752> Jadwiga" },
     { "tag": "DRAFT_ROME_TEXT", "value": "Rome <:Rome:701066699499372615> Trajan" },
@@ -51,7 +51,7 @@
     { "tag": "DRAFT_COLOMBIA_TEXT", "value": "Gran Colombia <:Colombia:713789628590850149> Simon Bolivar" },
     { "tag": "DRAFT_ETHIOPIA_TEXT", "value": "Ethiopia <:Ethiopia:736271149159284807> Menelik II" },
     { "tag": "DRAFT_AMERICA_ROUGH_RIDER_TEXT", "value": "America <:America_Rough_Rider:935611499311935488> Teddy Roosevelt (Rough Rider)" },
-    { "tag": "DRAFT_FRANCE_MAGNIFICENCE_TEXT", "value": "France <:France_Magnificence:935611499941081158> Magnificence Catherine" },
+    { "tag": "DRAFT_FRANCE_MAGNIFICENCE_TEXT", "value": "France <:France_Magnificence:935611499941081158> Magnificent Catherine" },
     { "tag": "DRAFT_BYZANTIUM_TEXT", "value": "Byzantium <:Byzantium:759396923382956043> Basil II" },
     { "tag": "DRAFT_GAUL_TEXT", "value": "Gaul <:Gaul:759396911206629386> Ambiorix" },
     { "tag": "DRAFT_BABYLON_TEXT", "value": "Babylon <:Babylon:779706266062815242> Hammurabi" },
@@ -63,7 +63,9 @@
     { "tag": "DRAFT_ARABIA_SALADIN_SULTAN_TEXT", "value": "Arabia <:Arabia_Saladin_Sultan:1044345328050131024> Saladin (Sultan)" },
     { "tag": "DRAFT_KONGO_ANNA_NZINGA_TEXT", "value": "Kongo <:Kongo_Anna_Nzinga:1044345320961740891> Mbande Nzinga" },
     { "tag": "DRAFT_AMERICA_LINCOLN_TEXT", "value": "America <:America_Lincoln:1044345325445468300> Abraham Lincoln" },
-
+    { "tag": "DRAFT_PERSIA_NADER_SHAH_TEXT", "value": "Persia <:Persia_Nader_Shah:1053016018865356851> Nader Shah" },
+    { "tag": "DRAFT_JAPAN_TOKUGAWA_TEXT", "value": "Japan <:Japan_Tokugawa:1053016016604643410> Tokugawa" },
+    { "tag": "DRAFT_OTTOMAN_SULEIMAN_MAGNIFICENT_TEXT", "value": "Ottoman <:Suleiman_Magnificent:1053016021344206918> Suleiman (Magnificent)" },
 
 
     { "tag": "DRAFT_ERROR_NOT_ENOUGH_CIVILIZATIONS", "value": "Not enough civilizations for this draft" },

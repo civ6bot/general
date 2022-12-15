@@ -27,27 +27,11 @@ export abstract class RulesInteractions {
         interaction: ModalSubmitInteraction
     ) { await this.rulesService.editModal(interaction); }
 
-    @ButtonComponent({id: /rules-button-first-\d+/ })
-    public async firstPageButton(
+    @ButtonComponent({id: /rules-button-page-\d+-\d+/}) // userID, pageID
+    public async pageButton(
         interaction: ButtonInteraction
-    ) { await this.rulesService.firstPageButton(interaction); }
+    ) { await this.rulesService.pageButton(interaction); }
 
-    @ButtonComponent({id: /rules-button-previous-\d+-\d+/}) // userID, currentPageID
-    public async previousPageButton(
-        interaction: ButtonInteraction
-    ) { await this.rulesService.previousPageButton(interaction); }
-
-    @ButtonComponent({id: /rules-button-next-\d+-\d+/})     // userID, currentPageID
-    public async nextPageButton(
-        interaction: ButtonInteraction
-    ) { await this.rulesService.nextPageButton(interaction); }
-
-    @ButtonComponent({id: /rules-button-last-\d+/})
-    public async lastPageButton(
-        interaction: ButtonInteraction
-    ) { await this.rulesService.lastPageButton(interaction); }
-
-    @ButtonComponent({id: /rules-button-delete-\d+/})
     public async deleteMessageButton(
         interaction: ButtonInteraction
     ) { await this.rulesService.deleteMessageButton(interaction); }

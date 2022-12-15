@@ -34,7 +34,7 @@
     { "tag": "DRAFT_NETHERLANDS_TEXT", "value": "Нидерланды <:Nederlands:701066724111548476> Вильгельмина" },
     { "tag": "DRAFT_NORWAY_TEXT", "value": "Норвегия <:Norway:701066723721216011> Харальд Суровый" },
     { "tag": "DRAFT_NUBIA_TEXT", "value": "Нубия <:Nubia:701066699700699136> Аманиторе" },
-    { "tag": "DRAFT_OTTOMAN_TEXT", "value": "Оттоманы <:Ottoman:701066699230674976> Сулейман" },
+    { "tag": "DRAFT_OTTOMAN_TEXT", "value": "Оттоманы <:Ottoman:701066699230674976> Сулейман (Законодатель)" },
     { "tag": "DRAFT_PERSIA_TEXT", "value": "Персия <:Persia:701066723713089608> Кир" },
     { "tag": "DRAFT_POLAND_TEXT", "value": "Польша <:Poland:701066699486789752> Ядвига" },
     { "tag": "DRAFT_ROME_TEXT", "value": "Рим <:Rome:701066699499372615> Траян" },
@@ -63,6 +63,9 @@
     { "tag": "DRAFT_ARABIA_SALADIN_SULTAN_TEXT", "value": "Аравия <:Arabia_Saladin_Sultan:1044345328050131024> Саладин (Султан)" },
     { "tag": "DRAFT_KONGO_ANNA_NZINGA_TEXT", "value": "Конго <:Kongo_Anna_Nzinga:1044345320961740891> Анна Нзинга" },
     { "tag": "DRAFT_AMERICA_LINCOLN_TEXT", "value": "Америка <:America_Lincoln:1044345325445468300> Авраам Линкольн" },
+    { "tag": "DRAFT_PERSIA_NADER_SHAH_TEXT", "value": "Персия <:Persia_Nader_Shah:1053016018865356851> Надир-шах" },
+    { "tag": "DRAFT_JAPAN_TOKUGAWA_TEXT", "value": "Япония <:Japan_Tokugawa:1053016016604643410> Токугава" },
+    { "tag": "DRAFT_OTTOMAN_SULEIMAN_MAGNIFICENT_TEXT", "value": "Оттоманы <:Suleiman_Magnificent:1053016021344206918> Сулейман (Великолепный)" },
 
 
     { "tag": "DRAFT_ERROR_NOT_ENOUGH_CIVILIZATIONS", "value": "Для такого драфта недостаточно цивилизаций." },

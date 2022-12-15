@@ -413,7 +413,7 @@ export class SplitService extends ModuleBaseService {
     public async splitRestartButton(interaction: ButtonInteraction) {
         let key: string = interaction.guild?.id as string;
         let split: Split | undefined = SplitService.splits.get(key);
-        if(!split || split.isProcessing || split.captains.map(user => user.id).indexOf(interaction.user.id) === -1)
+        if(!split)
             return await this.replyNotFound(interaction);
         if(!await this.checkButtonPermission(interaction, split))
             return;
@@ -428,7 +428,7 @@ export class SplitService extends ModuleBaseService {
     public async splitContinueButton(interaction: ButtonInteraction) {
         let key: string = interaction.guild?.id as string;
         let split: Split | undefined = SplitService.splits.get(key);
-        if(!split || split.isProcessing || split.captains.map(user => user.id).indexOf(interaction.user.id) === -1)
+        if(!split)
             return await this.replyNotFound(interaction);
         if(!await this.checkButtonPermission(interaction, split))
             return;
@@ -440,7 +440,7 @@ export class SplitService extends ModuleBaseService {
     public async splitSkipButton(interaction: ButtonInteraction) {
         let key: string = interaction.guild?.id as string;
         let split: Split | undefined = SplitService.splits.get(key);
-        if(!split || split.isProcessing || split.captains.map(user => user.id).indexOf(interaction.user.id) === -1)
+        if(!split)
             return await this.replyNotFound(interaction);
         if(!await this.checkButtonPermission(interaction, split))
             return;

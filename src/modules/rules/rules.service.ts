@@ -28,7 +28,12 @@ export class RulesService extends ModuleBaseService {
         return member.roles.cache.some((value, key) => (moderationRolesID.indexOf(key) !== -1));
     }
 
-    private async getButtonsComponent(interaction: CommandInteraction | ButtonInteraction | ModalSubmitInteraction, pageCurrent: number, pageTotal: number, isModerator: boolean): Promise<ActionRowBuilder<ButtonBuilder>[]> {
+    private async getButtonsComponent(
+        interaction: CommandInteraction | ButtonInteraction | ModalSubmitInteraction, 
+        pageCurrent: number, 
+        pageTotal: number, 
+        isModerator: boolean
+    ): Promise<ActionRowBuilder<ButtonBuilder>[]> {
         let buttonLabels: string[] = await this.getManyText(interaction, [
             "RULES_BUTTON_FIRST", "RULES_BUTTON_PREVIOUS",
             "RULES_BUTTON_NEXT", "RULES_BUTTON_LAST",
@@ -72,7 +77,7 @@ export class RulesService extends ModuleBaseService {
         (interaction.type === InteractionType.ApplicationCommand)
             ? await (interaction as CommandInteraction).reply({
                 embeds: this.rulesUI.rulesPageEmbed(page, tagTitle, interaction.user),
-                components: await this.getButtonsComponent(interaction, 0, pageTotal, isModerator)
+                components: await this.getButtonsComponent(interaction, page.pageNumber, pageTotal, isModerator)
             })
             : await (interaction as ButtonInteraction|ModalSubmitInteraction).message?.edit({
                 embeds: this.rulesUI.rulesPageEmbed(page, tagTitle, interaction.user),
@@ -152,64 +157,29 @@ export class RulesService extends ModuleBaseService {
         await interaction.deferUpdate();
     }
 
-    //rules-button-first
-    public async firstPageButton(interaction: ButtonInteraction) {
+    // rules-button-page-userID-pageID
+    public async pageButton(interaction: ButtonInteraction) {
         if(!await this.isOwner(interaction))
             return await interaction.deferUpdate();
-
-        let page: EntityRulePage|null = await this.databaseServiceRulePage.getOneByPageNumber(interaction.guild?.id as string, 1);
-        if(page !== null)
-            await this.replyPage(interaction, page, await this.isModerator(interaction));
-        await interaction.deferUpdate();
-    }
-
-    //rules-button-previous
-    public async previousPageButton(interaction: ButtonInteraction) {
-        if(!await this.isOwner(interaction))
-            return await interaction.deferUpdate();
-        let pageCurrent: number = Number(interaction.customId.split("-")[4])-1;
         let pageTotal: number = await this.databaseServiceRulePage.getAllLength(interaction.guild?.id as string);
-        if(!((pageCurrent >= 0) && (pageCurrent <= pageTotal)))
-            return await interaction.deferUpdate();
-
-        let isModerator: boolean = await this.isModerator(interaction);
-        if (pageCurrent === 0) {
-            await this.replyCover(interaction, isModerator);
-            return await interaction.deferUpdate();
+        
+        let pageCurrent: number = Number(interaction.customId.split("-")[4]);
+        switch(pageCurrent) {
+            case 99:                            // нельзя использовать одинаковые ID кнопок
+                pageCurrent = 1; break;         // поэтому чтобы избежать повторений, было сделано это
+            case 100:
+                pageCurrent = pageTotal; break;
+            default:
+                pageCurrent = Math.min(Math.max(pageCurrent, 0), pageTotal); break;
         }
-        let page: EntityRulePage|null = await this.databaseServiceRulePage.getOneByPageNumber(interaction.guild?.id as string, pageCurrent);
-        if(page !== null)
-            await this.replyPage(interaction, page, isModerator);
-        await interaction.deferUpdate();
-    }
-
-    //rules-button-next
-    public async nextPageButton(interaction: ButtonInteraction) {
-        if(!await this.isOwner(interaction))
-            return await interaction.deferUpdate();
-        let pageCurrent: number = Number(interaction.customId.split("-")[4])+1;
-        let pageTotal: number = await this.databaseServiceRulePage.getAllLength(interaction.guild?.id as string);
-        if(!((pageCurrent >= 0) && (pageCurrent <= pageTotal)))
-            return await interaction.deferUpdate();
-
+            
         let isModerator: boolean = await this.isModerator(interaction);
-        let page: EntityRulePage|null = await this.databaseServiceRulePage.getOneByPageNumber(interaction.guild?.id as string, pageCurrent);
-        if(page !== null)
-            await this.replyPage(interaction, page, isModerator);
-        await interaction.deferUpdate();
-    }
-
-    //rules-button-last
-    public async lastPageButton(interaction: ButtonInteraction) {
-        if(!await this.isOwner(interaction))
-            return await interaction.deferUpdate();
-        let pageTotal: number = await this.databaseServiceRulePage.getAllLength(interaction.guild?.id as string);
-        let pageCurrent: number = pageTotal;
-
-        let isModerator: boolean = await this.isModerator(interaction);
-        let page: EntityRulePage|null = await this.databaseServiceRulePage.getOneByPageNumber(interaction.guild?.id as string, pageCurrent);
-        if(page !== null)
-            await this.replyPage(interaction, page, isModerator);
+        let page: EntityRulePage|null = (pageCurrent === 0)
+            ? null
+            : await this.databaseServiceRulePage.getOneByPageNumber(interaction.guild?.id as string, pageCurrent);
+        (page === null)
+            ? await this.replyCover(interaction, isModerator)
+            : await this.replyPage(interaction, page, isModerator);
         await interaction.deferUpdate();
     }
 

@@ -114,20 +114,20 @@ export class RulesUI extends ModuleBaseUI {
         labels = labels.filter(filterFunction);
         let emojiArray: string[] = [
             "⏮", "◀", "▶", "⏭", "✖",    // 1я, влево, вправо, последняя, удалить сообщение
-            "➕", "✏", "↩", "↪", "🗑️"   // добавить, редактировать, сдвинуть влево, сдвинуть право, удалить страницу
+            "➕", "✏", "↩", "↪", "🗑️"       // добавить, редактировать, сдвинуть влево, сдвинуть право, удалить страницу
         ].filter(filterFunction);
         styleArray = styleArray.filter(filterFunction);
         let customIDArray: string[] = [
-            `rules-button-first-${userID}`,     //0
-            `rules-button-previous-${userID}-${pageCurrent}`,  //1
-            `rules-button-next-${userID}-${pageCurrent}`,
-            `rules-button-last-${userID}`,      //3
+            `rules-button-page-${userID}-99`,                   //0 смотри rules.service.ts pageButton()
+            `rules-button-page-${userID}-${pageCurrent-1}`,     //1
+            `rules-button-page-${userID}-${pageCurrent+1}`,
+            `rules-button-page-${userID}-100`,                  //3 смотри rules.service.ts pageButton()
             `rules-button-delete-${userID}`,
-            `rules-button-add-${userID}`,       //5
+            `rules-button-add-${userID}`,                       //5
             `rules-button-edit-${userID}-${pageCurrent}`,
-            `rules-button-shiftLeft-${userID}-${pageCurrent}`, //7
+            `rules-button-shiftLeft-${userID}-${pageCurrent}`,  //7
             `rules-button-shiftRight-${userID}-${pageCurrent}`,
-            `rules-button-remove-${userID}-${pageCurrent}`     //9
+            `rules-button-remove-${userID}-${pageCurrent}`      //9
         ].filter(filterFunction);
         isDisabledArray = isDisabledArray.filter(filterFunction);
 

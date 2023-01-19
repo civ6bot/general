@@ -12,11 +12,11 @@ export class FeedbackService extends ModuleBaseService {
             "FEEDBACK_FEEDBACK_SERVER_FIELD_CONTENT", "FEEDBACK_FEEDBACK_NOTIFY_DESCRIPTION",
             "BASE_NOTIFY_TITLE", "FEEDBACK_FEEDBACK_IMAGE_URL"
         ], [ null, null, [interaction.guild?.name as string, interaction.guild?.id as string] ]);
-        await interaction.reply({embeds: this.feedbackUI.notify(textStrings[4], textStrings[3]), ephemeral: true});
+        interaction.reply({embeds: this.feedbackUI.notify(textStrings[4], textStrings[3]), ephemeral: true});
         let pmUserID: string = await this.getOneSettingString(interaction, "BASE_UNKNOWN_ERROR_PM_USER_ID");
         let author: User = interaction.user;
 
-        await UtilsServicePM.send(pmUserID, this.feedbackUI.feedback(
+        UtilsServicePM.send(pmUserID, this.feedbackUI.feedback(
             textStrings[0],
             content,
             {name: textStrings[1], value: textStrings[2]},

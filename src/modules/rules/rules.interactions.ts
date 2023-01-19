@@ -15,49 +15,49 @@ export abstract class RulesInteractions {
             required: false
         }) tag: string = "",
         interaction: CommandInteraction
-    ) { await this.rulesService.rules(interaction, tag); }
+    ) { this.rulesService.rules(interaction, tag); }
 
     @ModalComponent({id: "rules-modal-add"})
     public async addModal(
         interaction: ModalSubmitInteraction
-    ) { await this.rulesService.addModal(interaction); }
+    ) { this.rulesService.addModal(interaction); }
 
     @ModalComponent({id: /rules-modal-edit-\d+/})   // currentPageID
     public async editModal(
         interaction: ModalSubmitInteraction
-    ) { await this.rulesService.editModal(interaction); }
+    ) { this.rulesService.editModal(interaction); }
 
     @ButtonComponent({id: /rules-button-page-\d+-\d+/}) // userID, pageID
     public async pageButton(
         interaction: ButtonInteraction
-    ) { await this.rulesService.pageButton(interaction); }
+    ) { this.rulesService.pageButton(interaction); }
 
     public async deleteMessageButton(
         interaction: ButtonInteraction
-    ) { await this.rulesService.deleteMessageButton(interaction); }
+    ) { this.rulesService.deleteMessageButton(interaction); }
 
     @ButtonComponent({id: /rules-button-add-\d+/})          // userID
     public async addButton(
         interaction: ButtonInteraction
-    ) { await this.rulesService.addButton(interaction); }
+    ) { this.rulesService.addButton(interaction); }
 
     @ButtonComponent({id: /rules-button-edit-\d+-\d+/})     // userID, currentPageID
     public async editButton(
         interaction: ButtonInteraction
-    ) { await this.rulesService.editButton(interaction); }
+    ) { this.rulesService.editButton(interaction); }
 
     @ButtonComponent({id: /rules-button-shiftLeft-\d+-\d+/})// userID, currentPageID
     public async shiftLeftButton(
         interaction: ButtonInteraction
-    ) { await this.rulesService.shiftLeftButton(interaction); }
+    ) { this.rulesService.shiftLeftButton(interaction); }
 
     @ButtonComponent({id: /rules-button-shiftRight-\d+-\d+/})//userID, currentPageID
     public async shiftRightButton(
         interaction: ButtonInteraction
-    ) { await this.rulesService.shiftRightButton(interaction); }
+    ) { this.rulesService.shiftRightButton(interaction); }
 
     @ButtonComponent({id: /rules-button-remove-\d+-\d+/})   // userID, currentPageID
     public async removeButton(
         interaction: ButtonInteraction
-    ) { await this.rulesService.removeButton(interaction); }
+    ) { this.rulesService.removeButton(interaction); }
 }

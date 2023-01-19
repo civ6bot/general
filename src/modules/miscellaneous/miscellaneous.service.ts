@@ -18,8 +18,8 @@ export class MiscellaneousService extends ModuleBaseService {
             [[n], [randomValue], [randomValue], null, [randomMax]]
         );
         if(n <= 1 || n > randomMax)
-            return await interaction.reply({embeds: this.miscellaneousUI.error(textStrings[3], textStrings[4]), ephemeral: true});
-        await interaction.reply({embeds: this.miscellaneousUI.random(textStrings[0], (randomValue === n) ? textStrings[1] : textStrings[2])});
+            return interaction.reply({embeds: this.miscellaneousUI.error(textStrings[3], textStrings[4]), ephemeral: true});
+        interaction.reply({embeds: this.miscellaneousUI.random(textStrings[0], (randomValue === n) ? textStrings[1] : textStrings[2])});
     }
 
     public async coin(interaction: CommandInteraction) {
@@ -29,7 +29,7 @@ export class MiscellaneousService extends ModuleBaseService {
             ["MISCELLANEOUS_COIN_TITLE", "MISCELLANEOUS_COIN_HEADS_DESCRIPTION",
                 "MISCELLANEOUS_COIN_TAILS_DESCRIPTION"]
         );
-        await interaction.reply({embeds: this.miscellaneousUI.coin(
+        interaction.reply({embeds: this.miscellaneousUI.coin(
             textStrings[0],
                 randomValue,
                 randomValue ? textStrings[1] : textStrings[2]
@@ -42,7 +42,7 @@ export class MiscellaneousService extends ModuleBaseService {
 
         if(interaction.inCachedGuild()){
             let msg: Message = await interaction.reply({embeds: this.miscellaneousUI.vote(textString, voteContent), fetchReply: true});
-            await UtilsServiceEmojis.reactOrder(msg, emojis);
+            UtilsServiceEmojis.reactOrder(msg, emojis);
         }
     }
 }

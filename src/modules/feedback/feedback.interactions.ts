@@ -15,5 +15,5 @@ export abstract class FeedbackInteractions{
             required: true
         }) content: string,
         interaction: CommandInteraction
-    ) { await this.feedbackService.feedback(interaction, content); }
+    ) { this.feedbackService.feedback(interaction, content); }
 }

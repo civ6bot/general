@@ -22,7 +22,7 @@ export abstract class DraftGeneratorInteractions {
             type: ApplicationCommandOptionType.String,
             required: false }) bans: string = "",
         interaction: CommandInteraction
-    ) { await this.draftService.ffa(interaction, civAmount, bans); }
+    ) { this.draftService.ffa(interaction, civAmount, bans); }
 
     @Slash( { name: "teamers", description: "Draft for Teamers game" })
     public async teamers(
@@ -39,7 +39,7 @@ export abstract class DraftGeneratorInteractions {
             required: false
         }) bans: string = "",
         interaction: CommandInteraction
-    ) { await this.draftService.teamers(interaction, teamAmount, bans); }
+    ) { this.draftService.teamers(interaction, teamAmount, bans); }
 
     @Slash({ name: "blind", description: "Draft for FFA game (blind mode)" })
     public async blind(
@@ -56,7 +56,7 @@ export abstract class DraftGeneratorInteractions {
             required: false
         }) bans: string = "",
         interaction: CommandInteraction
-    ) { await this.draftService.blind(interaction, civAmount, bans); }
+    ) { this.draftService.blind(interaction, civAmount, bans); }
 }
 
 @Discord()
@@ -66,26 +66,26 @@ export abstract class DraftInteractions {
     @Slash( { name: "redraft", description: "Redraft vote for last draft" })
     public async redraft(
         interaction: CommandInteraction
-    ){ await this.draftService.redraft(interaction); }
+    ){ this.draftService.redraft(interaction); }
 
     @ButtonComponent({id: /redraftButton-yes/})
     public async redraftButtonYes(
         interaction: ButtonInteraction
-    ) { await this.draftService.redraftButton(interaction, true); }
+    ) { this.draftService.redraftButton(interaction, true); }
 
     @ButtonComponent({id: /redraftButton-no/})
     public async redraftButtonNo(
         interaction: ButtonInteraction
-    ) { await this.draftService.redraftButton(interaction, false); }
+    ) { this.draftService.redraftButton(interaction, false); }
 
     // -guildID-civID
     @ButtonComponent({id: /blindButton-pick-\d+-\d+/})
     public async blindButtonPick(
         interaction: ButtonInteraction
-    ) { await this.draftService.blindButtonPick(interaction); }
+    ) { this.draftService.blindButtonPick(interaction); }
 
     @ButtonComponent({id: /blindButton-delete/})
     public async blindButtonDelete(
         interaction: ButtonInteraction
-    ) { await this.draftService.blindButtonDelete(interaction); }
+    ) { this.draftService.blindButtonDelete(interaction); }
 }

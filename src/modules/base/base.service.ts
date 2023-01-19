@@ -26,14 +26,14 @@ export class ModuleBaseService {
     }
 
     protected async updateManySetting(
-        interaction: CommandInteraction | ButtonInteraction | ModalSubmitInteraction,
+        interaction: CommandInteraction | ButtonInteraction | ModalSubmitInteraction | string,
         configTags: string[],
         configValues: string[]
     ): Promise<boolean> {
         return await this.databaseServiceConfig.insertAll(
             configTags.map((tag: string, index: number): EntityConfig => {
                 return {
-                    guildID: interaction.guild?.id as string,
+                    guildID: (typeof interaction === "string") ? interaction : interaction.guild?.id as string,
                     setting: configTags[index],
                     value: String(configValues[index])
                 };
@@ -65,12 +65,8 @@ export class ModuleBaseService {
         tag: string,
         ...args: (string|number)[]
     ): Promise<string> {
-        return await this.databaseServiceText.getOne(
-            (typeof interaction_lang === 'string')
-                ? interaction_lang as string
-                : (await this.getOneSettingString(interaction_lang, "BASE_LANGUAGE")),
-            tag, args
-        );
+        let lang: string = await this.getOneSettingString(interaction_lang, "BASE_LANGUAGE");
+        return await this.databaseServiceText.getOne(lang, tag, args);
     }
 
     protected async getManyText(

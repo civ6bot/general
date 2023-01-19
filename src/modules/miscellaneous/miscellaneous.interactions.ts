@@ -15,12 +15,12 @@ export abstract class MiscellaneousInteractions {
             required: false
         }) n: number = NaN,
         interaction: CommandInteraction
-    ) { await this.miscellaneousService.random(interaction, n); }
+    ) { this.miscellaneousService.random(interaction, n); }
 
     @Slash({name: "coin", description: "Flip coin"})
     public async coin(
         interaction: CommandInteraction
-    ) { await this.miscellaneousService.coin(interaction); }
+    ) { this.miscellaneousService.coin(interaction); }
 
     @Slash({name: "vote", description: "Start vote - yes/no"})
     public async vote(
@@ -31,5 +31,5 @@ export abstract class MiscellaneousInteractions {
             required: true
         }) voteContent: string,
         interaction: CommandInteraction
-    ) { await this.miscellaneousService.vote(interaction, voteContent); }
+    ) { this.miscellaneousService.vote(interaction, voteContent); }
 }

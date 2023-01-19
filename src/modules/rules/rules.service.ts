@@ -59,12 +59,12 @@ export class RulesService extends ModuleBaseService {
         ]);
 
         (interaction.type === InteractionType.ApplicationCommand)
-            ? await (interaction as CommandInteraction).reply({
+            ? (interaction as CommandInteraction).reply({
                 embeds: this.rulesUI.rulesCoverEmbed(textStrings[0], textStrings[1], entitiesPageRules, interaction.user),
                 components: await this.getButtonsComponent(interaction, 0, pageTotal, isModerator),
                 ephemeral: (pageTotal === 0) && !isModerator
             })
-            : await (interaction as ButtonInteraction).message.edit({
+            : (interaction as ButtonInteraction).message.edit({
                 embeds: this.rulesUI.rulesCoverEmbed(textStrings[0], textStrings[1], entitiesPageRules, interaction.user),
                 components: await this.getButtonsComponent(interaction, 0, pageTotal, isModerator)
             });
@@ -75,17 +75,17 @@ export class RulesService extends ModuleBaseService {
         let pageTotal: number = await this.databaseServiceRulePage.getAllLength(interaction.guild?.id as string);
 
         (interaction.type === InteractionType.ApplicationCommand)
-            ? await (interaction as CommandInteraction).reply({
+            ? (interaction as CommandInteraction).reply({
                 embeds: this.rulesUI.rulesPageEmbed(page, tagTitle, interaction.user),
                 components: await this.getButtonsComponent(interaction, page.pageNumber, pageTotal, isModerator)
             })
-            : await (interaction as ButtonInteraction|ModalSubmitInteraction).message?.edit({
+            : (interaction as ButtonInteraction|ModalSubmitInteraction).message?.edit({
                 embeds: this.rulesUI.rulesPageEmbed(page, tagTitle, interaction.user),
                 components: await this.getButtonsComponent(interaction, page.pageNumber, pageTotal, isModerator)
             });
     }
 
-    private async isOwner(interaction: ButtonInteraction): Promise<boolean> {
+    private isOwner(interaction: ButtonInteraction): boolean {
         let ownerID: string = interaction.customId.split("-")[3] || "";
         return (interaction.user.id === ownerID);
     }
@@ -97,8 +97,8 @@ export class RulesService extends ModuleBaseService {
             ? await this.databaseServiceRulePage.getOneByPageNumber(interaction.guild?.id as string, pageNumber)
             : await this.databaseServiceRulePage.getOneByTag(interaction.guild?.id as string, tag);
         (page === null)
-            ? await this.replyCover(interaction, isModerator)
-            : await this.replyPage(interaction, page, isModerator);
+            ? this.replyCover(interaction, isModerator)
+            : this.replyPage(interaction, page, isModerator);
     }
 
     //rules-modal-add
@@ -124,9 +124,9 @@ export class RulesService extends ModuleBaseService {
             });
         }
 
-        await this.databaseServiceRulePage.insertOne(page);
-        await this.replyPage(interaction, page, isModerator);
-        await interaction.deferUpdate();
+        this.databaseServiceRulePage.insertOne(page);
+        this.replyPage(interaction, page, isModerator);
+        interaction.deferUpdate();
     }
 
     //rules-modal-edit
@@ -136,7 +136,7 @@ export class RulesService extends ModuleBaseService {
         let values: string[] = Array.from(interaction.fields.fields.values()).map((component: TextInputComponent): string => component.value);
         let page: EntityRulePage|null = await this.databaseServiceRulePage.getOneByPageNumber(interaction.guild?.id as string, pageCurrent);
         if(page === null)
-            return await interaction.deferUpdate();
+            return interaction.deferUpdate();
         
         page.title = values[0].trim();
         page.description = values[1].trim();
@@ -152,15 +152,15 @@ export class RulesService extends ModuleBaseService {
             });
         }
 
-        await this.databaseServiceRulePage.update(page);
-        await this.replyPage(interaction, page, isModerator);
-        await interaction.deferUpdate();
+        this.databaseServiceRulePage.update(page);
+        this.replyPage(interaction, page, isModerator);
+        interaction.deferUpdate();
     }
 
     // rules-button-page-userID-pageID
     public async pageButton(interaction: ButtonInteraction) {
-        if(!await this.isOwner(interaction))
-            return await interaction.deferUpdate();
+        if(!this.isOwner(interaction))
+            return interaction.deferUpdate();
         let pageTotal: number = await this.databaseServiceRulePage.getAllLength(interaction.guild?.id as string);
         
         let pageCurrent: number = Number(interaction.customId.split("-")[4]);
@@ -178,28 +178,28 @@ export class RulesService extends ModuleBaseService {
             ? null
             : await this.databaseServiceRulePage.getOneByPageNumber(interaction.guild?.id as string, pageCurrent);
         (page === null)
-            ? await this.replyCover(interaction, isModerator)
-            : await this.replyPage(interaction, page, isModerator);
-        await interaction.deferUpdate();
+            ? this.replyCover(interaction, isModerator)
+            : this.replyPage(interaction, page, isModerator);
+        interaction.deferUpdate();
     }
 
     //rules-button-delete
     public async deleteMessageButton(interaction: ButtonInteraction) {
-        (await this.isOwner(interaction))
-            ? await interaction.message.delete()
-            : await interaction.deferUpdate();
+        (this.isOwner(interaction))
+            ? interaction.message.delete()
+            : interaction.deferUpdate();
     }
 
     //rules-button-add
     public async addButton(interaction: ButtonInteraction) {
-        if(!await this.isOwner(interaction) || !await this.isModerator(interaction))
-            return await interaction.deferUpdate();
+        if(!this.isOwner(interaction) || !await this.isModerator(interaction))
+            return interaction.deferUpdate();
         let pageTotal: number = await this.databaseServiceRulePage.getAllLength(interaction.guild?.id as string);
         if(pageTotal >= this.pageTotalMax) {
             let textStrings: string[] = await this.getManyText(interaction, [
                 "BASE_ERROR_TITLE", "RULES_ERROR_MAX_PAGES"
             ], [null, [this.pageTotalMax]]);
-            return await interaction.reply({
+            return interaction.reply({
                 embeds: this.rulesUI.error(textStrings[0], textStrings[1]),
                 ephemeral: true
             });
@@ -209,24 +209,24 @@ export class RulesService extends ModuleBaseService {
             "RULES_MODAL_TITLE", "RULES_MODAL_TEXT",
             "RULES_MODAL_TAGS"
         ]);
-        await interaction.showModal(this.rulesUI.rulesModal(title, labels));
+        interaction.showModal(this.rulesUI.rulesModal(title, labels));
     }
 
     //rules-button-edit
     public async editButton(interaction: ButtonInteraction) {
-        if(!await this.isOwner(interaction) || !await this.isModerator(interaction))
-            return await interaction.deferUpdate();
+        if(!this.isOwner(interaction) || !await this.isModerator(interaction))
+            return interaction.deferUpdate();
 
         let pageCurrent: number = Number(interaction.customId.split("-")[4]);
         let page: EntityRulePage|null = await this.databaseServiceRulePage.getOneByPageNumber(interaction.guild?.id as string, pageCurrent);
         if(page === null)
-            return await interaction.deferUpdate();
+            return interaction.deferUpdate();
         let title: string = await this.getOneText(interaction, "RULES_BUTTON_MODAL_EDIT");
         let labels: string[] = await this.getManyText(interaction, [
             "RULES_MODAL_TITLE", "RULES_MODAL_TEXT",
             "RULES_MODAL_TAGS"
         ]);
-        await interaction.showModal(this.rulesUI.rulesModal(
+        interaction.showModal(this.rulesUI.rulesModal(
             title,
             labels,
             [page.title, page.description, page.tags],
@@ -237,58 +237,58 @@ export class RulesService extends ModuleBaseService {
     //rules-button-shiftLeft
     public async shiftLeftButton(interaction: ButtonInteraction) {
         let isModerator: boolean = await this.isModerator(interaction);
-        if(!await this.isOwner(interaction) || !isModerator)
-            return await interaction.deferUpdate();
+        if(!this.isOwner(interaction) || !isModerator)
+            return interaction.deferUpdate();
         
         let pageCurrent: number = Number(interaction.customId.split("-")[4]);
         if(!(pageCurrent > 0))
-            return await interaction.deferUpdate();
+            return interaction.deferUpdate();
 
         let page: EntityRulePage|null = await this.databaseServiceRulePage.getOneByPageNumber(interaction.guild?.id as string, pageCurrent);
         if(page !== null) {
             page = await this.databaseServiceRulePage.shiftLeft(page);
-            await this.replyPage(interaction, page, isModerator);
+            this.replyPage(interaction, page, isModerator);
         }
-        await interaction.deferUpdate();
+        interaction.deferUpdate();
     }
 
     //rules-button-shiftRight
     public async shiftRightButton(interaction: ButtonInteraction) {
         let isModerator: boolean = await this.isModerator(interaction);
-        if(!await this.isOwner(interaction) || !isModerator)
-            return await interaction.deferUpdate();
+        if(!this.isOwner(interaction) || !isModerator)
+            return interaction.deferUpdate();
         
         let pageCurrent: number = Number(interaction.customId.split("-")[4]);
         let pageTotal: number = await this.databaseServiceRulePage.getAllLength(interaction.guild?.id as string);
         if(!(pageCurrent < pageTotal))
-            return await interaction.deferUpdate();
+            return interaction.deferUpdate();
 
         let page: EntityRulePage|null = await this.databaseServiceRulePage.getOneByPageNumber(interaction.guild?.id as string, pageCurrent);
         if(page !== null) {
             page = await this.databaseServiceRulePage.shiftRight(page);
-            await this.replyPage(interaction, page, isModerator);
+            this.replyPage(interaction, page, isModerator);
         }
-        await interaction.deferUpdate();
+        interaction.deferUpdate();
     }
 
     //rules-button-remove
     public async removeButton(interaction: ButtonInteraction) {
         let isModerator: boolean = await this.isModerator(interaction);
-        if(!await this.isOwner(interaction) || !isModerator)
-            return await interaction.deferUpdate();
+        if(!this.isOwner(interaction) || !isModerator)
+            return interaction.deferUpdate();
         
         let pageCurrent: number = Number(interaction.customId.split("-")[4]);
         let pageTotal: number = await this.databaseServiceRulePage.getAllLength(interaction.guild?.id as string);
         let page: EntityRulePage|null = await this.databaseServiceRulePage.getOneByPageNumber(interaction.guild?.id as string, pageCurrent);
         if(page === null)
-            return await interaction.deferUpdate();
-        await this.databaseServiceRulePage.removeOne(page);
+            return interaction.deferUpdate();
+        this.databaseServiceRulePage.removeOne(page);
         
         pageCurrent = Math.max(pageTotal, pageCurrent);
         page = await this.databaseServiceRulePage.getOneByPageNumber(interaction.guild?.id as string, pageCurrent);
         (page === null)
-            ? await this.replyCover(interaction, isModerator)
-            : await this.replyPage(interaction, page, isModerator);
-        await interaction.deferUpdate();
+            ? this.replyCover(interaction, isModerator)
+            : this.replyPage(interaction, page, isModerator);
+        interaction.deferUpdate();
     }
 }

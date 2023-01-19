@@ -23,7 +23,7 @@ export abstract class GameInteractionsGrouped {
             required: false,
         }) usersExclude: string = "",
         interaction: CommandInteraction
-    ) { await this.gameService.ffa(interaction, usersInclude, usersExclude); }
+    ) { this.gameService.ffa(interaction, usersInclude, usersExclude); }
 
     @Slash( { name: "teamers", description: "Vote for new Teamers game" })
     public async teamers(
@@ -40,7 +40,7 @@ export abstract class GameInteractionsGrouped {
             required: false,
         }) usersExclude: string = "",
         interaction: CommandInteraction
-    ) { await this.gameService.teamers(interaction, usersInclude, usersExclude); }
+    ) { this.gameService.teamers(interaction, usersInclude, usersExclude); }
 }
 
 @Discord()
@@ -50,15 +50,15 @@ export abstract class GameInteractions {
     @ButtonComponent({id: "game-ready"})
     public async buttonReady(
         interaction: ButtonInteraction
-    ) { await this.gameService.buttonReady(interaction); }
+    ) { this.gameService.buttonReady(interaction); }
 
     @ButtonComponent({id: "game-delete"})
     public async buttonDelete(
         interaction: ButtonInteraction
-    ) { await this.gameService.buttonDelete(interaction); }
+    ) { this.gameService.buttonDelete(interaction); }
 
     @ButtonComponent({id: "game-skip"})
     public async buttonSkip(
         interaction: ButtonInteraction
-    ) { await this.gameService.buttonSkip(interaction); }
+    ) { this.gameService.buttonSkip(interaction); }
 }

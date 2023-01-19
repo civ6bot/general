@@ -29,6 +29,6 @@ export class SplitAdapter extends ModuleBaseService {
         );
         if(split.thread)
             draft.thread = split.thread;
-        await draftService.teamers(split.interaction as CommandInteraction, 0, "", [], draft);
+        draftService.teamers(split.interaction as CommandInteraction, 0, "", [], draft);
     }
 }

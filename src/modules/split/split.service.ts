@@ -23,7 +23,7 @@ export class SplitService extends ModuleBaseService {
             split.interaction,
             ["BASE_ERROR_TITLE", "SPLIT_ERROR_DELETE_BUTTON_NOT_OWNER_OR_CAPTAIN"]
         );
-        await interaction.reply({embeds: this.splitUI.error(textStrings[0], textStrings[1]), ephemeral: true});
+        interaction.reply({embeds: this.splitUI.error(textStrings[0], textStrings[1]), ephemeral: true});
         return false;
     }
 
@@ -55,10 +55,10 @@ export class SplitService extends ModuleBaseService {
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", split.errorReturnTag]);
             if(outerSplit) {
                 (split.thread)
-                    ? await split.thread.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
-                    : await interaction.channel?.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
+                    ? split.thread.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
+                    : interaction.channel?.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
             } else
-                await interaction.reply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
+                interaction.reply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
             return;
         }
 
@@ -69,21 +69,21 @@ export class SplitService extends ModuleBaseService {
 
         if (outerSplit) {
             if(split.thread)
-                await split.thread.send({embeds: this.splitUI.splitEmbed(
+                split.thread.send({embeds: this.splitUI.splitEmbed(
                         title,
                         null,
                         fieldHeaders,
                         split
                     )});
             else
-                await interaction.channel?.send({embeds: this.splitUI.splitEmbed(
+                interaction.channel?.send({embeds: this.splitUI.splitEmbed(
                     title,
                         null,
                         fieldHeaders,
                         split
                     )});
         } else
-            await interaction.reply({embeds: this.splitUI.splitEmbed(
+            interaction.reply({embeds: this.splitUI.splitEmbed(
                 title,
                     null,
                     fieldHeaders,
@@ -108,7 +108,7 @@ export class SplitService extends ModuleBaseService {
                     });
                 }
             }
-            await this.splitAdapter.callDraft(split);
+            this.splitAdapter.callDraft(split);
         }
     }
 
@@ -144,10 +144,10 @@ export class SplitService extends ModuleBaseService {
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", split.errorReturnTag]);
             if(outerSplit) {
                 (split.thread)
-                    ? await split.thread.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
-                    : await interaction.channel?.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
+                    ? split.thread.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
+                    : interaction.channel?.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
             } else
-                await interaction.editReply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
+                interaction.editReply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
             return;
         }
         SplitService.splits.set(split.guildID, split);
@@ -226,11 +226,8 @@ export class SplitService extends ModuleBaseService {
         split.setTimeoutID = setTimeout(SplitService.timeoutFunction, split.pickTimeMs, split);
         split.reactionCollector = split.message?.createReactionCollector({time: 16*split.pickTimeMs});  // максимальное число игроков
         split.reactionCollector.on("collect", async (reaction: MessageReaction, user: User) => SplitService.reactionCollectorFunction(reaction, user));
-        try {   // если оно будет удалено до выставления всех эмодзи
-            await UtilsServiceEmojis.reactOrder(split.message, split.emojis);
-        } catch {
+        if(!await UtilsServiceEmojis.reactOrder(split.message, split.emojis))       // если оно будет удалено до выставления всех эмодзи
             SplitService.splits.delete(split.guildID);
-        }
     }
 
     public static async reactionCollectorFunction(reaction: MessageReaction, user: User): Promise<void> {
@@ -239,7 +236,7 @@ export class SplitService extends ModuleBaseService {
         let key: string = reaction.message.guild?.id as string;
         let split: Split | undefined = SplitService.splits.get(key);
         if(!split) {
-            await reaction.message.delete();    // удалить сообщение
+            reaction.message.delete();    // удалить сообщение
             return;
         }
         await reaction.message.reactions.resolve(reaction).users.remove(user);      // удалить реакцию пользователя
@@ -250,9 +247,9 @@ export class SplitService extends ModuleBaseService {
             clearTimeout(split.setTimeoutID);
             split.setTimeoutID = null;
         }
-        await reaction.message.reactions.cache.get(
-            split.pickPlayer(split.emojis.indexOf(reaction.emoji.toString()))
-        )?.remove();    // удалить последнюю реакцию в списке
+        reaction.message.reactions.cache.get(
+            split.pickPlayer(split.emojis.indexOf(reaction.emoji.toString()))       // удалить последнюю реакцию в списке
+        )?.remove();
 
         let splitService: SplitService = new SplitService();
         let textStrings: string[] = [], fieldHeaders: string[] = [];
@@ -302,17 +299,18 @@ export class SplitService extends ModuleBaseService {
         let labels: string[] = await splitService.getManyText(split.interaction, ["SPLIT_BUTTON_UNDO", "SPLIT_BUTTON_DELETE"]);
         await reaction.message.edit({
             embeds: splitService.splitUI.splitEmbed(textStrings[0], textStrings[1], fieldHeaders, split),
-            components: splitService.splitUI.splitProcessingButtons(labels, split.currentStep === 1)
+            components: (split.currentCaptainIndex !== -1) 
+                ? splitService.splitUI.splitProcessingButtons(labels, split.currentStep === 1) 
+                : []
         });
         if(split.currentCaptainIndex !== -1) {
             split.setTimeoutID = setTimeout(SplitService.timeoutFunction, split.pickTimeMs, split);
             return;
         }
 
-        await reaction.message.edit({components: []});
         split.reactionCollector?.stop();
         split.isProcessing = false;
-        await reaction.message.reactions.removeAll();
+        reaction.message.reactions.removeAll();
         if(await splitService.getOneSettingNumber(split.interaction, "SPLIT_MOVE_TEAM_VOICE_CHANNEL")) {
             let destinationChannel: VoiceChannel | undefined = (await splitService.getOneSettingString(split.interaction, "GAME_TEAMERS_VOICE_CHANNELS"))
                 .split(" ")
@@ -332,7 +330,7 @@ export class SplitService extends ModuleBaseService {
             }
         }
         if(split.bansForDraft !== null)
-            await splitService.splitAdapter.callDraft(split);
+            splitService.splitAdapter.callDraft(split);
     }
 
     // Если не успели
@@ -362,7 +360,7 @@ export class SplitService extends ModuleBaseService {
             "SPLIT_BUTTON_RESTART", "SPLIT_BUTTON_CONTINUE",
             "SPLIT_BUTTON_SKIP", "SPLIT_BUTTON_DELETE", 
         ]);
-        await split.message?.edit({
+        split.message?.edit({
             components: splitService.splitUI.splitFailedButtons(
                 buttonLabels, 
                 split.bansForDraft !== null
@@ -374,14 +372,14 @@ export class SplitService extends ModuleBaseService {
                 split
             )
         });
-        await split.message?.reactions.removeAll();
+        split.message?.reactions.removeAll();
     }
 
     public async splitDeleteButton(interaction: ButtonInteraction) {
         let key: string = interaction.guild?.id as string;
         let split: Split | undefined = SplitService.splits.get(key);
         if(!split)
-            return await interaction.message.delete();
+            return interaction.message.delete();
         if(!await this.checkButtonPermission(interaction, split))
             return;
 
@@ -403,11 +401,11 @@ export class SplitService extends ModuleBaseService {
         let textStrings: string[] = await this.getManyText(interaction, [
             "BASE_ERROR_TITLE", "SPLIT_ERROR_NOT_FOUND"
         ]);
-        await interaction.reply({
+        interaction.reply({
             embeds: this.splitUI.error(textStrings[0], textStrings[1]),
             ephemeral: true
         });
-        await interaction.message.edit({components: []});
+        interaction.message.edit({components: []});
     }
 
     public async splitRestartButton(interaction: ButtonInteraction) {
@@ -429,19 +427,19 @@ export class SplitService extends ModuleBaseService {
         let key: string = interaction.guild?.id as string;
         let split: Split | undefined = SplitService.splits.get(key);
         if(!split)
-            return await this.replyNotFound(interaction);
+            return this.replyNotFound(interaction);
         if(!await this.checkButtonPermission(interaction, split))
             return;
 
-        await interaction.message.delete();
-        await this.allLongSplits(split.interaction as CommandInteraction, split.type, split.interaction?.member as GuildMember, null, [], split);
+        interaction.message.delete();
+        this.allLongSplits(split.interaction as CommandInteraction, split.type, split.interaction?.member as GuildMember, null, [], split);
     }
 
     public async splitSkipButton(interaction: ButtonInteraction) {
         let key: string = interaction.guild?.id as string;
         let split: Split | undefined = SplitService.splits.get(key);
         if(!split)
-            return await this.replyNotFound(interaction);
+            return this.replyNotFound(interaction);
         if(!await this.checkButtonPermission(interaction, split))
             return;
         if(split.bansForDraft === null) {
@@ -450,8 +448,7 @@ export class SplitService extends ModuleBaseService {
                 "SPLIT_BUTTON_SKIP", "SPLIT_BUTTON_DELETE", 
             ]);
             interaction.message.edit({components: this.splitUI.splitFailedButtons(buttonLabels)});
-            await interaction.deferUpdate();
-            return;
+            return interaction.deferUpdate();
         }
         interaction.deferUpdate();
         interaction.message.edit({components: []});
@@ -461,10 +458,8 @@ export class SplitService extends ModuleBaseService {
     public async splitUndoButton(interaction: ButtonInteraction) {
         let key: string = interaction.guild?.id as string;
         let split: Split | undefined = SplitService.splits.get(key);
-        if(!split) {
-            await interaction.message.delete();    // удалить сообщение
-            return;
-        }
+        if(!split) 
+            return interaction.message.delete();    // удалить сообщение
         if(!await this.checkButtonPermission(interaction, split))
             return;
         if(interaction.user.id !== split.captains[split.pickSequence[split.currentStep-2]].id) {
@@ -472,16 +467,15 @@ export class SplitService extends ModuleBaseService {
                 split.interaction,
                 ["BASE_ERROR_TITLE", "SPLIT_ERROR_DELETE_BUTTON_NOT_OWNER_OR_CAPTAIN"]
             );
-            await interaction.reply({embeds: this.splitUI.error(textStrings[0], textStrings[1]), ephemeral: true});
-            return;
+            return interaction.reply({embeds: this.splitUI.error(textStrings[0], textStrings[1]), ephemeral: true});
         }
         split.currentStep--;
         split.currentCaptainIndex = split.pickSequence[split.currentStep-1];
-        await interaction.deferUpdate();
+        interaction.deferUpdate();
         split.users.push(split.teams[split.currentCaptainIndex].pop() as string);
         let lastEmoji: string = UtilsServiceLetters.getLetters().slice(split.users.length-1, split.users.length)[0];
         split.emojis.push(lastEmoji);
-        await interaction.message.react(lastEmoji);
+        interaction.message.react(lastEmoji);
         if(split.setTimeoutID !== null)
             clearTimeout(split.setTimeoutID);
         split.setTimeoutID = setTimeout(SplitService.timeoutFunction, split.pickTimeMs, split);
@@ -529,7 +523,7 @@ export class SplitService extends ModuleBaseService {
         for(let i: number = 0; i < split.teams.length; i++)
             fieldHeaders.push(await this.getOneText(split.interaction, "SPLIT_FIELD_TITLE_TEAM", i+1));
         let labels: string[] = await this.getManyText(split.interaction, ["SPLIT_BUTTON_UNDO", "SPLIT_BUTTON_DELETE"]);
-        await interaction.message.edit({
+        interaction.message.edit({
             embeds: this.splitUI.splitEmbed(textStrings[0], textStrings[1], fieldHeaders, split),
             components: this.splitUI.splitProcessingButtons(labels, split.currentStep === 1)
         });

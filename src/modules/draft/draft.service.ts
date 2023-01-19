@@ -42,10 +42,10 @@ export class DraftService extends ModuleBaseService {
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
             if(outerDraft) {
                 (draft.thread)
-                    ? await draft.thread.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
-                    : await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+                    ? draft.thread.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+                    : interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
             } else
-                await interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+                interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
             return;
         }
         DraftService.drafts.set(draft.guildID+draft.type, draft);
@@ -58,7 +58,7 @@ export class DraftService extends ModuleBaseService {
         );
 
         if(draft.runTimes > 1)
-            await draft.interaction.followUp({embeds: this.draftUI.draftFFAEmbed(
+            draft.interaction.followUp({embeds: this.draftUI.draftFFAEmbed(
                     draft.users.length === 1 ? textStrings[0] : textStrings[1],
                     textStrings[2],
                     textStrings[3],
@@ -66,21 +66,21 @@ export class DraftService extends ModuleBaseService {
                 )});
         else if(outerDraft) {
             if(draft.thread)
-                await draft.thread.send({embeds: this.draftUI.draftFFAEmbed(
+                draft.thread.send({embeds: this.draftUI.draftFFAEmbed(
                         draft.users.length === 1 ? textStrings[0] : textStrings[1],
                         textStrings[2],
                         textStrings[3],
                         draft
                     )});
             else
-                await draft.interaction.channel?.send({embeds: this.draftUI.draftFFAEmbed(
+                draft.interaction.channel?.send({embeds: this.draftUI.draftFFAEmbed(
                         draft.users.length === 1 ? textStrings[0] : textStrings[1],
                         textStrings[2],
                         textStrings[3],
                         draft
                     )})
         } else
-            await draft.interaction.reply({embeds: this.draftUI.draftFFAEmbed(
+            draft.interaction.reply({embeds: this.draftUI.draftFFAEmbed(
                 draft.users.length === 1 ? textStrings[0] : textStrings[1],
                     textStrings[2],
                     textStrings[3],
@@ -113,10 +113,10 @@ export class DraftService extends ModuleBaseService {
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
             if(outerDraft) {
                 (draft.thread)
-                    ? await draft.thread.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
-                    : await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+                    ? draft.thread.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+                    : interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
             } else
-                await interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+                interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
             return;
         }
         DraftService.drafts.set(draft.guildID+draft.type, draft);
@@ -132,7 +132,7 @@ export class DraftService extends ModuleBaseService {
             teamDescriptionHeader.push(await this.getOneText(draft.interaction, "DRAFT_TEAMERS_DESCRIPTION_TEAM", i+1));
 
         if(draft.runTimes > 1)
-            await draft.interaction.followUp({embeds: this.draftUI.draftTeamersEmbed(
+            draft.interaction.followUp({embeds: this.draftUI.draftTeamersEmbed(
                 textStrings[0],
                     teamDescriptionHeader,
                     textStrings[1],
@@ -141,7 +141,7 @@ export class DraftService extends ModuleBaseService {
                 )});
         else if(outerDraft){
             if(draft.thread)
-                await draft.thread.send({embeds: this.draftUI.draftTeamersEmbed(
+                draft.thread.send({embeds: this.draftUI.draftTeamersEmbed(
                         textStrings[0],
                         teamDescriptionHeader,
                         textStrings[1],
@@ -149,7 +149,7 @@ export class DraftService extends ModuleBaseService {
                         draft
                     )});
             else
-                await draft.interaction.channel?.send({embeds: this.draftUI.draftTeamersEmbed(
+                draft.interaction.channel?.send({embeds: this.draftUI.draftTeamersEmbed(
                         textStrings[0],
                         teamDescriptionHeader,
                         textStrings[1],
@@ -157,7 +157,7 @@ export class DraftService extends ModuleBaseService {
                         draft
                     )});
         } else
-            await draft.interaction.reply({embeds: this.draftUI.draftTeamersEmbed(
+            draft.interaction.reply({embeds: this.draftUI.draftTeamersEmbed(
                 textStrings[0],
                     teamDescriptionHeader,
                     textStrings[1],
@@ -189,10 +189,10 @@ export class DraftService extends ModuleBaseService {
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
             if(outerDraft) {
                 (draft.thread)
-                    ? await draft.thread.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
-                    : await interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+                    ? draft.thread.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
+                    : interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
             } else
-                await interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+                interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
             return;
         }
         draft.isProcessing = true;
@@ -279,17 +279,17 @@ export class DraftService extends ModuleBaseService {
                     [null, [draft.users[draft.pmMessages.length].toString()]]
                 );
 
-                await draft.message.edit({
+                draft.message.edit({
                     embeds: this.draftUI.error(textStrings[0], textStrings[1]),
                     components: []
                 });
                 for(let i in draft.pmMessages)
-                    await draft.pmMessages[i].delete();
+                    draft.pmMessages[i].delete();
                 return;
             }
         }
 
-        draft.setTimeoutID = await setTimeout(DraftService.blindTimeout, pickTimeMs+draft.date.getTime()-Date.now(), draft);
+        draft.setTimeoutID = setTimeout(DraftService.blindTimeout, pickTimeMs+draft.date.getTime()-Date.now(), draft);
         // Здесь разность, чтобы было корректное время (из-за задержки между вызовом и сообщением в чате)
     }
 
@@ -309,14 +309,14 @@ export class DraftService extends ModuleBaseService {
         for(let i in draft.civilizationsPool)
             if(draft.civilizationsPool[i].length > 1) {
                 draft.civilizationsPool[i] = [draft.civilizationsPool[i][Math.floor(Math.random()*draft.civilizationsPool[i].length)]];
-                await draft.pmMessages[i].edit({components: [], embeds: draftService.draftUI.draftBlindPMEmbed(
+                draft.pmMessages[i].edit({components: [], embeds: draftService.draftUI.draftBlindPMEmbed(
                         textStrings[0],
                         await draftService.getOneText(draft.interaction, "DRAFT_BLIND_PM_DESCRIPTION_TIMEOUT", draft.getPoolsText()[i][0]),
                         draft
                     )});
             }
 
-        await draft.message?.edit({components: [], embeds: draftService.draftUI.draftBlindEmbed(
+        draft.message?.edit({components: [], embeds: draftService.draftUI.draftBlindEmbed(
                 draft.users.length === 1 ? textStrings[1] : textStrings[2],
                 textStrings[3],
                 textStrings[4],
@@ -336,7 +336,7 @@ export class DraftService extends ModuleBaseService {
         if(!draft) {
             let dm: DMChannel = await interaction.user.createDM();
             let msg: Message = await dm.messages.fetch(interaction.message.id);
-            return await msg.delete();
+            return msg.delete();
         }
 
         let index: number = draft.users.indexOf(draft.users.filter(user => user.id === interaction.user.id)[0]);
@@ -347,7 +347,7 @@ export class DraftService extends ModuleBaseService {
             [null, [draft.getPoolsText()[index][0]]]
         );
 
-        await draft.pmMessages[index].edit({components: [], embeds: this.draftUI.draftBlindPMEmbed(
+        draft.pmMessages[index].edit({components: [], embeds: this.draftUI.draftBlindPMEmbed(
             textStrings[0],
                 textStrings[1],
                 draft
@@ -382,7 +382,7 @@ export class DraftService extends ModuleBaseService {
                     draft
                 )});
         } else
-            await draft.message?.edit({embeds: this.draftUI.draftBlindEmbed(
+            draft.message?.edit({embeds: this.draftUI.draftBlindEmbed(
                 draft.users.length === 1 ? textStrings[0] : textStrings[1],
                     textStrings[2],
                     textStrings[3],
@@ -399,14 +399,14 @@ export class DraftService extends ModuleBaseService {
         let key: string = (interaction.guild?.id as string)+"Blind";
         let draft: DraftBlind | undefined = DraftService.drafts.get(key) as DraftBlind || undefined;
         if(!draft)
-            return await interaction.message.delete();
+            return interaction.message.delete();
 
         if(interaction.user.id !== draft.interaction.user.id){
             let textStrings = await this.getManyText(
                 draft.interaction,
                 ["BASE_ERROR_TITLE", "DRAFT_ERROR_BLIND_DELETE_BUTTON_NOT_OWNER"]
             );
-            return await interaction.reply({embeds: this.draftUI.error(textStrings[0], textStrings[1]), ephemeral: true});
+            return interaction.reply({embeds: this.draftUI.error(textStrings[0], textStrings[1]), ephemeral: true});
         }
 
         if(draft.setTimeoutID !== null) {
@@ -415,7 +415,7 @@ export class DraftService extends ModuleBaseService {
         }
         DraftService.drafts.delete(key);
         for(let i in draft.pmMessages)
-            await draft.pmMessages[i].delete();
+            draft.pmMessages[i].delete();
 
         let textStrings = await this.getManyText(
             interaction,
@@ -469,7 +469,7 @@ export class DraftService extends ModuleBaseService {
                 [emojis[1], draft.redraftStatus.filter(value => value === 0).length]
             ]
         );
-        await interaction.reply({embeds: this.draftUI.redraftEmbed(
+        interaction.reply({embeds: this.draftUI.redraftEmbed(
             textStrings[0],
                 textStrings[1],
                 textStrings[2],
@@ -479,7 +479,7 @@ export class DraftService extends ModuleBaseService {
                 draft
             ), components: this.draftUI.redraftButtons([textStrings[5], textStrings[6]], emojis)});
 
-        draft.setTimeoutID = await setTimeout(DraftService.redraftTimeout, settings[3], draft);
+        draft.setTimeoutID = setTimeout(DraftService.redraftTimeout, settings[3], draft);
     }
 
     public static async redraftTimeout(draft: Draft): Promise<void> {
@@ -497,7 +497,7 @@ export class DraftService extends ModuleBaseService {
             ]
         );
         draft.runTimes = 0;
-        await draft.interaction.editReply({embeds: draftService.draftUI.redraftEmbed(
+        draft.interaction.editReply({embeds: draftService.draftUI.redraftEmbed(
                 textStrings[0],
                 textStrings[1],
                 textStrings[2],
@@ -515,19 +515,19 @@ export class DraftService extends ModuleBaseService {
             case "FFA":
                 let draftFFA: DraftFFA = draft as DraftFFA;
                 draftFFA.divideCivilizations();
-                await draftService.ffa(draftFFA.interaction as CommandInteraction, 0, "", [], draftFFA);
+                draftService.ffa(draftFFA.interaction as CommandInteraction, 0, "", [], draftFFA);
                 return;
             case "Teamers":
                 let draftTeamers: DraftTeamers = draft as DraftTeamers;
                 draftTeamers.divideCivilizations();
-                await draftService.teamers(draftTeamers.interaction as CommandInteraction, 0, "", [], draftTeamers);
+                draftService.teamers(draftTeamers.interaction as CommandInteraction, 0, "", [], draftTeamers);
                 return;
             case "Blind":
                 let draftBlind: DraftBlind = draft as DraftBlind;
                 draftBlind.divideCivilizations(draftBlind.redraftCivilizationsAmount);
                 draftBlind.isProcessing = true;
                 draftBlind.pmMessages = [];
-                await draftService.blind(draftBlind.interaction as CommandInteraction, 0, "", [], draftBlind);
+                draftService.blind(draftBlind.interaction as CommandInteraction, 0, "", [], draftBlind);
                 return;
         }
     }
@@ -540,7 +540,7 @@ export class DraftService extends ModuleBaseService {
             draft.redraftStatus.length > 0)
         )[0];
         if(!draft)
-            return await interaction.message.delete();
+            return interaction.message.delete();
 
         let index: number = draft.users.map((user: User): string => user.id).indexOf(interaction.user.id);
         if(index === -1){
@@ -576,7 +576,7 @@ export class DraftService extends ModuleBaseService {
             draft.thresholdUsers = Math.min(draft.thresholdUsers+1, draft.users.length);
             draft.date = new Date();
 
-            await interaction.message.edit({components: [], embeds: this.draftUI.redraftEmbed(
+            interaction.message.edit({components: [], embeds: this.draftUI.redraftEmbed(
                 textStrings[0],
                     textStrings[2],
                     textStrings[4],
@@ -590,7 +590,7 @@ export class DraftService extends ModuleBaseService {
         } else if(draft.redraftStatus.filter(value => value === 0).length >= draft.users.length-draft.thresholdUsers+1) {
             draft.isProcessing = false;
             draft.runTimes = 0;
-            await interaction.message.edit({components: [], embeds: this.draftUI.redraftEmbed(
+            interaction.message.edit({components: [], embeds: this.draftUI.redraftEmbed(
                 textStrings[0],
                     textStrings[3],
                     textStrings[4],
@@ -602,7 +602,7 @@ export class DraftService extends ModuleBaseService {
             draft.redraftStatus = [];
             DraftService.drafts.delete(draft.guildID+draft.type);
         } else {
-            await interaction.message.edit({embeds: this.draftUI.redraftEmbed(
+            interaction.message.edit({embeds: this.draftUI.redraftEmbed(
                 textStrings[0],
                     textStrings[1],
                     textStrings[4],

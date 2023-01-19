@@ -15,8 +15,10 @@ export abstract class SteamInteractions {
             required: false
         }) description: string = "",
         interaction: CommandInteraction
-    ){ await this.steamService.link(interaction, description); }
+    ){ this.steamService.link(interaction, description); }
 
     @Slash({name: "connect", description: "Connect your Steam to Civ6bot"})
-    async connect(interaction: CommandInteraction){ await this.steamService.connect(interaction); }
+    async connect(
+        interaction: CommandInteraction
+    ){ this.steamService.connect(interaction); }
 }

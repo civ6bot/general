@@ -23,7 +23,7 @@ export abstract class SplitInteractions {
             required: false
         }) captain2: GuildMember | null = null,
         interaction: CommandInteraction
-    ) { await this.splitService.random(interaction, captain1, captain2); }
+    ) { this.splitService.random(interaction, captain1, captain2); }
 
     @Slash({name: "classic", description: "Split: 1-2-1-2..."})
     public async classic(
@@ -40,7 +40,7 @@ export abstract class SplitInteractions {
             required: false
         }) captain2: GuildMember | null = null,
         interaction: CommandInteraction
-    ) { await this.splitService.allLongSplits(interaction, "Classic", captain1, captain2); }
+    ) { this.splitService.allLongSplits(interaction, "Classic", captain1, captain2); }
 
     @Slash({name: "double", description: "Split: 1-2-2, then 1-2-1-2..."})
     public async double(
@@ -57,7 +57,7 @@ export abstract class SplitInteractions {
             required: false
         }) captain2: GuildMember | null = null,
         interaction: CommandInteraction
-    ) { await this.splitService.allLongSplits(interaction, "Double", captain1, captain2); }
+    ) { this.splitService.allLongSplits(interaction, "Double", captain1, captain2); }
 
     @Slash({name: "cwc", description: "Split CWC-like"})
     public async cwc(
@@ -74,30 +74,30 @@ export abstract class SplitInteractions {
             required: false
         }) captain2: GuildMember | null = null,
         interaction: CommandInteraction
-    ) { await this.splitService.allLongSplits(interaction, "CWC", captain1, captain2); }
+    ) { this.splitService.allLongSplits(interaction, "CWC", captain1, captain2); }
 
     @ButtonComponent({id: "split-delete"})
     public async splitDeleteButton(
         interaction: ButtonInteraction
-    ) { await this.splitService.splitDeleteButton(interaction); }
+    ) { this.splitService.splitDeleteButton(interaction); }
 
     @ButtonComponent({id: "split-restart"})
     public async splitRestartButton(
         interaction: ButtonInteraction
-    ) { await this.splitService.splitRestartButton(interaction); }
+    ) { this.splitService.splitRestartButton(interaction); }
 
     @ButtonComponent({id: "split-continue"})
     public async splitContinueButton(
         interaction: ButtonInteraction
-    ) { await this.splitService.splitContinueButton(interaction); }
+    ) { this.splitService.splitContinueButton(interaction); }
 
     @ButtonComponent({id: "split-skip"})
     public async splitSkipButton(
         interaction: ButtonInteraction
-    ) { await this.splitService.splitSkipButton(interaction); }
+    ) { this.splitService.splitSkipButton(interaction); }
 
     @ButtonComponent({id: "split-undo"})
     public async splitUndoButton(
         interaction: ButtonInteraction
-    ) { await this.splitService.splitUndoButton(interaction); }
+    ) { this.splitService.splitUndoButton(interaction); }
 }

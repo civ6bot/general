@@ -37,7 +37,7 @@ export class SteamService extends ModuleBaseService {
             "STEAM_LINK_TITLE", "STEAM_LINK_DESCRIPTION_LICENSE",
             "STEAM_LINK_DESCRIPTION_PIRATE", "STEAM_LINK_FIELD_TITLE",
         ], [null, [link], [link]]);
-        await interaction.reply({ embeds: this.steamUI.link(
+        interaction.reply({ embeds: this.steamUI.link(
             textStrings[0],
                 steamAPIData.gameID === gameIDArray[0]
                 ? textStrings[1]
@@ -54,7 +54,7 @@ export class SteamService extends ModuleBaseService {
             "STEAM_CONNECT_BUTTON_LABEL", "STEAM_CONNECT_BUTTON_EMOJI"
         ]);
 
-        await interaction.reply({
+        interaction.reply({
             embeds: this.steamUI.connectEmbed(textStrings[0], textStrings[1]),
             components: this.steamUI.connectButton(textStrings[2], textStrings[3], process.env.OAUTH2_REDIRECT_LINK as string),
             ephemeral: true

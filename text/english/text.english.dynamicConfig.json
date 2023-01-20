@@ -100,7 +100,7 @@
     { "tag": "DRAFT_INCA_CONFIG_TEXT", "value": "Inca - Pachacuti" },
     { "tag": "DRAFT_SPAIN_CONFIG_TEXT", "value": "Spain - Philip II" },
     { "tag": "DRAFT_CANADA_CONFIG_TEXT", "value": "Canada - Wilfrid Laurier" },
-    { "tag": "DRAFT_CHINA_CONFIG_TEXT", "value": "China - Qin Shi Huang" },
+    { "tag": "DRAFT_CHINA_CONFIG_TEXT", "value": "China - Qin Shi Huang (Mandate of Heaven)" },
     { "tag": "DRAFT_KONGO_CONFIG_TEXT", "value": "Kongo - Mvemba a Nzinga" },
     { "tag": "DRAFT_KOREA_CONFIG_TEXT", "value": "Korea - Seondeok" },
     { "tag": "DRAFT_CREE_CONFIG_TEXT", "value": "Cree - Poundmaker" },
@@ -145,6 +145,9 @@
     { "tag": "DRAFT_PERSIA_NADER_SHAH_CONFIG_TEXT", "value": "Persia - Nader Shah" },
     { "tag": "DRAFT_JAPAN_TOKUGAWA_CONFIG_TEXT", "value": "Japan - Tokugawa" },
     { "tag": "DRAFT_OTTOMAN_SULEIMAN_MAGNIFICENT_CONFIG_TEXT", "value": "Ottoman - Suleiman (Magnificent)" },
+    { "tag": "DRAFT_CHINA_QIN_SHI_HUANG_UNIFIER_CONFIG_TEXT", "value": "China - Qin Shi Huang (Unifier)" },
+    { "tag": "DRAFT_CHINA_WU_ZETIAN_CONFIG_TEXT", "value": "China - Wu Zetian" },
+    { "tag": "DRAFT_CHINA_YONGLE_CONFIG_TEXT", "value": "China - Yongle" },
 
     { "tag": "DRAFT_AUSTRALIA_CONFIG_TEXT_EMOJI", "value": "<:Australia:701066628523098183>" },
     { "tag": "DRAFT_AMERICA_CONFIG_TEXT_EMOJI", "value": "<:America:701066550412836894>" },
@@ -211,6 +214,9 @@
     { "tag": "DRAFT_PERSIA_NADER_SHAH_CONFIG_TEXT_EMOJI", "value": "<:Persia_Nader_Shah:1053016018865356851>" },
     { "tag": "DRAFT_JAPAN_TOKUGAWA_CONFIG_TEXT_EMOJI", "value": "<:Japan_Tokugawa:1053016016604643410>" },
     { "tag": "DRAFT_OTTOMAN_SULEIMAN_MAGNIFICENT_CONFIG_TEXT_EMOJI", "value": "<:Suleiman_Magnificent:1053016021344206918>" },
+    { "tag": "DRAFT_CHINA_QIN_SHI_HUANG_UNIFIER_CONFIG_TEXT_EMOJI", "value": "<:China_Qin_Shi_Huang_Unifier:1065759163315146814>" },
+    { "tag": "DRAFT_CHINA_WU_ZETIAN_CONFIG_TEXT_EMOJI", "value": "<:China_Wu_Zetian:1065759167106785330>" },
+    { "tag": "DRAFT_CHINA_YONGLE_CONFIG_TEXT_EMOJI", "value": "<:China_Yongle:1065759170390929428>" },
 
 
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT", "value": "Minimum civilizations for draft" },

@@ -21,7 +21,7 @@
     { "tag": "DRAFT_INCA_TEXT", "value": "Инки <:Inca:701066628737007666> Пачакутек" },
     { "tag": "DRAFT_SPAIN_TEXT", "value": "Испания <:Spain:701066699704893460> Филипп II" },
     { "tag": "DRAFT_CANADA_TEXT", "value": "Канада <:Canada:701066699557961829> Уилфрид Лорье" },
-    { "tag": "DRAFT_CHINA_TEXT", "value": "Китай <:China:701066550433677382> Цинь Шихуанди" },
+    { "tag": "DRAFT_CHINA_TEXT", "value": "Китай <:China:701066550433677382> Цинь Шихуанди (Небесный мандат)" },
     { "tag": "DRAFT_KONGO_TEXT", "value": "Конго <:Kongo:701066628661641293> Мвемба а Нзинга" },
     { "tag": "DRAFT_KOREA_TEXT", "value": "Корея <:Korea:701066550232219801> Сондок" },
     { "tag": "DRAFT_CREE_TEXT", "value": "Кри <:Cree:701066550504980480> Паундмейкер" },
@@ -66,6 +66,9 @@
     { "tag": "DRAFT_PERSIA_NADER_SHAH_TEXT", "value": "Персия <:Persia_Nader_Shah:1053016018865356851> Надир-шах" },
     { "tag": "DRAFT_JAPAN_TOKUGAWA_TEXT", "value": "Япония <:Japan_Tokugawa:1053016016604643410> Токугава" },
     { "tag": "DRAFT_OTTOMAN_SULEIMAN_MAGNIFICENT_TEXT", "value": "Оттоманы <:Suleiman_Magnificent:1053016021344206918> Сулейман (Великолепный)" },
+    { "tag": "DRAFT_CHINA_QIN_SHI_HUANG_UNIFIER_TEXT", "value": "Китай <:China_Qin_Shi_Huang_Unifier:1065759163315146814> Цинь Шихуанди (Освободитель)" },
+    { "tag": "DRAFT_CHINA_WU_ZETIAN_TEXT", "value": "Китай <:China_Wu_Zetian:1065759167106785330> У Цзэтянь" },
+    { "tag": "DRAFT_CHINA_YONGLE_TEXT", "value": "Китай <:China_Yongle:1065759170390929428> Юнлэ" },
 
 
     { "tag": "DRAFT_ERROR_NOT_ENOUGH_CIVILIZATIONS", "value": "Для такого драфта недостаточно цивилизаций." },

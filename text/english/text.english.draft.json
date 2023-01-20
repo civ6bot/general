@@ -21,7 +21,7 @@
     { "tag": "DRAFT_INCA_TEXT", "value": "Inca <:Inca:701066628737007666> Pachacuti" },
     { "tag": "DRAFT_SPAIN_TEXT", "value": "Spain <:Spain:701066699704893460> Philip II" },
     { "tag": "DRAFT_CANADA_TEXT", "value": "Canada <:Canada:701066699557961829> Wilfrid Laurier" },
-    { "tag": "DRAFT_CHINA_TEXT", "value": "China <:China:701066550433677382> Qin Shi Huang" },
+    { "tag": "DRAFT_CHINA_TEXT", "value": "China <:China:701066550433677382> Qin Shi Huang (Mandate of Heaven)" },
     { "tag": "DRAFT_KONGO_TEXT", "value": "Kongo <:Kongo:701066628661641293> Mvemba a Nzinga" },
     { "tag": "DRAFT_KOREA_TEXT", "value": "Korea <:Korea:701066550232219801> Seondeok" },
     { "tag": "DRAFT_CREE_TEXT", "value": "Cree <:Cree:701066550504980480> Poundmaker" },
@@ -66,6 +66,10 @@
     { "tag": "DRAFT_PERSIA_NADER_SHAH_TEXT", "value": "Persia <:Persia_Nader_Shah:1053016018865356851> Nader Shah" },
     { "tag": "DRAFT_JAPAN_TOKUGAWA_TEXT", "value": "Japan <:Japan_Tokugawa:1053016016604643410> Tokugawa" },
     { "tag": "DRAFT_OTTOMAN_SULEIMAN_MAGNIFICENT_TEXT", "value": "Ottoman <:Suleiman_Magnificent:1053016021344206918> Suleiman (Magnificent)" },
+    { "tag": "DRAFT_CHINA_QIN_SHI_HUANG_UNIFIER_TEXT", "value": "China <:China_Qin_Shi_Huang_Unifier:1065759163315146814> Qin Shi Huang (Unifier)" },
+    { "tag": "DRAFT_CHINA_WU_ZETIAN_TEXT", "value": "China <:China_Wu_Zetian:1065759167106785330> Wu Zetian" },
+    { "tag": "DRAFT_CHINA_YONGLE_TEXT", "value": "China <:China_Yongle:1065759170390929428> Yongle" },
+
 
 
     { "tag": "DRAFT_ERROR_NOT_ENOUGH_CIVILIZATIONS", "value": "Not enough civilizations for this draft" },

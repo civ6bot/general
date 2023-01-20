@@ -100,7 +100,7 @@
     { "tag": "DRAFT_INCA_CONFIG_TEXT", "value": "Инки - Пачакутек" },
     { "tag": "DRAFT_SPAIN_CONFIG_TEXT", "value": "Испания - Филипп II" },
     { "tag": "DRAFT_CANADA_CONFIG_TEXT", "value": "Канада - Уилфрид Лорье" },
-    { "tag": "DRAFT_CHINA_CONFIG_TEXT", "value": "Китай - Цинь Шихуанди" },
+    { "tag": "DRAFT_CHINA_CONFIG_TEXT", "value": "Китай - Цинь Шихуанди (Небесный мандат)" },
     { "tag": "DRAFT_KONGO_CONFIG_TEXT", "value": "Конго - Мвемба а Нзинга" },
     { "tag": "DRAFT_KOREA_CONFIG_TEXT", "value": "Корея - Сондок" },
     { "tag": "DRAFT_CREE_CONFIG_TEXT", "value": "Кри - Паундмейкер" },
@@ -145,6 +145,10 @@
     { "tag": "DRAFT_PERSIA_NADER_SHAH_CONFIG_TEXT", "value": "Персия - Надир-шах" },
     { "tag": "DRAFT_JAPAN_TOKUGAWA_CONFIG_TEXT", "value": "Япония - Токугава" },
     { "tag": "DRAFT_OTTOMAN_SULEIMAN_MAGNIFICENT_CONFIG_TEXT", "value": "Оттоманы - Сулейман (Великолепный)" },
+    { "tag": "DRAFT_CHINA_QIN_SHI_HUANG_UNIFIER_CONFIG_TEXT", "value": "Китай - Цинь Шихуанди (Освободитель)" },
+    { "tag": "DRAFT_CHINA_WU_ZETIAN_CONFIG_TEXT", "value": "Китай - У Цзэтянь" },
+    { "tag": "DRAFT_CHINA_YONGLE_CONFIG_TEXT", "value": "Китай - Юнлэ" },
+
 
 
     { "tag": "DRAFT_AUSTRALIA_CONFIG_TEXT_EMOJI", "value": "<:Australia:701066628523098183>" },
@@ -212,6 +216,9 @@
     { "tag": "DRAFT_PERSIA_NADER_SHAH_CONFIG_TEXT_EMOJI", "value": "<:Persia_Nader_Shah:1053016018865356851>" },
     { "tag": "DRAFT_JAPAN_TOKUGAWA_CONFIG_TEXT_EMOJI", "value": "<:Japan_Tokugawa:1053016016604643410>" },
     { "tag": "DRAFT_OTTOMAN_SULEIMAN_MAGNIFICENT_CONFIG_TEXT_EMOJI", "value": "<:Suleiman_Magnificent:1053016021344206918>" },
+    { "tag": "DRAFT_CHINA_QIN_SHI_HUANG_UNIFIER_CONFIG_TEXT_EMOJI", "value": "<:China_Qin_Shi_Huang_Unifier:1065759163315146814>" },
+    { "tag": "DRAFT_CHINA_WU_ZETIAN_CONFIG_TEXT_EMOJI", "value": "<:China_Wu_Zetian:1065759167106785330>" },
+    { "tag": "DRAFT_CHINA_YONGLE_CONFIG_TEXT_EMOJI", "value": "<:China_Yongle:1065759170390929428>" },
 
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT", "value": "Минимум цивилизаций в драфте" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT_EMOJI", "value": "\uD83D\uDD3D" },

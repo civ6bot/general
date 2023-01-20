@@ -64,13 +64,16 @@
   { "setting": "DRAFT_PERSIA_NADER_SHAH", "value": 1 },
   { "setting": "DRAFT_JAPAN_TOKUGAWA", "value": 1 },
   { "setting": "DRAFT_OTTOMAN_SULEIMAN_MAGNIFICENT", "value": 1 },
+  { "setting": "DRAFT_CHINA_QIN_SHI_HUANG_UNIFIER", "value": 1 },
+  { "setting": "DRAFT_CHINA_WU_ZETIAN", "value": 1 },
+  { "setting": "DRAFT_CHINA_YONGLE", "value": 1 },
 
   { "setting": "DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT", "value": 2 },
   { "setting": "DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT", "value": 4 },
 
   { "setting": "DRAFT_TEAMERS_MIN_TEAMS", "value": 2 },
   { "setting": "DRAFT_TEAMERS_MAX_TEAMS", "value": 6 },
-  { "setting": "DRAFT_TEAMERS_FORBIDDEN_PAIRS", "value": "01_49 02_39 03_41 09_10 14_15 19_37 20_54 23_34 26_57 28_40 28_55 31_45 36_58 4_59 21_60 34_62 45_63 33_64" },
+  { "setting": "DRAFT_TEAMERS_FORBIDDEN_PAIRS", "value": "01_49 02_39 03_41 09_10 14_15 19_37 20_54 23_34 26_57 28_40 28_55 31_45 36_58 4_59 21_60 34_62 45_63 33_64 20_65" },
 
   { "setting": "DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT", "value": 2 },
   { "setting": "DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT", "value": 6 },

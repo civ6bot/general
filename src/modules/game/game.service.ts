@@ -3,13 +3,14 @@ import {GameUI} from "./game.ui";
 import {ButtonInteraction, CommandInteraction, Message, MessageReaction, User, VoiceChannel, ChannelType, TextChannel, GuildMember} from "discord.js";
 import {Game, GameEntity, GameEntityDraft, GameEntityReady, GameFFA, GameTeamers} from "./game.models";
 import {UtilsGeneratorTimestamp} from "../../utils/generators/utils.generator.timestamp";
-import {UtilsServiceCivilizations} from "../../utils/services/utils.service.civilizations";
+import {UtilsDataCivilizations} from "../../utils/data/utils.data.civilizations";
 import {UtilsServiceEmojis} from "../../utils/services/utils.service.emojis";
 import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
 import {GameAdapter} from "./game.adapter";
-import {UtilsServiceGameTags} from "../../utils/services/utils.service.gameTags";
+import {UtilsDataGameTags} from "../../utils/data/utils.data.gameTags";
 import {UtilsServicePM} from "../../utils/services/utils.service.PM";
 import {UtilsServiceTime} from "../../utils/services/utils.service.time";
+import { UtilsServiceSyntax } from "../../utils/services/utils.service.syntax";
 
 export class GameService extends ModuleBaseService {
     private gameUI: GameUI = new GameUI();
@@ -27,13 +28,13 @@ export class GameService extends ModuleBaseService {
     }
 
     private getFFAEmojisConfigsStrings(): string[][] {
-        return UtilsServiceGameTags.FFAOptionsConfigsStrings
+        return UtilsDataGameTags.FFAOptionsConfigsStrings
             .map((arr: string[]): string[] =>
                 arr.map((option: string): string => option + "_EMOJI"));
     }
 
     private getTeamersEmojisConfigsStrings(): string[][] {
-        return UtilsServiceGameTags.teamersOptionsConfigsStrings
+        return UtilsDataGameTags.teamersOptionsConfigsStrings
             .map((arr: string[]): string[] =>
                 arr.map((option: string): string => option + "_EMOJI"));
     }
@@ -86,15 +87,15 @@ export class GameService extends ModuleBaseService {
         users = Array.from(new Set(users
             .filter(user => usersExcludeID.indexOf(user.id) === -1)));
 
-        let gameFFAMainFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsServiceGameTags.FFAHeaderConfigsStrings);
+        let gameFFAMainFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsDataGameTags.FFAHeaderConfigsStrings);
         let gameFFAOptionsFlags: number[][] = [];
 
-        let headers: string[] =  await this.getManyText(interaction, UtilsServiceGameTags.FFAHeaderConfigsStrings);
+        let headers: string[] =  await this.getManyText(interaction, UtilsDataGameTags.FFAHeaderConfigsStrings);
         let options: string[][] = [], emojis: string[][] = [];
 
-        for(let i in UtilsServiceGameTags.FFAOptionsConfigsStrings) {
-            gameFFAOptionsFlags.push(await this.getManySettingNumber(interaction, ...UtilsServiceGameTags.FFAOptionsConfigsStrings[i]));
-            options.push(await this.getManyText(interaction, UtilsServiceGameTags.FFAOptionsConfigsStrings[i]));
+        for(let i in UtilsDataGameTags.FFAOptionsConfigsStrings) {
+            gameFFAOptionsFlags.push(await this.getManySettingNumber(interaction, ...UtilsDataGameTags.FFAOptionsConfigsStrings[i]));
+            options.push(await this.getManyText(interaction, UtilsDataGameTags.FFAOptionsConfigsStrings[i]));
             emojis.push(await this.getManySettingString(interaction, ...this.getFFAEmojisConfigsStrings()[i]));
         }
         this.filterOptions(gameFFAMainFlags, gameFFAOptionsFlags, headers, options, emojis);
@@ -102,9 +103,9 @@ export class GameService extends ModuleBaseService {
         let draftHeaders: string[] = await this.getManyText(interaction, [
             "GAME_BANS_START", "GAME_BANS_PROCESSING"
         ]);
-        let draftFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsServiceCivilizations.civilizationsTags);
-        let draftOptions: string[] = await this.getManyText(interaction, UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT"))
-        let draftEmojis: string[] = draftOptions.map(str => str.slice(str.indexOf("<"), str.indexOf(">")+1));
+        let draftFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsDataCivilizations.civilizationsTags);
+        let draftEmojis: string[] = await this.getManySettingString(interaction, ...UtilsDataCivilizations.civilizationsTags.map((str: string): string => str+"_EMOJI"));
+        let draftOptions: string[] = (await this.getManyText(interaction, UtilsDataCivilizations.civilizationsTags, draftEmojis.map(str => [str])));
         for(let i: number = 0; i < draftFlags.length; i++)
             if(draftFlags[i] === 0) {
                 draftFlags.splice(i, 1);
@@ -128,9 +129,7 @@ export class GameService extends ModuleBaseService {
         let readyFieldTitles: string[] = await this.getManyText(interaction, [
             "GAME_READY_FIELD_PLAYERS_TITLE", "GAME_READY_FIELD_READY_TITLE",
         ]);
-        let readyFieldEmojis: string[] = await this.getManySettingString(interaction,
-            "BASE_EMOJI_YES", "BASE_EMOJI_NO"
-        );
+        let readyFieldEmojis: string[] = ["<:Yes:808418109710794843>", "<:No:808418109319938099>"];
         let buttonLabels: string[] = await this.getManyText(interaction, [
             "GAME_BUTTON_READY", "GAME_BUTTON_SKIP", "GAME_BUTTON_DELETE"
         ]);
@@ -239,8 +238,8 @@ export class GameService extends ModuleBaseService {
                 ? await game.thread.send(game.entityDraft.getContent())
                 : await interaction.channel.send(game.entityDraft.getContent());
             game.entityDraft.message = message;
-            if(await this.getOneSettingString(game.interaction, "BASE_LANGUAGE") !== await this.getOneSettingString("DEFAULT", "BASE_LANGUAGE"))
-                game.entityDraft.englishLanguageOptions = await this.getManyText("DEFAULT", UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT"));
+            if(await this.getOneSettingString(game.interaction, "BASE_LANGUAGE") !== await this.getOneSettingString("DEFAULT", "BASE_LANGUAGE")) 
+                game.entityDraft.englishLanguageOptions = (await this.getManyText("DEFAULT", UtilsDataCivilizations.civilizationsTags, draftEmojis.map(str => [str])));
             game.entityDraft.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityDraft.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
             game.entityDraft.messageCollector = message.channel.createMessageCollector({time: voteTimeMs});
@@ -297,15 +296,15 @@ export class GameService extends ModuleBaseService {
         users = Array.from(new Set(users
             .filter(user => usersExcludeID.indexOf(user.id) === -1)));
 
-        let gameTeamersMainFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsServiceGameTags.teamersHeaderConfigsStrings);
+        let gameTeamersMainFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsDataGameTags.teamersHeaderConfigsStrings);
         let gameTeamersOptionsFlags: number[][] = [];
 
-        let headers: string[] =  await this.getManyText(interaction, UtilsServiceGameTags.teamersHeaderConfigsStrings);
+        let headers: string[] =  await this.getManyText(interaction, UtilsDataGameTags.teamersHeaderConfigsStrings);
         let options: string[][] = [], emojis: string[][] = [];
 
-        for(let i in UtilsServiceGameTags.teamersOptionsConfigsStrings) {
-            gameTeamersOptionsFlags.push(await this.getManySettingNumber(interaction, ...UtilsServiceGameTags.teamersOptionsConfigsStrings[i]));
-            options.push(await this.getManyText(interaction, UtilsServiceGameTags.teamersOptionsConfigsStrings[i]));
+        for(let i in UtilsDataGameTags.teamersOptionsConfigsStrings) {
+            gameTeamersOptionsFlags.push(await this.getManySettingNumber(interaction, ...UtilsDataGameTags.teamersOptionsConfigsStrings[i]));
+            options.push(await this.getManyText(interaction, UtilsDataGameTags.teamersOptionsConfigsStrings[i]));
             emojis.push(await this.getManySettingString(interaction, ...this.getTeamersEmojisConfigsStrings()[i]))
         }
         this.filterOptions(gameTeamersMainFlags, gameTeamersOptionsFlags, headers, options, emojis);
@@ -315,9 +314,9 @@ export class GameService extends ModuleBaseService {
         let draftHeaders: string[] = await this.getManyText(interaction, [
             "GAME_BANS_START", "GAME_BANS_PROCESSING"
         ]);
-        let draftFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsServiceCivilizations.civilizationsTags);
-        let draftOptions: string[] = await this.getManyText(interaction, UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT"))
-        let draftEmojis: string[] = draftOptions.map(str => str.slice(str.indexOf("<"), str.indexOf(">")+1));
+        let draftFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsDataCivilizations.civilizationsTags);
+        let draftEmojis: string[] = await this.getManySettingString(interaction, ...UtilsDataCivilizations.civilizationsTags.map((str: string): string => str+"_EMOJI"));
+        let draftOptions: string[] = (await this.getManyText(interaction, UtilsDataCivilizations.civilizationsTags, draftEmojis.map(str => [str])));
         for(let i: number = 0; i < draftFlags.length; i++)
             if(draftFlags[i] === 0) {
                 draftFlags.splice(i, 1);
@@ -341,9 +340,7 @@ export class GameService extends ModuleBaseService {
         let readyFieldTitles: string[] = await this.getManyText(interaction, [
             "GAME_READY_FIELD_PLAYERS_TITLE", "GAME_READY_FIELD_READY_TITLE",
         ]);
-        let readyFieldEmojis: string[] = await this.getManySettingString(interaction,
-            "BASE_EMOJI_YES", "BASE_EMOJI_NO"
-        );
+        let readyFieldEmojis: string[] = ["<:Yes:808418109710794843>", "<:No:808418109319938099>"];
         let buttonLabels: string[] = await this.getManyText(interaction, [
             "GAME_BUTTON_READY", "GAME_BUTTON_SKIP", "GAME_BUTTON_DELETE"
         ]);
@@ -463,7 +460,7 @@ export class GameService extends ModuleBaseService {
                 : await interaction.channel.send(game.entityDraft.getContent());
             game.entityDraft.message = message;
             if(await this.getOneSettingString(game.interaction, "BASE_LANGUAGE") !== await this.getOneSettingString("DEFAULT", "BASE_LANGUAGE"))
-                game.entityDraft.englishLanguageOptions = await this.getManyText("DEFAULT", UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT"));
+                game.entityDraft.englishLanguageOptions = (await this.getManyText("DEFAULT", UtilsDataCivilizations.civilizationsTags, draftEmojis.map(str => [str])));
             game.entityDraft.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityDraft.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
             game.entityDraft.messageCollector = message.channel.createMessageCollector({time: voteTimeMs});
@@ -527,52 +524,14 @@ export class GameService extends ModuleBaseService {
             return;
         }
 
-        // тупое решение для парсинга названия эмодзи представлено ниже
-
-        if(UtilsServiceCivilizations.parseBans(reaction.emoji.toString(), entity.options).bans.length === 1) {
+        if(UtilsServiceSyntax.parseBans(reaction.emoji.toString(), entity.options).bans.length === 1) {
             if (await entity.resolveProcessing(reaction, user))
                 await entity.message?.edit(entity.getContent());
             return;
-        }
-
-        let parsedEmojiName: string = reaction.emoji.toString()
-            .slice(
-                reaction.emoji.toString().indexOf(":")+1, 
-                reaction.emoji.toString().indexOf(":", reaction.emoji.toString().indexOf(":")+1))
-            .replaceAll("_", " ")
-            .replaceAll("-", " ")
-            .split("")
-            .map((character: string, index: number, array: string[]): string => {
-                if(
-                    (index !== 0)
-                    && (character.toUpperCase() === character)
-                    && (character !== " ")
-                    && (array[index-1].toLowerCase() === array[index-1])
-                    && (array[index-1] !== " ")
-                ) return " " + character;
-                return character;
-            }).join("");
-        let bans = UtilsServiceCivilizations.parseBans(parsedEmojiName, entity.options).bans;
-        if(bans.length === 0)
-            bans = UtilsServiceCivilizations.parseBans(parsedEmojiName, (entity as GameEntityDraft).englishLanguageOptions).bans;
-        if(bans.length !== 1) {
-            await entity.resolveProcessing(reaction, user);     // если эмодзи :thinking: по умолчанию
+        } else {
+            await entity.resolveProcessing(reaction, user);
             return;
         }
-        
-        let emojiIndex: number = bans[0];
-        let entityDraft: GameEntityDraft = entity as GameEntityDraft;
-        if(Array.from(reaction.users.cache.values()).filter(user => !user.bot).length < entityDraft.banThreshold)
-            return;
-        entityDraft.banStrings.push(entityDraft.options.splice(emojiIndex, 1)[0]);
-        entityDraft.emojis.splice(emojiIndex, 1);
-        entityDraft.header = entityDraft.headerProcessing;
-        try {
-            await reaction.remove();
-        } catch {}
-        try {
-            await entity.message?.edit(entity.getContent());
-        } catch {}
     }
 
     public static async messageCollectorFunction(message: Message): Promise<void> {
@@ -596,9 +555,9 @@ export class GameService extends ModuleBaseService {
         if(!gameEntityDraft.message)
             return;
 
-        let bans = UtilsServiceCivilizations.parseBans(message.content, gameEntityDraft.options).bans;
+        let bans = UtilsServiceSyntax.parseBans(message.content, gameEntityDraft.options).bans;
         if(bans.length === 0) {
-            bans = UtilsServiceCivilizations.parseBans(message.content, gameEntityDraft.englishLanguageOptions).bans;
+            bans = UtilsServiceSyntax.parseBans(message.content, gameEntityDraft.englishLanguageOptions).bans;
             if(bans.length === 0)
                 return;
         }

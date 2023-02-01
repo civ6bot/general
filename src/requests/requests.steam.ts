@@ -1,14 +1,13 @@
 import axios from "axios";
 import {SteamAPIData} from "../types/type.SteamAPIData";
-import {DecorateAll} from "decorate-all";
 import {SafeRequest} from "../utils/decorators/utils.decorators.SafeRequest";
 
-@DecorateAll(SafeRequest)
 export class RequestsSteam {
     private steamAPIUrl_NoSteamID = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${process.env.STEAM_KEY}&format=json&steamids=`;
     // Формат объекта слишком большой для описания (Steam API Docs),
     // поэтому выбираются отдельные свойства объекта типа any.
     // Steam Web API гарантирует объекты с необходимыми свойствами.
+    @SafeRequest
     public async getSteamLinkData(steamID: string): Promise<SteamAPIData|null>{
         let {data, status} = await axios.get<any>(this.steamAPIUrl_NoSteamID + steamID);
         return {

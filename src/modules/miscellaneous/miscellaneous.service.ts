@@ -37,7 +37,7 @@ export class MiscellaneousService extends ModuleBaseService {
     }
 
     public async vote(interaction: CommandInteraction, voteContent: string) {
-        let emojis: string[] = await this.getManySettingString(interaction, "BASE_EMOJI_YES", "BASE_EMOJI_NO");
+        let emojis: string[] = ["<:Yes:808418109710794843>", "<:No:808418109319938099>"];
         let textString: string = await this.getOneText(interaction, "MISCELLANEOUS_VOTE_TITLE");
 
         if(interaction.inCachedGuild()){

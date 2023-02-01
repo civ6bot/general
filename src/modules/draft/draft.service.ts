@@ -3,8 +3,9 @@ import {DraftUI} from "./draft.ui";
 import {ButtonInteraction, CommandInteraction, DMChannel, Message, User} from "discord.js";
 import {Draft, DraftBlind, DraftFFA, DraftTeamers} from "./draft.models";
 import {UtilsGeneratorTimestamp} from "../../utils/generators/utils.generator.timestamp";
-import {UtilsServiceCivilizations} from "../../utils/services/utils.service.civilizations";
+import {UtilsDataCivilizations} from "../../utils/data/utils.data.civilizations";
 import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
+import { UtilsServiceForbiddenPairs } from "../../utils/services/utils.service.forbiddenPairs";
 
 export class DraftService extends ModuleBaseService {
     private draftUI: DraftUI = new DraftUI();
@@ -30,10 +31,12 @@ export class DraftService extends ModuleBaseService {
                 : [civAmount, civAmount];
             if(users.length === 0)
                 users = UtilsServiceUsers.getFromVoice(interaction);
+            let civEmojis: string[] = await this.getManySettingString(interaction, ...UtilsDataCivilizations.civilizationsTags.map((str: string): string => str+"_EMOJI"));
+            let civLines: string[] = (await this.getManyText(interaction, UtilsDataCivilizations.civilizationsTags, civEmojis.map(str => [str])));
             draft = new DraftFFA(
                 interaction, bans,
-                await this.getManySettingNumber(interaction, ...UtilsServiceCivilizations.civilizationsTags),
-                await this.getManyText(interaction, UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
+                await this.getManySettingNumber(interaction, ...UtilsDataCivilizations.civilizationsTags),
+                civLines,
                 users, minCivilizations, maxCivilizations
             );
         }
@@ -95,14 +98,16 @@ export class DraftService extends ModuleBaseService {
         else {
             if(users.length === 0)
                 users = UtilsServiceUsers.getFromVoice(interaction);
-            let forbiddenPairs: number[][] = UtilsServiceCivilizations.getForbiddenPairs(
+            let forbiddenPairs: number[][] = UtilsServiceForbiddenPairs.getForbiddenPairs(
                 await this.getOneSettingString(interaction, "DRAFT_TEAMERS_FORBIDDEN_PAIRS")
             );
+            let civEmojis: string[] = await this.getManySettingString(interaction, ...UtilsDataCivilizations.civilizationsTags.map((str: string): string => str+"_EMOJI"));
+            let civLines: string[] = (await this.getManyText(interaction, UtilsDataCivilizations.civilizationsTags, civEmojis.map(str => [str])));
             draft = new DraftTeamers(
                 interaction,
                 bans,
-                await this.getManySettingNumber(interaction, ...UtilsServiceCivilizations.civilizationsTags),
-                await this.getManyText(interaction, UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
+                await this.getManySettingNumber(interaction, ...UtilsDataCivilizations.civilizationsTags),
+                civLines,
                 users,
                 teamAmount,
                 forbiddenPairs
@@ -177,10 +182,12 @@ export class DraftService extends ModuleBaseService {
                 : [civAmount, civAmount];
             if(users.length === 0)
                 users = UtilsServiceUsers.getFromVoice(interaction);
+            let civEmojis: string[] = await this.getManySettingString(interaction, ...UtilsDataCivilizations.civilizationsTags.map((str: string): string => str+"_EMOJI"));
+            let civLines: string[] = (await this.getManyText(interaction, UtilsDataCivilizations.civilizationsTags, civEmojis.map(str => [str])));
             draft = new DraftBlind(
                 interaction, bans,
-                await this.getManySettingNumber(interaction, ...UtilsServiceCivilizations.civilizationsTags),
-                await this.getManyText(interaction, UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
+                await this.getManySettingNumber(interaction, ...UtilsDataCivilizations.civilizationsTags),
+                civLines,
                 users, minCivilizations, maxCivilizations
             );
         }
@@ -199,7 +206,7 @@ export class DraftService extends ModuleBaseService {
         DraftService.drafts.set(draft.guildID+draft.type, draft);
 
         let pickTimeMs: number = await this.getOneSettingNumber(draft.interaction, "DRAFT_BLIND_PICK_TIME_MS");
-        let emojis: string[] = await this.getManySettingString(draft.interaction, "BASE_EMOJI_YES", "BASE_EMOJI_NO");
+        let emojis: string[] = ["<:Yes:808418109710794843>", "<:No:808418109319938099>"];
         let textStrings: string[] = await this.getManyText(
             draft.interaction,
             ["DRAFT_BLIND_TITLE_ONE_PLAYER", "DRAFT_BLIND_TITLE_MANY_PLAYERS",
@@ -363,7 +370,7 @@ export class DraftService extends ModuleBaseService {
             [null, [draft.users.length], [UtilsGeneratorTimestamp.getRelativeTime(pickTimeMs+draft.date.getTime()-Date.now())], [draft.bans.length]]
         );  // здесь должна оставаться разность времени,
         // чтобы в сообщении показывало правильное время, а не начинало отчет заново
-        let emojis: string[] = await this.getManySettingString(draft.interaction, "BASE_EMOJI_YES", "BASE_EMOJI_NO");
+        let emojis: string[] = ["<:Yes:808418109710794843>", "<:No:808418109319938099>"];
 
         if(draft.civilizationsPool.every((pool: number[]): boolean => pool.length === 1)) {
             if(draft.setTimeoutID !== null) {
@@ -457,7 +464,7 @@ export class DraftService extends ModuleBaseService {
         draft.thresholdUsers = draft.thresholdUsers || Math.min(Math.round(draft.users.length*(threshold/100)+0.999), draft.users.length);
         draft.interaction = interaction;
 
-        let emojis: string[] = await this.getManySettingString(interaction, "BASE_EMOJI_YES", "BASE_EMOJI_NO");
+        let emojis: string[] = ["<:Yes:808418109710794843>", "<:No:808418109319938099>"];
         let textStrings: string[] = await this.getManyText(
             interaction,
             ["DRAFT_REDRAFT_TITLE", "DRAFT_REDRAFT_DESCRIPTION_PROCESSING",
@@ -485,7 +492,7 @@ export class DraftService extends ModuleBaseService {
     public static async redraftTimeout(draft: Draft): Promise<void> {
         let draftService: DraftService = new DraftService();
         draft.isProcessing = false;
-        let emojis: string[] = await draftService.getManySettingString(draft.interaction, "BASE_EMOJI_YES", "BASE_EMOJI_NO");
+        let emojis: string[] = ["<:Yes:808418109710794843>", "<:No:808418109319938099>"];
         let textStrings: string[] = await draftService.getManyText(
             draft.interaction,
             ["DRAFT_REDRAFT_TITLE", "DRAFT_REDRAFT_DESCRIPTION_TIMEOUT",
@@ -550,7 +557,7 @@ export class DraftService extends ModuleBaseService {
         draft.redraftStatus[index] = voteStatus ? 1 : 0;
 
         let redraftTimeMs: number = await this.getOneSettingNumber(draft.interaction, "REDRAFT_VOTE_TIME_MS");
-        let emojis: string[] = await this.getManySettingString(interaction, "BASE_EMOJI_YES", "BASE_EMOJI_NO");
+        let emojis: string[] = ["<:Yes:808418109710794843>", "<:No:808418109319938099>"];
         let textStrings: string[] = await this.getManyText(
             interaction,
             ["DRAFT_REDRAFT_TITLE", "DRAFT_REDRAFT_DESCRIPTION_PROCESSING",

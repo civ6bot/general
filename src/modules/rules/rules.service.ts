@@ -1,15 +1,6 @@
-import {
-    ActionRowBuilder, ButtonBuilder,
-    ButtonInteraction,
-    CommandInteraction,
-    GuildMember,
-    ModalSubmitInteraction,
-    InteractionType,
-    TextInputComponent
-} from "discord.js";
+import {ActionRowBuilder, ButtonBuilder, ButtonInteraction,CommandInteraction, ModalSubmitInteraction, InteractionType, TextInputComponent} from "discord.js";
 import {ModuleBaseService} from "../base/base.service";
 import {RulesUI} from "./rules.ui";
-import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
 import {DatabaseServiceRulePage} from "../../database/services/service.RulePage";
 import {EntityRulePage} from "../../database/entities/entity.RulePage";
 
@@ -17,16 +8,6 @@ export class RulesService extends ModuleBaseService {
     private rulesUI: RulesUI = new RulesUI();
     private databaseServiceRulePage: DatabaseServiceRulePage = new DatabaseServiceRulePage();
     private pageTotalMax: number = 20;
-
-    private async isModerator(interaction: CommandInteraction | ButtonInteraction | ModalSubmitInteraction): Promise<boolean> {
-        let member: GuildMember = interaction.member as GuildMember;
-        if(UtilsServiceUsers.isAdmin(member))
-            return true;
-        let moderationRolesID: string[] = (await this.getOneSettingString(
-            interaction, "MODERATION_ROLE_MODERATORS_ID"
-        )).split(" ");
-        return member.roles.cache.some((value, key) => (moderationRolesID.indexOf(key) !== -1));
-    }
 
     private async getButtonsComponent(
         interaction: CommandInteraction | ButtonInteraction | ModalSubmitInteraction, 

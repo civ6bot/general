@@ -1,12 +1,4 @@
-import {
-    ActionRowBuilder,
-    ButtonBuilder,
-    ButtonStyle,
-    EmbedBuilder,
-    ModalBuilder,
-    TextInputStyle,
-    User
-} from "discord.js";
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ModalBuilder, TextInputStyle, User} from "discord.js";
 import {UtilsGeneratorEmbed} from "../../utils/generators/utils.generator.embed";
 import {ModuleBaseUI} from "../base/base.ui";
 import {UtilsGeneratorButton} from "../../utils/generators/utils.generator.button";

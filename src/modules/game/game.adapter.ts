@@ -2,7 +2,7 @@ import {ModuleBaseService} from "../base/base.service";
 import {GameFFA, GameTeamers} from "./game.models";
 import {DraftService} from "../draft/draft.service";
 import {DraftFFA, DraftBlind} from "../draft/draft.models";
-import {UtilsServiceCivilizations} from "../../utils/services/utils.service.civilizations";
+import {UtilsDataCivilizations} from "../../utils/data/utils.data.civilizations";
 import {CommandInteraction, GuildMember, User} from "discord.js";
 import {SplitService} from "../split/split.service";
 import {SplitClassic, SplitCWC, SplitDouble, SplitRandom} from "../split/split.models";
@@ -20,10 +20,12 @@ export class GameAdapter extends ModuleBaseService {
             let [minCivilizations, maxCivilizations]: number[] = await this.getManySettingNumber(game.interaction,
                 "DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT", "DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT"
             );
+            let civEmojis: string[] = await this.getManySettingString(game.interaction, ...UtilsDataCivilizations.civilizationsTags.map((str: string): string => str+"_EMOJI"));
+            let civLines: string[] = (await this.getManyText(game.interaction, UtilsDataCivilizations.civilizationsTags, civEmojis.map(str => [str])));
             let draftFFA: DraftFFA = new DraftFFA(
                 game.interaction, bans,
-                await this.getManySettingNumber(game.interaction, ...UtilsServiceCivilizations.civilizationsTags),
-                await this.getManyText(game.interaction, UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
+                await this.getManySettingNumber(game.interaction, ...UtilsDataCivilizations.civilizationsTags),
+                civLines,
                 game.users,
                 minCivilizations, maxCivilizations
             );
@@ -34,10 +36,12 @@ export class GameAdapter extends ModuleBaseService {
             let [minCivilizations, maxCivilizations]: number[] = await this.getManySettingNumber(game.interaction,
                 "DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT", "DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT"
             );
+            let civEmojis: string[] = await this.getManySettingString(game.interaction, ...UtilsDataCivilizations.civilizationsTags.map((str: string): string => str+"_EMOJI"));
+            let civLines: string[] = (await this.getManyText(game.interaction, UtilsDataCivilizations.civilizationsTags, civEmojis.map(str => [str])));
             let draftBlind: DraftBlind = new DraftBlind(
                 game.interaction, bans,
-                await this.getManySettingNumber(game.interaction, ...UtilsServiceCivilizations.civilizationsTags),
-                await this.getManyText(game.interaction, UtilsServiceCivilizations.civilizationsTags.map(text => text + "_TEXT")),
+                await this.getManySettingNumber(game.interaction, ...UtilsDataCivilizations.civilizationsTags),
+                civLines,
                 game.users,
                 minCivilizations, maxCivilizations
             );

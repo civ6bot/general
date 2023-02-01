@@ -1,6 +1,9 @@
 {
   "lang": "English",
   "text": [
+    { "tag": "DISCORD_ERROR_INTERACTION_NO_PERMISSION", "value": "You can't use slash commands in PM." },
+    { "tag": "DISCORD_ERROR_INTERACTION_NO_GUILD", "value": "Bot hasn't permission to write in this channel." },
+
     { "tag": "DISCORD_ON_GUILD_CREATE_TITLE", "value": "🎉 Thank you for inviting Civ6bot!" },
     { "tag": "DISCORD_ON_GUILD_CREATE_DESCRIPTION", "value": "**Civ6Bot General** has all commands for quick start of Civilization VI game: draft, new game voting, team creating and other usefull stuff.\n\n  • Use slash sign (/) to see all bot's commands;\n  • Use /config command to change bot's settings.\n  • Website: https://civ6bot.xyz/ \n  • Support project: http://civ6bot.xyz/donate \n\nHave a nice game!" }
   ]

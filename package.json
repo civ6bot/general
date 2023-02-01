@@ -1,6 +1,6 @@
 {
   "name": "civ6bot-general",
-  "version": "3.1.0",
+  "version": "3.1.7",
   "description": "Discord bot for Civilization VI game - General",
   "main": "build/index.js",
   "scripts": {

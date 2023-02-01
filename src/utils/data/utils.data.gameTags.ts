@@ -1,4 +1,4 @@
-export class UtilsServiceGameTags {
+export class UtilsDataGameTags {
     public static readonly FFAHeaderConfigsStrings: string[] = [
         "GAME_FFA_MAP", "GAME_FFA_DISASTERS",
         "GAME_FFA_BONUS_RESOURCES", "GAME_FFA_STRATEGIC_RESOURCES",

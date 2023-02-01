@@ -1,10 +1,6 @@
-import {
-    JSONDynamicConfigEntityBoolean, JSONDynamicConfigEntityBooleanGameSetting, JSONDynamicConfigEntityChannelMany,
-    JSONDynamicConfigEntityNumber, JSONDynamicConfigEntityNumberMany, JSONDynamicConfigEntityRoleMany,
-    JSONDynamicConfigEntityString, JSONDynamicConfigEntityTeamersForbiddenPairs
-} from "../../types/type.JSON.DynamicConfigEntities";
-import {UtilsServiceCivilizations} from "../../utils/services/utils.service.civilizations";
-import {UtilsServiceGameTags} from "../../utils/services/utils.service.gameTags";
+import { UtilsDataCivilizations } from "../../utils/data/utils.data.civilizations";
+import { UtilsDataGameTags } from "../../utils/data/utils.data.gameTags";
+import { DynamicConfigEntity } from "./dynamicConfig.models";
 
 export const tagsMap: Map<string, string[]> = new Map<string, string[]>([
     ["DYNAMIC_CONFIG_TITLE", [
@@ -13,9 +9,9 @@ export const tagsMap: Map<string, string[]> = new Map<string, string[]>([
         "DYNAMIC_CONFIG_MODERATION", "DYNAMIC_CONFIG_LANGUAGE"
     ]],
     ["DYNAMIC_CONFIG_CATEGORY_DRAFT", [
-        "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_CIVILIZATIONS", "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_FFA",
-        "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_TEAMERS", "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_BLIND",
-        "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_REDRAFT"
+        "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_CIVILIZATIONS", "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_EMOJIS",
+        "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_FFA", "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_TEAMERS", 
+        "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_BLIND", "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_REDRAFT"
     ]],
     ["DYNAMIC_CONFIG_CATEGORY_GAME", [
         "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA",
@@ -45,15 +41,7 @@ export const tagsMap: Map<string, string[]> = new Map<string, string[]>([
         "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_SPLIT", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BANS_THRESHOLD"
     ]]
 ]);
-export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
-    |JSONDynamicConfigEntityString
-    |JSONDynamicConfigEntityBoolean
-    |JSONDynamicConfigEntityTeamersForbiddenPairs
-    |JSONDynamicConfigEntityBooleanGameSetting
-    |JSONDynamicConfigEntityNumberMany
-    |JSONDynamicConfigEntityRoleMany
-    |JSONDynamicConfigEntityChannelMany
-    )[]>([
+export const configsMap = new Map<string, DynamicConfigEntity[]>([
     ["DYNAMIC_CONFIG_LANGUAGE", []],
     ["DYNAMIC_CONFIG_MODERATION", [
         {
@@ -93,12 +81,19 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
         },
     ]],
     ["DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_CIVILIZATIONS",
-        UtilsServiceCivilizations.civilizationsTags.map((tag: string): JSONDynamicConfigEntityBoolean => { return {
+        UtilsDataCivilizations.civilizationsTags.map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
-            textTag: tag+"_CONFIG_TEXT",
-            type: "Boolean",
+            textTag: tag,
+            type: "BooleanCivilization",
         }})
     ],  // DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_CIVILIZATIONS (комментарий для свёрнутого кода)
+    ["DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_EMOJIS", 
+        UtilsDataCivilizations.civilizationsTags.map((tag: string): DynamicConfigEntity => { return {
+            configTag: tag+"_EMOJI",
+            textTag: tag,
+            type: "Emoji",
+        }})
+    ],
     ["DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_FFA", [
         {
             configTag: "DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT",
@@ -234,7 +229,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[0].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[0].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -246,7 +241,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[1].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[1].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -258,7 +253,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[2].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[2].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -270,7 +265,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[3].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[3].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -282,7 +277,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[4].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[4].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -294,7 +289,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[5].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[5].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -306,7 +301,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[6].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[6].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -318,7 +313,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[7].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[7].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -330,7 +325,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[8].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[8].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -342,7 +337,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[9].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[9].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -354,7 +349,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[10].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[10].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -366,7 +361,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[11].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[11].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -380,7 +375,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[12].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[12].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -392,7 +387,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[13].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[13].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -404,7 +399,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[14].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[14].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -416,7 +411,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[15].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[15].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -428,7 +423,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[16].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[16].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -440,7 +435,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[17].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[17].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -462,7 +457,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.teamersOptionsConfigsStrings[0].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.teamersOptionsConfigsStrings[0].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -474,7 +469,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.teamersOptionsConfigsStrings[1].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.teamersOptionsConfigsStrings[1].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -486,7 +481,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.teamersOptionsConfigsStrings[2].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.teamersOptionsConfigsStrings[2].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -498,7 +493,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.teamersOptionsConfigsStrings[3].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.teamersOptionsConfigsStrings[3].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -510,7 +505,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.teamersOptionsConfigsStrings[4].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.teamersOptionsConfigsStrings[4].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -522,7 +517,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.teamersOptionsConfigsStrings[5].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.teamersOptionsConfigsStrings[5].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -534,7 +529,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.FFAOptionsConfigsStrings[6].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.FFAOptionsConfigsStrings[6].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -546,7 +541,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.teamersOptionsConfigsStrings[7].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.teamersOptionsConfigsStrings[7].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -558,7 +553,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.teamersOptionsConfigsStrings[8].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.teamersOptionsConfigsStrings[8].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",
@@ -570,7 +565,7 @@ export const configsMap = new Map<string, (JSONDynamicConfigEntityNumber
             textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
             type: "Boolean",
         },
-        ...UtilsServiceGameTags.teamersOptionsConfigsStrings[9].map((tag: string): JSONDynamicConfigEntityBooleanGameSetting => { return {
+        ...UtilsDataGameTags.teamersOptionsConfigsStrings[9].map((tag: string): DynamicConfigEntity => { return {
             configTag: tag,
             textTag: tag,
             type: "BooleanGameSetting",

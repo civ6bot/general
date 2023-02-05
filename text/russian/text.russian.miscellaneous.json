@@ -10,6 +10,38 @@
     { "tag": "MISCELLANEOUS_COIN_HEADS_DESCRIPTION", "value": "**Орёл!** \uD83C\uDF15" },
     { "tag": "MISCELLANEOUS_COIN_TAILS_DESCRIPTION", "value": "**Решка!** \uD83C\uDF11" },
 
-    { "tag": "MISCELLANEOUS_VOTE_TITLE", "value": "\uD83E\uDD14 Вопрос" }
+    { "tag": "MISCELLANEOUS_VOTE_TITLE", "value": "\uD83E\uDD14 Вопрос" },
+
+
+
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_ERROR_PROCESSING", "value": "Тайное голосование уже запущено. Пожалуйста, подождите." },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_ERROR_PM", "value": "Один из игроков ([USER_NAME]) заблокировал бота или запретил личные сообщения от участников сервера. Провести тайное голосование невозможно." },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_ERROR_NOT_ENOUGH_USERS", "value": "Слишком мало пользователей." },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_ERROR_TOO_MUCH_USERS", "value": "Слишком много пользователей!" },
+
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_TITLE", "value": "🕵️ Тайное голосование" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_DESCRIPTION", "value": "Вопрос: [SECRET_VOTE_MSG]\nВремя на голосование заканчивается [TIMESTAMP]." },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_FIELD_TITLE_PLAYER", "value": "Игрок" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_FIELD_TITLE_READY", "value": "Готов?" },
+
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_PM_DESCRIPTION", "value": "Вопрос: [SECRET_VOTE_MSG]\n⏳ **__Поторопитесь!__** Голосование закончится [TIMESTAMP]." },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_PM_DESCRIPTION_RESULT_YES", "value": "Вопрос: [SECRET_VOTE_MSG]\nВаш выбор: <:Yes:808418109710794843> **да**.\n\nЧтобы узнать результаты, перейдите по ссылке.\n[LINK]" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_PM_DESCRIPTION_RESULT_ABSTAINED", "value": "Вопрос: [SECRET_VOTE_MSG]\nВаш выбор: 🤔 **воздержался**.\n\nЧтобы узнать результаты, перейдите по ссылке.\n[LINK]" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_PM_DESCRIPTION_RESULT_NO", "value": "Вопрос: [SECRET_VOTE_MSG]\nВаш выбор: <:No:808418109319938099> **нет**.\n\nЧтобы узнать результаты, перейдите по ссылке.\n[LINK]" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_PM_DESCRIPTION_RESULT_TIMEOUT_ABSTAINED", "value": "Вопрос: [SECRET_VOTE_MSG]\n⏰❗ Время вышло! Ваш ответ был отмечен как 🤔 **воздержался**.\n\nЧтобы узнать результаты, перейдите по ссылке.\n[LINK]" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_PM_DESCRIPTION_RESULT_TIMEOUT_NO", "value": "Вопрос: [SECRET_VOTE_MSG]\n⏰❗ Время вышло! Ваш ответ был отмечен как <:No:808418109319938099> **нет**.\n\nЧтобы узнать результаты, перейдите по ссылке.\n[LINK]" },
+
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_FIELD_TITLE_YES", "value": "<:Yes:808418109710794843> Да" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_FIELD_TITLE_ABSTAINED", "value": "🤔 Воздержался" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_FIELD_TITLE_NO", "value": "<:No:808418109319938099> Нет" },
+
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_RESULT_DESCRIPTION", "value": "Вопрос: [SECRET_VOTE_MSG]" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_RESULT_TIMEOUT_TO_ABSTAINED_DESCRIPTION", "value": "Вопрос: [SECRET_VOTE_MSG]\n⏰❗ Время вышло! Игроки, которые не успели проголосовать, отмечены как 🤔 \"воздержался\"." },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_RESULT_TIMEOUT_TO_NO_DESCRIPTION", "value": "Вопрос: [SECRET_VOTE_MSG]\n⏰❗ Время вышло! Игроки, которые не успели проголосовать, отмечены как <:No:808418109319938099> \"нет\"." },
+
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_BUTTON_YES", "value": "Да" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_BUTTON_ABSTAINED", "value": "Воздержался" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_BUTTON_NO", "value": "Нет" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_BUTTON_DELETE", "value": "Удалить" }
   ]
 }

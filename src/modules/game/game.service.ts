@@ -28,13 +28,13 @@ export class GameService extends ModuleBaseService {
     }
 
     private getFFAEmojisConfigsStrings(): string[][] {
-        return UtilsDataGameTags.FFAOptionsConfigsStrings
+        return Array.from(UtilsDataGameTags.FFAGameTagsMap.values())
             .map((arr: string[]): string[] =>
                 arr.map((option: string): string => option + "_EMOJI"));
     }
 
     private getTeamersEmojisConfigsStrings(): string[][] {
-        return UtilsDataGameTags.teamersOptionsConfigsStrings
+        return Array.from(UtilsDataGameTags.teamersGameTagsMap.values())
             .map((arr: string[]): string[] =>
                 arr.map((option: string): string => option + "_EMOJI"));
     }
@@ -65,7 +65,7 @@ export class GameService extends ModuleBaseService {
                 }
     }
 
-    public async ffa(interaction: CommandInteraction, usersInclude: string, usersExclude: string) {
+    public async ffa(interaction: CommandInteraction, usersInclude: string, usersExclude: string, isShort: boolean = false) {
         await interaction.deferReply();
         let users: User[] = UtilsServiceUsers.getFromVoice(interaction);
         let usersIncludeID: string[] = usersInclude
@@ -87,16 +87,19 @@ export class GameService extends ModuleBaseService {
         users = Array.from(new Set(users
             .filter(user => usersExcludeID.indexOf(user.id) === -1)));
 
-        let gameFFAMainFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsDataGameTags.FFAHeaderConfigsStrings);
+        let gameFFAMainFlags: number[] = await this.getManySettingNumber(interaction, ...Array.from(UtilsDataGameTags.FFAGameTagsMap.keys()));
         let gameFFAOptionsFlags: number[][] = [];
+        if(isShort)
+            gameFFAMainFlags = Array<number>(gameFFAMainFlags.length-1).fill(0).concat(1);
 
-        let headers: string[] =  await this.getManyText(interaction, UtilsDataGameTags.FFAHeaderConfigsStrings);
+        let headers: string[] =  await this.getManyText(interaction, Array.from(UtilsDataGameTags.FFAGameTagsMap.keys()));
         let options: string[][] = [], emojis: string[][] = [];
 
-        for(let i in UtilsDataGameTags.FFAOptionsConfigsStrings) {
-            gameFFAOptionsFlags.push(await this.getManySettingNumber(interaction, ...UtilsDataGameTags.FFAOptionsConfigsStrings[i]));
-            options.push(await this.getManyText(interaction, UtilsDataGameTags.FFAOptionsConfigsStrings[i]));
-            emojis.push(await this.getManySettingString(interaction, ...this.getFFAEmojisConfigsStrings()[i]));
+        let ffaValues: string[][] = Array.from(UtilsDataGameTags.FFAGameTagsMap.values());
+        for(let i in ffaValues) {
+            gameFFAOptionsFlags.push(await this.getManySettingNumber(interaction, ...ffaValues[i]));
+            options.push(await this.getManyText(interaction, ffaValues[i]));
+            emojis.push(await this.getManyText(interaction, this.getFFAEmojisConfigsStrings()[i]));
         }
         this.filterOptions(gameFFAMainFlags, gameFFAOptionsFlags, headers, options, emojis);
 
@@ -106,13 +109,9 @@ export class GameService extends ModuleBaseService {
         let draftFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsDataCivilizations.civilizationsTags);
         let draftEmojis: string[] = await this.getManySettingString(interaction, ...UtilsDataCivilizations.civilizationsTags.map((str: string): string => str+"_EMOJI"));
         let draftOptions: string[] = (await this.getManyText(interaction, UtilsDataCivilizations.civilizationsTags, draftEmojis.map(str => [str])));
-        for(let i: number = 0; i < draftFlags.length; i++)
-            if(draftFlags[i] === 0) {
-                draftFlags.splice(i, 1);
-                draftOptions.splice(i, 1);
-                draftEmojis.splice(i, 1);
-                i--;
-            }
+        
+        draftEmojis = draftEmojis.filter((str: string, index: number): boolean => !!draftFlags[index]);
+        draftOptions = draftOptions.filter((str: string, index: number): boolean => !!draftFlags[index]);
 
         let voteTimeMs: number = await this.getOneSettingNumber(interaction, "GAME_VOTE_TIME_MS");
         let banThreshold: number = Math.ceil(await this.getOneSettingNumber(interaction,
@@ -239,7 +238,8 @@ export class GameService extends ModuleBaseService {
                 : await interaction.channel.send(game.entityDraft.getContent());
             game.entityDraft.message = message;
             if(await this.getOneSettingString(game.interaction, "BASE_LANGUAGE") !== await this.getOneSettingString("DEFAULT", "BASE_LANGUAGE")) 
-                game.entityDraft.englishLanguageOptions = (await this.getManyText("DEFAULT", UtilsDataCivilizations.civilizationsTags, draftEmojis.map(str => [str])));
+                game.entityDraft.englishLanguageOptions = (await this.getManyText("DEFAULT", UtilsDataCivilizations.civilizationsTags, draftEmojis.map(str => [str])))
+                    .filter((str: string, index: number): boolean => !!draftFlags[index]);
             game.entityDraft.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityDraft.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
             game.entityDraft.messageCollector = message.channel.createMessageCollector({time: voteTimeMs});
@@ -274,7 +274,7 @@ export class GameService extends ModuleBaseService {
         }
     }
 
-    public async teamers(interaction: CommandInteraction, usersInclude: string, usersExclude: string) {
+    public async teamers(interaction: CommandInteraction, usersInclude: string, usersExclude: string, isShort: boolean = false) {
         await interaction.deferReply();
         let users: User[] = UtilsServiceUsers.getFromVoice(interaction);
         let usersIncludeID: string[] = usersInclude
@@ -296,16 +296,19 @@ export class GameService extends ModuleBaseService {
         users = Array.from(new Set(users
             .filter(user => usersExcludeID.indexOf(user.id) === -1)));
 
-        let gameTeamersMainFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsDataGameTags.teamersHeaderConfigsStrings);
+        let gameTeamersMainFlags: number[] = await this.getManySettingNumber(interaction, ...Array.from(UtilsDataGameTags.teamersGameTagsMap.keys()));
         let gameTeamersOptionsFlags: number[][] = [];
+        if(isShort)
+            gameTeamersMainFlags = Array<number>(gameTeamersMainFlags.length-1).fill(0).concat(1);
 
-        let headers: string[] =  await this.getManyText(interaction, UtilsDataGameTags.teamersHeaderConfigsStrings);
+        let headers: string[] =  await this.getManyText(interaction, Array.from(UtilsDataGameTags.teamersGameTagsMap.keys()));
         let options: string[][] = [], emojis: string[][] = [];
 
-        for(let i in UtilsDataGameTags.teamersOptionsConfigsStrings) {
-            gameTeamersOptionsFlags.push(await this.getManySettingNumber(interaction, ...UtilsDataGameTags.teamersOptionsConfigsStrings[i]));
-            options.push(await this.getManyText(interaction, UtilsDataGameTags.teamersOptionsConfigsStrings[i]));
-            emojis.push(await this.getManySettingString(interaction, ...this.getTeamersEmojisConfigsStrings()[i]))
+        let teamersValues: string[][] = Array.from(UtilsDataGameTags.teamersGameTagsMap.values());
+        for(let i in teamersValues) {
+            gameTeamersOptionsFlags.push(await this.getManySettingNumber(interaction, ...teamersValues[i]));
+            options.push(await this.getManyText(interaction, teamersValues[i]));
+            emojis.push(await this.getManyText(interaction, this.getTeamersEmojisConfigsStrings()[i]))
         }
         this.filterOptions(gameTeamersMainFlags, gameTeamersOptionsFlags, headers, options, emojis);
 
@@ -317,13 +320,9 @@ export class GameService extends ModuleBaseService {
         let draftFlags: number[] = await this.getManySettingNumber(interaction, ...UtilsDataCivilizations.civilizationsTags);
         let draftEmojis: string[] = await this.getManySettingString(interaction, ...UtilsDataCivilizations.civilizationsTags.map((str: string): string => str+"_EMOJI"));
         let draftOptions: string[] = (await this.getManyText(interaction, UtilsDataCivilizations.civilizationsTags, draftEmojis.map(str => [str])));
-        for(let i: number = 0; i < draftFlags.length; i++)
-            if(draftFlags[i] === 0) {
-                draftFlags.splice(i, 1);
-                draftOptions.splice(i, 1);
-                draftEmojis.splice(i, 1);
-                i--;
-            }
+        
+        draftEmojis = draftEmojis.filter((str: string, index: number): boolean => !!draftFlags[index]);
+        draftOptions = draftOptions.filter((str: string, index: number): boolean => !!draftFlags[index]);
 
         let voteTimeMs: number = await this.getOneSettingNumber(interaction, "GAME_VOTE_TIME_MS");
         let banThreshold: number = Math.ceil(await this.getOneSettingNumber(interaction,
@@ -460,7 +459,8 @@ export class GameService extends ModuleBaseService {
                 : await interaction.channel.send(game.entityDraft.getContent());
             game.entityDraft.message = message;
             if(await this.getOneSettingString(game.interaction, "BASE_LANGUAGE") !== await this.getOneSettingString("DEFAULT", "BASE_LANGUAGE"))
-                game.entityDraft.englishLanguageOptions = (await this.getManyText("DEFAULT", UtilsDataCivilizations.civilizationsTags, draftEmojis.map(str => [str])));
+                game.entityDraft.englishLanguageOptions = (await this.getManyText("DEFAULT", UtilsDataCivilizations.civilizationsTags, draftEmojis.map(str => [str])))
+                    .filter((str: string, index: number): boolean => !!draftFlags[index]);
             game.entityDraft.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityDraft.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
             game.entityDraft.messageCollector = message.channel.createMessageCollector({time: voteTimeMs});

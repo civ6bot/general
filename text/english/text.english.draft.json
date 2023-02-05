@@ -114,6 +114,7 @@
     { "tag": "DRAFT_REDRAFT_FIELD_ZERO_USERS", "value": "no" },
     { "tag": "DRAFT_REDRAFT_BUTTON_YES", "value": "Yes" },
     { "tag": "DRAFT_REDRAFT_BUTTON_NO", "value": "No" },
+    { "tag": "DRAFT_REDRAFT_PM_DESCRIPTION", "value": "Redraft vote begins! Follow link below to check it." },
 
     { "tag": "DRAFT_REDRAFT_ERROR_NOT_FOUND", "value": "Your draft was not found." },
     { "tag": "DRAFT_REDRAFT_ERROR_NOT_MEMBER", "value": "You don't have permission to vote there." },

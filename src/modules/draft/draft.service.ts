@@ -1,11 +1,12 @@
 import {ModuleBaseService} from "../base/base.service";
 import {DraftUI} from "./draft.ui";
-import {ButtonInteraction, CommandInteraction, DMChannel, Message, User} from "discord.js";
+import {ButtonInteraction, CommandInteraction, DMChannel, EmbedBuilder, Guild, Message, User} from "discord.js";
 import {Draft, DraftBlind, DraftFFA, DraftTeamers} from "./draft.models";
 import {UtilsGeneratorTimestamp} from "../../utils/generators/utils.generator.timestamp";
 import {UtilsDataCivilizations} from "../../utils/data/utils.data.civilizations";
 import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
 import { UtilsServiceForbiddenPairs } from "../../utils/services/utils.service.forbiddenPairs";
+import { UtilsServicePM } from "../../utils/services/utils.service.PM";
 
 export class DraftService extends ModuleBaseService {
     private draftUI: DraftUI = new DraftUI();
@@ -471,12 +472,12 @@ export class DraftService extends ModuleBaseService {
                 "DRAFT_REDRAFT_FIELD_YES", "DRAFT_REDRAFT_FIELD_UNKNOWN",
                 "DRAFT_REDRAFT_FIELD_NO", "DRAFT_REDRAFT_BUTTON_YES",
                 "DRAFT_REDRAFT_BUTTON_NO", "DRAFT_REDRAFT_FIELD_ZERO_USERS"
-            ], [[draft.runTimes], [draft.thresholdUsers, draft.users.length, UtilsGeneratorTimestamp.getRelativeTime(settings[3])],
+            ], [[draft.runTimes], [draft.thresholdUsers, draft.users.length, UtilsGeneratorTimestamp.getRelativeTime(settings[3]+draft.date.getTime()-Date.now())],
                 [emojis[0], draft.redraftStatus.filter(value => value === 1).length], [draft.redraftStatus.filter(value => value === -1).length],
                 [emojis[1], draft.redraftStatus.filter(value => value === 0).length]
             ]
         );
-        interaction.reply({embeds: this.draftUI.redraftEmbed(
+        let redraftMessage: Message = await interaction.reply({embeds: this.draftUI.redraftEmbed(
             textStrings[0],
                 textStrings[1],
                 textStrings[2],
@@ -484,9 +485,24 @@ export class DraftService extends ModuleBaseService {
                 textStrings[4],
                 textStrings[7],
                 draft
-            ), components: this.draftUI.redraftButtons([textStrings[5], textStrings[6]], emojis)});
+            ), components: this.draftUI.redraftButtons([textStrings[5], textStrings[6]], emojis), 
+            fetchReply: true});
 
         draft.setTimeoutID = setTimeout(DraftService.redraftTimeout, settings[3], draft);
+
+        if(await this.getOneSettingNumber(interaction, "REDRAFT_NOTIFY_PM")) {
+            let pmEmbed: EmbedBuilder[] = this.draftUI.redraftPMEmbed(
+                interaction.guild as Guild,
+                draft.type,
+                textStrings[0],
+                await this.getOneText(interaction, "DRAFT_REDRAFT_PM_DESCRIPTION"),
+                redraftMessage.url
+            );
+            draft.users.forEach((user: User): void => {
+                if(user.id !== interaction.user.id)
+                    UtilsServicePM.send(user, pmEmbed); 
+            });
+        }
     }
 
     public static async redraftTimeout(draft: Draft): Promise<void> {
@@ -532,7 +548,6 @@ export class DraftService extends ModuleBaseService {
             case "Blind":
                 let draftBlind: DraftBlind = draft as DraftBlind;
                 draftBlind.divideCivilizations(draftBlind.redraftCivilizationsAmount);
-                draftBlind.isProcessing = true;
                 draftBlind.pmMessages = [];
                 draftService.blind(draftBlind.interaction as CommandInteraction, 0, "", [], draftBlind);
                 return;
@@ -566,7 +581,7 @@ export class DraftService extends ModuleBaseService {
                 "DRAFT_REDRAFT_FIELD_NO", "DRAFT_REDRAFT_FIELD_ZERO_USERS"
             ], [
                 [draft.runTimes],
-                [draft.thresholdUsers, draft.users.length, UtilsGeneratorTimestamp.getRelativeTime(redraftTimeMs)],
+                [draft.thresholdUsers, draft.users.length, UtilsGeneratorTimestamp.getRelativeTime(redraftTimeMs+draft.date.getTime()-Date.now())],
                 [emojis[0]],
                 [emojis[1]],
                 [emojis[0], draft.redraftStatus.filter(value => value === 1).length],
@@ -595,6 +610,10 @@ export class DraftService extends ModuleBaseService {
             draft.redraftStatus = [];
             setTimeout(DraftService.redraftTimeoutSuccess, 2000, draft);
         } else if(draft.redraftStatus.filter(value => value === 0).length >= draft.users.length-draft.thresholdUsers+1) {
+            if(draft.setTimeoutID !== null) {
+                clearTimeout(draft.setTimeoutID);
+                draft.setTimeoutID = null;
+            }
             draft.isProcessing = false;
             draft.runTimes = 0;
             interaction.message.edit({components: [], embeds: this.draftUI.redraftEmbed(

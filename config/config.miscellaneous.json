@@ -1,3 +1,6 @@
 [
-  { "setting": "MISCELLANEOUS_RANDOM_MAX", "value": 100 }
+  { "setting": "MISCELLANEOUS_RANDOM_MAX", "value": 100 },
+
+  { "setting": "MISCELLANEOUS_SECRET_VOTE_TIME_MS", "value": 60000 },
+  { "setting": "MISCELLANEOUS_SECRET_VOTE_ABSTAINED", "value": 1 }
 ]

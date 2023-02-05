@@ -113,6 +113,7 @@
     { "tag": "DRAFT_REDRAFT_FIELD_ZERO_USERS", "value": "нет" },
     { "tag": "DRAFT_REDRAFT_BUTTON_YES", "value": "За" },
     { "tag": "DRAFT_REDRAFT_BUTTON_NO", "value": "Против" },
+    { "tag": "DRAFT_REDRAFT_PM_DESCRIPTION", "value": "Началось голосование за редрафт. На голосование можно перейти по ссылке ниже." },
 
     { "tag": "DRAFT_REDRAFT_ERROR_NOT_FOUND", "value": "Вашего драфта для редрафта не найдено." },
     { "tag": "DRAFT_REDRAFT_ERROR_NOT_MEMBER", "value": "Вы не участвуете в этом голосовании." },

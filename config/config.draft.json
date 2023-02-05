@@ -151,5 +151,6 @@
   { "setting": "REDRAFT_FFA_THRESHOLD_PERCENT", "value": 50 },
   { "setting": "REDRAFT_TEAMERS_THRESHOLD_PERCENT", "value": 50 },
   { "setting": "REDRAFT_BLIND_THRESHOLD_PERCENT", "value": 50 },
-  { "setting": "REDRAFT_VOTE_TIME_MS", "value": 60000 }
+  { "setting": "REDRAFT_VOTE_TIME_MS", "value": 90000 },
+  { "setting": "REDRAFT_NOTIFY_PM", "value": 1 }
 ]

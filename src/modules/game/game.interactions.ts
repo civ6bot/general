@@ -44,6 +44,47 @@ export abstract class GameInteractionsGrouped {
 }
 
 @Discord()
+@SlashGroup({name: "new-short", description: "Short new game vote with draft only"})
+@SlashGroup("new-short")
+export abstract class DraftVoteInteractionsGrouped {
+    private gameService: GameService = new GameService();
+
+    @Slash({ name: "ffa", description: "Short vote for new FFA game" })
+    public async newShortFFA(
+        @SlashOption({
+            name: "include",
+            description: "add players to vote",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersInclude: string = "",
+        @SlashOption({
+            name: "exclude",
+            description: "remove players from vote",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersExclude: string = "",
+        interaction: CommandInteraction
+    ) { this.gameService.ffa(interaction, usersInclude, usersExclude, true); }
+
+    @Slash( { name: "teamers", description: "Short vote for new Teamers game" })
+    public async newShortTeamers(
+        @SlashOption({
+            name: "include",
+            description: "add players to vote",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersInclude: string = "",
+        @SlashOption({
+            name: "exclude",
+            description: "remove players from vote",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersExclude: string = "",
+        interaction: CommandInteraction
+    ) { this.gameService.teamers(interaction, usersInclude, usersExclude, true); }
+}
+
+@Discord()
 export abstract class GameInteractions {
     private gameService: GameService = new GameService();
 

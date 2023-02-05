@@ -1,5 +1,5 @@
 import {ModuleBaseUI} from "../base/base.ui";
-import {ActionRowBuilder, APIEmbedField, ButtonBuilder, ButtonStyle, ChannelType, EmbedBuilder, User} from "discord.js";
+import {ActionRowBuilder, APIEmbedField, ButtonBuilder, ButtonStyle, ChannelType, EmbedBuilder, Guild, User} from "discord.js";
 import {UtilsGeneratorEmbed} from "../../utils/generators/utils.generator.embed";
 import {UtilsServiceRandom} from "../../utils/services/utils.service.random";
 import {Draft, DraftBlind, DraftFFA, DraftTeamers} from "./draft.models";
@@ -236,5 +236,22 @@ export class DraftUI extends ModuleBaseUI {
             [ButtonStyle.Success, ButtonStyle.Danger],
             ["redraftButton-yes", "redraftButton-no"]
         );
+    }
+
+    public redraftPMEmbed(
+        guild: Guild,
+        type: string,
+        title: string,
+        description: string,
+        url: string
+    ): EmbedBuilder[] {
+        return UtilsGeneratorEmbed.getSingle(
+            `${title} - ${type}`,
+            (type === "Blind") ? "#744EAA" : (type === "FFA") ? "#389fff" : "#00ff40",
+            description + "\n" + url,
+            [],
+            guild.name,
+            guild.iconURL()
+        )
     }
 }

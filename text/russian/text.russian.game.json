@@ -76,6 +76,10 @@
     { "tag": "GAME_FFA_AGE_STANDARD", "value": "Стандартный" },
     { "tag": "GAME_FFA_AGE_NEW", "value": "Новый" },
 
+    { "tag": "GAME_FFA_RIDGES_DEFINITION", "value": "⛰️ **Горные хребты**" },
+    { "tag": "GAME_FFA_RIDGES_DEFINITION_INTERCONTINENTAL", "value": "Межконтинентальные (Standard)" },
+    { "tag": "GAME_FFA_RIDGES_DEFINITION_RANDOM", "value": "Случайные (Classic)" },
+
     { "tag": "GAME_FFA_CITY_CENTER", "value": "🏙️ **Дополнительный доход центров городов**" },
     { "tag": "GAME_FFA_CITY_CENTER_NO", "value": "Отключено" },
     { "tag": "GAME_FFA_CITY_CENTER_CAPITAL", "value": "Включено только для столицы" },
@@ -100,6 +104,14 @@
     { "tag": "GAME_FFA_SHUFFLE", "value": "🔀 **Режим \"Случайные технологии и соц. институты\"**" },
     { "tag": "GAME_FFA_SHUFFLE_NO", "value": "Отключен" },
     { "tag": "GAME_FFA_SHUFFLE_YES", "value": "Включен" },
+
+    { "tag": "GAME_FFA_SECRET_SOCIETIES", "value": "🦉 **Режим \"Тайные сообщества\"**" },
+    { "tag": "GAME_FFA_SECRET_SOCIETIES_NO", "value": "Отключен" },
+    { "tag": "GAME_FFA_SECRET_SOCIETIES_YES", "value": "Включен" },
+
+    { "tag": "GAME_FFA_ZOMBIE", "value": "🧟 **Режим \"Защита от зомби\"**" },
+    { "tag": "GAME_FFA_ZOMBIE_NO", "value": "Отключен" },
+    { "tag": "GAME_FFA_ZOMBIE_YES", "value": "Включен" },
 
     { "tag": "GAME_FFA_GOLD_TRADING", "value": "\uD83E\uDE99 **Торговля золотом**" },
     { "tag": "GAME_FFA_GOLD_TRADING_NO", "value": "Запрещена" },
@@ -173,6 +185,10 @@
     { "tag": "GAME_TEAMERS_AGE", "value": "\uD83C\uDFDE **Возраст мира**" },
     { "tag": "GAME_TEAMERS_AGE_STANDARD", "value": "Стандартный" },
     { "tag": "GAME_TEAMERS_AGE_NEW", "value": "Новый" },
+
+    { "tag": "GAME_TEAMERS_RIDGES_DEFINITION", "value": "⛰️ **Горные хребты**" },
+    { "tag": "GAME_TEAMERS_RIDGES_DEFINITION_INTERCONTINENTAL", "value": "Межконтинентальные (Standard)" },
+    { "tag": "GAME_TEAMERS_RIDGES_DEFINITION_RANDOM", "value": "Случайные (Classic)" },
 
     { "tag": "GAME_TEAMERS_CITY_CENTER", "value": "🏙️ **Дополнительный доход центров городов**" },
     { "tag": "GAME_TEAMERS_CITY_CENTER_NO", "value": "Отключено" },

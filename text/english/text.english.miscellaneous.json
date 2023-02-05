@@ -10,6 +10,38 @@
     { "tag": "MISCELLANEOUS_COIN_HEADS_DESCRIPTION", "value": "**Heads!** \uD83C\uDF15" },
     { "tag": "MISCELLANEOUS_COIN_TAILS_DESCRIPTION", "value": "**Tails!** \uD83C\uDF11" },
 
-    { "tag": "MISCELLANEOUS_VOTE_TITLE", "value": "\uD83E\uDD14 Question" }
+    { "tag": "MISCELLANEOUS_VOTE_TITLE", "value": "\uD83E\uDD14 Question" },
+
+
+
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_ERROR_PROCESSING", "value": "Secret vote is processing. Please, wait." },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_ERROR_PM", "value": "One of users ([USER_NAME]) blocked bot or restricted private messages from guild's users. The secret vote is unable to run." },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_ERROR_NOT_ENOUGH_USERS", "value": "Not enough users to use this command." },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_ERROR_TOO_MUCH_USERS", "value": "Too much users!" },
+
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_TITLE", "value": "🕵️ Secret vote" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_DESCRIPTION", "value": "Question: [SECRET_VOTE_MSG]\nThis vote ends [TIMESTAMP]." },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_FIELD_TITLE_PLAYER", "value": "Player" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_FIELD_TITLE_READY", "value": "Ready?" },
+
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_PM_DESCRIPTION", "value": "Question: [SECRET_VOTE_MSG]\n⏳ **__Hurry up!__** Vote time ends [TIMESTAMP]." },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_PM_DESCRIPTION_RESULT_YES", "value": "Question: [SECRET_VOTE_MSG]\nYour choice: <:Yes:808418109710794843> **yes**.\n\nFollow the link to check results.\n[LINK]" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_PM_DESCRIPTION_RESULT_ABSTAINED", "value": "Question: [SECRET_VOTE_MSG]\nYour choice: 🤔 **abstained**.\n\nFollow the link to check results.\n[LINK]" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_PM_DESCRIPTION_RESULT_NO", "value": "Question: [SECRET_VOTE_MSG]\nYour choice: <:No:808418109319938099> **no**.\n\nFollow the link to check results.\n[LINK]" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_PM_DESCRIPTION_RESULT_TIMEOUT_ABSTAINED", "value": "Question: [SECRET_VOTE_MSG]\n⏰❗ Time out! Your choice marked as 🤔 **abstained**.\n\nFollow the link to check results.\n[LINK]" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_PM_DESCRIPTION_RESULT_TIMEOUT_NO", "value": "Question: [SECRET_VOTE_MSG]\n⏰❗ Time out! Your choice marked as <:No:808418109319938099> **no**.\n\nFollow the link to check results.\n[LINK]" },
+
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_FIELD_TITLE_YES", "value": "<:Yes:808418109710794843> Yes" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_FIELD_TITLE_ABSTAINED", "value": "🤔 Abstained" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_FIELD_TITLE_NO", "value": "<:No:808418109319938099> No" },
+
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_RESULT_DESCRIPTION", "value": "Question: [SECRET_VOTE_MSG]" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_RESULT_TIMEOUT_TO_ABSTAINED_DESCRIPTION", "value": "Question: [SECRET_VOTE_MSG]\n⏰❗ Time out! Players who didn't pick an option marked as 🤔 \"abstained\"." },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_RESULT_TIMEOUT_TO_NO_DESCRIPTION", "value": "Question: [SECRET_VOTE_MSG]\n⏰❗ Time out! Players who didn't pick an option marked as <:No:808418109319938099> \"no\"." },
+
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_BUTTON_YES", "value": "Yes" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_BUTTON_ABSTAINED", "value": "Abstained" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_BUTTON_NO", "value": "No" },
+    { "tag": "MISCELLANEOUS_VOTE_SECRET_BUTTON_DELETE", "value": "Delete" }
   ]
 }

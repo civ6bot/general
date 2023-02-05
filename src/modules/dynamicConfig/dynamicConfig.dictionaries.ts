@@ -21,10 +21,12 @@ export const tagsMap: Map<string, string[]> = new Map<string, string[]>([
         "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MAP", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_DISASTERS",
         "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BONUS_RESOURCES", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_STRATEGIC_RESOURCES",
         "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_WONDERS", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_AGE",
-        "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_CITY_CENTER",
+        "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_RIDGES_DEFINITION", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_CITY_CENTER",
+
         "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_THERMONUCLEAR_DEVICE", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_GREAT_PEOPLE_PASS",
         "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MONOPOLY", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BARBARIAN_CLANS",
-        "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_SHUFFLE",
+        "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_SHUFFLE", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_SECRET_SOCIETIES", 
+        "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_ZOMBIE", 
 
         "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_GOLD_TRADING", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_STRATEGIC_TRADING",
         "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_FRIENDS", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MILITARY_ALLIANCE",
@@ -36,7 +38,7 @@ export const tagsMap: Map<string, string[]> = new Map<string, string[]>([
         "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_MAP", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_DISASTERS",
         "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BONUS_RESOURCES", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_STRATEGIC_RESOURCES",
         "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_WONDERS", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_AGE",
-        "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_CITY_CENTER",
+        "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_RIDGES_DEFINITION", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_CITY_CENTER",
         "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_RELIC", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_REMAPS",
         "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_SPLIT", "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BANS_THRESHOLD"
     ]]
@@ -59,7 +61,19 @@ export const configsMap = new Map<string, DynamicConfigEntity[]>([
             type: "Number",
             minValue: 2,
             maxValue: Math.pow(10, 6)
-        }
+        },
+        {
+            configTag: "MISCELLANEOUS_SECRET_VOTE_TIME_MS",
+            textTag: "DYNAMIC_CONFIG_SETTING_MISCELLANEOUS_SECRET_VOTE_TIME_MS",
+            type: "NumberTimeSeconds",
+            minValue: 15,
+            maxValue: 600
+        },
+        {
+            configTag: "MISCELLANEOUS_SECRET_VOTE_ABSTAINED",
+            textTag: "DYNAMIC_CONFIG_SETTING_MISCELLANEOUS_SECRET_VOTE_ABSTAINED",
+            type: "Boolean"
+        },
     ]],
     ["DYNAMIC_CONFIG_CATEGORY_SPLIT", [
         {
@@ -169,6 +183,11 @@ export const configsMap = new Map<string, DynamicConfigEntity[]>([
             minValue: 15,
             maxValue: 900
         },
+        {
+            configTag: "REDRAFT_NOTIFY_PM",
+            textTag: "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_NOTIFY_PM",
+            type: "Boolean"
+        },
     ]],
     ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL", [
         {
@@ -223,224 +242,20 @@ export const configsMap = new Map<string, DynamicConfigEntity[]>([
         },
     ]],
 
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MAP", [
-        {
-            configTag: "GAME_FFA_MAP",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[0].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_DISASTERS", [
-        {
-            configTag: "GAME_FFA_DISASTERS",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[1].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BONUS_RESOURCES", [
-        {
-            configTag: "GAME_FFA_BONUS_RESOURCES",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[2].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_STRATEGIC_RESOURCES", [
-        {
-            configTag: "GAME_FFA_STRATEGIC_RESOURCES",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[3].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_WONDERS", [
-        {
-            configTag: "GAME_FFA_WONDERS",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[4].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_AGE", [
-        {
-            configTag: "GAME_FFA_AGE",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[5].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_CITY_CENTER", [
-        {
-            configTag: "GAME_FFA_CITY_CENTER",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[6].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_THERMONUCLEAR_DEVICE", [
-        {
-            configTag: "GAME_FFA_THERMONUCLEAR_DEVICE",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[7].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_GREAT_PEOPLE_PASS", [
-        {
-            configTag: "GAME_FFA_GREAT_PEOPLE_PASS",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[8].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MONOPOLY", [
-        {
-            configTag: "GAME_FFA_MONOPOLY",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[9].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BARBARIAN_CLANS", [
-        {
-            configTag: "GAME_FFA_BARBARIAN_CLANS",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[10].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_SHUFFLE", [
-        {
-            configTag: "GAME_FFA_SHUFFLE",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[11].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-
-
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_GOLD_TRADING", [
-        {
-            configTag: "GAME_FFA_GOLD_TRADING",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[12].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_STRATEGIC_TRADING", [
-        {
-            configTag: "GAME_FFA_STRATEGIC_TRADING",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[13].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_FRIENDS", [
-        {
-            configTag: "GAME_FFA_FRIENDS",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[14].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MILITARY_ALLIANCE", [
-        {
-            configTag: "GAME_FFA_MILITARY_ALLIANCE",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[15].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_CHATTING", [
-        {
-            configTag: "GAME_FFA_CHATTING",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[16].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_DRAFT", [
-        {
-            configTag: "GAME_FFA_DRAFT",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[17].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
+    ...Array.from(UtilsDataGameTags.FFAGameTagsMap.keys()).map((headerTag: string): [string, DynamicConfigEntity[]] => {
+        return ["DYNAMIC_CONFIG_SUBCATEGORY_" + headerTag, [
+            {
+                configTag: headerTag,
+                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
+                type: "Boolean"
+            },
+            ...(UtilsDataGameTags.FFAGameTagsMap.get(headerTag) as string[]).map((configTag: string): DynamicConfigEntity => { return {
+                configTag: configTag,
+                textTag: configTag,
+                type: "BooleanGameSetting"
+            }})
+        ]];
+    }),
     ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BANS_THRESHOLD", [
         {
             configTag: "GAME_FFA_DRAFT_BAN_THRESHOLD_PERCENT",
@@ -451,126 +266,20 @@ export const configsMap = new Map<string, DynamicConfigEntity[]>([
         }
     ]],
 
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_MAP", [
-        {
-            configTag: "GAME_TEAMERS_MAP",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.teamersOptionsConfigsStrings[0].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_DISASTERS", [
-        {
-            configTag: "GAME_TEAMERS_DISASTERS",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.teamersOptionsConfigsStrings[1].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BONUS_RESOURCES", [
-        {
-            configTag: "GAME_TEAMERS_BONUS_RESOURCES",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.teamersOptionsConfigsStrings[2].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_STRATEGIC_RESOURCES", [
-        {
-            configTag: "GAME_TEAMERS_STRATEGIC_RESOURCES",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.teamersOptionsConfigsStrings[3].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_WONDERS", [
-        {
-            configTag: "GAME_TEAMERS_WONDERS",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.teamersOptionsConfigsStrings[4].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_AGE", [
-        {
-            configTag: "GAME_TEAMERS_AGE",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.teamersOptionsConfigsStrings[5].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_CITY_CENTER", [
-        {
-            configTag: "GAME_TEAMERS_CITY_CENTER",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.FFAOptionsConfigsStrings[6].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_RELIC", [
-        {
-            configTag: "GAME_TEAMERS_RELIC",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.teamersOptionsConfigsStrings[7].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_REMAPS", [
-        {
-            configTag: "GAME_TEAMERS_REMAPS",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.teamersOptionsConfigsStrings[8].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
-    ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_SPLIT", [
-        {
-            configTag: "GAME_TEAMERS_SPLIT",
-            textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
-            type: "Boolean",
-        },
-        ...UtilsDataGameTags.teamersOptionsConfigsStrings[9].map((tag: string): DynamicConfigEntity => { return {
-            configTag: tag,
-            textTag: tag,
-            type: "BooleanGameSetting",
-        }})
-    ]],
+    ...Array.from(UtilsDataGameTags.teamersGameTagsMap.keys()).map((headerTag: string): [string, DynamicConfigEntity[]] => {
+        return ["DYNAMIC_CONFIG_SUBCATEGORY_" + headerTag, [
+            {
+                configTag: headerTag,
+                textTag: "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD",
+                type: "Boolean"
+            },
+            ...(UtilsDataGameTags.teamersGameTagsMap.get(headerTag) as string[]).map((configTag: string): DynamicConfigEntity => { return {
+                configTag: configTag,
+                textTag: configTag,
+                type: "BooleanGameSetting"
+            }})
+        ]];
+    }),
     ["DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BANS_THRESHOLD", [
         {
             configTag: "GAME_TEAMERS_DRAFT_BAN_THRESHOLD_PERCENT",

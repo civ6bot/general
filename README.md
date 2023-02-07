@@ -26,12 +26,11 @@ You can [invite](https://discord.com/api/oauth2/authorize?client_id=103308473027
 <br/><br/>
 
 ## <a name="tools"></a>Tools & Technologies
-* **JavaScript, TypeScript, npm, Node.js;**
+* **[Node.js](https://nodejs.org/en/), [npm](https://www.npmjs.com/), [TypeScript](https://www.typescriptlang.org/);**
 * **[nodemon](https://www.npmjs.com/package/nodemon);**
 * **[discord.js](https://discord.js.org/#/), [DiscordX](https://www.npmjs.com/package/discordx);**
-* **[MySQL](https://www.npmjs.com/package/mysql), [SQLite (sqlite3)](https://www.npmjs.com/package/sqlite3);**
-* **[Express](https://expressjs.com/);**
-* **[TypeORM](https://typeorm.io/);**
+* **[Express](https://expressjs.com/), [Axios](https://www.npmjs.com/package/axios);**
+* **[MySQL](https://www.npmjs.com/package/mysql), [SQLite (sqlite3)](https://www.npmjs.com/package/sqlite3), [TypeORM](https://typeorm.io/);**
 * **[Steam WebAPI](https://steamcommunity.com/dev).**
 <br/><br/>
 ## ❤️ Special thanks

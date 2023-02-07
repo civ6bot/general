@@ -33,6 +33,7 @@ You can [invite](https://discord.com/api/oauth2/authorize?client_id=103308473027
 * **[MySQL](https://www.npmjs.com/package/mysql), [SQLite (sqlite3)](https://www.npmjs.com/package/sqlite3), [TypeORM](https://typeorm.io/);**
 * **[Steam WebAPI](https://steamcommunity.com/dev).**
 <br/><br/>
+
 ## ❤️ Special thanks
 Thanks to the patrons and Civilization VI community for donations and supporting. If you want to participate too, you can:
 - donate for Website+VPS maintenance on [Patreon](https://www.patreon.com/civ6bot) or [Boosty](https://boosty.to/civ6bot);

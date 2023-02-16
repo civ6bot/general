@@ -16,8 +16,6 @@ export class RulesService extends ModuleBaseService {
         isModerator: boolean
     ): Promise<ActionRowBuilder<ButtonBuilder>[]> {
         let buttonLabels: string[] = await this.getManyText(interaction, [
-            "RULES_BUTTON_FIRST", "RULES_BUTTON_PREVIOUS",
-            "RULES_BUTTON_NEXT", "RULES_BUTTON_LAST",
             "RULES_BUTTON_DELETE_MESSAGE", "RULES_BUTTON_ADD",
             "RULES_BUTTON_EDIT", "RULES_BUTTON_SHIFT_LEFT",
             "RULES_BUTTON_SHIFT_RIGHT", "RULES_BUTTON_REMOVE"

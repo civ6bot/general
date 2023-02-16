@@ -103,7 +103,7 @@ export class RulesUI extends ModuleBaseUI {
             indexes = [0, 1, 2, 3, 4];
         }
 
-        labels = labels.filter(filterFunction);
+        labels = Array<string>(4).fill("").concat(labels).filter(filterFunction);
         let emojiArray: string[] = [
             "⏮", "◀", "▶", "⏭", "✖",    // 1я, влево, вправо, последняя, удалить сообщение
             "➕", "✏", "↩", "↪", "🗑️"       // добавить, редактировать, сдвинуть влево, сдвинуть право, удалить страницу

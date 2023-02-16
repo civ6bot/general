@@ -62,7 +62,13 @@ export class MiscellaneousService extends ModuleBaseService {
         }
     }
 
-    public async voteSecret(interaction: CommandInteraction, voteContent: string, usersInclude: string, usersExclude: string) {
+    public async voteSecret(
+        interaction: CommandInteraction, 
+        voteContent: string, 
+        usersInclude: string,
+        usersExclude: string,
+        usersOnly: string
+    ) {
         if(MiscellaneousService.votesSecret.get((interaction.guild?.id as string) + (interaction.user.id))) {
             let textStrings: string[] = await this.getManyText(interaction, [
                 "BASE_ERROR_TITLE", "MISCELLANEOUS_VOTE_SECRET_ERROR_PROCESSING"
@@ -70,25 +76,35 @@ export class MiscellaneousService extends ModuleBaseService {
             return interaction.reply({embeds: this.miscellaneousUI.error(textStrings[0], textStrings[1]), ephemeral: true});
         }
 
-        let users: User[] = UtilsServiceUsers.getFromVoice(interaction);
-        let usersIncludeID: string[] = usersInclude
-            .replaceAll("<@", " ")
-            .replaceAll(">", " ")
-            .split(" ")
-            .filter(id => id !== "");
-        let includeUser: User | undefined;
-        for(let id of usersIncludeID) {
-             includeUser = interaction.guild?.members.cache.get(id)?.user;
-            if(includeUser)
-                users.push(includeUser);
+        let users: User[];
+        if(usersOnly === "") {
+            users = usersInclude
+                .replaceAll("<@", " ")
+                .replaceAll(">", " ")
+                .split(" ")
+                .filter(id => id !== "")
+                .map((id: string): User | undefined => interaction.guild?.members.cache.get(id)?.user)
+                .filter(user => !!user)
+                .map(user => user as User)
+                .concat(UtilsServiceUsers.getFromVoice(interaction));
+            let usersExcludeID: string[] = usersExclude
+                .replaceAll("<@", " ")
+                .replaceAll(">", " ")
+                .split(" ")
+                .filter(id => (id !== "") && (id !== interaction.user.id));
+            users = Array.from(new Set(users.filter(user => usersExcludeID.indexOf(user.id) === -1)));
+        } else {
+            users = usersOnly
+                .replaceAll("<@", " ")
+                .replaceAll(">", " ")
+                .split(" ")
+                .filter(id => id !== "")
+                .map((id: string): User | undefined => interaction.guild?.members.cache.get(id)?.user)
+                .filter(user => !!user)
+                .map(user => user as User)
+                .concat(interaction.user);
+            users = Array.from(new Set(users));
         }
-        let usersExcludeID: string[] = usersExclude
-            .replaceAll("<@", " ")
-            .replaceAll(">", " ")
-            .split(" ")
-            .filter(id => (id !== "") && (id !== interaction.user.id));
-        users = Array.from(new Set(users
-            .filter(user => usersExcludeID.indexOf(user.id) === -1)));
 
         if(users.length < this.voteSecretMinUsers) {
             let textStrings: string[] = await this.getManyText(interaction, [

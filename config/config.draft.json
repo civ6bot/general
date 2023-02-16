@@ -67,6 +67,9 @@
   { "setting": "DRAFT_CHINA_QIN_SHI_HUANG_UNIFIER", "value": 1 },
   { "setting": "DRAFT_CHINA_WU_ZETIAN", "value": 1 },
   { "setting": "DRAFT_CHINA_YONGLE", "value": 1 },
+  { "setting": "DRAFT_EGYPT_CLEOPATRA_PTOLEMAIC", "value": 1 },
+  { "setting": "DRAFT_EGYPT_RAMSES", "value": 1 },
+  { "setting": "DRAFT_MALI_SUNDIATA_KEITA", "value": 1 },
 
   { "setting": "DRAFT_AUSTRALIA_EMOJI", "value": "<:Australia:701066628523098183>" },
   { "setting": "DRAFT_AMERICA_EMOJI", "value": "<:America:701066550412836894>" },
@@ -136,13 +139,16 @@
   { "setting": "DRAFT_CHINA_QIN_SHI_HUANG_UNIFIER_EMOJI", "value": "<:China_Qin_Shi_Huang_Unifier:1065759163315146814>" },
   { "setting": "DRAFT_CHINA_WU_ZETIAN_EMOJI", "value": "<:China_Wu_Zetian:1065759167106785330>" },
   { "setting": "DRAFT_CHINA_YONGLE_EMOJI", "value": "<:China_Yongle:1065759170390929428>" },
+  { "setting": "DRAFT_EGYPT_CLEOPATRA_PTOLEMAIC_EMOJI", "value": "<:Egypt_Cleopatra_Ptolemaic:1075846974441521172>" },
+  { "setting": "DRAFT_EGYPT_RAMSES_EMOJI", "value": "<:Egypt_Ramses:1075846977868271727>" },
+  { "setting": "DRAFT_MALI_SUNDIATA_KEITA_EMOJI", "value": "<:Mali_Sundiata_Keita:1075846980737179718>" },
   
   { "setting": "DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT", "value": 2 },
   { "setting": "DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT", "value": 4 },
 
   { "setting": "DRAFT_TEAMERS_MIN_TEAMS", "value": 2 },
   { "setting": "DRAFT_TEAMERS_MAX_TEAMS", "value": 6 },
-  { "setting": "DRAFT_TEAMERS_FORBIDDEN_PAIRS", "value": "01_49 02_39 03_41 09_10 14_15 19_37 20_54 23_34 26_57 28_40 28_55 31_45 36_58 4_59 21_60 34_62 45_63 33_64 20_65" },
+  { "setting": "DRAFT_TEAMERS_FORBIDDEN_PAIRS", "value": "01_49 02_39 03_41 09_10 14_15 19_37 20_54 23_34 26_57 28_40 28_55 31_45 36_58 4_59 21_60 34_62 45_63 33_64 20_65 12_68 26_70" },
 
   { "setting": "DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT", "value": 2 },
   { "setting": "DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT", "value": 6 },

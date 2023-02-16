@@ -8,15 +8,10 @@
     { "tag": "RULES_FIELD_TAGS_TITLE", "value": "Теги" },
 
     { "tag": "RULES_COVER_TITLE", "value": "\uD83D\uDCD5 Правила" },
-    { "tag": "RULES_COVER_DESCRIPTION_HEADER", "value": "Используйте кнопки навигации или команду `/rules <abc>`, чтобы перейти к странице по её тегу или номеру." },
+    { "tag": "RULES_COVER_DESCRIPTION_HEADER", "value": "Используйте кнопки навигации или команду `/rules <abc>`, чтобы перейти к странице по ее тегу или номеру." },
     { "tag": "RULES_COVER_DESCRIPTION_HEADER_ZERO", "value": "Здесь пока ничего нет." },
 
-    { "tag": "RULES_BUTTON_FIRST", "value": "На первую страницу" },
-    { "tag": "RULES_BUTTON_PREVIOUS", "value": "Пред. страница" },
-    { "tag": "RULES_BUTTON_NEXT", "value": "След. страница" },
-    { "tag": "RULES_BUTTON_LAST", "value": "На последнюю страницу" },
     { "tag": "RULES_BUTTON_DELETE_MESSAGE", "value": "Удалить сообщение" },
-
     { "tag": "RULES_BUTTON_ADD", "value": "Добавить" },
     { "tag": "RULES_BUTTON_EDIT", "value": "Изменить" },
     { "tag": "RULES_BUTTON_SHIFT_LEFT", "value": "Сдвинуть влево" },

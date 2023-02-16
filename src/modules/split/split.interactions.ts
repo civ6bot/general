@@ -22,8 +22,26 @@ export abstract class SplitInteractions {
             type: ApplicationCommandOptionType.User,
             required: false
         }) captain2: GuildMember | null = null,
+        @SlashOption({
+            name: "include",
+            description: "add other players to split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersInclude: string = "",
+        @SlashOption({
+            name: "exclude",
+            description: "remove players from split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersExclude: string = "",
+        @SlashOption({
+            name: "only",
+            description: "set only input players, captains and you to the split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersOnly: string = "",
         interaction: CommandInteraction
-    ) { this.splitService.random(interaction, captain1, captain2); }
+    ) { this.splitService.random(interaction, captain1, captain2, usersInclude, usersExclude, usersOnly); }
 
     @Slash({name: "classic", description: "Split: 1-2-1-2..."})
     public async classic(
@@ -39,8 +57,26 @@ export abstract class SplitInteractions {
             type: ApplicationCommandOptionType.User,
             required: false
         }) captain2: GuildMember | null = null,
+        @SlashOption({
+            name: "include",
+            description: "add other players to split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersInclude: string = "",
+        @SlashOption({
+            name: "exclude",
+            description: "remove players from split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersExclude: string = "",
+        @SlashOption({
+            name: "only",
+            description: "set only input players, captains and you to the split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersOnly: string = "",
         interaction: CommandInteraction
-    ) { this.splitService.allLongSplits(interaction, "Classic", captain1, captain2); }
+    ) { this.splitService.allLongSplits(interaction, "Classic", captain1, captain2, usersInclude, usersExclude, usersOnly); }
 
     @Slash({name: "double", description: "Split: 1-2-2, then 1-2-1-2..."})
     public async double(
@@ -56,8 +92,26 @@ export abstract class SplitInteractions {
             type: ApplicationCommandOptionType.User,
             required: false
         }) captain2: GuildMember | null = null,
+        @SlashOption({
+            name: "include",
+            description: "add other players to split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersInclude: string = "",
+        @SlashOption({
+            name: "exclude",
+            description: "remove players from split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersExclude: string = "",
+        @SlashOption({
+            name: "only",
+            description: "set only input players, captains and you to the split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersOnly: string = "",
         interaction: CommandInteraction
-    ) { this.splitService.allLongSplits(interaction, "Double", captain1, captain2); }
+    ) { this.splitService.allLongSplits(interaction, "Double", captain1, captain2, usersInclude, usersExclude, usersOnly); }
 
     @Slash({name: "cwc", description: "Split CWC-like"})
     public async cwc(
@@ -73,8 +127,26 @@ export abstract class SplitInteractions {
             type: ApplicationCommandOptionType.User,
             required: false
         }) captain2: GuildMember | null = null,
+        @SlashOption({
+            name: "include",
+            description: "add other players to split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersInclude: string = "",
+        @SlashOption({
+            name: "exclude",
+            description: "remove players from split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersExclude: string = "",
+        @SlashOption({
+            name: "only",
+            description: "set only input players, captains and you to the split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersOnly: string = "",
         interaction: CommandInteraction
-    ) { this.splitService.allLongSplits(interaction, "CWC", captain1, captain2); }
+    ) { this.splitService.allLongSplits(interaction, "CWC", captain1, captain2, usersInclude, usersExclude, usersOnly); }
 
     @ButtonComponent({id: "split-delete"})
     public async splitDeleteButton(

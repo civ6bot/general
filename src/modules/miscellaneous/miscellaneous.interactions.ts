@@ -53,8 +53,14 @@ export abstract class MiscellaneousInteractions {
             type: ApplicationCommandOptionType.String,
             required: false,
         }) usersExclude: string = "",
+        @SlashOption({
+            name: "only",
+            description: "set only input players and you to the vote",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersOnly: string = "",
         interaction: CommandInteraction
-    ) { this.miscellaneousService.voteSecret(interaction, voteContent, usersInclude, usersExclude); }
+    ) { this.miscellaneousService.voteSecret(interaction, voteContent, usersInclude, usersExclude, usersOnly); }
 
     @ButtonComponent({id: /secretvote-\d+-\d+-delete/})      // `secretVote-guildID-authorID-delete
     public async voteSecretButtonDelete(

@@ -22,8 +22,14 @@ export abstract class GameInteractionsGrouped {
             type: ApplicationCommandOptionType.String,
             required: false,
         }) usersExclude: string = "",
+        @SlashOption({
+            name: "only",
+            description: "set only input players and you to the vote",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersOnly: string = "",
         interaction: CommandInteraction
-    ) { this.gameService.ffa(interaction, usersInclude, usersExclude); }
+    ) { this.gameService.ffa(interaction, usersInclude, usersExclude, usersOnly); }
 
     @Slash( { name: "teamers", description: "Vote for new Teamers game" })
     public async teamers(
@@ -39,8 +45,14 @@ export abstract class GameInteractionsGrouped {
             type: ApplicationCommandOptionType.String,
             required: false,
         }) usersExclude: string = "",
+        @SlashOption({
+            name: "only",
+            description: "set only input players and you to the vote",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersOnly: string = "",
         interaction: CommandInteraction
-    ) { this.gameService.teamers(interaction, usersInclude, usersExclude); }
+    ) { this.gameService.teamers(interaction, usersInclude, usersExclude, usersOnly); }
 }
 
 @Discord()
@@ -63,8 +75,14 @@ export abstract class DraftVoteInteractionsGrouped {
             type: ApplicationCommandOptionType.String,
             required: false,
         }) usersExclude: string = "",
+        @SlashOption({
+            name: "only",
+            description: "set only input players and you to the vote",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersOnly: string = "",
         interaction: CommandInteraction
-    ) { this.gameService.ffa(interaction, usersInclude, usersExclude, true); }
+    ) { this.gameService.ffa(interaction, usersInclude, usersExclude, usersOnly, true); }
 
     @Slash( { name: "teamers", description: "Short vote for new Teamers game" })
     public async newShortTeamers(
@@ -80,8 +98,14 @@ export abstract class DraftVoteInteractionsGrouped {
             type: ApplicationCommandOptionType.String,
             required: false,
         }) usersExclude: string = "",
+        @SlashOption({
+            name: "only",
+            description: "set only input players and you to the vote",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersOnly: string = "",
         interaction: CommandInteraction
-    ) { this.gameService.teamers(interaction, usersInclude, usersExclude, true); }
+    ) { this.gameService.teamers(interaction, usersInclude, usersExclude, usersOnly, true); }
 }
 
 @Discord()

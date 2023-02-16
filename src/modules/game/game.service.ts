@@ -65,27 +65,43 @@ export class GameService extends ModuleBaseService {
                 }
     }
 
-    public async ffa(interaction: CommandInteraction, usersInclude: string, usersExclude: string, isShort: boolean = false) {
+    public async ffa(
+        interaction: CommandInteraction, 
+        usersInclude: string, 
+        usersExclude: string, 
+        usersOnly: string,
+        isShort: boolean = false
+    ) {
         await interaction.deferReply();
-        let users: User[] = UtilsServiceUsers.getFromVoice(interaction);
-        let usersIncludeID: string[] = usersInclude
-            .replaceAll("<@", " ")
-            .replaceAll(">", " ")
-            .split(" ")
-            .filter(id => id !== "");
-        let includeUser: User | undefined;
-        for(let id of usersIncludeID) {
-             includeUser = interaction.guild?.members.cache.get(id)?.user;
-            if(includeUser)
-                users.push(includeUser);
+        let users: User[];
+        if(usersOnly === "") {
+            users = usersInclude
+                .replaceAll("<@", " ")
+                .replaceAll(">", " ")
+                .split(" ")
+                .filter(id => id !== "")
+                .map((id: string): User | undefined => interaction.guild?.members.cache.get(id)?.user)
+                .filter(user => !!user)
+                .map(user => user as User)
+                .concat(UtilsServiceUsers.getFromVoice(interaction));
+            let usersExcludeID: string[] = usersExclude
+                .replaceAll("<@", " ")
+                .replaceAll(">", " ")
+                .split(" ")
+                .filter(id => (id !== "") && (id !== interaction.user.id));
+            users = Array.from(new Set(users.filter(user => usersExcludeID.indexOf(user.id) === -1)));
+        } else {
+            users = usersOnly
+                .replaceAll("<@", " ")
+                .replaceAll(">", " ")
+                .split(" ")
+                .filter(id => id !== "")
+                .map((id: string): User | undefined => interaction.guild?.members.cache.get(id)?.user)
+                .filter(user => !!user)
+                .map(user => user as User)
+                .concat(interaction.user);
+            users = Array.from(new Set(users));
         }
-        let usersExcludeID: string[] = usersExclude
-            .replaceAll("<@", " ")
-            .replaceAll(">", " ")
-            .split(" ")
-            .filter(id => (id !== "") && (id !== interaction.user.id));
-        users = Array.from(new Set(users
-            .filter(user => usersExcludeID.indexOf(user.id) === -1)));
 
         let gameFFAMainFlags: number[] = await this.getManySettingNumber(interaction, ...Array.from(UtilsDataGameTags.FFAGameTagsMap.keys()));
         let gameFFAOptionsFlags: number[][] = [];
@@ -270,31 +286,49 @@ export class GameService extends ModuleBaseService {
             await game.entityReady.destroy();
             GameService.games.delete(game.guildID);
             if(game.thread)
-                await game.thread.delete();
+                try {
+                    await game.thread.delete();
+                } catch {}
         }
     }
 
-    public async teamers(interaction: CommandInteraction, usersInclude: string, usersExclude: string, isShort: boolean = false) {
+    public async teamers(
+        interaction: CommandInteraction, 
+        usersInclude: string, 
+        usersExclude: string, 
+        usersOnly: string,
+        isShort: boolean = false
+    ) {
         await interaction.deferReply();
-        let users: User[] = UtilsServiceUsers.getFromVoice(interaction);
-        let usersIncludeID: string[] = usersInclude
-            .replaceAll("<@", " ")
-            .replaceAll(">", " ")
-            .split(" ")
-            .filter(id => id !== "");
-        let includeUser: User | undefined;
-        for(let id of usersIncludeID) {
-            includeUser = interaction.guild?.members.cache.get(id)?.user;
-            if(includeUser)
-                users.push(includeUser);
+        let users: User[];
+        if(usersOnly === "") {
+            users = usersInclude
+                .replaceAll("<@", " ")
+                .replaceAll(">", " ")
+                .split(" ")
+                .filter(id => id !== "")
+                .map((id: string): User | undefined => interaction.guild?.members.cache.get(id)?.user)
+                .filter(user => !!user)
+                .map(user => user as User)
+                .concat(UtilsServiceUsers.getFromVoice(interaction));
+            let usersExcludeID: string[] = usersExclude
+                .replaceAll("<@", " ")
+                .replaceAll(">", " ")
+                .split(" ")
+                .filter(id => (id !== "") && (id !== interaction.user.id));
+            users = Array.from(new Set(users.filter(user => usersExcludeID.indexOf(user.id) === -1)));
+        } else {
+            users = usersOnly
+                .replaceAll("<@", " ")
+                .replaceAll(">", " ")
+                .split(" ")
+                .filter(id => id !== "")
+                .map((id: string): User | undefined => interaction.guild?.members.cache.get(id)?.user)
+                .filter(user => !!user)
+                .map(user => user as User)
+                .concat(interaction.user);
+            users = Array.from(new Set(users));
         }
-        let usersExcludeID: string[] = usersExclude
-            .replaceAll("<@", " ")
-            .replaceAll(">", " ")
-            .split(" ")
-            .filter(id => (id !== "") && (id !== interaction.user.id))
-        users = Array.from(new Set(users
-            .filter(user => usersExcludeID.indexOf(user.id) === -1)));
 
         let gameTeamersMainFlags: number[] = await this.getManySettingNumber(interaction, ...Array.from(UtilsDataGameTags.teamersGameTagsMap.keys()));
         let gameTeamersOptionsFlags: number[][] = [];
@@ -497,7 +531,9 @@ export class GameService extends ModuleBaseService {
     public static async reactionCollectorFunction(reaction: MessageReaction, user: User): Promise<void> {
         let game: Game | undefined = GameService.games.get(reaction.message.guild?.id as string);
         if (!game) {
-            await reaction.message.delete();
+            try {
+                await reaction.message.delete();
+            } catch {}
             return;
         }
 

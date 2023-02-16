@@ -38,16 +38,46 @@ export class SplitService extends ModuleBaseService {
 
     public async random(
         interaction: CommandInteraction,
-        captain1: GuildMember, captain2: GuildMember | null = null,
-        users: User[] = [],
+        captain1: GuildMember, 
+        captain2: GuildMember | null = null,
+        usersInclude: string,
+        usersExclude: string,
+        usersOnly: string,
         outerSplit: SplitRandom | null = null
     ) {
         let split: SplitRandom;
         if(outerSplit)
             split = outerSplit;
         else {
-            if(users.length === 0)
-                users = UtilsServiceUsers.getFromVoice(interaction);
+            let users: User[];
+            if(usersOnly === "") {
+                users = usersInclude
+                    .replaceAll("<@", " ")
+                    .replaceAll(">", " ")
+                    .split(" ")
+                    .filter(id => id !== "")
+                    .map((id: string): User | undefined => interaction.guild?.members.cache.get(id)?.user)
+                    .filter(user => !!user)
+                    .map(user => user as User)
+                    .concat(UtilsServiceUsers.getFromVoice(interaction));
+                let usersExcludeID: string[] = usersExclude
+                    .replaceAll("<@", " ")
+                    .replaceAll(">", " ")
+                    .split(" ")
+                    .filter(id => (id !== "") && (id !== interaction.user.id));
+                users = Array.from(new Set(users.filter(user => usersExcludeID.indexOf(user.id) === -1)));
+            } else {
+                users = usersOnly
+                    .replaceAll("<@", " ")
+                    .replaceAll(">", " ")
+                    .split(" ")
+                    .filter(id => id !== "")
+                    .map((id: string): User | undefined => interaction.guild?.members.cache.get(id)?.user)
+                    .filter(user => !!user)
+                    .map(user => user as User)
+                    .concat(interaction.user);
+                users = Array.from(new Set(users));
+            }
             split = new SplitRandom(interaction, [captain1.user, captain2?.user || null], users);
         }
         this.checkSplit(split);
@@ -116,7 +146,9 @@ export class SplitService extends ModuleBaseService {
         interaction: CommandInteraction, type: string,
         captain1: GuildMember,
         captain2: GuildMember | null = null,
-        users: User[] = [],
+        usersInclude: string,
+        usersExclude: string,
+        usersOnly: string,
         outerSplit: Split | null = null
     ) {
         let split: Split;
@@ -124,8 +156,35 @@ export class SplitService extends ModuleBaseService {
             split = outerSplit;
         else {
             await interaction.deferReply();
-            if(users.length === 0)
-                users = UtilsServiceUsers.getFromVoice(interaction);
+            let users: User[];
+            if(usersOnly === "") {
+                users = usersInclude
+                    .replaceAll("<@", " ")
+                    .replaceAll(">", " ")
+                    .split(" ")
+                    .filter(id => id !== "")
+                    .map((id: string): User | undefined => interaction.guild?.members.cache.get(id)?.user)
+                    .filter(user => !!user)
+                    .map(user => user as User)
+                    .concat(UtilsServiceUsers.getFromVoice(interaction));
+                let usersExcludeID: string[] = usersExclude
+                    .replaceAll("<@", " ")
+                    .replaceAll(">", " ")
+                    .split(" ")
+                    .filter(id => (id !== "") && (id !== interaction.user.id));
+                users = Array.from(new Set(users.filter(user => usersExcludeID.indexOf(user.id) === -1)));
+            } else {
+                users = usersOnly
+                    .replaceAll("<@", " ")
+                    .replaceAll(">", " ")
+                    .split(" ")
+                    .filter(id => id !== "")
+                    .map((id: string): User | undefined => interaction.guild?.members.cache.get(id)?.user)
+                    .filter(user => !!user)
+                    .map(user => user as User)
+                    .concat(interaction.user);
+                users = Array.from(new Set(users));
+            }
             switch(type) {
                 case "Classic":
                     split = new SplitClassic(interaction, [captain1.user, captain2?.user || null], users);
@@ -419,7 +478,7 @@ export class SplitService extends ModuleBaseService {
         split.emojis = UtilsServiceLetters.getLetters().slice(0, split.users.length);
         split.currentStep = 1;
         split.currentCaptainIndex = 0;
-        this.allLongSplits(split.interaction as CommandInteraction, split.type, split.interaction?.member as GuildMember, null, [], split);
+        this.allLongSplits(split.interaction as CommandInteraction, split.type, split.interaction?.member as GuildMember, null, "", "", "", split);
         interaction.message.delete();
     }
 
@@ -432,7 +491,7 @@ export class SplitService extends ModuleBaseService {
             return;
 
         interaction.message.delete();
-        this.allLongSplits(split.interaction as CommandInteraction, split.type, split.interaction?.member as GuildMember, null, [], split);
+        this.allLongSplits(split.interaction as CommandInteraction, split.type, split.interaction?.member as GuildMember, null,  "", "", "", split);
     }
 
     public async splitSkipButton(interaction: ButtonInteraction) {

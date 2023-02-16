@@ -11,12 +11,7 @@
     { "tag": "RULES_COVER_DESCRIPTION_HEADER", "value": "Use navigation buttons or `/rules <abc>` command to get page." },
     { "tag": "RULES_COVER_DESCRIPTION_HEADER_ZERO", "value": "Pages not found." },
 
-    { "tag": "RULES_BUTTON_FIRST", "value": "First page" },
-    { "tag": "RULES_BUTTON_PREVIOUS", "value": "Prev. page" },
-    { "tag": "RULES_BUTTON_NEXT", "value": "Next Page" },
-    { "tag": "RULES_BUTTON_LAST", "value": "Last page" },
     { "tag": "RULES_BUTTON_DELETE_MESSAGE", "value": "Delete message" },
-
     { "tag": "RULES_BUTTON_ADD", "value": "Add" },
     { "tag": "RULES_BUTTON_EDIT", "value": "Edit" },
     { "tag": "RULES_BUTTON_SHIFT_LEFT", "value": "Shift left" },

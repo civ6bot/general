@@ -20,7 +20,7 @@
     { "tag": "DYNAMIC_CONFIG_BUTTON_DELETE", "value": "Удалить сообщение" },
 
     { "tag": "DYNAMIC_CONFIG_RESET_TITLE", "value": "\uD83D\uDD04 Сброс настроек" },
-    { "tag": "DYNAMIC_CONFIG_RESET_DESCRIPTION", "value": "Эта опция сбросит все настройки текущей категории и всех её подкатегорий до настроек по умолчанию.\n\n❗ **Это действие нельзя отменить!** Вы уверены?" },
+    { "tag": "DYNAMIC_CONFIG_RESET_DESCRIPTION", "value": "Эта опция сбросит все настройки текущей категории и всех ее подкатегорий до настроек по умолчанию.\n\n❗ **Это действие нельзя отменить!** Вы уверены?" },
     { "tag": "DYNAMIC_CONFIG_RESET_BUTTON_CONFIRM", "value": "Сбросить настройки" },
     { "tag": "DYNAMIC_CONFIG_RESET_BUTTON_CANCEL", "value": "Отмена" },
 
@@ -69,7 +69,7 @@
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT", "value": "Минимум цивилизаций в драфте" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT", "value": "Максимум цивилизаций в драфте" },
 
-    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_TEAMERS_FORBIDDEN_PAIRS", "value": "Запрещённые пары для одной команды" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_TEAMERS_FORBIDDEN_PAIRS", "value": "Запрещенные пары для одной команды" },
 
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT", "value": "Минимум цивилизаций в драфте" },
     { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT", "value": "Максимум цивилизаций в драфте" },

@@ -69,8 +69,11 @@
     { "tag": "DRAFT_CHINA_QIN_SHI_HUANG_UNIFIER", "value": "China [EMOJI] Qin Shi Huang (Unifier)" },
     { "tag": "DRAFT_CHINA_WU_ZETIAN", "value": "China [EMOJI] Wu Zetian" },
     { "tag": "DRAFT_CHINA_YONGLE", "value": "China [EMOJI] Yongle" },
+    { "tag": "DRAFT_EGYPT_CLEOPATRA_PTOLEMAIC", "value": "Egypt [EMOJI] Cleopatra (Ptolemaic)" },
+    { "tag": "DRAFT_EGYPT_RAMSES", "value": "Egypt [EMOJI] Ramses II" },
+    { "tag": "DRAFT_MALI_SUNDIATA_KEITA", "value": "Mali [EMOJI] Sundiata Keita" },
 
-
+    
 
     { "tag": "DRAFT_ERROR_NOT_ENOUGH_CIVILIZATIONS", "value": "Not enough civilizations for this draft" },
     { "tag": "DRAFT_ERROR_NO_VOICE", "value": "You need to be in voice channel to use draft command." },

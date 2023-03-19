@@ -110,12 +110,12 @@ export abstract class GameEntity {
 
     public async destroy(): Promise<void> {
         try {
-            await this.messageReactionCollector?.stop();
+            this.messageReactionCollector?.stop();
         } catch {} finally {
             this.messageReactionCollector = null;
         }
         try {
-            await this.message?.delete();
+            this.message?.delete();
         } catch {} finally {
             this.message = null;
         }
@@ -215,7 +215,7 @@ export class GameEntityDraft extends GameEntity {
             this.messageReactionCollector = null;
         }
         try {
-            await this.message?.delete();
+            this.message?.delete();
         } catch {} finally {
             this.message = null;
         }
@@ -226,7 +226,7 @@ export class GameEntityDraft extends GameEntity {
         }
         for(let message of this.collectedMessages)
             try {
-                await message.delete();
+                message.delete();
             } catch {}
         this.collectedMessages = [];
     }

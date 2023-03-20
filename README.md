@@ -2,7 +2,7 @@
 
 **Civ6Bot General** has all requirements to start-up your Civilization VI game: draft, new game voting, team creating and other usefull stuff. You can use it standalone or with other [Civ6Bot project](https://github.com/civ6bot/) Discord bots.
 <br>
-Current version: `3.2.2` (Leader Pass pt.3, China leaders & major architecture update).
+Current version: `3.2.4` (Leader Pass pt. 5, Great Builders pack).
 <br>
 You can [invite](https://discord.com/api/oauth2/authorize?client_id=1033084730276581456&permissions=466021116993&scope=bot) bot to your Discord server.
 <p align="center">

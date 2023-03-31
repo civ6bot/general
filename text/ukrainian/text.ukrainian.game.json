@@ -1,0 +1,214 @@
+{
+  "lang": "Ukrainian",
+  "text": [
+    { "tag": "GAME_ERROR_PROCESSING", "value": "Наразі вже проводиться голосування. Будь ласка, зачекайте." },
+    { "tag": "GAME_ERROR_NO_VOICE", "value": "Для використання цієї команди ви маєте перебувати в голосовому каналі." },
+    { "tag": "GAME_ERROR_NOT_ENOUGH_USERS", "value": "Недостатньо користувачів для використання цієї команди." },
+    { "tag": "GAME_ERROR_TOO_MUCH_USERS", "value": "Занадто багато гравців!" },
+    { "tag": "GAME_ERROR_READY_BUTTON_NOT_MEMBER", "value": "Ви не берете участі в цьому голосуванні." },
+    { "tag": "GAME_ERROR_DELETE_BUTTON_NOT_OWNER", "value": "Ви не є автором цього голосування." },
+    { "tag": "GAME_ERROR_THREAD", "value": "Бот не може створити гілку для початку голосування." },
+
+    { "tag": "GAME_NOTIFY_THREAD", "value": "Гілку для голосування успішно створено." },
+    { "tag": "GAME_FFA_THREAD_NAME", "value": "\uD83D\uDDFF FFA от [USER_TAG]" },
+    { "tag": "GAME_TEAMERS_THREAD_NAME", "value": "\uD83D\uDC32 Teamers от [USER_TAG]" },
+
+    { "tag": "GAME_NOTIFY_FFA_PM_TITLE", "value": "\uD83D\uDDFF Нова гра в режимі FFA" },
+    { "tag": "GAME_NOTIFY_TEAMERS_PM_TITLE", "value": "\uD83D\uDC32 Нова гра в режимі Teamers" },
+    { "tag": "GAME_NOTIFY_PM_DESCRIPTION", "value": "На голосування можна перейти за посиланням нижче." },
+
+    { "tag": "GAME_BANS_START", "value": "\uD83E\uDD14 **Бани цивілізацій:** немає.\n*Добавте реакцію або напишіть назви цивілізацій нижче.*" },
+    { "tag": "GAME_BANS_PROCESSING", "value": "\uD83E\uDD14 **Бани цивілізацій:**" },
+    { "tag": "GAME_BANS_NONE", "value": "Ні" },
+
+    { "tag": "GAME_BUTTON_READY", "value": "Готовий!" },
+    { "tag": "GAME_BUTTON_DELETE", "value": "Видалити" },
+    { "tag": "GAME_BUTTON_SKIP", "value": "Достроково завершити" },
+    { "tag": "GAME_NOTIFY_DELETED", "value": "Голосування успішно видалено." },
+
+    { "tag": "GAME_READY_TITLE", "value": "⚡ Ви готові?" },
+    { "tag": "GAME_READY_DESCRIPTION_PROCESSING", "value": "⏳ **__Покваптеся! __** Час на голосування закінчиться [TIMESTAMP]." },
+    { "tag": "GAME_READY_DESCRIPTION_FINISH", "value": "⚡ **Усі готові!**" },
+    { "tag": "GAME_READY_DESCRIPTION_FORCE_END", "value": "⏭️ **Голосування завершено достроково.**" },
+    { "tag": "GAME_READY_FIELD_PLAYERS_TITLE", "value": "Гравець:" },
+    { "tag": "GAME_READY_FIELD_READY_TITLE", "value": "Готов?" },
+
+    { "tag": "GAME_RESULT_TIMEOUT_DESCRIPTION", "value": "⏰❗ Час вийшов! Деякі гравці не встигли проголосувати." },
+    { "tag": "GAME_RESULT_UNKNOWN", "value": "❔ Невідомо" },
+
+    { "tag": "GAME_FFA_RESULT_TITLE", "value": "⚖ Голосування для нової гри - FFA" },
+
+    { "tag": "GAME_FFA_MAP", "value": "\uD83C\uDF0D **Мапа**" },
+    { "tag": "GAME_FFA_MAP_PANGAEA", "value": "Пангея" },
+    { "tag": "GAME_FFA_MAP_CONTINENTS", "value": "Континенти" },
+    { "tag": "GAME_FFA_MAP_HIGHLANDS", "value": "Нагір'я" },
+    { "tag": "GAME_FFA_MAP_SEVEN_SEAS", "value": "Сім морів" },
+    { "tag": "GAME_FFA_MAP_LAKES", "value": "Озера" },
+    { "tag": "GAME_FFA_MAP_ARCHIPELAGO", "value": "Архіпелаги" },
+    { "tag": "GAME_FFA_MAP_INLAND_SEA", "value": "Внутрішнє море" },
+    { "tag": "GAME_FFA_MAP_FRACTAL", "value": "Фрактал" },
+    { "tag": "GAME_FFA_MAP_CONTINENTS_AND_ISLANDS", "value": "Континенти та острови" },
+    { "tag": "GAME_FFA_MAP_PRIMORDIAL", "value": "Московія" },
+    { "tag": "GAME_FFA_MAP_TILTED_AXIS", "value": "Похила вісь" },
+
+    { "tag": "GAME_FFA_DISASTERS", "value": "\uD83C\uDF0B **Стихійні лиха**" },
+    { "tag": "GAME_FFA_DISASTERS_0", "value": "Мінімальні" },
+    { "tag": "GAME_FFA_DISASTERS_1", "value": "Слабкі" },
+    { "tag": "GAME_FFA_DISASTERS_2", "value": "Стандартні" },
+    { "tag": "GAME_FFA_DISASTERS_3", "value": "Посилені" },
+    { "tag": "GAME_FFA_DISASTERS_4", "value": "Донбасс" },
+
+    { "tag": "GAME_FFA_BONUS_RESOURCES", "value": "\uD83C\uDF3D **Бонусные ресурсы**" },
+    { "tag": "GAME_FFA_BONUS_RESOURCES_STANDARD", "value": "Стандартні" },
+    { "tag": "GAME_FFA_BONUS_RESOURCES_ABUNDANT", "value": "Ізобильні" },
+
+    { "tag": "GAME_FFA_STRATEGIC_RESOURCES", "value": "\uD83D\uDC0E **Стратегічні ресурси**" },
+    { "tag": "GAME_FFA_STRATEGIC_RESOURCES_STANDARD", "value": "Стандартні" },
+    { "tag": "GAME_FFA_STRATEGIC_RESOURCES_ABUNDANT", "value": "Ізобильні" },
+    { "tag": "GAME_FFA_STRATEGIC_RESOURCES_EPIC", "value": "На імбе" },
+    { "tag": "GAME_FFA_STRATEGIC_RESOURCES_GUARANTEED", "value": "Гарантовані" },
+
+    { "tag": "GAME_FFA_WONDERS", "value": "⭐ **Кількість чудес природи**" },
+    { "tag": "GAME_FFA_WONDERS_STANDARD", "value": "Стандартні" },
+    { "tag": "GAME_FFA_WONDERS_ABUNDANT", "value": "Ізобильні" },
+
+    { "tag": "GAME_FFA_AGE", "value": "\uD83C\uDFDE **Возраст мира**" },
+    { "tag": "GAME_FFA_AGE_STANDARD", "value": "Стандартний" },
+    { "tag": "GAME_FFA_AGE_NEW", "value": "Новий" },
+
+    { "tag": "GAME_FFA_RIDGES_DEFINITION", "value": "⛰️ **Гірські хребти**" },
+    { "tag": "GAME_FFA_RIDGES_DEFINITION_INTERCONTINENTAL", "value": "Міжконтинентальні (Standard)" },
+    { "tag": "GAME_FFA_RIDGES_DEFINITION_RANDOM", "value": "Випадкові (Classic)" },
+
+    { "tag": "GAME_FFA_CITY_CENTER", "value": "🏙️ **Додатковий дохід центрів міст**" },
+    { "tag": "GAME_FFA_CITY_CENTER_NO", "value": "Вимкнено" },
+    { "tag": "GAME_FFA_CITY_CENTER_CAPITAL", "value": "Включено тільки для столиці" },
+    { "tag": "GAME_FFA_CITY_CENTER_YES", "value": "Включено для всіх міст" },
+
+    { "tag": "GAME_FFA_THERMONUCLEAR_DEVICE", "value": "🚀 **Термоядерні пристрої**" },
+    { "tag": "GAME_FFA_THERMONUCLEAR_DEVICE_NO", "value": "Заборонені" },
+    { "tag": "GAME_FFA_THERMONUCLEAR_DEVICE_YES", "value": "Шлеппа дозволяю" },
+
+    { "tag": "GAME_FFA_GREAT_PEOPLE_PASS", "value": "🧐 **Відмова від Великих людей**" },
+    { "tag": "GAME_FFA_GREAT_PEOPLE_PASS_NO", "value": "Заборонено" },
+    { "tag": "GAME_FFA_GREAT_PEOPLE_PASS_YES", "value": "Дозволено" },
+
+    { "tag": "GAME_FFA_MONOPOLY", "value": "🏭 **Режим \"Монополії та Корпорації\"**" },
+    { "tag": "GAME_FFA_MONOPOLY_NO", "value": "Відключений" },
+    { "tag": "GAME_FFA_MONOPOLY_YES", "value": "Дозволений" },
+
+    { "tag": "GAME_FFA_BARBARIAN_CLANS", "value": "🧌 **Режим \"Варварские кланы\"**" },
+    { "tag": "GAME_FFA_BARBARIAN_CLANS_NO", "value": "Відключений" },
+    { "tag": "GAME_FFA_BARBARIAN_CLANS_YES", "value": "Дозволений" },
+
+    { "tag": "GAME_FFA_SHUFFLE", "value": "🔀 **Режим \"Случайные технологии и соц. институты\"**" },
+    { "tag": "GAME_FFA_SHUFFLE_NO", "value": "Відключений" },
+    { "tag": "GAME_FFA_SHUFFLE_YES", "value": "Дозволений" },
+
+    { "tag": "GAME_FFA_SECRET_SOCIETIES", "value": "🦉 **Режим \"Тайные сообщества\"**" },
+    { "tag": "GAME_FFA_SECRET_SOCIETIES_NO", "value": "Відключений" },
+    { "tag": "GAME_FFA_SECRET_SOCIETIES_YES", "value": "Дозволений" },
+
+    { "tag": "GAME_FFA_ZOMBIE", "value": "🧟 **Режим \"Защита від Орків\"**" },
+    { "tag": "GAME_FFA_ZOMBIE_NO", "value": "Відключений" },
+    { "tag": "GAME_FFA_ZOMBIE_YES", "value": "Дозволений" },
+
+    { "tag": "GAME_FFA_GOLD_TRADING", "value": "\uD83E\uDE99 **Торговля золотом**" },
+    { "tag": "GAME_FFA_GOLD_TRADING_NO", "value": "Заборонено" },
+    { "tag": "GAME_FFA_GOLD_TRADING_ALLIES", "value": "Між союзниками" },
+    { "tag": "GAME_FFA_GOLD_TRADING_FRIENDS", "value": "Між друзями та союзниками" },
+    { "tag": "GAME_FFA_GOLD_TRADING_YES", "value": "Дозволено" },
+
+    { "tag": "GAME_FFA_STRATEGIC_TRADING", "value": "\uD83D\uDC34 **Торгівля стратегічними ресурсами**" },
+    { "tag": "GAME_FFA_STRATEGIC_TRADING_NO", "value": "Заборонено" },
+    { "tag": "GAME_FFA_STRATEGIC_TRADING_ALLIES", "value": "Між союзниками" },
+    { "tag": "GAME_FFA_STRATEGIC_TRADING_FRIENDS", "value": "Між друзями та союзниками" },
+    { "tag": "GAME_FFA_STRATEGIC_TRADING_YES", "value": "Дозволено" },
+
+    { "tag": "GAME_FFA_FRIENDS", "value": "\uD83E\uDD1D **Кількість дружб**" },
+    { "tag": "GAME_FFA_FRIENDS_0", "value": "Нуль" },
+    { "tag": "GAME_FFA_FRIENDS_1", "value": "Одна" },
+    { "tag": "GAME_FFA_FRIENDS_2", "value": "Дві" },
+    { "tag": "GAME_FFA_FRIENDS_3", "value": "Три" },
+    { "tag": "GAME_FFA_FRIENDS_INFINITY", "value": "Будь-скільки" },
+
+    { "tag": "GAME_FFA_MILITARY_ALLIANCE", "value": "⚔ **Військовий союз**" },
+    { "tag": "GAME_FFA_MILITARY_ALLIANCE_NO", "value": "Заборонено" },
+    { "tag": "GAME_FFA_MILITARY_ALLIANCE_YES", "value": "Дозволено" },
+
+    { "tag": "GAME_FFA_CHATTING", "value": "💬 **Спілкування**" },
+    { "tag": "GAME_FFA_CHATTING_ANY", "value": "Будь-яке" },
+    { "tag": "GAME_FFA_CHATTING_PUBLIC", "value": "Тільки публічне" },
+
+    { "tag": "GAME_FFA_DRAFT", "value": "🃏 **Тип драфта**" },
+    { "tag": "GAME_FFA_DRAFT_CLASSIC", "value": "Класичний" },
+    { "tag": "GAME_FFA_DRAFT_BLIND", "value": "У закриту" },
+
+
+
+    { "tag": "GAME_TEAMERS_RESULT_TITLE", "value": "⚖ Голосування для нової гри - Teamers" },
+
+    { "tag": "GAME_TEAMERS_MAP", "value": "\uD83C\uDF0D **Мапа**" },
+    { "tag": "GAME_TEAMERS_MAP_PANGAEA", "value": "Пангея" },
+    { "tag": "GAME_TEAMERS_MAP_CONTINENTS", "value": "Континенти" },
+    { "tag": "GAME_TEAMERS_MAP_HIGHLANDS", "value": "Нагір'я" },
+    { "tag": "GAME_TEAMERS_MAP_SEVEN_SEAS", "value": "Сім морів" },
+    { "tag": "GAME_TEAMERS_MAP_LAKES", "value": "Озера" },
+    { "tag": "GAME_TEAMERS_MAP_ARCHIPELAGO", "value": "Архіпелаги" },
+    { "tag": "GAME_TEAMERS_MAP_INLAND_SEA", "value": "Внутрішнє море" },
+    { "tag": "GAME_TEAMERS_MAP_FRACTAL", "value": "Фрактал" },
+    { "tag": "GAME_TEAMERS_MAP_CONTINENTS_AND_ISLANDS", "value": "Континенти та острови" },
+    { "tag": "GAME_TEAMERS_MAP_PRIMORDIAL", "value": "Московія" },
+    { "tag": "GAME_TEAMERS_MAP_TILTED_AXIS", "value": "Похила вісь" },
+
+    { "tag": "GAME_TEAMERS_DISASTERS", "value": "\uD83C\uDF0B **Стихийні лиха**" },
+    { "tag": "GAME_TEAMERS_DISASTERS_0", "value": "Мінімальні" },
+    { "tag": "GAME_TEAMERS_DISASTERS_1", "value": "Слабкі" },
+    { "tag": "GAME_TEAMERS_DISASTERS_2", "value": "Стандартні" },
+    { "tag": "GAME_TEAMERS_DISASTERS_3", "value": "Посилені" },
+    { "tag": "GAME_TEAMERS_DISASTERS_4", "value": "Донбасс" },
+
+    { "tag": "GAME_TEAMERS_BONUS_RESOURCES", "value": "\uD83C\uDF3D **Бонусні ресурси**" },
+    { "tag": "GAME_TEAMERS_BONUS_RESOURCES_STANDARD", "value": "Стандартні" },
+    { "tag": "GAME_TEAMERS_BONUS_RESOURCES_ABUNDANT", "value": "Ізобильні" },
+
+    { "tag": "GAME_TEAMERS_STRATEGIC_RESOURCES", "value": "\uD83D\uDC0E **Стратегические ресурсы**" },
+    { "tag": "GAME_TEAMERS_STRATEGIC_RESOURCES_STANDARD", "value": "Стандартні" },
+    { "tag": "GAME_TEAMERS_STRATEGIC_RESOURCES_ABUNDANT", "value": "Ізобильні" },
+    { "tag": "GAME_TEAMERS_STRATEGIC_RESOURCES_EPIC", "value": "На імбе" },
+    { "tag": "GAME_TEAMERS_STRATEGIC_RESOURCES_GUARANTEED", "value": "Гарантовані" },
+
+    { "tag": "GAME_TEAMERS_WONDERS", "value": "⭐ **Кількість чудес природи**" },
+    { "tag": "GAME_TEAMERS_WONDERS_STANDARD", "value": "Стандартні" },
+    { "tag": "GAME_TEAMERS_WONDERS_ABUNDANT", "value": "Ізобильні" },
+
+    { "tag": "GAME_TEAMERS_AGE", "value": "\uD83C\uDFDE **Вік світу**" },
+    { "tag": "GAME_TEAMERS_AGE_STANDARD", "value": "Стандартний" },
+    { "tag": "GAME_TEAMERS_AGE_NEW", "value": "Новий" },
+
+    { "tag": "GAME_TEAMERS_RIDGES_DEFINITION", "value": "⛰️ **Гірські хребти**" },
+    { "tag": "GAME_TEAMERS_RIDGES_DEFINITION_INTERCONTINENTAL", "value": "Міжконтинентальні (Standard)" },
+    { "tag": "GAME_TEAMERS_RIDGES_DEFINITION_RANDOM", "value": "Випадкові (Classic)" },
+
+    { "tag": "GAME_TEAMERS_CITY_CENTER", "value": "🏙️ **Додатковий дохід центрів міст**" },
+    { "tag": "GAME_TEAMERS_CITY_CENTER_NO", "value": "Вимкнено" },
+    { "tag": "GAME_TEAMERS_CITY_CENTER_CAPITAL", "value": "Включено тільки для столиці" },
+    { "tag": "GAME_TEAMERS_CITY_CENTER_YES", "value": "Включено для всіх міст" },
+
+    { "tag": "GAME_TEAMERS_RELIC", "value": "\uD83D\uDDFF **Торгівля реліквіями**" },
+    { "tag": "GAME_TEAMERS_RELIC_TURN_20", "value": "Дозволено з 20 ходу" },
+    { "tag": "GAME_TEAMERS_RELIC_YES", "value": "Дозволено" },
+
+    { "tag": "GAME_TEAMERS_REMAPS", "value": "\uD83D\uDD04 **Ремапи (на 8 ходу)**" },
+    { "tag": "GAME_TEAMERS_REMAPS_NO", "value": "Заборонені" },
+    { "tag": "GAME_TEAMERS_REMAPS_YES", "value": "Дозволено" },
+
+    { "tag": "GAME_TEAMERS_SPLIT", "value": "\uD83D\uDC65 **Спосіб поділу на команди**" },
+    { "tag": "GAME_TEAMERS_SPLIT_CLASSIC", "value": "Класичний" },
+    { "tag": "GAME_TEAMERS_SPLIT_DOUBLE", "value": "З дабл-піком для другого" },
+    { "tag": "GAME_TEAMERS_SPLIT_CWC", "value": "CWC-формат" },
+    { "tag": "GAME_TEAMERS_SPLIT_RANDOM", "value": "Випадковий" },
+
+    { "tag": "GAME_TEAMERS_CAPTAINS", "value": "\uD83D\uDC51 **Вибори двох капітанів команд**" }
+  ]
+}

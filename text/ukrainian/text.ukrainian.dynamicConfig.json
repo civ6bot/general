@@ -1,0 +1,142 @@
+{
+  "lang": "Ukrainian",
+  "text": [
+    { "tag": "DYNAMIC_CONFIG_ERROR_COMMAND_NOT_ADMIN", "value": "Для виконання цієї команди необхідні права адміністратора." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_NOT_OWNER", "value": "Ви не є автором цього повідомлення. Будь ласка, дочекайтеся, коли інший адміністратор завершить зміну налаштувань сервера." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_FAIL_TIMEOUT", "value": "Перевищено час очікування. Налаштування не було змінено." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_NUMBER", "value": "Введіть цілочисельне значення від [MIN_VALUE] до [MAX_VALUE]." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_STRING", "value": "Налаштування не було змінено." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_BOOLEAN_GAME_SETTING", "value": "Голосування повинно мати хоча б 2 доступні опції. Якщо ви хочете відключити це голосування, скористайтеся відповідним налаштуванням." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_PARSE", "value": "Налаштування не було змінено. Список містить помилки.\n\nВи ввели:\n```txt\n[CIVILIZATIONS_INPUT_TEXT]\n```\nПереконайтеся, що ви вводите пари цивілізації коректно:\n - кожну пару цивілізацій записано з нового рядка;\n - цивілізації розділено комою;\n - жодна пара не містить двох однакових лідерів;\n - текст не містить спеціальних символів, окрім коми, дужок та дефіса." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_SAME_IN_PAIR", "value": "Налаштування не було змінено. Список містить пару, в якій записана одна й та сама цивілізація. \n\n[CIVILIZATION_ERROR]\n\nВи ввели:\n```txt\n[CIVILIZATIONS_INPUT_TEXT]\n``\nПереконайтеся, що ви вводите пари цивілізації коректно:\n - кожна пара цивілізацій записана з нового рядка;\n - цивілізації розділені комою;\n - жодна пара не містить двох однакових лідерів;\n - текст не містить спеціальних символів, окрім коми, дужок і дефіса." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_TEAMERS_FORBIDDEN_PAIRS_TRIANGLE", "value": "Налаштування не було змінено. У списку присутні цивілізації, які не можуть бути розділені між двома командами.\n\n[CIVILIZATIONS_ERRORS]\n\nВи ввели:\n```txt\n[CIVILIZATIONS_INPUT_TEXT]\n```\nПереконайтесь, що перераховані цивілізації не утворюють усіляких пар, та повторіть спробу." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_NUMBER_MANY", "value": "Введіть від [MIN_AMOUNT] до [MAX_AMOUNT] цілих чисел у діапазоні від від [MIN_VALUE] до [MAX_VALUE]." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_ROLE_MANY", "value": "Введіть від [MIN_AMOUNT] до [MAX_AMOUNT] ролей або ID ролей." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_CHANNEL_MANY", "value": "Введіть від [MIN_AMOUNT] до [MAX_AMOUNT] каналів або ID каналів." },
+    { "tag": "DYNAMIC_CONFIG_ERROR_TYPE_EMOJI", "value": "Введіть назву емодзі разом із його ID. Щоб отримати дані, напишіть символ бекслеша (\"\\\\\") перед ємодзі." },
+
+    { "tag": "DYNAMIC_CONFIG_BUTTON_BACK", "value": "Назад" },
+    { "tag": "DYNAMIC_CONFIG_BUTTON_RESET", "value": "Сбросити налаштування" },
+    { "tag": "DYNAMIC_CONFIG_BUTTON_DELETE", "value": "Видалити повідомлення" },
+
+    { "tag": "DYNAMIC_CONFIG_RESET_TITLE", "value": "\uD83D\uDD04 Сбросити налаштування" },
+    { "tag": "DYNAMIC_CONFIG_RESET_DESCRIPTION", "value": "Ця опція скине всі налаштування поточної категорії та всіх її підкатегорій до налаштувань за замовчуванням. \n\n❗ **Цю дію не можна скасувати!** Ви впевнені?" },
+    { "tag": "DYNAMIC_CONFIG_RESET_BUTTON_CONFIRM", "value": "Сбросити налаштування" },
+    { "tag": "DYNAMIC_CONFIG_RESET_BUTTON_CANCEL", "value": "Отмена" },
+
+    { "tag": "DYNAMIC_CONFIG_MODAL_LABEL", "value": "Введіть нове значення обраного налаштування" },
+
+    { "tag": "DYNAMIC_CONFIG_NOTIFY_CHANGE_SUCCESS", "value": "Налаштування було успішно змінено." },
+    { "tag": "DYNAMIC_CONFIG_NOTIFY_RESET_SUCCESS", "value": "Налаштування було успішно скинуто." },
+
+    { "tag": "DYNAMIC_CONFIG_TITLE", "value": "Конфігурація сервера" },
+    { "tag": "DYNAMIC_CONFIG_TITLE_PAGE", "value": "сторінка" },
+    { "tag": "DYNAMIC_CONFIG_CHOOSE_GROUP_DESCRIPTION", "value": "Виберіть категорію налаштувань зі списку в меню." },
+    { "tag": "DYNAMIC_CONFIG_CHOOSE_CONFIG_DESCRIPTION", "value": "Виберіть налаштування, яке ви хочете змінити, зі списку в меню." },
+
+    { "tag": "DYNAMIC_CONFIG_MENU_PLACEHOLDER_CATEGORY", "value": "Оберіть категорію" },
+    { "tag": "DYNAMIC_CONFIG_MENU_PLACEHOLDER_CONFIG", "value": "Оберіть налаштування" },
+    { "tag": "DYNAMIC_CONFIG_DESCRIPTION_NO_VALUE", "value": "  – ні" },
+
+
+    { "tag": "DYNAMIC_CONFIG_CATEGORY_MISCELLANEOUS", "value": "Різне" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_MISCELLANEOUS_RANDOM_MAX", "value": "Максимум випадкового числа" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_MISCELLANEOUS_SECRET_VOTE_TIME_MS", "value": "Час на закрите голосування, секунд" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_MISCELLANEOUS_SECRET_VOTE_ABSTAINED", "value": "Додати варіант \"утримався\"" },
+
+    { "tag": "DYNAMIC_CONFIG_LANGUAGE", "value": "Вибір мови" },
+
+    { "tag": "DYNAMIC_CONFIG_MODERATION", "value": "Модерація" },
+    { "tag": "DYNAMIC_CONFIG_MODERATION_ROLE_MODERATORS_ID", "value": "Ролі модераторов для налаштувань (ID)" },
+
+    { "tag": "DYNAMIC_CONFIG_CATEGORY_SPLIT", "value": "Розділення на команди" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_SPLIT_TIME", "value": "Час на вибір гравців, секунд" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_SPLIT_SEND_PM_NOTIFICATION", "value": "Повідомлення у особисті повідомлення" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_SPLIT_MOVE_TEAM_VOICE", "value": "Переместити іншу команду" },
+
+
+
+    { "tag": "DYNAMIC_CONFIG_CATEGORY_DRAFT", "value": "Драфт" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_CIVILIZATIONS", "value": "Керування пулом цивілізацій" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_EMOJIS", "value": "Эмодзі цивілізацій" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_FFA", "value": "Драфт FFA" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_TEAMERS", "value": "Драфт Teamers" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_BLIND", "value": "Драфт у закриту" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_DRAFT_REDRAFT", "value": "Редрафт" },
+
+
+
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT", "value": "Мінімум цивілізацій у драфті" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT", "value": "Максимум цивілізацій у драфті" },
+
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_TEAMERS_FORBIDDEN_PAIRS", "value": "Заборонені пари для однієї команди" },
+
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT", "value": "Мінімум цивілізацій у драфті" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT", "value": "Максимум цивілізацій у драфті" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_BLIND_TIME", "value": "Час на вибір цивілізації, секунд" },
+
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_FFA_THRESHOLD_PERCENT", "value": "% гравців на 1-ий редрафт FFA" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_TEAMERS_THRESHOLD_PERCENT", "value": "% гравців на 1-ий редрафт Teamers" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_BLIND_THRESHOLD_PERCENT", "value": "% гравців на 1-ий редрафт у закриту" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_TIME", "value": "Час на приняття рішення, секунд" },
+    { "tag": "DYNAMIC_CONFIG_SETTING_DRAFT_REDRAFT_NOTIFY_PM", "value": "Надіслати повідомлення в ЛС" },
+
+
+
+    { "tag": "DYNAMIC_CONFIG_CATEGORY_GAME", "value": "Голосування за налаштування" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL", "value": "Загальні налаштування голосування" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA", "value": "Голосування FFA" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS", "value": "Голосування Teamers" },
+
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TIME", "value": "Час на голосування, секунд" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_THREAD", "value": "Створювати гілку для голосування" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_SEND_PM_NOTIFICATION", "value": "Повідомлення про голосування в ОП" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_MOVE_TO_VOICE_CHANNELS", "value": "Переміщати гравців під час голосування" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_HOME_VOICE_CHANNELS", "value": "З яких каналів переміщати, FFA (ID)" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_FFA_VOICE_CHANNELS", "value": "Голосові канали для FFA (ID)" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_HOME_VOICE_CHANNELS", "value": "З яких каналів переміщати, Teamers (ID)" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_GENERAL_TEAMERS_VOICE_CHANNELS", "value": "Голосові канали для Teamers (ID)" },
+
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_ADD", "value": "Додати в голосування за налаштування" },
+
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MAP", "value": "Мапа" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_DISASTERS", "value": "Стихійні лиха" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BONUS_RESOURCES", "value": "Бонусні ресурси" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_STRATEGIC_RESOURCES", "value": "Стратегічні ресурси" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_WONDERS", "value": "Количество чудес природы" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_AGE", "value": "Кількість див природи" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_RIDGES_DEFINITION", "value": "Гірські хребти" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_CITY_CENTER", "value": "Додатковий дохід центрів міст" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_THERMONUCLEAR_DEVICE", "value": "Термоядерні пристрої" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_GREAT_PEOPLE_PASS", "value": "Відмова від Великих людей" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MONOPOLY", "value": "Режим \"Монополії та Корпорації\"" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BARBARIAN_CLANS", "value": "Режим \"Варварські клани\"" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_SHUFFLE", "value": "Режим \"Випадкові тех. і соц. інститути\"" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_SECRET_SOCIETIES", "value": "Режим \"Таємні спільноти\"" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_ZOMBIE", "value": "Режим \"Захист від орків\"" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_GOLD_TRADING", "value": "Торговля золотом" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_STRATEGIC_TRADING", "value": "Торгівля стратегічними ресурсами" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_FRIENDS", "value": "Кількість дружб" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MILITARY_ALLIANCE", "value": "Військовий союз" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_CHATTING", "value": "Спілкування" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_DRAFT", "value": "Тип драфту" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BANS_THRESHOLD", "value": "Порогове значення для бана" },
+
+    { "tag": "DYNAMIC_CONFIG_SETTING_GAME_FFA_BANS_THRESHOLD", "value": "Пороговое значение для бана, %" },
+
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_MAP", "value": "Мапа" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_DISASTERS", "value": "Стихийні лиха" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BONUS_RESOURCES", "value": "Бонусні ресурси" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_STRATEGIC_RESOURCES", "value": "Стратегічні ресурси" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_WONDERS", "value": "Кількість чудес природи" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_AGE", "value": "Вік світу" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_RIDGES_DEFINITION", "value": "Гірські хребти" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_CITY_CENTER", "value": "Додатковий дохід центрів міст" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_RELIC", "value": "Торгівля реліквіями" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_REMAPS", "value": "Ремапи (на 8 ходу)" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_SPLIT", "value": "Спосіб поділу на команди" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BANS_THRESHOLD", "value": "Пороговое значение для бана" },
+
+    { "tag": "DYNAMIC_CONFIG_SETTING_GAME_TEAMERS_BANS_THRESHOLD", "value": "Порогове значення для бана, %" }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "lang": "Ukrainian",
+  "text": [
+    { "tag": "RULES_ERROR_MAX_PAGES", "value": "Занадто багато сторінок! Підтримується до [PAGES_MAX_NUMBER] сторінок." },
+    { "tag": "RULES_ERROR_EMPTY_INPUT", "value": "Введіть непорожні значення заголовка, змісту і тегів сторінки." },
+
+    { "tag": "RULES_TITLE", "value": "\uD83D\uDCD5 #[PAGE_NUMBER] | [PAGE_TITLE]" },
+    { "tag": "RULES_FIELD_TAGS_TITLE", "value": "Тегі" },
+
+    { "tag": "RULES_COVER_TITLE", "value": "\uD83D\uDCD5 Правила" },
+    { "tag": "RULES_COVER_DESCRIPTION_HEADER", "value": "Використовуйте кнопки навігації або команду `/rules <abc>`, щоб перейти до сторінки за її тегом або номером." },
+    { "tag": "RULES_COVER_DESCRIPTION_HEADER_ZERO", "value": "Тут поки що нічого немає." },
+
+    { "tag": "RULES_BUTTON_DELETE_MESSAGE", "value": "Видалити повідомлення" },
+    { "tag": "RULES_BUTTON_ADD", "value": "Додати" },
+    { "tag": "RULES_BUTTON_EDIT", "value": "Змінити" },
+    { "tag": "RULES_BUTTON_SHIFT_LEFT", "value": "Зсунути вліво" },
+    { "tag": "RULES_BUTTON_SHIFT_RIGHT", "value": "Зсунути вправо" },
+    { "tag": "RULES_BUTTON_REMOVE", "value": "Видалити сторінку" },
+
+    { "tag": "RULES_BUTTON_MODAL_ADD", "value": "Додати нову сторінку" },
+    { "tag": "RULES_BUTTON_MODAL_EDIT", "value": "Змінити сторінку" },
+    { "tag": "RULES_MODAL_TITLE", "value": "Заголовок сторінки" },
+    { "tag": "RULES_MODAL_TEXT", "value": "Текст сторінки" },
+    { "tag": "RULES_MODAL_TAGS", "value": "Теги (через пробіл)" }
+  ]
+}

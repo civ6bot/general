@@ -1,0 +1,9 @@
+{
+  "lang": "Ukrainian",
+  "text": [
+    { "tag": "FEEDBACK_FEEDBACK_TITLE", "value": "✍ Зворотній зв'язок" },
+    { "tag": "FEEDBACK_FEEDBACK_SERVER_FIELD_TITLE", "value": "🏰 Сервер" },
+    { "tag": "FEEDBACK_FEEDBACK_SERVER_FIELD_CONTENT", "value": "[GUILD_NAME]\n(ID: [GUILD_ID])" },
+    { "tag": "FEEDBACK_FEEDBACK_NOTIFY_DESCRIPTION", "value": "✍ Ваше повідомлення було надіслано власнику бота." }
+  ]
+}

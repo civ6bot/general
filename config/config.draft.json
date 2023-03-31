@@ -73,6 +73,9 @@
   { "setting": "DRAFT_GERMANY_LUDWIG", "value": 1 },
   { "setting": "DRAFT_KOREA_SEJONG", "value": 1 },
   { "setting": "DRAFT_BYZANTIUM_THEODORA", "value": 1 },
+  { "setting": "DRAFT_ENGLAND_ELIZABETH", "value": 1 },
+  { "setting": "DRAFT_NORWAY_HARALD_VARANGIAN", "value": 1 },
+  { "setting": "DRAFT_ENGLAND_VICTORIA_STEAM", "value": 1 },
 
   { "setting": "DRAFT_AUSTRALIA_EMOJI", "value": "<:Australia:701066628523098183>" },
   { "setting": "DRAFT_AMERICA_EMOJI", "value": "<:America:701066550412836894>" },
@@ -148,6 +151,9 @@
   { "setting": "DRAFT_GERMANY_LUDWIG_EMOJI", "value": "<:Germany_Ludwig:1087151253177520170>" },
   { "setting": "DRAFT_KOREA_SEJONG_EMOJI", "value": "<:Korea_Sejong:1087151255937368075>" },
   { "setting": "DRAFT_BYZANTIUM_THEODORA_EMOJI", "value": "<:Byzantium_Theodora:1087151250577051780>" },
+  { "setting": "DRAFT_ENGLAND_ELIZABETH_EMOJI", "value": "<:England_Elizabeth:1091028344788762625>" },
+  { "setting": "DRAFT_NORWAY_HARALD_VARANGIAN_EMOJI", "value": "<:Norway_Harald_Varangian:1091028352485306458>" },
+  { "setting": "DRAFT_ENGLAND_VICTORIA_STEAM_EMOJI", "value": "<:England_Victoria_Steam:1091028348941123605>" },
   
   { "setting": "DRAFT_FFA_MIN_CIVILIZATIONS_DEFAULT", "value": 2 },
   { "setting": "DRAFT_FFA_MAX_CIVILIZATIONS_DEFAULT", "value": 4 },

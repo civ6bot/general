@@ -13,7 +13,7 @@ export class SteamService extends ModuleBaseService {
     private databaseServiceUserSteam: DatabaseServiceUserSteam = new DatabaseServiceUserSteam();
     private requestsSteam: RequestsSteam = new RequestsSteam();
 
-    async link(interaction: CommandInteraction, description: string) {
+    async link(interaction: CommandInteraction, customDescription: string) {
         let gameIDArray: string[] = ["289070", "480"];
         let textStringsError: string[] = await this.getManyText(interaction,
             ["BASE_ERROR_TITLE", "STEAM_LINK_ERROR_NO_STEAM_DATA",
@@ -31,21 +31,23 @@ export class SteamService extends ModuleBaseService {
             return interaction.reply({embeds: this.steamUI.error(textStringsError[0], textStringsError[1])});
         if(gameIDArray.indexOf(steamAPIData.gameID as string) === -1)
             return interaction.reply({embeds: this.steamUI.error(textStringsError[0], textStringsError[2])});
-        let link: string = `http://51.68.123.207:31612/join/${steamAPIData.gameID}/${steamAPIData.lobbySteamID}/${steamAPIData.steamID}`;
+        let link: string = `steam://joinlobby/${steamAPIData.gameID}/${steamAPIData.lobbySteamID}/${steamAPIData.steamID}`;
 
         let textStrings: string[] = await this.getManyText(interaction, [
-            "STEAM_LINK_TITLE", "STEAM_LINK_DESCRIPTION_PIRATE", 
-            "STEAM_LINK_FIELD_TITLE",
-        ]);
-        textStrings[0] = `[${textStrings[0]}](${link})`;
+            "STEAM_LINK_TITLE", "STEAM_LINK_DESCRIPTION_BASE",
+            "STEAM_LINK_DESCRIPTION_PIRATE", "STEAM_LINK_FIELD_TITLE",
+        ]);;
+        let description: string = `**[${textStrings[1]}](${link})**`;
+        if(steamAPIData.gameID === gameIDArray[1])
+            description += ("\n" + textStrings[2]);
 
-        interaction.reply({ embeds: this.steamUI.link(
+        interaction.reply({ embeds: [this.steamUI.link(
             textStrings[0],
-            (steamAPIData.gameID === gameIDArray[0]) ? null : textStrings[1],
-            textStrings[2],
             description,
+            textStrings[3],
+            customDescription,
             interaction.user
-        )});
+        )[0].setURL(link)]});
     }
 
     async connect(interaction: CommandInteraction) {

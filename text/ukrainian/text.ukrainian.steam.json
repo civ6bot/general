@@ -7,6 +7,7 @@
     { "tag": "STEAM_CONNECT_BUTTON_EMOJI", "value": "\uD83C\uDF10" },
 
     { "tag": "STEAM_LINK_TITLE", "value": "\uD83C\uDF10 Посилання на лобі" },
+    { "tag": "STEAM_LINK_DESCRIPTION_BASE", "value": "Щоб підключитися до лобі, натисніть це посилання." },
     { "tag": "STEAM_LINK_DESCRIPTION_PIRATE", "value": "\uD83C\uDFF4\u200D☠️ Лобі для піратської версії гри." },
     { "tag": "STEAM_LINK_FIELD_TITLE", "value": "❗ Додатковий опис:" },
     { "tag": "STEAM_LINK_ERROR_WRONG_GAME", "value": "Ви граєте в невідповідну гру для генерації посилання." },

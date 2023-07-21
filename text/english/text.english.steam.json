@@ -7,6 +7,7 @@
     { "tag": "STEAM_CONNECT_BUTTON_EMOJI", "value": "\uD83C\uDF10" },
 
     { "tag": "STEAM_LINK_TITLE", "value": "\uD83C\uDF10 Lobby link" },
+    { "tag": "STEAM_LINK_DESCRIPTION_BASE", "value": "Click on this link to connect to the lobby." },
     { "tag": "STEAM_LINK_DESCRIPTION_PIRATE", "value": "\uD83C\uDFF4\u200D☠️ Lobby for unlicensed version of the game." },
     { "tag": "STEAM_LINK_FIELD_TITLE", "value": "❗ Description:" },
     { "tag": "STEAM_LINK_ERROR_WRONG_GAME", "value": "You are playing wrong game." },

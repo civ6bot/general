@@ -57,6 +57,35 @@ export abstract class DraftGeneratorInteractions {
         }) bans: string = "",
         interaction: CommandInteraction
     ) { this.draftService.blind(interaction, civAmount, bans); }
+
+    @Slash({ name: "red-death", description: "Draft for Red Death gamemode" })
+    public async redDeath(
+        @SlashOption({
+            name: "factions-amount",
+            description: "required factions amount for player",
+            type: ApplicationCommandOptionType.Number,
+            required: false
+        }) factionsAmount: number = 0,
+        @SlashOption( {
+            name: "duplicates",
+            description: "are duplicates allowed?",
+            type: ApplicationCommandOptionType.Boolean,
+            required: false
+        }) haveDuplicates: boolean = false,
+        @SlashOption( {
+            name: "rd-mod-factions",
+            description: "are RD-mod factions allowed?",
+            type: ApplicationCommandOptionType.Boolean,
+            required: false
+        }) isRDModEnabled: boolean = false,
+        @SlashOption( {
+            name: "bans",
+            description: "write forbidden factions",
+            type: ApplicationCommandOptionType.String,
+            required: false
+        }) bans: string = "",
+        interaction: CommandInteraction
+    ) { this.draftService.redDeath(interaction, factionsAmount, haveDuplicates, isRDModEnabled, bans); }
 }
 
 @Discord()

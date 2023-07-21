@@ -14,7 +14,7 @@ export class GameUI extends ModuleBaseUI {
                 {name: gameEntityReady.fieldTitles[0], value: gameEntityReady.users.map((user: User): string => user.toString()).join("\n")},
                 {name: gameEntityReady.fieldTitles[1], value: gameEntityReady.usersReadyStatus.map((status: number): string => status ? gameEntityReady.emojis[0] : gameEntityReady.emojis[1]).join("\n")}
             ],
-            gameEntityReady.author.tag,
+            gameEntityReady.author.username,
             gameEntityReady.author.avatarURL()
         );
     }
@@ -25,7 +25,7 @@ export class GameUI extends ModuleBaseUI {
             (gameEntityReady.descriptions.length === 1) ? "#5865F2" : "#2D7D46",
             gameEntityReady.descriptions[0],
             [],
-            gameEntityReady.author.tag,
+            gameEntityReady.author.username,
             gameEntityReady.author.avatarURL()
         );
     }
@@ -54,10 +54,14 @@ export class GameUI extends ModuleBaseUI {
 
         return UtilsGeneratorEmbed.getSingle(
             title,
-            (isTimeout) ? "#FFFFFF" : "#5865F2",
+            (isTimeout) 
+                ? "#FFFFFF" 
+                : (game.type === "Teamers") 
+                    ? "#00ff40"
+                    : "#5865F2",
             description,
             [],
-            game.interaction.user.tag,
+            game.interaction.user.username,
             game.interaction.user.avatarURL()
         );
     }

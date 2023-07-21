@@ -8,6 +8,7 @@ export abstract class Game extends ModuleBaseModel {
     public entities: GameEntity[] = [];
 
     public voteTimeMs: number;
+    public isSending: boolean = true;
 
     protected constructor(interaction: CommandInteraction, users: User[], voteTimeMs: number) {
         super(interaction);
@@ -108,17 +109,15 @@ export abstract class GameEntity {
         this.users = users;
     }
 
-    public async destroy(): Promise<void> {
+    // messageReactionCollector может выкинуть
+    // ошибку, если stop() был вызван дважды.
+    public destroy(): void {
         try {
             this.messageReactionCollector?.stop();
-        } catch {} finally {
-            this.messageReactionCollector = null;
-        }
-        try {
-            this.message?.delete();
-        } catch {} finally {
-            this.message = null;
-        }
+        } catch {}
+        this.messageReactionCollector = null;
+        this.message?.delete().catch();
+        this.message = null;
     }
 
     public getContent(): string {
@@ -160,15 +159,11 @@ export class GameEntityDefault extends GameEntity {
         if(user.bot)
             return false;
         if(this.users.map(user => user.id).indexOf(user.id) === -1) {
-            try {
-                await reaction.message.reactions.resolve(reaction).users.remove(user);
-            } catch {}
+            reaction.message.reactions.resolve(reaction).users.remove(user).catch();
             return false;
         }
         if(this.emojis.indexOf(reaction.emoji.toString().toLowerCase()) === -1) {
-            try {
-                await reaction.remove();
-            } catch {}
+            reaction.remove().catch();
             return false;
         }
         return false;
@@ -208,26 +203,21 @@ export class GameEntityDraft extends GameEntity {
         this.banThreshold = banThreshold;
     }
 
-    public override async destroy(): Promise<void> {
+    // messageReactionCollector может выкинуть
+    // ошибку, если stop() был вызван дважды.
+    public override destroy(): void {
         try {
             this.messageReactionCollector?.stop();
-        } catch {} finally {
-            this.messageReactionCollector = null;
-        }
-        try {
-            this.message?.delete();
-        } catch {} finally {
-            this.message = null;
-        }
+        } catch {}
+        this.messageReactionCollector = null;
+        this.message?.delete().catch();
+        this.message = null;
         try {
             this.messageCollector?.stop();
-        } catch {} finally {
-            this.messageCollector = null;
-        }
+        } catch {}
+        this.messageCollector = null;
         for(let message of this.collectedMessages)
-            try {
-                message.delete();
-            } catch {}
+            message.delete().catch();
         this.collectedMessages = [];
     }
 
@@ -243,18 +233,14 @@ export class GameEntityDraft extends GameEntity {
         if(user.bot)
             return false;
         if((reaction.emoji.toString() === "🤔") || (this.users.map(user => user.id).indexOf(user.id) === -1)) {
-            try {
-                await reaction.message.reactions.resolve(reaction).users.remove(user);
-            } catch {}
+            reaction.message.reactions.resolve(reaction).users.remove(user).catch();
             return false;
         }
         
         let emojiName = reaction.emoji.toString().toLowerCase();
         let emojiIndex: number = this.emojis.indexOf(emojiName);
         if(emojiIndex === -1) {
-            try {
-                await reaction.remove();
-            } catch {}
+            reaction.remove().catch();
             return false;
         }
 
@@ -265,9 +251,7 @@ export class GameEntityDraft extends GameEntity {
         this.emojis.splice(emojiIndex, 1);
         this.englishLanguageOptions.splice(emojiIndex, 1);
         this.header = this.headerProcessing;    // если хотя бы 1 забанена, то заголовок меняется
-        try {
-            await reaction.remove();
-        } catch {}
+        reaction.remove().catch();
         return true;                            // сообщение редактируется во внешнем методе
     }
 
@@ -290,8 +274,8 @@ export class GameEntityCaptains extends GameEntity {
             return content;
         if(this.resultIndexes.length === 0) {
             content += (this.resultIndexes.length > 0)
-                ? this.resultIndexes.map((resultIndex: number): string => `${this.emojis[resultIndex]} ${this.options[resultIndex]}`).join(", ")
-                : this.options.map((option: string, index: number): string => `${this.emojis[index]} ${option}`).join(" | ");
+                ? this.resultIndexes.map((resultIndex: number): string => `${this.emojis[resultIndex]} ${this.options[resultIndex]}`).join(", ")    // ???
+                : "\n    " + this.options.map((option: string, index: number): string => `${this.emojis[index]} ${option}`).join("\n    ");
         } else
             content = `${this.header.slice(0, -2)}:**\n${this.resultIndexes
                 .map((resultIndex: number): string => `${this.options[resultIndex]}`)
@@ -304,15 +288,11 @@ export class GameEntityCaptains extends GameEntity {
         if(user.bot)
             return false;
         if(this.users.map(user => user.id).indexOf(user.id) === -1) {
-            try {
-                await reaction.message.reactions.resolve(reaction).users.remove(user);
-            } catch {}
+            reaction.message.reactions.resolve(reaction).users.remove(user).catch();
             return false;
         }
         if(this.emojis.indexOf(reaction.emoji.toString().toLowerCase()) === -1) {
-            try {
-                await reaction.remove();
-            } catch {}
+            reaction.remove().catch();
             return false;
         }
         return false;
@@ -360,9 +340,7 @@ export class GameEntityReady extends GameEntity {
 
     // call every time when reacted
     public override async resolveProcessing(reaction: MessageReaction, user: User): Promise<false> {
-        try {
-            await reaction.remove();
-        } catch {}
+        reaction.remove().catch();
         return false;
     }
 

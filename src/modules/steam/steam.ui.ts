@@ -18,7 +18,7 @@ export class SteamUI extends ModuleBaseUI {
 
     public link(
         title: string,
-        description: string,
+        description: string | null,
         fieldTitle: string,
         fieldDescription: string,
         author: User
@@ -28,7 +28,7 @@ export class SteamUI extends ModuleBaseUI {
             "#3B88C3",
             description,
             [{ name: fieldTitle, value: fieldDescription }],
-            author.tag,
+            author.username,
             author.avatarURL()
         );
     }

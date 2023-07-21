@@ -127,6 +127,26 @@
 
     { "tag": "DRAFT_REDRAFT_ERROR_NOT_FOUND", "value": "Вашего драфта для редрафта не найдено." },
     { "tag": "DRAFT_REDRAFT_ERROR_NOT_MEMBER", "value": "Вы не участвуете в этом голосовании." },
-    { "tag": "DRAFT_ERROR_BLIND_DELETE_BUTTON_NOT_OWNER", "value": "Вы не являетесь автором данного драфта." }
+    { "tag": "DRAFT_ERROR_BLIND_DELETE_BUTTON_NOT_OWNER", "value": "Вы не являетесь автором данного драфта." },
+
+
+
+    { "tag": "DRAFT_RED_DEATH_TITLE_ONE_PLAYER", "value": "☢️ Драфт режима \"Красная Смерть\" для 1 игрока" },
+    { "tag": "DRAFT_RED_DEATH_TITLE_MANY_PLAYERS", "value": "☢️ Драфт режима \"Красная Смерть\" для [PLAYER_AMOUNT] игроков" },
+
+    { "tag": "DRAFT_RED_DEATH_BORDERLORDS", "value": "[EMOJI] Готические Антигерои" },
+    { "tag": "DRAFT_RED_DEATH_CULTISTS", "value": "[EMOJI] Посвященные Сектанты" },
+    { "tag": "DRAFT_RED_DEATH_JOCKS", "value": "[EMOJI] Злобные Фанаты" },
+    { "tag": "DRAFT_RED_DEATH_MUTANTS", "value": "[EMOJI] Мутанты в страшных шрамах" },
+    { "tag": "DRAFT_RED_DEATH_PREPPERS", "value": "[EMOJI] Одержимые Выживальщики Судного Дня" },
+    { "tag": "DRAFT_RED_DEATH_PIRATES", "value": "[EMOJI] Облученные Пираты" },
+    { "tag": "DRAFT_RED_DEATH_SCIENTISTS", "value": "[EMOJI] Сумасшедшие Аморальные Ученые" },
+    { "tag": "DRAFT_RED_DEATH_WANDERERS", "value": "[EMOJI] Добровольные Скитальцы" },
+    { "tag": "DRAFT_RED_DEATH_ALIENS", "value": "[EMOJI] Внедрённые Инопланетяне" },
+    { "tag": "DRAFT_RED_DEATH_ZOMBIES", "value": "[EMOJI] Зомби-звероловы" },
+
+    { "tag": "DRAFT_RED_DEATH_RICH_PIRATES", "value": "[EMOJI] Толстейшие и Счастливейшие Богатые Пираты" },
+    { "tag": "DRAFT_RED_DEATH_MILITARY", "value": "[EMOJI] Последние Военные Формирования" },
+    { "tag": "DRAFT_RED_DEATH_RAIDERS", "value": "[EMOJI] Эгоистичные Вожди Грабителей" }
   ]
 }

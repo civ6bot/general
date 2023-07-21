@@ -56,6 +56,11 @@
   { "setting": "GAME_FFA_CITY_CENTER_CAPITAL", "value": 1 },
   { "setting": "GAME_FFA_CITY_CENTER_YES", "value": 1 },
 
+  { "setting": "GAME_FFA_CITY_YIELDS", "value": 1 },
+  { "setting": "GAME_FFA_CITY_YIELDS_STANDARD", "value": 1 },
+  { "setting": "GAME_FFA_CITY_YIELDS_MAXIMUM", "value": 1 },
+  { "setting": "GAME_FFA_CITY_YIELDS_NO_RNG", "value": 1 },
+
   { "setting": "GAME_FFA_THERMONUCLEAR_DEVICE", "value": 0 },
   { "setting": "GAME_FFA_THERMONUCLEAR_DEVICE_NO", "value": 1 },
   { "setting": "GAME_FFA_THERMONUCLEAR_DEVICE_YES", "value": 1 },
@@ -67,6 +72,13 @@
   { "setting": "GAME_FFA_MONOPOLY", "value": 0 },
   { "setting": "GAME_FFA_MONOPOLY_NO", "value": 1 },
   { "setting": "GAME_FFA_MONOPOLY_YES", "value": 1 },
+
+  { "setting": "GAME_FFA_BARBARIANS", "value": 0 },
+  { "setting": "GAME_FFA_BARBARIANS_STANDARD", "value": 1 },
+  { "setting": "GAME_FFA_BARBARIANS_CIVILIZED", "value": 1 },
+  { "setting": "GAME_FFA_BARBARIANS_BALANCED", "value": 1 },
+  { "setting": "GAME_FFA_BARBARIANS_RAGING", "value": 1 },
+  { "setting": "GAME_FFA_BARBARIANS_NO", "value": 1 },
 
   { "setting": "GAME_FFA_BARBARIAN_CLANS", "value": 0 },
   { "setting": "GAME_FFA_BARBARIAN_CLANS_NO", "value": 1 },
@@ -165,6 +177,11 @@
   { "setting": "GAME_TEAMERS_CITY_CENTER_NO", "value": 1 },
   { "setting": "GAME_TEAMERS_CITY_CENTER_CAPITAL", "value": 1 },
   { "setting": "GAME_TEAMERS_CITY_CENTER_YES", "value": 1 },
+
+  { "setting": "GAME_TEAMERS_CITY_YIELDS", "value": 1 },
+  { "setting": "GAME_TEAMERS_CITY_YIELDS_STANDARD", "value": 1 },
+  { "setting": "GAME_TEAMERS_CITY_YIELDS_MAXIMUM", "value": 1 },
+  { "setting": "GAME_TEAMERS_CITY_YIELDS_NO_RNG", "value": 1 },
 
   { "setting": "GAME_TEAMERS_RELIC", "value": 1 },
   { "setting": "GAME_TEAMERS_RELIC_TURN_20", "value": 1 },

@@ -7,8 +7,7 @@
     { "tag": "STEAM_CONNECT_BUTTON_EMOJI", "value": "\uD83C\uDF10" },
 
     { "tag": "STEAM_LINK_TITLE", "value": "\uD83C\uDF10 Ссылка на лобби" },
-    { "tag": "STEAM_LINK_DESCRIPTION_LICENSE", "value": "**[STEAM_LOBBY_URL]**" },
-    { "tag": "STEAM_LINK_DESCRIPTION_PIRATE", "value": "\uD83C\uDFF4\u200D☠️ Лобби для пиратской версии игры.\n**[STEAM_LOBBY_URL]**" },
+    { "tag": "STEAM_LINK_DESCRIPTION_PIRATE", "value": "\uD83C\uDFF4\u200D☠️ Лобби для пиратской версии игры." },
     { "tag": "STEAM_LINK_FIELD_TITLE", "value": "❗ Дополнительное описание:" },
     { "tag": "STEAM_LINK_ERROR_WRONG_GAME", "value": "Вы играете в неподходящую игру для генерации ссылки." },
     { "tag": "STEAM_LINK_ERROR_NO_STEAM_DATA", "value": "Ошибка при получении ссылки на лобби. Возможные причины:\n- вы не создали игровое лобби;\n- ваш профиль Steam \"не в сети\";\n- статус приватности профиля Steam не \"открытый\";\n- у вас подключен другой аккаунт Steam (используйте /connect для переподключения)." }

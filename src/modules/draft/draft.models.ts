@@ -21,7 +21,8 @@ export abstract class Draft extends ModuleBaseModel {
         let civilizationsPerPool: number = this.civilizationsPool[0].length || 0;
         this.civilizationsMainPool = this.civilizationsMainPool
             .concat(this.civilizationsPool.reduce((a, b) => a.concat(b), []))
-            .sort((a, b) => a-b);
+            .sort((a, b) => a-b)
+            .filter((value: number, index: number, array: number[]) => (index === array.indexOf(value)));
         let civilizationPoolsAmount: number = this.civilizationsPool.length;
         this.civilizationsPool = [];
         for(let i: number = 0; i < civilizationPoolsAmount; i++)      // нельзя использовать .fill([])
@@ -96,6 +97,45 @@ export class DraftFFA extends Draft {
             return;
         }
         this.divideCivilizations(civilizationsPerPlayer);
+    }
+}
+
+export class DraftRedDeath extends Draft {
+    public override readonly type: string = "Red Death";
+    public haveDuplicates: boolean;
+
+    public divideCivilizations(amount: number = 0): void {        
+        let previousAmount: number = this.revertToMainPool();
+        amount = amount || previousAmount;
+        for(let i in this.civilizationsPool) {
+            for(let j: number = 0; j < amount; j++)
+                this.civilizationsPool[i].push(
+                    this.civilizationsMainPool.splice(Math.floor(Math.random() * this.civilizationsMainPool.length), 1)[0]
+                );
+            if(this.haveDuplicates)
+                this.civilizationsMainPool = this.civilizationsMainPool.concat(this.civilizationsPool[i]);
+        }
+    }
+
+    constructor(
+        interaction: CommandInteraction | ButtonInteraction, bans: string, configs: number[], texts: string[], users: User[],
+        factionsAmount: number, haveDuplicates: boolean
+    ) {
+        super(interaction, bans, configs, texts, users);
+        this.haveDuplicates = haveDuplicates;
+
+        if(this.errorReturnTag !== "")
+            return;
+
+        if(
+            (haveDuplicates && (factionsAmount > configs.length)) ||
+            (!haveDuplicates && (factionsAmount > Math.floor(texts.length/users.length)))
+        ) {
+            this.errorReturnTag = "DRAFT_ERROR_NOT_ENOUGH_CIVILIZATIONS";
+            return;
+        }
+
+        this.divideCivilizations(factionsAmount);
     }
 }
 

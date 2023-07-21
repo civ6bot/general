@@ -14,4 +14,11 @@ export class UtilsServiceRandom {
             .map(x => ("0" + x.toString(16)).slice(-2))                 // to hex
             .reduce((str, substr) => str+substr) as HexColorString;     // to string
     }
+
+    public static getBlackRedGradientColor(): HexColorString {
+        const gradientsAmount: number = 6;
+        return '#' + [Math.floor(Math.floor(Math.random()*gradientsAmount)/(gradientsAmount-1)*255), 0, 0]
+            .map(x => ("0" + x.toString(16)).slice(-2))                 // to hex
+            .reduce((str, substr) => str+substr) as HexColorString;     // to string
+    }
 }

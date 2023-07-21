@@ -40,6 +40,10 @@
     { "tag": "GAME_FFA_CITY_CENTER_CAPITAL_EMOJI", "value": "⭐" },
     { "tag": "GAME_FFA_CITY_CENTER_YES_EMOJI", "value": "🏙️" },
 
+    { "tag": "GAME_FFA_CITY_YIELDS_STANDARD_EMOJI", "value": "👨‍🌾" },
+    { "tag": "GAME_FFA_CITY_YIELDS_MAXIMUM_EMOJI", "value": "⏫" },
+    { "tag": "GAME_FFA_CITY_YIELDS_NO_RNG_EMOJI", "value": "📍" },
+
     { "tag": "GAME_FFA_THERMONUCLEAR_DEVICE_NO_EMOJI", "value": "<:no:808418109319938099>" },
     { "tag": "GAME_FFA_THERMONUCLEAR_DEVICE_YES_EMOJI", "value": "🚀" },
 
@@ -48,6 +52,12 @@
 
     { "tag": "GAME_FFA_MONOPOLY_NO_EMOJI", "value": "<:no:808418109319938099>" },
     { "tag": "GAME_FFA_MONOPOLY_YES_EMOJI", "value": "🏭" },
+
+    { "tag": "GAME_FFA_BARBARIANS_STANDARD_EMOJI", "value": "🪓" },
+    { "tag": "GAME_FFA_BARBARIANS_CIVILIZED_EMOJI", "value": "🏛️" },
+    { "tag": "GAME_FFA_BARBARIANS_BALANCED_EMOJI", "value": "⚖️" },
+    { "tag": "GAME_FFA_BARBARIANS_RAGING_EMOJI", "value": "😡" },
+    { "tag": "GAME_FFA_BARBARIANS_NO_EMOJI", "value": "<:no:808418109319938099>" },
 
     { "tag": "GAME_FFA_BARBARIAN_CLANS_NO_EMOJI", "value": "<:no:808418109319938099>" },
     { "tag": "GAME_FFA_BARBARIAN_CLANS_YES_EMOJI", "value": "🧌" },
@@ -78,7 +88,7 @@
     { "tag": "GAME_FFA_FRIENDS_INFINITY_EMOJI", "value": "♾️" },
 
     { "tag": "GAME_FFA_MILITARY_ALLIANCE_NO_EMOJI", "value": "<:no:808418109319938099>" },
-    { "tag": "GAME_FFA_MILITARY_ALLIANCE_YES_EMOJI", "value": "🗡️" },
+    { "tag": "GAME_FFA_MILITARY_ALLIANCE_YES_EMOJI", "value": "⚔️" },
 
     { "tag": "GAME_FFA_CHATTING_ANY_EMOJI", "value": "🕵️" },
     { "tag": "GAME_FFA_CHATTING_PUBLIC_EMOJI", "value": "\uD83D\uDCF0" },
@@ -126,6 +136,10 @@
     { "tag": "GAME_TEAMERS_CITY_CENTER_NO_EMOJI", "value": "<:no:808418109319938099>" },
     { "tag": "GAME_TEAMERS_CITY_CENTER_CAPITAL_EMOJI", "value": "⭐" },
     { "tag": "GAME_TEAMERS_CITY_CENTER_YES_EMOJI", "value": "🏙️" },
+
+    { "tag": "GAME_TEAMERS_CITY_YIELDS_STANDARD_EMOJI", "value": "👨‍🌾" },
+    { "tag": "GAME_TEAMERS_CITY_YIELDS_MAXIMUM_EMOJI", "value": "⏫" },
+    { "tag": "GAME_TEAMERS_CITY_YIELDS_NO_RNG_EMOJI", "value": "📍" },
 
     { "tag": "GAME_TEAMERS_RELIC_TURN_20_EMOJI", "value": "\uD83D\uDDFF" },
     { "tag": "GAME_TEAMERS_RELIC_YES_EMOJI", "value": "<:Yes:808418109710794843>" },

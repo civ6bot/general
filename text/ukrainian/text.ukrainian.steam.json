@@ -7,8 +7,7 @@
     { "tag": "STEAM_CONNECT_BUTTON_EMOJI", "value": "\uD83C\uDF10" },
 
     { "tag": "STEAM_LINK_TITLE", "value": "\uD83C\uDF10 Посилання на лобі" },
-    { "tag": "STEAM_LINK_DESCRIPTION_LICENSE", "value": "**[STEAM_LOBBY_URL]**" },
-    { "tag": "STEAM_LINK_DESCRIPTION_PIRATE", "value": "\uD83C\uDFF4\u200D☠️ Лобі для піратської версії гри.\n**[STEAM_LOBBY_URL]**" },
+    { "tag": "STEAM_LINK_DESCRIPTION_PIRATE", "value": "\uD83C\uDFF4\u200D☠️ Лобі для піратської версії гри." },
     { "tag": "STEAM_LINK_FIELD_TITLE", "value": "❗ Додатковий опис:" },
     { "tag": "STEAM_LINK_ERROR_WRONG_GAME", "value": "Ви граєте в невідповідну гру для генерації посилання." },
     { "tag": "STEAM_LINK_ERROR_NO_STEAM_DATA", "value": "Помилка під час отримання посилання на лобі. Можливі причини:\n- ви не створили ігрове лобі;\n- ваш профіль Steam \"не в мережі\";\n- статус приватності профілю Steam не \"відкритий\";\n- у вас під'єднаний інший акаунт Steam (використовуйте /connect для перепідключення)." }

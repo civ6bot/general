@@ -13,10 +13,32 @@ export class SplitService extends ModuleBaseService {
     private splitUI: SplitUI = new SplitUI();
     public splitAdapter: SplitAdapter = new SplitAdapter();
 
-    public static splits: Map<string, Split> = new Map<string, Split>();    // guildID
+    public static splits: Map<string, Split[]> = new Map();    // guildID
+
+    public static getSplits(guildID: string): Split[] {
+        if(SplitService.splits.get(guildID) === undefined)
+            SplitService.splits.set(guildID, []);
+        return SplitService.splits.get(guildID) as Split[];
+    }
+
+    public static addSplit(split: Split): void {
+        this.getSplits(split.guildID).push(split);
+    }
+
+    public static deleteSplit(split: Split): void {
+        let guildSplits: Split[] = this.getSplits(split.guildID);
+        let splitIndex: number = guildSplits.indexOf(split);
+        if(splitIndex !== -1)
+            guildSplits.splice(splitIndex, 1);
+    }
+
+    public static getSplitByGuildMessageID(guildID: string, messageID: string): Split | undefined {
+        return this.getSplits(guildID).filter(split => split.message?.id === messageID)[0];
+    }
 
     private async checkButtonPermission(interaction: ButtonInteraction, split: Split): Promise<boolean> {
-        if((interaction.user.id === split.interaction.user.id) || (split.captains.map((captain: User): string => captain.id).indexOf(interaction.user.id) !== -1)) 
+        if((interaction.user.id === split.interaction.user.id) || 
+            (split.captains.map((captain: User): string => captain.id).indexOf(interaction.user.id) !== -1)) 
             return true;
         
         let textStrings = await this.getManyText(
@@ -27,13 +49,35 @@ export class SplitService extends ModuleBaseService {
         return false;
     }
 
+    // Map-объект имеет активные и неактивные объекты. 
+    // Функция ниже работает с ними и делает и делает следующее:
+    // 1) проверяет, можно ли добавить новый активный
+    // объект в список существующих (Random не учитывается);
+    // 2) удаляет неактивные (!) объекты, которые (хотя бы одно из двух):
+    //      2.1) перекрываются новым активным
+    //      по признаку наличия пересеающихся пользователей;
+    //      2.2) очень старые (1 час).
     private checkSplit(split: Split): void {
+        if((split.errorReturnTag !== "") || (split.type === "Random"))
+            return;
+        let guildSplits = SplitService.getSplits(split.guildID);
+        guildSplits.forEach((guildSplit: Split) => {
+            if(split.errorReturnTag !== "")
+                return;
+            // users это string[]
+            if(guildSplit.isProcessing && (guildSplit.getAllPlayersID().filter(user => split.getAllPlayersID().includes(user)).length > 0))
+                split.errorReturnTag = "SPLIT_ERROR_PROCESSING";
+        });
+
         if(split.errorReturnTag !== "")
             return;
-        let key: string = split.guildID;
-        let currentSplit: Split | undefined = SplitService.splits.get(key);
-        if(currentSplit?.isProcessing)
-            split.errorReturnTag = "SPLIT_ERROR_PROCESSING";
+        guildSplits = guildSplits.filter((guildSplit) => 
+            (guildSplit.isProcessing) || (
+                (guildSplit.getAllPlayersID().filter(user => split.getAllPlayersID().includes(user)).length === 0) &&
+                ((Date.now()-guildSplit.date.getTime()) < this.lifetimeOfMapObjects)
+            )
+        );
+        SplitService.splits.set(split.guildID, guildSplits);
     }
 
     public async random(
@@ -88,9 +132,14 @@ export class SplitService extends ModuleBaseService {
                     ? split.thread.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
                     : interaction.channel?.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
             } else
-                interaction.reply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
+                interaction.reply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1]), ephemeral: true});
             return;
         }
+
+        // Случайное разделение не может прерваться после проверок,
+        // потому что оно мгновенное. У него нет кнопок, и, следовательно,
+        // объект разделения не нужно хранить в памяти (для вызова 2 кнопок
+        // для тех, кто не успел выбрать вовремя.
 
         let title: string = await this.getOneText(split.interaction, "SPLIT_RANDOM_TITLE");
         let fieldHeaders: string[] = [await this.getOneText(split.interaction, "SPLIT_FIELD_TITLE_USERS_NOT_PICKED")];
@@ -155,7 +204,6 @@ export class SplitService extends ModuleBaseService {
         if(outerSplit)
             split = outerSplit;
         else {
-            await interaction.deferReply();
             let users: User[];
             if(usersOnly === "") {
                 users = usersInclude
@@ -206,10 +254,12 @@ export class SplitService extends ModuleBaseService {
                     ? split.thread.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
                     : interaction.channel?.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
             } else
-                interaction.editReply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])});
+                interaction.reply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1]), ephemeral: true});
             return;
         }
-        SplitService.splits.set(split.guildID, split);
+        if(!outerSplit)
+            await interaction.deferReply();
+        SplitService.addSplit(split);
 
         split.pickTimeMs = await this.getOneSettingNumber(split.interaction, "SPLIT_PICK_TIME_MS");
         let textStrings: string[] = [];
@@ -285,15 +335,17 @@ export class SplitService extends ModuleBaseService {
         split.setTimeoutID = setTimeout(SplitService.timeoutFunction, split.pickTimeMs, split);
         split.reactionCollector = split.message?.createReactionCollector({time: 16*split.pickTimeMs});  // максимальное число игроков
         split.reactionCollector.on("collect", async (reaction: MessageReaction, user: User) => SplitService.reactionCollectorFunction(reaction, user));
-        if(!await UtilsServiceEmojis.reactOrder(split.message, split.emojis))       // если оно будет удалено до выставления всех эмодзи
-            SplitService.splits.delete(split.guildID);
+        if(!await UtilsServiceEmojis.reactOrder(split.message, split.emojis))         // если оно будет удалено до выставления всех эмодзи
+            SplitService.deleteSplit(split);
     }
 
     public static async reactionCollectorFunction(reaction: MessageReaction, user: User): Promise<void> {
         if(user.bot)
             return;
-        let key: string = reaction.message.guild?.id as string;
-        let split: Split | undefined = SplitService.splits.get(key);
+        let split: Split | undefined = SplitService.getSplitByGuildMessageID(
+            reaction.message.guild?.id as string,
+            reaction.message.id
+        );
         if(!split) {
             reaction.message.delete();    // удалить сообщение
             return;
@@ -435,8 +487,10 @@ export class SplitService extends ModuleBaseService {
     }
 
     public async splitDeleteButton(interaction: ButtonInteraction) {
-        let key: string = interaction.guild?.id as string;
-        let split: Split | undefined = SplitService.splits.get(key);
+        let split: Split | undefined = SplitService.getSplitByGuildMessageID(
+            interaction.guild?.id as string,
+            interaction.message.id
+        );
         if(!split)
             return interaction.message.delete();
         if(!await this.checkButtonPermission(interaction, split))
@@ -447,7 +501,7 @@ export class SplitService extends ModuleBaseService {
             split.setTimeoutID = null;
         }
         split.reactionCollector?.stop();
-        SplitService.splits.delete(key);
+        SplitService.deleteSplit(split);
         let textStrings = await this.getManyText(
             interaction,
             ["BASE_NOTIFY_TITLE", "SPLIT_NOTIFY_DELETED"]
@@ -467,9 +521,11 @@ export class SplitService extends ModuleBaseService {
         interaction.message.edit({components: []});
     }
 
-    public async splitRestartButton(interaction: ButtonInteraction) {
-        let key: string = interaction.guild?.id as string;
-        let split: Split | undefined = SplitService.splits.get(key);
+    public async splitRestartButton(interaction: ButtonInteraction) {        
+        let split: Split | undefined = SplitService.getSplitByGuildMessageID(
+            interaction.guild?.id as string,
+            interaction.message.id
+        );
         if(!split)
             return await this.replyNotFound(interaction);
         if(!await this.checkButtonPermission(interaction, split))
@@ -483,8 +539,10 @@ export class SplitService extends ModuleBaseService {
     }
 
     public async splitContinueButton(interaction: ButtonInteraction) {
-        let key: string = interaction.guild?.id as string;
-        let split: Split | undefined = SplitService.splits.get(key);
+        let split: Split | undefined = SplitService.getSplitByGuildMessageID(
+            interaction.guild?.id as string,
+            interaction.message.id
+        );
         if(!split)
             return this.replyNotFound(interaction);
         if(!await this.checkButtonPermission(interaction, split))
@@ -495,8 +553,10 @@ export class SplitService extends ModuleBaseService {
     }
 
     public async splitSkipButton(interaction: ButtonInteraction) {
-        let key: string = interaction.guild?.id as string;
-        let split: Split | undefined = SplitService.splits.get(key);
+        let split: Split | undefined = SplitService.getSplitByGuildMessageID(
+            interaction.guild?.id as string,
+            interaction.message.id
+        );
         if(!split)
             return this.replyNotFound(interaction);
         if(!await this.checkButtonPermission(interaction, split))
@@ -516,7 +576,10 @@ export class SplitService extends ModuleBaseService {
 
     public async splitUndoButton(interaction: ButtonInteraction) {
         let key: string = interaction.guild?.id as string;
-        let split: Split | undefined = SplitService.splits.get(key);
+        let split: Split | undefined = SplitService.getSplitByGuildMessageID(
+            interaction.guild?.id as string,
+            interaction.message.id
+        );
         if(!split) 
             return interaction.message.delete();    // удалить сообщение
         if(!await this.checkButtonPermission(interaction, split))

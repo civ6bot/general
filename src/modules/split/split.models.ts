@@ -19,7 +19,7 @@ export abstract class Split extends ModuleBaseModel {
     public abstract pickSequence: number[];     // последовательность пиков
     public currentCaptainIndex: number = 0;     // -1 - никто, [0,1] - индексы капитанов
 
-    public message: Message | null = null;
+    public message: Message | null = null;      // Оно присваивается в service, но в конструкторе мы ещё не знаем, какое сообщение тут будет
     public pickTimeMs: number = 0;
     public reactionCollector: ReactionCollector | null = null;
 
@@ -56,6 +56,10 @@ export abstract class Split extends ModuleBaseModel {
         if(Math.random() < 0.5)
             this.captains.unshift(this.captains.pop() as User);
         this.captains.forEach((captain: User, index: number) => this.teams[index].push(captain.toString()));
+    }
+
+    public getAllPlayersID(): string[] {
+        return this.users.concat(this.captains.map(captain => captain.id));
     }
 
     public getTeamsText(): string[] {

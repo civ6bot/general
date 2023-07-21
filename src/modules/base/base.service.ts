@@ -3,10 +3,13 @@ import {DatabaseServiceText} from "../../database/services/service.Text";
 import {ButtonInteraction, CommandInteraction, GuildMember, ModalSubmitInteraction, StringSelectMenuInteraction} from "discord.js";
 import {EntityConfig} from "../../database/entities/entity.Config";
 import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
+import { UtilsServiceTime } from "../../utils/services/utils.service.time";
 
 export class ModuleBaseService {
     protected databaseServiceConfig: DatabaseServiceConfig = new DatabaseServiceConfig();
     protected databaseServiceText: DatabaseServiceText = new DatabaseServiceText();
+
+    protected lifetimeOfMapObjects: number = UtilsServiceTime.getMs(1, "h");
 
     protected async getOneSettingString(
         interaction: CommandInteraction | ButtonInteraction | StringSelectMenuInteraction | ModalSubmitInteraction | string,

@@ -31,7 +31,7 @@ export class SteamService extends ModuleBaseService {
             return interaction.reply({embeds: this.steamUI.error(textStringsError[0], textStringsError[1])});
         if(gameIDArray.indexOf(steamAPIData.gameID as string) === -1)
             return interaction.reply({embeds: this.steamUI.error(textStringsError[0], textStringsError[2])});
-        let link: string = `steam://joinlobby/${steamAPIData.gameID}/${steamAPIData.lobbySteamID}/${steamAPIData.steamID}`;
+        let link: string = `http://51.68.123.207:31612/join/${steamAPIData.gameID}/${steamAPIData.lobbySteamID}/${steamAPIData.steamID}`;
 
         let textStrings: string[] = await this.getManyText(interaction, [
             "STEAM_LINK_TITLE", "STEAM_LINK_DESCRIPTION_BASE",

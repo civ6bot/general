@@ -19,7 +19,7 @@ export class SplitUI extends ModuleBaseUI {
             split.currentCaptainIndex === -1 ? "#00ff40" : "#008221",
             description,
             teamHeaders.map((teamHeader: string, index: number): APIEmbedField => {return {name: teamHeader, value: teamValues[index]}}),
-            split.interaction.user.tag,
+            split.interaction.user.username,
             split.interaction.user.avatarURL()
         );
     }

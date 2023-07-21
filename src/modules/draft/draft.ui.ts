@@ -8,7 +8,8 @@ import {UtilsGeneratorButton} from "../../utils/generators/utils.generator.butto
 export class DraftUI extends ModuleBaseUI {
     public draftFFAEmbed(
         title: string, bansHeader: string,
-        errorsHeader: string, draft: DraftFFA
+        errorsHeader: string, draft: DraftFFA,
+        isRedDeath: boolean = false
     ): EmbedBuilder[] {
         let description: string = "";
         if(draft.bans.length > 0)
@@ -18,21 +19,23 @@ export class DraftUI extends ModuleBaseUI {
 
         if(draft.thread || (draft.interaction.channel?.type === ChannelType.PublicThread)) {
             description += draft.getPoolsText()
-                .map((value: string[], index: number): string => `**${draft.users[index].tag}** (${draft.users[index].toString()})\n` + value.join("\n"))
+                .map((value: string[], index: number): string => `**${draft.users[index].username}** (${draft.users[index].toString()})\n` + value.join("\n"))
                 .join("\n\n");
 
             return UtilsGeneratorEmbed.getSingle(
                 title,
-                UtilsServiceRandom.getBrightColor(),
+                (isRedDeath) 
+                    ? UtilsServiceRandom.getBlackRedGradientColor()
+                    : UtilsServiceRandom.getBrightColor(),
                 description,
                 [],
-                draft.interaction.user.tag,
+                draft.interaction.user.username,
                 draft.interaction.user.avatarURL()
             );
         } else {
             let fields: APIEmbedField[] = draft.getPoolsText()
                 .map((value: string[], index: number): APIEmbedField => { return {
-                    name: `**${draft.users[index].tag}**`,
+                    name: `**${draft.users[index].username}**`,
                     value: value.join("\n")
                 }
             });
@@ -46,10 +49,12 @@ export class DraftUI extends ModuleBaseUI {
 
             return UtilsGeneratorEmbed.getSingle(
                 title,
-                UtilsServiceRandom.getBrightColor(),
+                (isRedDeath) 
+                    ? UtilsServiceRandom.getBlackRedGradientColor()
+                    : UtilsServiceRandom.getBrightColor(),
                 description,
                 fields,
-                draft.interaction.user.tag,
+                draft.interaction.user.username,
                 draft.interaction.user.avatarURL()
             );
         }
@@ -71,7 +76,7 @@ export class DraftUI extends ModuleBaseUI {
                 new Array(teamDescriptionHeaders.length).fill(UtilsServiceRandom.getBrightColor()),
                 descriptions,
                 [],
-                draft.interaction.user.tag,
+                draft.interaction.user.username,
                 draft.interaction.user.avatarURL()
             );
         } else {
@@ -144,7 +149,7 @@ export class DraftUI extends ModuleBaseUI {
                 UtilsServiceRandom.getBrightColor(),
                 description,
                 fields,
-                draft.interaction.user.tag,
+                draft.interaction.user.username,
                 draft.interaction.user.avatarURL()
             );
         }
@@ -173,7 +178,7 @@ export class DraftUI extends ModuleBaseUI {
                     ? draft.civilizationsPool.map((pool: number[]): string => pool.length === 1 ? emojis[0] : emojis[1]).join("\n")
                     : draft.getPoolsText().map((pool: string[]): string => pool[0].slice(pool[0].indexOf("<"))).join("\n")
             }],
-            draft.interaction.user.tag,
+            draft.interaction.user.username,
             draft.interaction.user.avatarURL()
         );
     }

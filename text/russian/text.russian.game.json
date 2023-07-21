@@ -36,7 +36,7 @@
     { "tag": "GAME_RESULT_TIMEOUT_DESCRIPTION", "value": "⏰❗ Время вышло! Некоторые игроки не успели проголосовать." },
     { "tag": "GAME_RESULT_UNKNOWN", "value": "❔ Неизвестно" },
 
-    { "tag": "GAME_FFA_RESULT_TITLE", "value": "⚖ Голосование для новой игры - FFA" },
+    { "tag": "GAME_FFA_RESULT_TITLE", "value": "⚖️ Голосование для новой игры - FFA" },
 
     { "tag": "GAME_FFA_MAP", "value": "\uD83C\uDF0D **Карта**" },
     { "tag": "GAME_FFA_MAP_PANGAEA", "value": "Пангея" },
@@ -80,10 +80,15 @@
     { "tag": "GAME_FFA_RIDGES_DEFINITION_INTERCONTINENTAL", "value": "Межконтинентальные (Standard)" },
     { "tag": "GAME_FFA_RIDGES_DEFINITION_RANDOM", "value": "Случайные (Classic)" },
 
-    { "tag": "GAME_FFA_CITY_CENTER", "value": "🏙️ **Дополнительный доход центров городов**" },
+    { "tag": "GAME_FFA_CITY_CENTER", "value": "🏙️ **BCY: центры городов**" },
     { "tag": "GAME_FFA_CITY_CENTER_NO", "value": "Отключено" },
     { "tag": "GAME_FFA_CITY_CENTER_CAPITAL", "value": "Включено только для столицы" },
     { "tag": "GAME_FFA_CITY_CENTER_YES", "value": "Включено для всех городов" },
+
+    { "tag": "GAME_FFA_CITY_YIELDS", "value": "👨‍🌾 **BCY: дополнительный доход**" },
+    { "tag": "GAME_FFA_CITY_YIELDS_STANDARD", "value": "Стандартный" },
+    { "tag": "GAME_FFA_CITY_YIELDS_MAXIMUM", "value": "Максимум" },
+    { "tag": "GAME_FFA_CITY_YIELDS_NO_RNG", "value": "Фиксированный (no RNG)" },
 
     { "tag": "GAME_FFA_THERMONUCLEAR_DEVICE", "value": "🚀 **Термоядерные устройства**" },
     { "tag": "GAME_FFA_THERMONUCLEAR_DEVICE_NO", "value": "Запрещены" },
@@ -96,6 +101,13 @@
     { "tag": "GAME_FFA_MONOPOLY", "value": "🏭 **Режим \"Монополии и Корпорации\"**" },
     { "tag": "GAME_FFA_MONOPOLY_NO", "value": "Отключен" },
     { "tag": "GAME_FFA_MONOPOLY_YES", "value": "Включен" },
+
+    { "tag": "GAME_FFA_BARBARIANS", "value": "🪓 **Варвары**" },
+    { "tag": "GAME_FFA_BARBARIANS_STANDARD", "value": "Стандартные" },
+    { "tag": "GAME_FFA_BARBARIANS_CIVILIZED", "value": "Цивилизованные" },
+    { "tag": "GAME_FFA_BARBARIANS_BALANCED", "value": "Балансные" },
+    { "tag": "GAME_FFA_BARBARIANS_RAGING", "value": "Яростные" },
+    { "tag": "GAME_FFA_BARBARIANS_NO", "value": "Без варваров" },
 
     { "tag": "GAME_FFA_BARBARIAN_CLANS", "value": "🧌 **Режим \"Варварские кланы\"**" },
     { "tag": "GAME_FFA_BARBARIAN_CLANS_NO", "value": "Отключен" },
@@ -132,7 +144,7 @@
     { "tag": "GAME_FFA_FRIENDS_3", "value": "Три" },
     { "tag": "GAME_FFA_FRIENDS_INFINITY", "value": "Любое" },
 
-    { "tag": "GAME_FFA_MILITARY_ALLIANCE", "value": "⚔ **Военный союз**" },
+    { "tag": "GAME_FFA_MILITARY_ALLIANCE", "value": "⚔️ **Военный союз**" },
     { "tag": "GAME_FFA_MILITARY_ALLIANCE_NO", "value": "Запрещен" },
     { "tag": "GAME_FFA_MILITARY_ALLIANCE_YES", "value": "Разрешен" },
 
@@ -146,7 +158,7 @@
 
 
 
-    { "tag": "GAME_TEAMERS_RESULT_TITLE", "value": "⚖ Голосование для новой игры - Teamers" },
+    { "tag": "GAME_TEAMERS_RESULT_TITLE", "value": "⚖️ Голосование для новой игры - Teamers" },
 
     { "tag": "GAME_TEAMERS_MAP", "value": "\uD83C\uDF0D **Карта**" },
     { "tag": "GAME_TEAMERS_MAP_PANGAEA", "value": "Пангея" },
@@ -190,10 +202,15 @@
     { "tag": "GAME_TEAMERS_RIDGES_DEFINITION_INTERCONTINENTAL", "value": "Межконтинентальные (Standard)" },
     { "tag": "GAME_TEAMERS_RIDGES_DEFINITION_RANDOM", "value": "Случайные (Classic)" },
 
-    { "tag": "GAME_TEAMERS_CITY_CENTER", "value": "🏙️ **Дополнительный доход центров городов**" },
+    { "tag": "GAME_TEAMERS_CITY_CENTER", "value": "🏙️ **BCY: центры городов**" },
     { "tag": "GAME_TEAMERS_CITY_CENTER_NO", "value": "Отключено" },
     { "tag": "GAME_TEAMERS_CITY_CENTER_CAPITAL", "value": "Включено только для столицы" },
     { "tag": "GAME_TEAMERS_CITY_CENTER_YES", "value": "Включено для всех городов" },
+
+    { "tag": "GAME_TEAMERS_CITY_YIELDS", "value": "👨‍🌾 **BCY: дополнительный доход**" },
+    { "tag": "GAME_TEAMERS_CITY_YIELDS_STANDARD", "value": "Стандартный" },
+    { "tag": "GAME_TEAMERS_CITY_YIELDS_MAXIMUM", "value": "Максимум" },
+    { "tag": "GAME_TEAMERS_CITY_YIELDS_NO_RNG", "value": "Фиксированный (no RNG)" },
 
     { "tag": "GAME_TEAMERS_RELIC", "value": "\uD83D\uDDFF **Торговля реликвиями**" },
     { "tag": "GAME_TEAMERS_RELIC_TURN_20", "value": "Разрешена с 20 хода" },

@@ -31,21 +31,21 @@ export class SteamService extends ModuleBaseService {
             return interaction.reply({embeds: this.steamUI.error(textStringsError[0], textStringsError[1])});
         if(gameIDArray.indexOf(steamAPIData.gameID as string) === -1)
             return interaction.reply({embeds: this.steamUI.error(textStringsError[0], textStringsError[2])});
-        let link: string = `steam://joinlobby/${steamAPIData.gameID}/${steamAPIData.lobbySteamID}/${steamAPIData.steamID}`;
+        let link: string = `http://51.68.123.207:31612/join/${steamAPIData.gameID}/${steamAPIData.lobbySteamID}/${steamAPIData.steamID}`;
 
         let textStrings: string[] = await this.getManyText(interaction, [
-            "STEAM_LINK_TITLE", "STEAM_LINK_DESCRIPTION_LICENSE",
-            "STEAM_LINK_DESCRIPTION_PIRATE", "STEAM_LINK_FIELD_TITLE",
-        ], [null, [link], [link]]);
+            "STEAM_LINK_TITLE", "STEAM_LINK_DESCRIPTION_PIRATE", 
+            "STEAM_LINK_FIELD_TITLE",
+        ]);
+        textStrings[0] = `[${textStrings[0]}](${link})`;
+
         interaction.reply({ embeds: this.steamUI.link(
             textStrings[0],
-                steamAPIData.gameID === gameIDArray[0]
-                ? textStrings[1]
-                    : textStrings[2],
-                textStrings[3],
-                description,
-                interaction.user
-            )});
+            (steamAPIData.gameID === gameIDArray[0]) ? null : textStrings[1],
+            textStrings[2],
+            description,
+            interaction.user
+        )});
     }
 
     async connect(interaction: CommandInteraction) {

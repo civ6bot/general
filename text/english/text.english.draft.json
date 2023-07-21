@@ -104,7 +104,7 @@
 
     { "tag": "DRAFT_BLIND_PM_TITLE", "value": "\uD83C\uDFA9 Draft blind" },
     { "tag": "DRAFT_BLIND_PM_DESCRIPTION_PROCESSING", "value": "\uD83E\uDD14 **Status: choosing civilization.**\nClick a button to pick leader.\n\n⏳ **__Hurry up!__** Pick time ends [TIMESTAMP]." },
-    { "tag": "DRAFT_BLIND_PM_DESCRIPTION_READY", "value": "**Status: ready.**\nNow wait results.\n\nYour choice — [PICKED_CIVILIZATION]." },
+    { "tag": "DRAFT_BLIND_PM_DESCRIPTION_READY", "value": "**Status: ready.**\nNow return to the text channel and wait for the results.\n\nYour choice — [PICKED_CIVILIZATION]." },
     { "tag": "DRAFT_BLIND_PM_DESCRIPTION_TIMEOUT", "value": "⏰ **Status: time out!**\nYou got random civilization from your draft pool.\n\nYour civilization — [PICKED_CIVILIZATION]." },
 
     { "tag": "DRAFT_BLIND_BUTTON_DELETE", "value": "Delete" },
@@ -113,7 +113,7 @@
     { "tag": "DRAFT_BLIND_ERROR_PM", "value": "One of you ([USER_NAME]) blocked bot or restricted private messages from guild's users. The draft is unable to run." },
 
     { "tag": "DRAFT_REDRAFT_TITLE", "value": "\uD83D\uDD04 Redraft #[REDRAFT_AMOUNT]" },
-    { "tag": "DRAFT_REDRAFT_DESCRIPTION_PROCESSING", "value": "⏳ This redraft requires **[PLAYERS_NEED_AMOUNT]/[PLAYERS_TOTAL_AMOUNT] votes.**. Time for vote ends [TIMESTAMP]." },
+    { "tag": "DRAFT_REDRAFT_DESCRIPTION_PROCESSING", "value": "⏳ This redraft requires **[PLAYERS_NEED_AMOUNT]/[PLAYERS_TOTAL_AMOUNT] votes.** Time for vote ends [TIMESTAMP]." },
     { "tag": "DRAFT_REDRAFT_DESCRIPTION_TIMEOUT", "value": "⏰ Time out! Redraft denied." },
     { "tag": "DRAFT_REDRAFT_DESCRIPTION_YES", "value": "[EMOJI_YES] Redraft confirmed." },
     { "tag": "DRAFT_REDRAFT_DESCRIPTION_NO", "value": "[EMOJI_NO] Redraft denied." },
@@ -127,6 +127,26 @@
 
     { "tag": "DRAFT_REDRAFT_ERROR_NOT_FOUND", "value": "Your draft was not found." },
     { "tag": "DRAFT_REDRAFT_ERROR_NOT_MEMBER", "value": "You don't have permission to vote there." },
-    { "tag": "DRAFT_ERROR_BLIND_DELETE_BUTTON_NOT_OWNER", "value": "You are not author of this draft." }
+    { "tag": "DRAFT_ERROR_BLIND_DELETE_BUTTON_NOT_OWNER", "value": "You are not author of this draft." },
+
+
+
+    { "tag": "DRAFT_RED_DEATH_TITLE_ONE_PLAYER", "value": "☢️ Red Death draft for 1 player" },
+    { "tag": "DRAFT_RED_DEATH_TITLE_MANY_PLAYERS", "value": "☢️ Red Death draft for [PLAYER_AMOUNT] players" },
+
+    { "tag": "DRAFT_RED_DEATH_BORDERLORDS", "value": "[EMOJI] Very Goth Borderlords" },
+    { "tag": "DRAFT_RED_DEATH_CULTISTS", "value": "[EMOJI] Deeply Invested Cultists" },
+    { "tag": "DRAFT_RED_DEATH_JOCKS", "value": "[EMOJI] Meanest Jocks" },
+    { "tag": "DRAFT_RED_DEATH_MUTANTS", "value": "[EMOJI] Horribly Scarred Mutants" },
+    { "tag": "DRAFT_RED_DEATH_PREPPERS", "value": "[EMOJI] Insane Doomsday Preppers" },
+    { "tag": "DRAFT_RED_DEATH_PIRATES", "value": "[EMOJI] Irradiated Pirates" },
+    { "tag": "DRAFT_RED_DEATH_SCIENTISTS", "value": "[EMOJI] Ethically Challenged Scientists" },
+    { "tag": "DRAFT_RED_DEATH_WANDERERS", "value": "[EMOJI] Free Willed Wanderers" },
+    { "tag": "DRAFT_RED_DEATH_ALIENS", "value": "[EMOJI] Undercover Aliens" },
+    { "tag": "DRAFT_RED_DEATH_ZOMBIES", "value": "[EMOJI] Zombie Beastmasters" },
+
+    { "tag": "DRAFT_RED_DEATH_RICH_PIRATES", "value": "[EMOJI] The Fattests and Happiest Rich Pirates" },
+    { "tag": "DRAFT_RED_DEATH_MILITARY", "value": "[EMOJI] Last Military Formations" },
+    { "tag": "DRAFT_RED_DEATH_RAIDERS", "value": "[EMOJI] Egoistic Raider Leaders" }
   ]
 }

@@ -1,0 +1,14 @@
+export class UtilsDataFactions {
+  public static readonly factionTags: string[] = [
+    "DRAFT_RED_DEATH_BORDERLORDS", "DRAFT_RED_DEATH_CULTISTS",
+    "DRAFT_RED_DEATH_JOCKS", "DRAFT_RED_DEATH_MUTANTS",
+    "DRAFT_RED_DEATH_PREPPERS", "DRAFT_RED_DEATH_PIRATES",
+    "DRAFT_RED_DEATH_SCIENTISTS", "DRAFT_RED_DEATH_WANDERERS",
+    "DRAFT_RED_DEATH_ALIENS", "DRAFT_RED_DEATH_ZOMBIES"
+  ];
+
+  public static readonly additionalFactionTags: string[] = [
+    "DRAFT_RED_DEATH_RICH_PIRATES", "DRAFT_RED_DEATH_MILITARY",
+    "DRAFT_RED_DEATH_RAIDERS"
+  ];
+}

@@ -1,0 +1,19 @@
+{
+  "lang": "English",
+  "text": [
+    { "tag": "DRAFT_RED_DEATH_BORDERLORDS_EMOJI", "value": "<:Borderlords:1130296444411195564>" },
+    { "tag": "DRAFT_RED_DEATH_CULTISTS_EMOJI", "value": "<:Cultists:1130296446957142147>" },
+    { "tag": "DRAFT_RED_DEATH_JOCKS_EMOJI", "value": "<:Jocks:1130296451147247817>" },
+    { "tag": "DRAFT_RED_DEATH_MUTANTS_EMOJI", "value": "<:Mutants:1130296459313553499>" },
+    { "tag": "DRAFT_RED_DEATH_PREPPERS_EMOJI", "value": "<:Preppers:1130296449591148624>" },
+    { "tag": "DRAFT_RED_DEATH_PIRATES_EMOJI", "value": "<:Pirates:1130296461125484635>" },
+    { "tag": "DRAFT_RED_DEATH_SCIENTISTS_EMOJI", "value": "<:Scientists:1130296455966503033>" },
+    { "tag": "DRAFT_RED_DEATH_WANDERERS_EMOJI", "value": "<:Wanderers:1130296468511670362>" },
+    { "tag": "DRAFT_RED_DEATH_ALIENS_EMOJI", "value": "<:Aliens:1130296442620227684>" },
+    { "tag": "DRAFT_RED_DEATH_ZOMBIES_EMOJI", "value": "<:Zombies:1130296470017417297>" },
+
+    { "tag": "DRAFT_RED_DEATH_RICH_PIRATES_EMOJI", "value": "<:Rich_Pirates:1130296465563078697>" },
+    { "tag": "DRAFT_RED_DEATH_MILITARY_EMOJI", "value": "<:Military:1130296454431395890>" },
+    { "tag": "DRAFT_RED_DEATH_RAIDERS_EMOJI", "value": "<:Raider_Leaders:1130296463621115964>" }
+  ]
+}

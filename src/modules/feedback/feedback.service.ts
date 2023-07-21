@@ -21,7 +21,7 @@ export class FeedbackService extends ModuleBaseService {
             textStrings[0],
             content,
             {name: textStrings[1], value: textStrings[2]},
-            author.tag,
+            author.username,
             author.avatarURL()
         ));
     }

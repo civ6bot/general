@@ -5,6 +5,25 @@
     { "tag": "DISCORD_ERROR_INTERACTION_NO_GUILD", "value": "You can't use slash commands in PM." },
 
     { "tag": "DISCORD_ON_GUILD_CREATE_TITLE", "value": "🎉 Thank you for inviting Civ6bot!" },
-    { "tag": "DISCORD_ON_GUILD_CREATE_DESCRIPTION", "value": "**Civ6Bot General** has all commands for quick start of Civilization VI game: draft, new game voting, team creating and other usefull stuff.\n\n  • Use slash sign (/) to see all bot's commands;\n  • Use /config command to change bot's settings.\n  • Website: https://civ6bot.xyz/ \n  • Support project: http://civ6bot.xyz/donate \n\nHave a nice game!" }
+    { "tag": "DISCORD_ON_GUILD_CREATE_DESCRIPTION", "value": "**Civ6Bot General** has all commands for quick start of Civilization VI game: draft, new game voting, team creating and other usefull stuff.\n\n  • Use slash sign (/) to see all bot's commands;\n  • Use /config command to change bot's settings.\n  • Website: https://civ6bot.xyz/ \n  • Support project: http://civ6bot.xyz/donate \n\nHave a nice game!" },
+
+    { "tag": "DISCORD_GUILDS_TITLE", "value": "🏰 Connected guilds, page [PAGE_CURRENT]/[PAGE_TOTAL]" },
+    { "tag": "DISCORD_GUILDS_DESCRIPTION", "value": "Guilds total: [GUILD_TOTAL]." },
+    { "tag": "DISCORD_GUILDS_FIELD_GUILDNAME_TITLE", "value": "Guild name" },
+    { "tag": "DISCORD_GUILDS_FIELD_MEMBERS_TITLE", "value": "Members amount" },
+    { "tag": "DISCORD_GUILDS_BUTTON_DELETE", "value": "Delete" },
+    { "tag": "DISCORD_GUILDS_SELECT_PLACEHOLDER", "value": "Choose server" },
+
+    { "tag": "DISCORD_GUILDS_INFO_TITLE", "value": "🏰 Guild stats" },
+    { "tag": "DISCORD_GUILDS_INFO_FIELD_NAME_TITLE", "value": "🏰 Guild name:" },
+    { "tag": "DISCORD_GUILDS_INFO_FIELD_JOIN_TITLE", "value": "🕒 Join date:" },
+    { "tag": "DISCORD_GUILDS_INFO_FIELD_MEMBERS_TITLE", "value": "👥 Members amount:" },
+    { "tag": "DISCORD_GUILDS_INFO_FIELD_MEMBERS_VALUE", "value": "[MEMBERS_TOTAL] ([MEMBERS_ONLINE] online)" },
+    { "tag": "DISCORD_GUILDS_INFO_FIELD_LINK_TITLE", "value": "🌐 Link:" },
+    { "tag": "DISCORD_GUILDS_INFO_FIELD_LINK_VALUE_NONE", "value": "none" },
+    { "tag": "DISCORD_GUILDS_INFO_BUTTON_BACK", "value": "Back" },
+    { "tag": "DISCORD_GUILDS_INFO_BUTTON_UPDATE", "value": "Update link" },
+
+    { "tag": "DISCORD_GUILDS_INFO_ERROR_UPDATE_LINK", "value": "Cannot generate invite URL for this guild." }
   ]
 }

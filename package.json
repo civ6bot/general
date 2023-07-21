@@ -1,6 +1,6 @@
 {
   "name": "civ6bot-general",
-  "version": "3.2.5",
+  "version": "3.2.6",
   "description": "Discord bot for Civilization VI game - General",
   "main": "build/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "@discordx/importer": "^1.1.10",
     "@types/express": "^4.17.14",
     "@types/glob": "^8.0.0",
-    "axios": "^1.2.1",
+    "axios": "^1.4.0",
     "decorate-all": "^1.2.1",
     "discord.js": "^14.8.0",
     "discordx": "^11.5.1",

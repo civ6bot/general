@@ -46,7 +46,7 @@ export class MiscellaneousUI extends ModuleBaseUI {
                 {name: fields[0], value: voteSecret.users.map(user => `<@${user.id}>`).join("\n")},
                 {name: fields[1], value: voteSecret.votes.map(vote => vote ? "<:Yes:808418109710794843>" : "<:No:808418109319938099>").join("\n")}
             ],
-            author.tag,
+            author.username,
             author.avatarURL()
         );
     }
@@ -135,7 +135,7 @@ export class MiscellaneousUI extends ModuleBaseUI {
                 {name: fields[1], value: String(voteSecret.votes.filter(vote => vote === 2).length)},
                 {name: fields[2], value: String(voteSecret.votes.filter(vote => vote === -1).length)},
             ].filter((value, index) => (index !== 1) || voteSecret.isAbstained),
-            author.tag,
+            author.username,
             author.avatarURL()
         );
     }

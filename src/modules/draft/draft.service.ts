@@ -1,25 +1,71 @@
 import {ModuleBaseService} from "../base/base.service";
 import {DraftUI} from "./draft.ui";
 import {ButtonInteraction, CommandInteraction, DMChannel, EmbedBuilder, Guild, Message, User} from "discord.js";
-import {Draft, DraftBlind, DraftFFA, DraftTeamers} from "./draft.models";
+import {Draft, DraftBlind, DraftFFA, DraftRedDeath, DraftTeamers} from "./draft.models";
 import {UtilsGeneratorTimestamp} from "../../utils/generators/utils.generator.timestamp";
 import {UtilsDataCivilizations} from "../../utils/data/utils.data.civilizations";
 import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
-import { UtilsServiceForbiddenPairs } from "../../utils/services/utils.service.forbiddenPairs";
-import { UtilsServicePM } from "../../utils/services/utils.service.PM";
+import {UtilsServiceForbiddenPairs} from "../../utils/services/utils.service.forbiddenPairs";
+import {UtilsServicePM} from "../../utils/services/utils.service.PM";
+import {UtilsDataFactions} from "../../utils/data/utils.data.factions";
 
 export class DraftService extends ModuleBaseService {
     private draftUI: DraftUI = new DraftUI();
 
-    public static drafts: Map<string, Draft> = new Map<string, Draft>();    // guildID+draftType
+    public static drafts: Map<string, Draft[]> = new Map();    // guildID
 
+    public static getDrafts(guildID: string): Draft[] {
+        if(DraftService.drafts.get(guildID) === undefined)
+            DraftService.drafts.set(guildID, []);
+        return DraftService.drafts.get(guildID) as Draft[];
+    }
+
+    public static addDraft(draft: Draft): void {
+        DraftService.getDrafts(draft.guildID).push(draft);
+    }
+
+    public static deleteDraft(draft: Draft): void {
+        let guildDrafts: Draft[] = this.getDrafts(draft.guildID);
+        let draftIndex: number = guildDrafts.indexOf(draft);
+        if(draftIndex !== -1)
+            guildDrafts.splice(draftIndex, 1);
+    }
+
+    public static getDraftByGuildUserID(guildID: string, userID: string): Draft | undefined {
+        return this.getDrafts(guildID).filter(draft => draft.users.some(user => (user.id === userID)))[0];
+    }
+
+    // Map-объект имеет активные и неактивные объекты.
+    // Функция ниже работает с ними и делает и делает следующее:
+    // 1) проверяет, можно ли добавить новый
+    // активный объект в список существующих;
+    // 2) удаляет неактивные объекты.
     private checkDraft(draft: Draft): void {
         if(draft.errorReturnTag !== "")
             return;
-        let key: string = draft.guildID+draft.type;
-        let currentDraft: Draft | undefined = DraftService.drafts.get(key);
-        if(currentDraft?.isProcessing)
-            draft.errorReturnTag = "DRAFT_ERROR_PROCESSING";
+
+        let guildDrafts: Draft[] = DraftService.getDrafts(draft.guildID);
+        guildDrafts.forEach((guildDraft) => {
+            if(draft.errorReturnTag !== "")
+                return;
+            if(guildDraft.isProcessing &&
+                (guildDraft.users.map(user => user.id).filter(user => draft.users.map(user => user.id).includes(user)).length > 0)
+            ) {
+                draft.errorReturnTag = "DRAFT_ERROR_PROCESSING";
+                return;
+            }
+        });
+
+        if(draft.errorReturnTag !== "")
+            return;
+        guildDrafts = guildDrafts.filter((guildDraft) => 
+            (guildDraft.isProcessing) ||
+            (
+                ((Date.now()-guildDraft.date.getTime()) < this.lifetimeOfMapObjects) &&
+                (guildDraft.users.map(user => user.id).filter(user => draft.users.map(user => user.id).includes(user)).length === 0)
+            )
+        );
+        DraftService.drafts.set(draft.guildID, guildDrafts);
     }
 
     public async ffa(interaction: CommandInteraction, civAmount: number, bans: string, users: User[] = [], outerDraft: DraftFFA | null = null) {
@@ -49,10 +95,10 @@ export class DraftService extends ModuleBaseService {
                     ? draft.thread.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
                     : interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
             } else
-                interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+                interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1]), ephemeral: true});
             return;
         }
-        DraftService.drafts.set(draft.guildID+draft.type, draft);
+        DraftService.addDraft(draft);
 
         let textStrings: string[] = await this.getManyText(
             draft.interaction,
@@ -122,10 +168,10 @@ export class DraftService extends ModuleBaseService {
                     ? draft.thread.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
                     : interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
             } else
-                interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+                interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1]), ephemeral: true});
             return;
         }
-        DraftService.drafts.set(draft.guildID+draft.type, draft);
+        DraftService.addDraft(draft);
 
         let textStrings: string[] = await this.getManyText(
             draft.interaction,
@@ -177,7 +223,6 @@ export class DraftService extends ModuleBaseService {
         if(outerDraft)
             draft = outerDraft;
         else {
-            await interaction.deferReply();
             let [minCivilizations, maxCivilizations]: number[] = (civAmount === 0)
                 ? await this.getManySettingNumber(interaction, "DRAFT_BLIND_MIN_CIVILIZATIONS_DEFAULT", "DRAFT_BLIND_MAX_CIVILIZATIONS_DEFAULT")
                 : [civAmount, civAmount];
@@ -200,11 +245,13 @@ export class DraftService extends ModuleBaseService {
                     ? draft.thread.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
                     : interaction.channel?.send({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])})
             } else
-                interaction.editReply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+                interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1]), ephemeral: true});
             return;
         }
+        if(!outerDraft)
+            await interaction.deferReply();
         draft.isProcessing = true;
-        DraftService.drafts.set(draft.guildID+draft.type, draft);
+        DraftService.addDraft(draft);
 
         let pickTimeMs: number = await this.getOneSettingNumber(draft.interaction, "DRAFT_BLIND_PICK_TIME_MS");
         let emojis: string[] = ["<:Yes:808418109710794843>", "<:No:808418109319938099>"];
@@ -279,7 +326,7 @@ export class DraftService extends ModuleBaseService {
                 });
                 draft.pmMessages.push(message);
             } catch {
-                DraftService.drafts.delete(draft.guildID+draft.type);
+                DraftService.deleteDraft(draft);
                 draft.isProcessing = false;
                 textStrings = await this.getManyText(
                     draft.interaction,
@@ -339,8 +386,10 @@ export class DraftService extends ModuleBaseService {
     // blindButton-pick-guildID-civID
     public async blindButtonPick(interaction: ButtonInteraction) {
         let [guildID, civID]: string[] = interaction.customId.split("-").slice(2);
-        let key: string = guildID+"Blind";
-        let draft: DraftBlind | undefined = DraftService.drafts.get(key) as DraftBlind || undefined;
+        let draft: DraftBlind | undefined = DraftService.getDraftByGuildUserID(
+            guildID,
+            interaction.user.id
+        ) as (DraftBlind | undefined);
         if(!draft) {
             let dm: DMChannel = await interaction.user.createDM();
             let msg: Message = await dm.messages.fetch(interaction.message.id);
@@ -404,8 +453,10 @@ export class DraftService extends ModuleBaseService {
 
     // blindButton-delete
     public async blindButtonDelete(interaction: ButtonInteraction) {
-        let key: string = (interaction.guild?.id as string)+"Blind";
-        let draft: DraftBlind | undefined = DraftService.drafts.get(key) as DraftBlind || undefined;
+        let draft: DraftBlind | undefined = DraftService.getDraftByGuildUserID(
+            interaction.guild?.id as string, 
+            interaction.user.id
+        ) as (DraftBlind | undefined);
         if(!draft)
             return interaction.message.delete();
 
@@ -421,7 +472,7 @@ export class DraftService extends ModuleBaseService {
             clearTimeout(draft.setTimeoutID);
             draft.setTimeoutID = null;
         }
-        DraftService.drafts.delete(key);
+        DraftService.deleteDraft(draft);
         for(let i in draft.pmMessages)
             draft.pmMessages[i].delete();
 
@@ -434,16 +485,10 @@ export class DraftService extends ModuleBaseService {
     }
 
     public async redraft(interaction: CommandInteraction) {
-        let drafts: Draft[] = Array.from(DraftService.drafts.values());
-        if(drafts.filter(draft => (draft.isProcessing && (draft.interaction.guild?.id as string) === (interaction.guild?.id as string))).length > 0){
-            let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", "DRAFT_ERROR_PROCESSING"]);
-            return interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
-        }
-
-        let draft: Draft | undefined = drafts
-            .filter(draft => !draft.isProcessing && (draft.users.map((user: User) => user.id).indexOf(interaction.user.id) !== -1) && draft.runTimes !== 0)
-            .sort((a, b) => b.date.getTime()-a.date.getTime())[0];
-
+        let draft: Draft | undefined = DraftService.getDraftByGuildUserID(
+            interaction.guild?.id as string, 
+            interaction.user.id
+        );
         if(!draft){
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", "DRAFT_REDRAFT_ERROR_NOT_FOUND"]);
             return interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
@@ -551,24 +596,28 @@ export class DraftService extends ModuleBaseService {
                 draftBlind.pmMessages = [];
                 draftService.blind(draftBlind.interaction as CommandInteraction, 0, "", [], draftBlind);
                 return;
+            case "Red Death":
+                let draftRedDeath: DraftRedDeath = draft as DraftRedDeath;
+                draftRedDeath.divideCivilizations();
+                draftService.redDeath(draftRedDeath.interaction as CommandInteraction, 0, false, false, "", draftRedDeath);
         }
     }
 
     public async redraftButton(interaction: ButtonInteraction, voteStatus: boolean) {
         await interaction.deferUpdate();
-        let draft: Draft | undefined = Array.from(DraftService.drafts.values()).filter(draft => (
-            draft.isProcessing &&
-            (draft.interaction.guild?.id as string) === (interaction.guild?.id as string) &&
-            draft.redraftStatus.length > 0)
-        )[0];
-        if(!draft)
+        let guildDrafts: Draft[] = DraftService.getDrafts(interaction.guild?.id as string)
+            .filter((guildDraft: Draft) => (guildDraft.redraftStatus.length > 0));
+        if(guildDrafts.length === 0)
             return interaction.message.delete();
 
-        let index: number = draft.users.map((user: User): string => user.id).indexOf(interaction.user.id);
-        if(index === -1){
+        let draft: Draft | undefined = guildDrafts.filter((guildDraft) => 
+            guildDraft.users.map((user: User): string => user.id).some((userID: string) => (userID === interaction.user.id))
+        )[0];
+        if(!draft){
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", "DRAFT_REDRAFT_ERROR_NOT_MEMBER"]);
             return interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1]), ephemeral: true});
         }
+        let index: number = draft.users.map((user: User): string => user.id).indexOf(interaction.user.id);
         draft.redraftStatus[index] = voteStatus ? 1 : 0;
 
         let redraftTimeMs: number = await this.getOneSettingNumber(draft.interaction, "REDRAFT_VOTE_TIME_MS");
@@ -626,7 +675,7 @@ export class DraftService extends ModuleBaseService {
                     draft
                 )});
             draft.redraftStatus = [];
-            DraftService.drafts.delete(draft.guildID+draft.type);
+            DraftService.deleteDraft(draft);
         } else {
             interaction.message.edit({embeds: this.draftUI.redraftEmbed(
                 textStrings[0],
@@ -638,5 +687,65 @@ export class DraftService extends ModuleBaseService {
                     draft
                 )});
         }
+    }
+
+    public async redDeath(interaction: CommandInteraction, factionsAmount: number, haveDuplicates: boolean, isRDModEnabled: boolean, bans: string, outerDraft: DraftRedDeath | null = null) {
+        let draft: DraftRedDeath;
+        if(outerDraft)
+            draft = outerDraft;
+        else {
+            const factionsByDefault: number = 4;
+            const maxFactions: number = 8;
+
+            let users = UtilsServiceUsers.getFromVoice(interaction);
+            let factionTags = UtilsDataFactions.factionTags.concat(
+                (isRDModEnabled) ? UtilsDataFactions.additionalFactionTags : []
+            );  
+            let factionEmojis: string[] = await this.getManyText(interaction, factionTags.map((str: string): string => str+"_EMOJI"));
+            let factionLines: string[] = (await this.getManyText(interaction, factionTags, factionEmojis.map(str => [str])));
+
+            if(factionsAmount === 0)
+                factionsAmount = Math.min(
+                    (haveDuplicates) 
+                        ? factionsByDefault 
+                        : factionLines.length / users.length || 1,
+                    maxFactions
+                );
+
+            draft = new DraftRedDeath(
+                interaction, bans,
+                Array(factionLines.length).fill(1),
+                factionLines,
+                users, factionsAmount,
+                haveDuplicates
+            );
+
+            this.checkDraft(draft);
+            if(draft.errorReturnTag !== "") {
+                let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", draft.errorReturnTag]);
+                interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1]), ephemeral: true});
+                return;
+            }
+            DraftService.addDraft(draft);
+        }
+
+        let textStrings: string[] = await this.getManyText(
+            draft.interaction,
+            ["DRAFT_RED_DEATH_TITLE_ONE_PLAYER", "DRAFT_RED_DEATH_TITLE_MANY_PLAYERS",
+                "DRAFT_DRAFT_BANS_DESCRIPTION", "DRAFT_DRAFT_ERRORS_DESCRIPTION"],
+            [null, [draft.users.length], [draft.bans.length]]
+        );
+
+        let draftRedDeathEmbed = {embeds: this.draftUI.draftFFAEmbed(
+            draft.users.length === 1 ? textStrings[0] : textStrings[1],
+            textStrings[2],
+            textStrings[3],
+            draft,
+            true
+        )};
+
+        (draft.runTimes > 1)
+            ? draft.interaction.followUp(draftRedDeathEmbed)
+            : draft.interaction.reply(draftRedDeathEmbed);
     }
 }

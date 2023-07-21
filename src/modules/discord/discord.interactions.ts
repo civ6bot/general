@@ -1,5 +1,5 @@
-import { CommandInteraction } from "discord.js";
-import {ArgsOf, Client, Discord, On, Once, Slash} from "discordx";
+import { ButtonInteraction, CommandInteraction, StringSelectMenuInteraction } from "discord.js";
+import {ArgsOf, ButtonComponent, Client, Discord, On, Once, SelectMenuComponent, Slash} from "discordx";
 import {DiscordService} from "./discord.service";
 
 @Discord()
@@ -25,4 +25,39 @@ export abstract class DiscordEvents {
     public async onGuildCreate([guild]: ArgsOf<"guildCreate">, client: Client) {
         this.discordService.onGuildCreate(guild);
     }
+
+    @On({event: "messageCreate"})
+    public async onMessageCreate([message]: ArgsOf<"messageCreate">, client: Client) {
+        this.discordService.onMessageCreate(message);
+    }
+
+    @ButtonComponent({id: /discordGuilds-page-\d+/})
+    public async pageButton(
+        interaction: ButtonInteraction
+    ) { await this.discordService.pageButton(interaction); }
+
+    @ButtonComponent({id: "discordGuilds-page-first"})
+    public async pageFirstButton(
+        interaction: ButtonInteraction
+    ) { await this.discordService.pageFirstButton(interaction); }
+
+    @ButtonComponent({id: "discordGuilds-page-last"})
+    public async pageLastButton(
+        interaction: ButtonInteraction
+    ) { await this.discordService.pageLastButton(interaction); }
+
+    @ButtonComponent({id: "discordGuilds-delete"})
+    public async deleteButton(
+        interaction: ButtonInteraction
+    ) { await this.discordService.deleteButton(interaction); }
+
+    @SelectMenuComponent({id: "discordGuilds-menu"})     // discordGuilds-pageID-guildID
+    public async guildInfo(
+        interaction: StringSelectMenuInteraction
+    ) { await this.discordService.guildInfo(interaction); }
+
+    @ButtonComponent({id: /discordGuilds-updateLink-\d+-\d+/})  // discordGuilds-updateLink-pageID-guildID
+    public async updateLinkButton(
+        interaction: ButtonInteraction
+    ) { await this.discordService.updateLinkButton(interaction); }
 }

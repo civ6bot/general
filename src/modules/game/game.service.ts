@@ -16,15 +16,68 @@ export class GameService extends ModuleBaseService {
     private gameUI: GameUI = new GameUI();
     public gameAdapter: GameAdapter = new GameAdapter();
 
-    public static games: Map<string, Game> = new Map<string, Game>();    // guildID
+    public static games: Map<string, Game[]> = new Map();    // guildID
 
+    public static getGames(guildID: string): Game[] {
+        if(GameService.games.get(guildID) === undefined)
+            GameService.games.set(guildID, []);
+        return GameService.games.get(guildID) as Game[];
+    }
+
+    public static addGame(game: Game): void {
+        this.getGames(game.guildID).push(game);
+    }
+
+    public static deleteGame(game: Game): void {
+        let guildGames: Game[] = this.getGames(game.guildID);
+        let gameIndex: number = guildGames.indexOf(game);
+        if(gameIndex !== -1)
+            guildGames.splice(gameIndex, 1);
+    }
+
+    public static getGameByGuildMessageID(guildID: string, messageID: string): Game | undefined {
+        return this.getGames(guildID).filter(game => {
+            if(game.type === "FFA") {
+                let gameFFA = game as GameFFA;
+                return gameFFA.entities
+                    .concat([gameFFA.entityDraft, gameFFA.entityReady])
+                    .some(entity => entity.message?.id === messageID);
+            } else if (game.type === "Teamers") {
+                let gameTeamers = game as GameTeamers;
+                return gameTeamers.entities
+                    .concat([gameTeamers.entityCaptains, gameTeamers.entityDraft, gameTeamers.entityReady])
+                    .some(entity => entity.message?.id === messageID);
+            } else 
+                return undefined;
+        })[0];
+    }
+
+    // Map-объект имеет активные и неактивные объекты.
+    // Функция ниже работает с ними и делает и делает следующее:
+    // 1) проверяет, можно ли добавить новый
+    // активный объект в список существующих (isSending);
+    // 2) удаляет неактивные объекты.
     private checkGame(game: Game): void {
         if(game.errorReturnTag !== "")
             return;
-        let key: string = game.guildID;
-        let currentGame: Game | undefined = GameService.games.get(key);
-        if(currentGame?.isProcessing)
-            game.errorReturnTag = "GAME_ERROR_PROCESSING";
+
+        let guildGames: Game[] = GameService.getGames(game.guildID);
+        guildGames.forEach((guildGame: Game) => {
+            if(game.errorReturnTag !== "")
+                return;
+            if(guildGame.isSending || 
+                ((guildGame.users.map(user => user.id).filter(user => game.users.map(user => user.id).includes(user)).length > 0)
+                && (guildGame.isProcessing))
+            ) {
+                game.errorReturnTag = "GAME_ERROR_PROCESSING";
+                return;
+            }
+        });
+
+        if(game.errorReturnTag !== "")
+            return;
+        guildGames = guildGames.filter((guildGame) => guildGame.isProcessing);
+        GameService.games.set(game.guildID, guildGames);
     }
 
     private getFFAEmojisConfigsStrings(): string[][] {
@@ -72,7 +125,6 @@ export class GameService extends ModuleBaseService {
         usersOnly: string,
         isShort: boolean = false
     ) {
-        await interaction.deferReply();
         let users: User[];
         if(usersOnly === "") {
             users = usersInclude
@@ -130,8 +182,8 @@ export class GameService extends ModuleBaseService {
         draftOptions = draftOptions.filter((str: string, index: number): boolean => !!draftFlags[index]);
 
         let voteTimeMs: number = await this.getOneSettingNumber(interaction, "GAME_VOTE_TIME_MS");
-        let banThreshold: number = Math.ceil(await this.getOneSettingNumber(interaction,
-            "GAME_FFA_DRAFT_BAN_THRESHOLD_PERCENT"
+        let banThreshold: number = Math.ceil(await this.getOneSettingNumber(
+            interaction, "GAME_FFA_DRAFT_BAN_THRESHOLD_PERCENT"
         )*users.length/100);
 
         let readyTitle: string = await this.getOneText(interaction, "GAME_READY_TITLE");
@@ -159,9 +211,10 @@ export class GameService extends ModuleBaseService {
             let errorTexts: string[] = await this.getManyText(interaction, [
                 "BASE_ERROR_TITLE", game.errorReturnTag
             ]);
-            return await interaction.editReply({embeds: this.gameUI.error(errorTexts[0], errorTexts[1])});
+            return await interaction.reply({embeds: this.gameUI.error(errorTexts[0], errorTexts[1]), ephemeral: true});
         }
-        GameService.games.set(game.guildID, game);
+        await interaction.deferReply();
+        GameService.addGame(game);
         game.setTimeoutID = setTimeout(GameService.timeoutFunction, voteTimeMs, game);
         if(interaction.channel === null)
             throw "Interaction called from PM";
@@ -176,14 +229,14 @@ export class GameService extends ModuleBaseService {
         if(isThread) {
             try {
                 game.thread = await (interaction.channel as TextChannel).threads.create({
-                    name: await this.getOneText(interaction, "GAME_FFA_THREAD_NAME", interaction.user.tag)
+                    name: await this.getOneText(interaction, "GAME_FFA_THREAD_NAME", interaction.user.username)
                 });
                 let textStrings: string[] = await this.getManyText(interaction, [
                     "BASE_NOTIFY_TITLE", "GAME_NOTIFY_THREAD"
                 ]);
-                await interaction.editReply({embeds: this.gameUI.notify(textStrings[0], textStrings[1])});
+                interaction.editReply({embeds: this.gameUI.notify(textStrings[0], textStrings[1])}).catch();
                 setTimeout(
-                    async (interaction: CommandInteraction) => await interaction.deleteReply(),
+                    (interaction: CommandInteraction) => interaction.deleteReply().catch(),
                     UtilsServiceTime.getMs(5, "s"),
                     interaction
                 );
@@ -191,8 +244,8 @@ export class GameService extends ModuleBaseService {
                 let textStrings: string[] = await this.getManyText(interaction, [
                     "BASE_ERROR_TITLE", "GAME_ERROR_THREAD"
                 ]);
-                await interaction.editReply({embeds: this.gameUI.error(textStrings[0], textStrings[1])});
-                GameService.games.delete(game.guildID);
+                interaction.editReply({embeds: this.gameUI.error(textStrings[0], textStrings[1])}).catch();
+                GameService.deleteGame(game);
                 clearTimeout(game.setTimeoutID);
                 return;
             }
@@ -213,9 +266,7 @@ export class GameService extends ModuleBaseService {
                 users.forEach(user => {
                     let member: GuildMember | undefined = interaction.guild?.members.cache.get(user.id);
                     if (channelsDepartureID.indexOf(member?.voice.channel?.id as string) !== -1)
-                        try {
-                            member?.voice.setChannel(destinationChannel as VoiceChannel);
-                        } catch {}
+                        member?.voice.setChannel(destinationChannel as VoiceChannel).catch();
                 });
             }
         }
@@ -242,7 +293,10 @@ export class GameService extends ModuleBaseService {
                         interaction.guild?.name as string,
                         interaction.guild?.iconURL() || null
                     );
-                    users.forEach(user => UtilsServicePM.send(user, embed));
+                    users.forEach(user => {
+                        if(user.id !== game.interaction.user.id)
+                            UtilsServicePM.send(user, embed)
+                    });
                 }
                 game.entities[i].message = message;
                 game.entities[i].messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
@@ -274,21 +328,20 @@ export class GameService extends ModuleBaseService {
             game.entityReady.message = message;
             game.entityReady.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityReady.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
+            game.isSending = false;
         } catch {
             game.isProcessing = false;
             if(game.setTimeoutID !== null) {
                 clearTimeout(game.setTimeoutID);
                 game.setTimeoutID = null;
             }
-            for(let i: number = 0; i < game.entities.length; i++)
-                await game.entities[i].destroy();
-            await game.entityDraft.destroy();
-            await game.entityReady.destroy();
-            GameService.games.delete(game.guildID);
             if(game.thread)
-                try {
-                    await game.thread.delete();
-                } catch {}
+                game.thread.delete().catch();
+            for(let i: number = 0; i < game.entities.length; i++)
+                game.entities[i].destroy();
+            game.entityDraft.destroy();
+            game.entityReady.destroy();
+            GameService.deleteGame(game);
         }
     }
 
@@ -299,7 +352,6 @@ export class GameService extends ModuleBaseService {
         usersOnly: string,
         isShort: boolean = false
     ) {
-        await interaction.deferReply();
         let users: User[];
         if(usersOnly === "") {
             users = usersInclude
@@ -391,9 +443,10 @@ export class GameService extends ModuleBaseService {
             let errorTexts: string[] = await this.getManyText(interaction, [
                 "BASE_ERROR_TITLE", game.errorReturnTag
             ]);
-            return await interaction.editReply({embeds: this.gameUI.error(errorTexts[0], errorTexts[1])});
+            return await interaction.reply({embeds: this.gameUI.error(errorTexts[0], errorTexts[1]), ephemeral: true});
         }
-        GameService.games.set(game.guildID, game);
+        await interaction.deferReply();
+        GameService.addGame(game);
         game.setTimeoutID = setTimeout(GameService.timeoutFunction, voteTimeMs, game);
         if(interaction.channel === null)
             throw "Interaction called from PM";
@@ -408,12 +461,12 @@ export class GameService extends ModuleBaseService {
         if(isThread) {
             try {
                 game.thread = await (interaction.channel as TextChannel).threads.create({
-                    name: await this.getOneText(interaction, "GAME_TEAMERS_THREAD_NAME", interaction.user.tag)
+                    name: await this.getOneText(interaction, "GAME_TEAMERS_THREAD_NAME", interaction.user.username)
                 });
                 let textStrings: string[] = await this.getManyText(interaction, [
                     "BASE_NOTIFY_TITLE", "GAME_NOTIFY_THREAD"
                 ]);
-                await interaction.editReply({embeds: this.gameUI.notify(textStrings[0], textStrings[1])});
+                interaction.editReply({embeds: this.gameUI.notify(textStrings[0], textStrings[1])}).catch();
                 setTimeout(
                     async (interaction: CommandInteraction) => await interaction.deleteReply(),
                     UtilsServiceTime.getMs(5, "s"),
@@ -423,8 +476,8 @@ export class GameService extends ModuleBaseService {
                 let textStrings: string[] = await this.getManyText(interaction, [
                     "BASE_ERROR_TITLE", "GAME_ERROR_THREAD"
                 ]);
-                await interaction.editReply({embeds: this.gameUI.error(textStrings[0], textStrings[1])});
-                GameService.games.delete(game.guildID);
+                interaction.editReply({embeds: this.gameUI.error(textStrings[0], textStrings[1])}).catch();
+                GameService.deleteGame(game);
                 clearTimeout(game.setTimeoutID);
                 return;
             }
@@ -445,9 +498,7 @@ export class GameService extends ModuleBaseService {
                 users.forEach(user => {
                     let member: GuildMember | undefined = interaction.guild?.members.cache.get(user.id);
                     if (channelsDepartureID.indexOf(member?.voice.channel?.id as string) !== -1)
-                        try {
-                            member?.voice.setChannel(destinationChannel as VoiceChannel);
-                        } catch {}
+                        member?.voice.setChannel(destinationChannel as VoiceChannel).catch();
                 });
             }
         }
@@ -472,7 +523,10 @@ export class GameService extends ModuleBaseService {
                         interaction.guild?.name as string,
                         interaction.guild?.iconURL() || null
                     );
-                    users.forEach(user => UtilsServicePM.send(user, embed));
+                    users.forEach(user => {
+                        if(user.id !== game.interaction.user.id)
+                            UtilsServicePM.send(user, embed)
+                    });
                 }
                 game.entities[i].message = message;
                 game.entities[i].messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
@@ -513,27 +567,31 @@ export class GameService extends ModuleBaseService {
             game.entityReady.message = message;
             game.entityReady.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityReady.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
+            game.isSending = false;
         } catch {
             game.isProcessing = false;
             if(game.setTimeoutID !== null) {
                 clearTimeout(game.setTimeoutID);
                 game.setTimeoutID = null;
             }
+            if(game.thread)
+                game.thread.delete().catch();
             for(let i: number = 0; i < game.entities.length; i++)
-                await game.entities[i].destroy();
-            await game.entityCaptains.destroy();
-            await game.entityDraft.destroy();
-            await game.entityReady.destroy();
-            GameService.games.delete(game.guildID);
+                game.entities[i].destroy();
+            game.entityCaptains.destroy();
+            game.entityDraft.destroy();
+            game.entityReady.destroy();
+            GameService.deleteGame(game);
         }
     }
 
     public static async reactionCollectorFunction(reaction: MessageReaction, user: User): Promise<void> {
-        let game: Game | undefined = GameService.games.get(reaction.message.guild?.id as string);
+        let game: Game | undefined = GameService.getGameByGuildMessageID(
+            reaction.message.guild?.id as string,
+            reaction.message.id
+        );
         if (!game) {
-            try {
-                await reaction.message.delete();
-            } catch {}
+            reaction.message.delete().catch();
             return;
         }
 
@@ -552,7 +610,7 @@ export class GameService extends ModuleBaseService {
                 .filter((entity: GameEntity): boolean => entity.message?.id === reaction.message.id)[0];
         }
         if (!entity) {
-            await reaction.message.delete();
+            reaction.message.delete().catch();
             return;
         }
         if(entity.type !== "Draft") {
@@ -562,7 +620,7 @@ export class GameService extends ModuleBaseService {
 
         if(UtilsServiceSyntax.parseBans(reaction.emoji.toString(), entity.options).bans.length === 1) {
             if (await entity.resolveProcessing(reaction, user))
-                await entity.message?.edit(entity.getContent());
+                entity.message?.edit(entity.getContent());
             return;
         } else {
             await entity.resolveProcessing(reaction, user);
@@ -571,12 +629,14 @@ export class GameService extends ModuleBaseService {
     }
 
     public static async messageCollectorFunction(message: Message): Promise<void> {
-        let game: Game | undefined = GameService.games.get(message.guild?.id as string);
+        let game = GameService.getGames(message.guild?.id as string).filter((game: Game) => 
+            game.users.some((user: User) => user.id === message.author.id)
+        )[0];
+
         if(!game)
             return;
         if(game.users.map((user: User): string => user.id).indexOf(message.member?.user.id as string) === -1)
             return;
-
         let gameEntityDraft: GameEntityDraft | undefined;
         if(game.type === "FFA") {
             let gameFFA: GameFFA = game as GameFFA;
@@ -585,12 +645,11 @@ export class GameService extends ModuleBaseService {
             let gameTeamers: GameTeamers = game as GameTeamers;
             gameEntityDraft = gameTeamers.entityDraft;
         }
-
+        
         if(gameEntityDraft === undefined)
             return;
         if(!gameEntityDraft.message)
             return;
-
         let bans = UtilsServiceSyntax.parseBans(message.content, gameEntityDraft.options).bans;
         if(bans.length === 0) {
             bans = UtilsServiceSyntax.parseBans(message.content, gameEntityDraft.englishLanguageOptions).bans;
@@ -598,19 +657,16 @@ export class GameService extends ModuleBaseService {
                 return;
         }
 
-        try {
-            // @ts-ignore
-            UtilsServiceEmojis.reactOrder(gameEntityDraft.message, bans.map(banIndex => gameEntityDraft.emojis[banIndex]));
-        } catch {}
+        UtilsServiceEmojis.reactOrder(gameEntityDraft.message, bans.map(banIndex => gameEntityDraft?.emojis[banIndex] ?? "")).catch();
         gameEntityDraft.collectedMessages.push(message);
-        message.react("📝");
+        message.react("📝").catch();
     }
 
     public static async timeoutFunction(game: Game): Promise<void> {
         if(!game.isProcessing)
             return;
         game.isProcessing = false;
-        GameService.games.delete(game.guildID);
+        GameService.deleteGame(game);
         let isTimeout: boolean = (Date.now() >= game.date.getTime() + game.voteTimeMs);
 
         let gameEntityReady: GameEntityReady | undefined;
@@ -678,9 +734,12 @@ export class GameService extends ModuleBaseService {
     }
 
     public async buttonReady(interaction: ButtonInteraction) {
-        let game: Game | undefined = GameService.games.get(interaction.guild?.id as string);
+        let game: Game | undefined = GameService.getGameByGuildMessageID(
+            interaction.guild?.id as string,
+            interaction.message.id
+        );
         if(!game)
-            return interaction.message.delete();
+            return interaction.message.delete().catch();
         if(game.users.map((user: User): string => user.id).indexOf(interaction.user.id) === -1) {
             let textStrings = await this.getManyText(
                 game.interaction,
@@ -709,9 +768,12 @@ export class GameService extends ModuleBaseService {
     }
 
     public async buttonDelete(interaction: ButtonInteraction) {
-        let game: Game | undefined = GameService.games.get(interaction.guild?.id as string);
+        let game: Game | undefined = GameService.getGameByGuildMessageID(
+            interaction.guild?.id as string,
+            interaction.message.id
+        );
         if(!game || !game.isProcessing)
-            return interaction.message.delete();
+            return interaction.message.delete().catch();
         if(interaction.user.id !== game.interaction.user.id) {
             let textStrings = await this.getManyText(
                 game.interaction,
@@ -721,7 +783,7 @@ export class GameService extends ModuleBaseService {
         }
 
         game.isProcessing = false;
-        GameService.games.delete(game.guildID);
+        GameService.deleteGame(game);
 
         let textStrings = await this.getManyText(
             game.interaction,
@@ -732,11 +794,8 @@ export class GameService extends ModuleBaseService {
             clearTimeout(game.setTimeoutID);
             game.setTimeoutID = null;
         }
-        if(game.thread) {
-            try {
-                return game.thread.delete();
-            } catch {}
-        }
+        if(game.thread) 
+            return game.thread.delete().catch();
 
         if(game.type === "FFA") {
             let gameFFA: GameFFA = game as GameFFA;
@@ -753,9 +812,12 @@ export class GameService extends ModuleBaseService {
     }
 
     public async buttonSkip(interaction: ButtonInteraction) {
-        let game: Game | undefined = GameService.games.get(interaction.guild?.id as string);
+        let game: Game | undefined = GameService.getGameByGuildMessageID(
+            interaction.guild?.id as string,
+            interaction.message.id
+        );
         if(!game || !game.isProcessing)
-            return interaction.message.delete();
+            return interaction.message.delete().catch();
         if(interaction.user.id !== game.interaction.user.id) {
             let textStrings = await this.getManyText(
                 game.interaction,

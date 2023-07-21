@@ -16,7 +16,7 @@ export class RulesUI extends ModuleBaseUI {
             "#FF526C",
             rulePage.description,
             [{name: tagTitle, value: `\`${rulePage.tags.split(" ").join(", ")}\``}],
-            author.tag,
+            author.username,
             author.avatarURL()
         );
     }
@@ -36,7 +36,7 @@ export class RulesUI extends ModuleBaseUI {
             "#FF526C",
             description,
             [],
-            author.tag,
+            author.username,
             author.avatarURL()
         );
     }

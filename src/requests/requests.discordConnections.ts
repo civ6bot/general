@@ -1,7 +1,7 @@
 import axios from "axios";
-import {DecorateAll} from "decorate-all";
-import {SafeRequest} from "../utils/decorators/utils.decorators.SafeRequest";
+import { DecorateAll } from "decorate-all";
 import * as dotenv from "dotenv";
+import { SafeRequest } from "../utils/decorators/utils.decorators.SafeRequest";
 dotenv.config({path: 'general.env'});
 
 @DecorateAll(SafeRequest)
@@ -19,12 +19,13 @@ export class RequestsDiscordConnections {
             redirect_uri: process.env.OAUTH2_REDIRECT_URI_FOR_TOKEN as string,
             scope: 'identify',
         };
+        
         let {data, status} = await axios.post<any>(
             this.discordAuthorizationTokenUrl,
             new URLSearchParams(discordSendData),
             { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }}
         );
-        return `${data?.token_type} ${data?.access_token}` || null;
+        return (data.token_type && data.access_token) ? `${data?.token_type} ${data?.access_token}` : null;
     }
 
     public async getDiscordUserID(authorizationToken: string): Promise<string|null> {
@@ -33,7 +34,10 @@ export class RequestsDiscordConnections {
     }
 
     public async getDiscordConnectedSteam(authorizationToken: string): Promise<string|null> {
-        let {data, status} = await axios.get<any>(this.discordUserConnectionsUrl, {headers: {authorization: authorizationToken}});
-        return data.filter( (x: any) => {return x.type == 'steam'} )[0].id || null;
+        let {data, status} = await axios.get<any>(this.discordUserConnectionsUrl, {headers: {
+            authorization: authorizationToken,
+            "Accept-Encoding": "gzip,deflate,compress"
+        }});
+        return data.filter((x: any) => {return x.type == 'steam'})[0].id || null;
     }
 }

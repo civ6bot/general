@@ -5,6 +5,6 @@ export class EntityInvite {
     @PrimaryColumn()
     guildID!: string;
 
-    @Column({type: "text", charset: "utf8mb4"})
+    @Column({type: "text"})
     link!: string;
 }

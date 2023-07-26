@@ -25,12 +25,10 @@ export class SteamService extends ModuleBaseService {
         if(userSteam === null)
             return this.connect(interaction);
         let steamAPIData: SteamAPIData | null = await this.requestsSteam.getSteamLinkData(userSteam.steamID);
-        if((steamAPIData === null))
-            return interaction.reply({embeds: this.steamUI.error(textStringsError[0], textStringsError[1])});
-        if(steamAPIData.gameID === undefined)
-            return interaction.reply({embeds: this.steamUI.error(textStringsError[0], textStringsError[1])});
+        if((steamAPIData === null) || (steamAPIData.gameID === undefined))
+            return interaction.reply({embeds: this.steamUI.error(textStringsError[0], textStringsError[1]), ephemeral: true});
         if(gameIDArray.indexOf(steamAPIData.gameID as string) === -1)
-            return interaction.reply({embeds: this.steamUI.error(textStringsError[0], textStringsError[2])});
+            return interaction.reply({embeds: this.steamUI.error(textStringsError[0], textStringsError[2]), ephemeral: true});
         let link: string = `http://51.68.123.207:31612/join/${steamAPIData.gameID}/${steamAPIData.lobbySteamID}/${steamAPIData.steamID}`;
 
         let textStrings: string[] = await this.getManyText(interaction, [

@@ -1,19 +1,21 @@
 import {EntityUserSteam} from "../entities/entity.UserSteam";
 import {EntityManager} from "typeorm";
-import {outerDataSource} from "../database.datasources";
+import {dataSource} from "../database.datasource";
 
 export class DatabaseServiceUserSteam {
-    protected outerDatabase: EntityManager = outerDataSource.manager;
+    protected database: EntityManager = dataSource.manager;
 
     public async getOne(discordID: string): Promise<EntityUserSteam|null> {
-        return await this.outerDatabase.findOne(EntityUserSteam, { where: {
+        return await this.database.findOne(EntityUserSteam, { where: {
             discordID: discordID
         }});
     }
 
     public async insertOne(userSteam: EntityUserSteam): Promise<EntityUserSteam>{
-        return await this.outerDatabase.save(EntityUserSteam, userSteam);
+        return await this.database.save(EntityUserSteam, userSteam);
     }
 
-    public async isExists(discordID: string): Promise<boolean> { return Boolean(await this.getOne(discordID)); }
+    public async isExists(discordID: string): Promise<boolean> { 
+        return Boolean(await this.getOne(discordID)); 
+    }
 }

@@ -11,12 +11,12 @@ export class EntityRulePage {
     @Column()
     pageNumber!: number;
 
-    @Column({type: "text", charset: "utf8mb4"})
+    @Column({type: "text"})
     title!: string;
 
-    @Column({type: "text", charset: "utf8mb4"})
+    @Column({type: "text"})
     description!: string;
 
-    @Column({type: "text", charset: "utf8mb4"})
+    @Column({type: "text"})
     tags!: string;
 }

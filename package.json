@@ -1,6 +1,6 @@
 {
   "name": "civ6bot-general",
-  "version": "3.2.6",
+  "version": "3.2.7",
   "description": "Discord bot for Civilization VI game - General",
   "main": "build/index.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "glob": "^8.0.3",
-    "mysql": "^2.18.1",
+    "pg": "^8.11.1",
     "sqlite3": "^5.1.2",
     "typeorm": "^0.3.11",
     "typescript": "^4.9.4"

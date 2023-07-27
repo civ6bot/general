@@ -1,22 +1,22 @@
 import {EntityRulePage} from "../entities/entity.RulePage";
 import {EntityManager, Like, MoreThanOrEqual} from "typeorm";
-import {outerDataSource} from "../database.datasources";
+import {dataSource} from "../database.datasource";
 
 export class DatabaseServiceRulePage {
-    protected outerDatabase: EntityManager = outerDataSource.manager;
+    protected database: EntityManager = dataSource.manager;
 
     private async getMoreOrEqualPageNumber(guildID: string, pageNumber: number): Promise<EntityRulePage[]> {
-        return await this.outerDatabase.find(EntityRulePage, {
+        return await this.database.find(EntityRulePage, {
             where: {
                 guildID: guildID,
                 pageNumber: MoreThanOrEqual(pageNumber)
             },
             order: {pageNumber: "asc"}
-        })
+        });
     }
 
     public async getOneByPageNumber(guildID: string, pageNumber: number): Promise<EntityRulePage|null> {
-        return await this.outerDatabase.findOne(EntityRulePage, { where: {
+        return await this.database.findOne(EntityRulePage, { where: {
                 guildID: guildID,
                 pageNumber: pageNumber
             }});
@@ -25,14 +25,14 @@ export class DatabaseServiceRulePage {
     public async getOneByTag(guildID: string, tag: string): Promise<EntityRulePage|null> {
         if(tag === "")
             return null;
-        return await this.outerDatabase.findOne(EntityRulePage, { where: {
+        return await this.database.findOne(EntityRulePage, { where: {
                 guildID: guildID,
                 tags: Like(`%${tag}%`)
             }});
     }
 
     public async getAll(guildID: string): Promise<EntityRulePage[]> {
-        return await this.outerDatabase.find(EntityRulePage, {
+        return await this.database.find(EntityRulePage, {
             where: {guildID: guildID},
             order: {pageNumber: "asc"}
         });
@@ -50,7 +50,7 @@ export class DatabaseServiceRulePage {
     }
 
     public async update(entityRulePage: EntityRulePage|EntityRulePage[]): Promise<EntityRulePage[]>{
-        return await this.outerDatabase.save(
+        return await this.database.save(
             EntityRulePage,
             Array.isArray(entityRulePage)
                 ? entityRulePage
@@ -67,7 +67,7 @@ export class DatabaseServiceRulePage {
 
         shiftEntities.forEach(entity => entity.pageNumber -= 1);
         await this.update(shiftEntities);
-        return await this.outerDatabase.remove(removeEntity);
+        return await this.database.remove(removeEntity);
     }
 
     public async shiftLeft(entityRulePage: EntityRulePage): Promise<EntityRulePage> {

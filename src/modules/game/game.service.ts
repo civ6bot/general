@@ -719,13 +719,13 @@ export class GameService extends ModuleBaseService {
 
         if(game.type === "FFA") {
             let gameFFA: GameFFA = game as GameFFA;
-            gameService.gameAdapter.callDraft(gameFFA);
+            await gameService.gameAdapter.callDraft(gameFFA);
             gameFFA.entities.forEach(entity => entity.destroy())
             gameFFA.entityDraft.destroy();
             gameFFA.entityReady.destroy();
         } else if(game.type === "Teamers") {
             let gameTeamers: GameTeamers = game as GameTeamers;
-            gameService.gameAdapter.callSplit(gameTeamers);
+            await gameService.gameAdapter.callSplit(gameTeamers);
             gameTeamers.entities.forEach(entity => entity.destroy())
             gameTeamers.entityCaptains.destroy();
             gameTeamers.entityDraft.destroy();

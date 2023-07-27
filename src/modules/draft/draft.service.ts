@@ -491,7 +491,11 @@ export class DraftService extends ModuleBaseService {
         );
         if(!draft){
             let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", "DRAFT_REDRAFT_ERROR_NOT_FOUND"]);
-            return interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1])});
+            return interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1]), ephemeral: true});
+        }
+        if(draft.isProcessing) {
+            let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", "DRAFT_ERROR_PROCESSING"]);
+            return interaction.reply({embeds: this.draftUI.error(errorTexts[0], errorTexts[1]), ephemeral: true});
         }
 
         let settings: number[] = await this.getManySettingNumber(interaction,

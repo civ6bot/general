@@ -410,7 +410,7 @@ export class DraftService extends ModuleBaseService {
                 draft
             )});
 
-        let pickTimeMs: number = await this.getOneSettingNumber(interaction, "DRAFT_BLIND_PICK_TIME_MS");
+        let pickTimeMs: number = await this.getOneSettingNumber(draft.interaction, "DRAFT_BLIND_PICK_TIME_MS");
         textStrings = await this.getManyText(
             draft.interaction,
             ["DRAFT_BLIND_TITLE_ONE_PLAYER", "DRAFT_BLIND_TITLE_MANY_PLAYERS",

@@ -205,12 +205,9 @@ export class DiscordService extends ModuleBaseService {
         let fieldValues: string[] = [
             guild.name, 
             (await guild.members.fetch(discordClient.user?.id as string))?.joinedAt?.toLocaleString() ?? "???",
-            await this.getOneText("English", "DISCORD_GUILDS_INFO_FIELD_MEMBERS_VALUE", 
-                guild.memberCount,
-                guild.members.cache.filter(member => member.presence?.status !== 'offline').size
-            ),
+            String(guild.memberCount),
             (invite) ? invite.link : await this.getOneText("English", "DISCORD_GUILDS_INFO_FIELD_LINK_VALUE_NONE")
-        ]
+        ];
         let avatarURL: string|null = guild.iconURL({size: 512});
         let buttonLabels: string[] = await this.getManyText("English", [
             "DISCORD_GUILDS_INFO_BUTTON_BACK", "DISCORD_GUILDS_INFO_BUTTON_UPDATE",

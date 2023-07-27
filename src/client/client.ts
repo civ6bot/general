@@ -10,7 +10,6 @@ export const discordClient: Client = new Client({
         IntentsBitField.Flags.GuildMessageReactions,
         IntentsBitField.Flags.GuildMembers,
         IntentsBitField.Flags.GuildVoiceStates,
-        IntentsBitField.Flags.GuildPresences,
         IntentsBitField.Flags.DirectMessages,
         IntentsBitField.Flags.MessageContent
     ],

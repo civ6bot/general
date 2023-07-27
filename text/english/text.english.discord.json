@@ -18,7 +18,6 @@
     { "tag": "DISCORD_GUILDS_INFO_FIELD_NAME_TITLE", "value": "🏰 Guild name:" },
     { "tag": "DISCORD_GUILDS_INFO_FIELD_JOIN_TITLE", "value": "🕒 Join date:" },
     { "tag": "DISCORD_GUILDS_INFO_FIELD_MEMBERS_TITLE", "value": "👥 Members amount:" },
-    { "tag": "DISCORD_GUILDS_INFO_FIELD_MEMBERS_VALUE", "value": "[MEMBERS_TOTAL] ([MEMBERS_ONLINE] online)" },
     { "tag": "DISCORD_GUILDS_INFO_FIELD_LINK_TITLE", "value": "🌐 Link:" },
     { "tag": "DISCORD_GUILDS_INFO_FIELD_LINK_VALUE_NONE", "value": "none" },
     { "tag": "DISCORD_GUILDS_INFO_BUTTON_BACK", "value": "Back" },

@@ -1,8 +1,8 @@
 # Civ6Bot - General
 
-**Civ6Bot General** has all requirements to start-up your Civilization VI game: draft, new game voting, team creating and other usefull stuff. You can use it standalone or with other [Civ6Bot project](https://github.com/civ6bot/) Discord bots.
+**Civ6Bot General** has all requirements to start your Civilization VI multiplayer game: draft, new game voting, team creating and other usefull stuff. You can use it standalone or with other [Civ6Bot project](https://github.com/civ6bot/) Discord bots.
 <br>
-Current version: `3.2.5` (Leader Pass).
+Current version: `3.2.8` (Database migration).
 <br>
 You can [invite](https://discord.com/api/oauth2/authorize?client_id=1033084730276581456&permissions=466021116993&scope=bot) bot to your Discord server.
 <p align="center">
@@ -30,7 +30,7 @@ You can [invite](https://discord.com/api/oauth2/authorize?client_id=103308473027
 * **[nodemon](https://www.npmjs.com/package/nodemon);**
 * **[discord.js](https://discord.js.org/#/), [DiscordX](https://www.npmjs.com/package/discordx);**
 * **[Express](https://expressjs.com/), [Axios](https://www.npmjs.com/package/axios);**
-* **[MySQL](https://www.npmjs.com/package/mysql), [SQLite (sqlite3)](https://www.npmjs.com/package/sqlite3), [TypeORM](https://typeorm.io/);**
+* **[MySQL](https://www.npmjs.com/package/mysql), [PostgreSQL](https://www.npmjs.com/package/pg), [TypeORM](https://typeorm.io/);**
 * **[Steam WebAPI](https://steamcommunity.com/dev).**
 <br/><br/>
 
@@ -41,3 +41,20 @@ Thanks to the patrons and Civilization VI community for donations and supporting
 - find and reports bugs;
 - invite bot to your Discord server (you can find these bots on [Civ6Bot Discord server](https://discord.gg/CzCQPjxXTy));
 - ... or just say "thank you" !
+
+## <a name="screenshots"></a>Screenshots
+<p align="center">
+    <img src="./images/1.png">
+</p>
+
+<p align="center">
+    <img src="./images/2.png">
+</p>
+
+<p align="center">
+    <img src="./images/3.png">
+</p>
+
+<p align="center">
+    <img src="./images/4.png">
+</p>

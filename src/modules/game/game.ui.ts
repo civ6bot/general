@@ -1,8 +1,9 @@
 import {ModuleBaseUI} from "../base/base.ui";
-import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, User} from "discord.js";
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ModalBuilder, TextInputStyle, User} from "discord.js";
 import {UtilsGeneratorButton} from "../../utils/generators/utils.generator.button";
 import {Game, GameEntityReady, GameTeamers} from "./game.models";
 import {UtilsGeneratorEmbed} from "../../utils/generators/utils.generator.embed";
+import { UtilsGeneratorModal } from "../../utils/generators/utils.generator.modal";
 
 export class GameUI extends ModuleBaseUI {
     public readyEmbed(gameEntityReady: GameEntityReady): EmbedBuilder[] {
@@ -63,6 +64,27 @@ export class GameUI extends ModuleBaseUI {
             [],
             game.interaction.user.username,
             game.interaction.user.avatarURL()
+        );
+    }
+
+    public gameBanButton(label: string, emoji: string): ActionRowBuilder<ButtonBuilder>[] {
+        return UtilsGeneratorButton.getSingle(
+            label,
+            emoji,
+            ButtonStyle.Secondary,
+            "game-draft-button"
+        );
+    }
+
+    public gameBanModal(title: string, label: string): ModalBuilder {
+        return UtilsGeneratorModal.build(
+            "game-draft-modal",
+            title,
+            ["game-ban-civs"],
+            [label],
+            [""],
+            [TextInputStyle.Short],
+            true
         );
     }
 

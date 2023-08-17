@@ -165,7 +165,7 @@ export class RulesService extends ModuleBaseService {
     //rules-button-delete
     public async deleteMessageButton(interaction: ButtonInteraction) {
         (this.isOwner(interaction))
-            ? interaction.message.delete()
+            ? interaction.message.delete().catch()
             : interaction.deferUpdate();
     }
 

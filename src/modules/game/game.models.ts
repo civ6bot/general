@@ -1,5 +1,5 @@
 import {ModuleBaseModel} from "../base/base.models";
-import {CommandInteraction, Message, MessageCollector, MessageReaction, ReactionCollector, User} from "discord.js";
+import {CommandInteraction, Message, MessageReaction, ReactionCollector, User} from "discord.js";
 import {UtilsServiceLetters} from "../../utils/services/utils.service.letters";
 
 export abstract class Game extends ModuleBaseModel {
@@ -189,8 +189,8 @@ export class GameEntityDraft extends GameEntity {
     public banThreshold: number;
     public banStrings: string[] = [];
 
-    public messageCollector: MessageCollector | null = null;
-    public collectedMessages: Message[] = [];
+    //public messageCollector: MessageCollector | null = null;
+    //public collectedMessages: Message[] = [];
 
     public englishLanguageOptions: string[] = [];
 
@@ -212,13 +212,13 @@ export class GameEntityDraft extends GameEntity {
         this.messageReactionCollector = null;
         this.message?.delete().catch();
         this.message = null;
-        try {
-            this.messageCollector?.stop();
-        } catch {}
-        this.messageCollector = null;
-        for(let message of this.collectedMessages)
-            message.delete().catch();
-        this.collectedMessages = [];
+        //try {
+        //    this.messageCollector?.stop();
+        //} catch {}
+        //this.messageCollector = null;
+        //for(let message of this.collectedMessages)
+        //    message.delete().catch();
+        //this.collectedMessages = [];
     }
 
     public override getContent(): string {

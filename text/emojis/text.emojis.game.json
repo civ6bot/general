@@ -1,6 +1,8 @@
 {
   "lang": "English",
   "text": [
+    { "tag": "GAME_BANS_BUTTON_ADD_EMOJI", "value": "🤔" },
+
     { "tag": "GAME_FFA_MAP_PANGAEA_EMOJI", "value": "\uD83C\uDDF5" },
     { "tag": "GAME_FFA_MAP_CONTINENTS_EMOJI", "value": "\uD83C\uDDE8" },
     { "tag": "GAME_FFA_MAP_HIGHLANDS_EMOJI", "value": "\uD83C\uDDED" },

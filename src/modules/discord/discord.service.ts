@@ -41,33 +41,22 @@ export class DiscordService extends ModuleBaseService {
         await client.initApplicationCommands();
 
         setTimeout(() => setInterval(() => {
-            let guildsAmount: number = client.guilds.cache.size;
-            let usersAmount: number = client.guilds.cache
-                .map((guild): number => guild.memberCount)
-                .reduce((a, b) => a+b);
             client.user?.setActivity({
-                name: `${guildsAmount} 🏰, ${usersAmount} 👥`,
-                type: ActivityType.Listening
+                name: "❤️ Donate for host!"
             });
         }, UtilsServiceTime.getMs(60, "s")), UtilsServiceTime.getMs(0, "s"));
 
         setTimeout(() => setInterval(() => {
             client.user?.setActivity({
-                name: "❤️ Donate for host!"
-            });
-        }, UtilsServiceTime.getMs(60, "s")), UtilsServiceTime.getMs(15, "s"));
-
-        setTimeout(() => setInterval(() => {
-            client.user?.setActivity({
                 name: "📄 Slash (/) to check commands."
             });
-        }, UtilsServiceTime.getMs(60, "s")), UtilsServiceTime.getMs(30, "s"));
+        }, UtilsServiceTime.getMs(60, "s")), UtilsServiceTime.getMs(20, "s"));
 
         setTimeout(() => setInterval(() => {
             client.user?.setActivity({
                 name: "📣 /feedback to send message."
             });
-        }, UtilsServiceTime.getMs(60, "s")), UtilsServiceTime.getMs(45, "s"));
+        }, UtilsServiceTime.getMs(60, "s")), UtilsServiceTime.getMs(40, "s"));
     }
 
     public async onGuildCreate(guild: Guild) {

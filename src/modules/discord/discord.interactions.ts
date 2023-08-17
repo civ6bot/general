@@ -26,10 +26,12 @@ export abstract class DiscordEvents {
         this.discordService.onGuildCreate(guild);
     }
 
+    /*
     @On({event: "messageCreate"})
     public async onMessageCreate([message]: ArgsOf<"messageCreate">, client: Client) {
         this.discordService.onMessageCreate(message);
     }
+    */
 
     @ButtonComponent({id: /discordGuilds-page-\d+/})
     public async pageButton(

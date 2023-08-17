@@ -1,5 +1,5 @@
-import {ButtonComponent, Discord, Slash, SlashGroup, SlashOption} from "discordx";
-import {ApplicationCommandOptionType, ButtonInteraction, CommandInteraction} from "discord.js";
+import {ButtonComponent, Discord, ModalComponent, Slash, SlashGroup, SlashOption} from "discordx";
+import {ApplicationCommandOptionType, ButtonInteraction, CommandInteraction, ModalSubmitInteraction} from "discord.js";
 import {GameService} from "./game.service";
 
 @Discord()
@@ -126,4 +126,14 @@ export abstract class GameInteractions {
     public async buttonSkip(
         interaction: ButtonInteraction
     ) { this.gameService.buttonSkip(interaction); }
+
+    @ButtonComponent({id: "game-draft-button"})
+    public async buttonDraft(
+        interaction: ButtonInteraction
+    ) { this.gameService.buttonDraft(interaction); }
+    
+    @ModalComponent({id: "game-draft-modal"})
+    public async modalDraft(
+        interaction: ModalSubmitInteraction
+    ) { await this.gameService.modalDraft(interaction); }
 }

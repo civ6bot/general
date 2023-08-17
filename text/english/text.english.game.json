@@ -17,9 +17,11 @@
     { "tag": "GAME_NOTIFY_TEAMERS_PM_TITLE", "value": "\uD83D\uDC32 New Teamers Game" },
     { "tag": "GAME_NOTIFY_PM_DESCRIPTION", "value": "New game vote begins! Follow link below to check it." },
 
-    { "tag": "GAME_BANS_START", "value": "\uD83E\uDD14 **Civilization bans:** none.\n*Add reactions or write civilization names below.*" },
+    { "tag": "GAME_BANS_START", "value": "\uD83E\uDD14 **Civilization bans:** none.\n*Add reactions or click on the button to add civilization reactions below this message.*" },
     { "tag": "GAME_BANS_PROCESSING", "value": "\uD83E\uDD14 **Civilization bans:**" },
     { "tag": "GAME_BANS_NONE", "value": "none" },
+    { "tag": "GAME_BANS_BUTTON_ADD", "value": "Add civilizations"},
+    { "tag": "GAME_BANS_MODAL_LABEL", "value": "Input civilizations below"},
 
     { "tag": "GAME_BUTTON_READY", "value": "Ready!" },
     { "tag": "GAME_BUTTON_DELETE", "value": "Delete" },

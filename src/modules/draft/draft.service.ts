@@ -339,7 +339,7 @@ export class DraftService extends ModuleBaseService {
                     components: []
                 });
                 for(let i in draft.pmMessages)
-                    draft.pmMessages[i].delete();
+                    draft.pmMessages[i].delete().catch();
                 return;
             }
         }
@@ -393,7 +393,7 @@ export class DraftService extends ModuleBaseService {
         if(!draft) {
             let dm: DMChannel = await interaction.user.createDM();
             let msg: Message = await dm.messages.fetch(interaction.message.id);
-            return msg.delete();
+            return msg.delete().catch();
         }
 
         let index: number = draft.users.indexOf(draft.users.filter(user => user.id === interaction.user.id)[0]);
@@ -458,7 +458,7 @@ export class DraftService extends ModuleBaseService {
             interaction.user.id
         ) as (DraftBlind | undefined);
         if(!draft)
-            return interaction.message.delete();
+            return interaction.message.delete().catch();
 
         if(interaction.user.id !== draft.interaction.user.id){
             let textStrings = await this.getManyText(
@@ -474,14 +474,14 @@ export class DraftService extends ModuleBaseService {
         }
         DraftService.deleteDraft(draft);
         for(let i in draft.pmMessages)
-            draft.pmMessages[i].delete();
+            draft.pmMessages[i].delete().catch();
 
         let textStrings = await this.getManyText(
             interaction,
             ["BASE_NOTIFY_TITLE", "DRAFT_BLIND_NOTIFY_DELETED"]
         );
         await interaction.reply({embeds: this.draftUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
-        await interaction.message.delete();
+        await interaction.message.delete().catch();
     }
 
     public async redraft(interaction: CommandInteraction) {
@@ -612,7 +612,7 @@ export class DraftService extends ModuleBaseService {
         let guildDrafts: Draft[] = DraftService.getDrafts(interaction.guild?.id as string)
             .filter((guildDraft: Draft) => (guildDraft.redraftStatus.length > 0));
         if(guildDrafts.length === 0)
-            return interaction.message.delete();
+            return interaction.message.delete().catch();
 
         let draft: Draft | undefined = guildDrafts.filter((guildDraft) => 
             guildDraft.users.map((user: User): string => user.id).some((userID: string) => (userID === interaction.user.id))

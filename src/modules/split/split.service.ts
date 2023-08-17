@@ -347,7 +347,7 @@ export class SplitService extends ModuleBaseService {
             reaction.message.id
         );
         if(!split) {
-            reaction.message.delete();    // удалить сообщение
+            reaction.message.delete().catch();    // удалить сообщение
             return;
         }
         await reaction.message.reactions.resolve(reaction).users.remove(user);      // удалить реакцию пользователя
@@ -492,7 +492,7 @@ export class SplitService extends ModuleBaseService {
             interaction.message.id
         );
         if(!split)
-            return interaction.message.delete();
+            return interaction.message.delete().catch();
         if(!await this.checkButtonPermission(interaction, split))
             return;
 
@@ -507,7 +507,7 @@ export class SplitService extends ModuleBaseService {
             ["BASE_NOTIFY_TITLE", "SPLIT_NOTIFY_DELETED"]
         );
         await interaction.reply({embeds: this.splitUI.notify(textStrings[0], textStrings[1]), ephemeral: true});
-        await interaction.message.delete();
+        await interaction.message.delete().catch();
     }
 
     private async replyNotFound(interaction: ButtonInteraction): Promise<void> {
@@ -535,7 +535,7 @@ export class SplitService extends ModuleBaseService {
         split.currentStep = 1;
         split.currentCaptainIndex = 0;
         this.allLongSplits(split.interaction as CommandInteraction, split.type, split.interaction?.member as GuildMember, null, "", "", "", split);
-        interaction.message.delete();
+        interaction.message.delete().catch();
     }
 
     public async splitContinueButton(interaction: ButtonInteraction) {
@@ -548,7 +548,7 @@ export class SplitService extends ModuleBaseService {
         if(!await this.checkButtonPermission(interaction, split))
             return;
 
-        interaction.message.delete();
+        interaction.message.delete().catch();
         this.allLongSplits(split.interaction as CommandInteraction, split.type, split.interaction?.member as GuildMember, null,  "", "", "", split);
     }
 
@@ -581,7 +581,7 @@ export class SplitService extends ModuleBaseService {
             interaction.message.id
         );
         if(!split) 
-            return interaction.message.delete();    // удалить сообщение
+            return interaction.message.delete().catch();    // удалить сообщение
         if(!await this.checkButtonPermission(interaction, split))
             return;
         if(interaction.user.id !== split.captains[split.pickSequence[split.currentStep-2]].id) {
@@ -597,7 +597,7 @@ export class SplitService extends ModuleBaseService {
         split.users.push(split.teams[split.currentCaptainIndex].pop() as string);
         let lastEmoji: string = UtilsServiceLetters.getLetters().slice(split.users.length-1, split.users.length)[0];
         split.emojis.push(lastEmoji);
-        interaction.message.react(lastEmoji);
+        interaction.message.react(lastEmoji).catch();
         if(split.setTimeoutID !== null)
             clearTimeout(split.setTimeoutID);
         split.setTimeoutID = setTimeout(SplitService.timeoutFunction, split.pickTimeMs, split);

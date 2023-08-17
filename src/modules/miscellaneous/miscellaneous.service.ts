@@ -171,14 +171,14 @@ export class MiscellaneousService extends ModuleBaseService {
                 components: []
             });
             for(let i in voteSecretEntity.messages) 
-                voteSecretEntity.messages[i].delete();
+                voteSecretEntity.messages[i].delete().catch();
         }
     }
 
     public async voteSecretButtonDelete(interaction: ButtonInteraction) {
         let voteSecretEntity: VoteSecret|undefined = MiscellaneousService.votesSecret.get((interaction.guild?.id as string) + (interaction.user.id));
         if(Array.from(MiscellaneousService.votesSecret.keys()).length === 0)
-            return interaction.message.delete();
+            return interaction.message.delete().catch();
         if(!voteSecretEntity || voteSecretEntity.interactionMessage?.id !== interaction.message.id )
             return interaction.deferUpdate();
         MiscellaneousService.votesSecret.delete((interaction.guild?.id as string) + (interaction.user.id));
@@ -187,9 +187,9 @@ export class MiscellaneousService extends ModuleBaseService {
             clearTimeout(voteSecretEntity.setTimeoutID);
             voteSecretEntity.setTimeoutID = null;
         }
-        interaction.message.delete();
+        interaction.message.delete().catch();
         for(let i in voteSecretEntity.messages) 
-            voteSecretEntity.messages[i].delete();
+            voteSecretEntity.messages[i].delete().catch();
     }
 
     public async voteSecretButtonVote(interaction: ButtonInteraction, voteResult: number) {
@@ -197,10 +197,10 @@ export class MiscellaneousService extends ModuleBaseService {
         let authorID: string = interaction.customId.split("-")[2];
         let voteSecretEntity: VoteSecret|undefined = MiscellaneousService.votesSecret.get(guildID+authorID);
         if(!voteSecretEntity)
-            return interaction.message.delete();
+            return interaction.message.delete().catch();
         let index: number = voteSecretEntity.users.map(user => user.id).indexOf(interaction.user.id);
         if(index === -1)
-            return interaction.message.delete();
+            return interaction.message.delete().catch();
         voteSecretEntity.votes[index] = voteResult;
 
         let title: string = await this.getOneText(voteSecretEntity.interaction, "MISCELLANEOUS_VOTE_SECRET_TITLE");

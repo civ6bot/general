@@ -1,6 +1,6 @@
 import {ModuleBaseService} from "../base/base.service";
 import {GameUI} from "./game.ui";
-import {ButtonInteraction, CommandInteraction, Message, MessageReaction, User, VoiceChannel, ChannelType, TextChannel, GuildMember} from "discord.js";
+import {ButtonInteraction, CommandInteraction, Message, MessageReaction, User, VoiceChannel, ChannelType, TextChannel, GuildMember, ButtonComponent, ModalSubmitInteraction, TextInputComponent} from "discord.js";
 import {Game, GameEntity, GameEntityDraft, GameEntityReady, GameFFA, GameTeamers} from "./game.models";
 import {UtilsGeneratorTimestamp} from "../../utils/generators/utils.generator.timestamp";
 import {UtilsDataCivilizations} from "../../utils/data/utils.data.civilizations";
@@ -303,18 +303,29 @@ export class GameService extends ModuleBaseService {
                 game.entities[i].messageReactionCollector?.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
                 UtilsServiceEmojis.reactOrder(message, game.entities[i].emojis);
             }
+
+            let gameDraftButtonStrings: string[] = await this.getManyText(interaction, [
+                "GAME_BANS_BUTTON_ADD", "GAME_BANS_BUTTON_ADD_EMOJI"
+            ]);
+            let gameDraftContent = {
+                content: game.entityDraft.getContent(),
+                components: this.gameUI.gameBanButton(
+                    gameDraftButtonStrings[0],
+                    gameDraftButtonStrings[1]
+                )
+            };
             message = (game.thread)
-                ? await game.thread.send(game.entityDraft.getContent())
-                : await interaction.channel.send(game.entityDraft.getContent());
+                ? await game.thread.send(gameDraftContent)
+                : await interaction.channel.send(gameDraftContent);
             game.entityDraft.message = message;
             if(await this.getOneSettingString(game.interaction, "BASE_LANGUAGE") !== await this.getOneSettingString("DEFAULT", "BASE_LANGUAGE")) 
                 game.entityDraft.englishLanguageOptions = (await this.getManyText("DEFAULT", UtilsDataCivilizations.civilizationsTags, draftEmojis.map(str => [str])))
                     .filter((str: string, index: number): boolean => !!draftFlags[index]);
             game.entityDraft.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityDraft.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
-            game.entityDraft.messageCollector = message.channel.createMessageCollector({time: voteTimeMs});
-            game.entityDraft.messageCollector.on("collect", async (message: Message) => GameService.messageCollectorFunction(message));
-            message.react("🤔");
+            //game.entityDraft.messageCollector = message.channel.createMessageCollector({time: voteTimeMs});
+            //game.entityDraft.messageCollector.on("collect", async (message: Message) => GameService.messageCollectorFunction(message));
+            //message.react("🤔");
 
             message = (game.thread)
                 ? await game.thread.send({
@@ -542,18 +553,28 @@ export class GameService extends ModuleBaseService {
             game.entityCaptains.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
             UtilsServiceEmojis.reactOrder(message, game.entityCaptains.emojis);
 
+            let gameDraftButtonStrings: string[] = await this.getManyText(interaction, [
+                "GAME_BANS_BUTTON_ADD", "GAME_BANS_BUTTON_ADD_EMOJI"
+            ]);
+            let gameDraftContent = {
+                content: game.entityDraft.getContent(),
+                components: this.gameUI.gameBanButton(
+                    gameDraftButtonStrings[0],
+                    gameDraftButtonStrings[1]
+                )
+            };
             message = (game.thread)
-                ? await game.thread.send( game.entityDraft.getContent())
-                : await interaction.channel.send(game.entityDraft.getContent());
+                ? await game.thread.send(gameDraftContent)
+                : await interaction.channel.send(gameDraftContent);
             game.entityDraft.message = message;
             if(await this.getOneSettingString(game.interaction, "BASE_LANGUAGE") !== await this.getOneSettingString("DEFAULT", "BASE_LANGUAGE"))
                 game.entityDraft.englishLanguageOptions = (await this.getManyText("DEFAULT", UtilsDataCivilizations.civilizationsTags, draftEmojis.map(str => [str])))
                     .filter((str: string, index: number): boolean => !!draftFlags[index]);
             game.entityDraft.messageReactionCollector = message.createReactionCollector({time: voteTimeMs});
             game.entityDraft.messageReactionCollector.on("collect", async (reaction: MessageReaction, user: User) => GameService.reactionCollectorFunction(reaction, user));
-            game.entityDraft.messageCollector = message.channel.createMessageCollector({time: voteTimeMs});
-            game.entityDraft.messageCollector.on("collect", async (message: Message) => GameService.messageCollectorFunction(message));
-            message.react("🤔");
+            //game.entityDraft.messageCollector = message.channel.createMessageCollector({time: voteTimeMs});
+            //game.entityDraft.messageCollector.on("collect", async (message: Message) => GameService.messageCollectorFunction(message));
+            //message.react("🤔");
 
             message = (game.thread)
                 ? await game.thread.send({
@@ -626,40 +647,6 @@ export class GameService extends ModuleBaseService {
             await entity.resolveProcessing(reaction, user);
             return;
         }
-    }
-
-    public static async messageCollectorFunction(message: Message): Promise<void> {
-        let game = GameService.getGames(message.guild?.id as string).filter((game: Game) => 
-            game.users.some((user: User) => user.id === message.author.id)
-        )[0];
-
-        if(!game)
-            return;
-        if(game.users.map((user: User): string => user.id).indexOf(message.member?.user.id as string) === -1)
-            return;
-        let gameEntityDraft: GameEntityDraft | undefined;
-        if(game.type === "FFA") {
-            let gameFFA: GameFFA = game as GameFFA;
-            gameEntityDraft = gameFFA.entityDraft;
-        } else if(game.type === "Teamers") {
-            let gameTeamers: GameTeamers = game as GameTeamers;
-            gameEntityDraft = gameTeamers.entityDraft;
-        }
-        
-        if(gameEntityDraft === undefined)
-            return;
-        if(!gameEntityDraft.message)
-            return;
-        let bans = UtilsServiceSyntax.parseBans(message.content, gameEntityDraft.options).bans;
-        if(bans.length === 0) {
-            bans = UtilsServiceSyntax.parseBans(message.content, gameEntityDraft.englishLanguageOptions).bans;
-            if(bans.length === 0)
-                return;
-        }
-
-        UtilsServiceEmojis.reactOrder(gameEntityDraft.message, bans.map(banIndex => gameEntityDraft?.emojis[banIndex] ?? "")).catch();
-        gameEntityDraft.collectedMessages.push(message);
-        message.react("📝").catch();
     }
 
     public static async timeoutFunction(game: Game): Promise<void> {
@@ -826,5 +813,47 @@ export class GameService extends ModuleBaseService {
             return interaction.reply({embeds: this.gameUI.error(textStrings[0], textStrings[1]), ephemeral: true});
         }
         GameService.timeoutFunction(game);
+    }
+
+    public async buttonDraft(interaction: ButtonInteraction) {      // game-draft-button
+        let game: Game | undefined = GameService.getGameByGuildMessageID(
+            interaction.guild?.id as string,
+            interaction.message.id
+        );
+        if(!game || !game.isProcessing)
+            return interaction.message.delete().catch();
+        if(game.users.map(user => user.id).indexOf(interaction.user.id) === -1) 
+            return interaction.deferUpdate();
+        let gameDraftModalStrings: string[] = await this.getManyText(interaction, [
+            "GAME_BANS_BUTTON_ADD", "GAME_BANS_BUTTON_ADD_EMOJI",
+            "GAME_BANS_MODAL_LABEL"
+        ]);
+        interaction.showModal(this.gameUI.gameBanModal(
+            `${gameDraftModalStrings[1]} ${gameDraftModalStrings[0]}`,
+            gameDraftModalStrings[2]
+        ));
+    }
+
+    public async modalDraft(interaction: ModalSubmitInteraction) {  // game-draft-modal
+        await interaction.deferUpdate();
+        let game: Game | undefined = GameService.getGameByGuildMessageID(
+            interaction.guild?.id as string,
+            interaction.message?.id as string
+        );
+        if(!game || !game.isProcessing)
+            return;
+        let gameEntityDraft: GameEntityDraft = (game.type === "FFA")
+            ? (game as GameFFA).entityDraft
+            : (game as GameTeamers).entityDraft;
+
+        let rawBans: string = Array.from(interaction.fields.fields.values())
+            .map((component: TextInputComponent): string => component.value)[0] ?? "";
+        let bans = UtilsServiceSyntax.parseBans(rawBans, gameEntityDraft.options).bans;
+        if(bans.length === 0) {
+            bans = UtilsServiceSyntax.parseBans(rawBans, gameEntityDraft.englishLanguageOptions).bans;
+            if(bans.length === 0)
+                return;
+        }
+        UtilsServiceEmojis.reactOrder(gameEntityDraft.message as Message, bans.map(banIndex => gameEntityDraft?.emojis[banIndex] ?? "")).catch();
     }
 }

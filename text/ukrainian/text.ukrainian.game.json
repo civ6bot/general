@@ -17,9 +17,11 @@
     { "tag": "GAME_NOTIFY_TEAMERS_PM_TITLE", "value": "\uD83D\uDC32 Нова гра в режимі Teamers" },
     { "tag": "GAME_NOTIFY_PM_DESCRIPTION", "value": "На голосування можна перейти за посиланням нижче." },
 
-    { "tag": "GAME_BANS_START", "value": "\uD83E\uDD14 **Бани цивілізацій:** немає.\n*Добавте реакцію або напишіть назви цивілізацій нижче.*" },
+    { "tag": "GAME_BANS_START", "value": "\uD83E\uDD14 **Бани цивілізацій:** немає.\n*Додайте реакцію або натисніть кнопку, щоб додати реакції цивілізацій під цим повідомленням.*" },
     { "tag": "GAME_BANS_PROCESSING", "value": "\uD83E\uDD14 **Бани цивілізацій:**" },
     { "tag": "GAME_BANS_NONE", "value": "Ні" },
+    { "tag": "GAME_BANS_BUTTON_ADD", "value": "Додати цивілізацію"},
+    { "tag": "GAME_BANS_MODAL_LABEL", "value": "Введіть цивілізацію нижче"},
 
     { "tag": "GAME_BUTTON_READY", "value": "Готовий!" },
     { "tag": "GAME_BUTTON_DELETE", "value": "Видалити" },

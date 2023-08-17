@@ -5,7 +5,7 @@
     { "tag": "DISCORD_ERROR_INTERACTION_NO_GUILD", "value": "You can't use slash commands in PM." },
 
     { "tag": "DISCORD_ON_GUILD_CREATE_TITLE", "value": "🎉 Thank you for inviting Civ6bot!" },
-    { "tag": "DISCORD_ON_GUILD_CREATE_DESCRIPTION", "value": "**Civ6Bot General** has all commands for quick start of Civilization VI game: draft, new game voting, team creating and other usefull stuff.\n\n  • Use slash sign (/) to see all bot's commands;\n  • Use /config command to change bot's settings.\n  • Website: https://civ6bot.xyz/ \n  • Support project: http://civ6bot.xyz/donate \n\nHave a nice game!" },
+    { "tag": "DISCORD_ON_GUILD_CREATE_GENERAL_DESCRIPTION", "value": "**Civ6Bot General** has all commands for quick start of Civilization VI game: draft, new game voting, team creating and other usefull stuff.\n\n  • Use slash sign (/) to see all bot's commands;\n  • Use /config command to change bot's settings.\n  • Website: https://civ6bot.xyz/ \n  • Support project: http://civ6bot.xyz/donate \n\nHave a nice game!" },
 
     { "tag": "DISCORD_GUILDS_TITLE", "value": "🏰 Connected guilds, page [PAGE_CURRENT]/[PAGE_TOTAL]" },
     { "tag": "DISCORD_GUILDS_DESCRIPTION", "value": "Guilds total: [GUILD_TOTAL]." },

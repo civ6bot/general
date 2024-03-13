@@ -77,6 +77,11 @@
     { "tag": "GAME_FFA_AGE", "value": "\uD83C\uDFDE **Возраст мира**" },
     { "tag": "GAME_FFA_AGE_STANDARD", "value": "Стандартный" },
     { "tag": "GAME_FFA_AGE_NEW", "value": "Новый" },
+    { "tag": "GAME_FFA_AGE_OLD", "value": "Старый" },
+
+    { "tag": "GAME_FFA_FOREST_BALANCING", "value": "🌲 **Баланс лесов**" },
+    { "tag": "GAME_FFA_FOREST_BALANCING_YES", "value": "Включен" },
+    { "tag": "GAME_FFA_FOREST_BALANCING_NO", "value": "Выключен" },
 
     { "tag": "GAME_FFA_RIDGES_DEFINITION", "value": "⛰️ **Горные хребты**" },
     { "tag": "GAME_FFA_RIDGES_DEFINITION_INTERCONTINENTAL", "value": "Межконтинентальные (Standard)" },
@@ -199,10 +204,20 @@
     { "tag": "GAME_TEAMERS_AGE", "value": "\uD83C\uDFDE **Возраст мира**" },
     { "tag": "GAME_TEAMERS_AGE_STANDARD", "value": "Стандартный" },
     { "tag": "GAME_TEAMERS_AGE_NEW", "value": "Новый" },
+    { "tag": "GAME_TEAMERS_AGE_OLD", "value": "Старый" },
+
+    { "tag": "GAME_TEAMERS_FOREST_BALANCING", "value": "🌲 **Баланс лесов**" },
+    { "tag": "GAME_TEAMERS_FOREST_BALANCING_YES", "value": "Включен" },
+    { "tag": "GAME_TEAMERS_FOREST_BALANCING_NO", "value": "Выключен" },
 
     { "tag": "GAME_TEAMERS_RIDGES_DEFINITION", "value": "⛰️ **Горные хребты**" },
     { "tag": "GAME_TEAMERS_RIDGES_DEFINITION_INTERCONTINENTAL", "value": "Межконтинентальные (Standard)" },
     { "tag": "GAME_TEAMERS_RIDGES_DEFINITION_RANDOM", "value": "Случайные (Classic)" },
+
+    { "tag": "GAME_TEAMERS_START_POSITION", "value": "🌉 **Командный старт**" },
+    { "tag": "GAME_TEAMERS_START_POSITION_STANDARD", "value": "Стандартный" },
+    { "tag": "GAME_TEAMERS_START_POSITION_NS", "value": "Север против юга" },
+    { "tag": "GAME_TEAMERS_START_POSITION_WE", "value": "Запад против востока" },
 
     { "tag": "GAME_TEAMERS_CITY_CENTER", "value": "🏙️ **BCY: центры городов**" },
     { "tag": "GAME_TEAMERS_CITY_CENTER_NO", "value": "Отключено" },

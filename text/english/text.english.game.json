@@ -159,6 +159,10 @@
     { "tag": "GAME_FFA_CHATTING_ANY", "value": "Any" },
     { "tag": "GAME_FFA_CHATTING_PUBLIC", "value": "Public only" },
 
+    { "tag": "GAME_FFA_RATING", "value": "📈 **Rating game**" },
+    { "tag": "GAME_FFA_RATING_NO", "value": "No" },
+    { "tag": "GAME_FFA_RATING_YES", "value": "Yes" },
+
     { "tag": "GAME_FFA_DRAFT", "value": "🃏 **Draft type**" },
     { "tag": "GAME_FFA_DRAFT_CLASSIC", "value": "Classic" },
     { "tag": "GAME_FFA_DRAFT_BLIND", "value": "Blind" },
@@ -233,9 +237,13 @@
     { "tag": "GAME_TEAMERS_RELIC_TURN_20", "value": "Allowed from turn 20" },
     { "tag": "GAME_TEAMERS_RELIC_YES", "value": "Allowed" },
 
-    { "tag": "GAME_TEAMERS_REMAPS", "value": "\uD83D\uDD04 **Remaps (turn 8)**" },
+    { "tag": "GAME_TEAMERS_REMAPS", "value": "\uD83D\uDD04 **Remaps**" },
     { "tag": "GAME_TEAMERS_REMAPS_NO", "value": "Banned" },
     { "tag": "GAME_TEAMERS_REMAPS_YES", "value": "Allowed" },
+
+    { "tag": "GAME_TEAMERS_RATING", "value": "📈 **Rating game**" },
+    { "tag": "GAME_TEAMERS_RATING_NO", "value": "No" },
+    { "tag": "GAME_TEAMERS_RATING_YES", "value": "Yes" },
 
     { "tag": "GAME_TEAMERS_SPLIT", "value": "\uD83D\uDC65 **Split type**" },
     { "tag": "GAME_TEAMERS_SPLIT_CLASSIC", "value": "Classic" },

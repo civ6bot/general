@@ -122,6 +122,7 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_FRIENDS", "value": "Кількість дружб" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MILITARY_ALLIANCE", "value": "Військовий союз" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_CHATTING", "value": "Спілкування" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_RATING", "value": "Рейтингова гра" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_DRAFT", "value": "Тип драфту" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BANS_THRESHOLD", "value": "Порогове значення для бана" },
 
@@ -139,7 +140,8 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_CITY_CENTER", "value": "BCY: центри міст" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_CITY_YIELDS", "value": "BCY: додатковий дохід" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_RELIC", "value": "Торгівля реліквіями" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_REMAPS", "value": "Ремапи (на 8 ходу)" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_REMAPS", "value": "Ремапи" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_RATING", "value": "Рейтингова гра" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_SPLIT", "value": "Спосіб поділу на команди" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BANS_THRESHOLD", "value": "Пороговое значение для бана" },
 

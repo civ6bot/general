@@ -128,6 +128,10 @@
   { "setting": "GAME_FFA_CHATTING_ANY", "value": 1 },
   { "setting": "GAME_FFA_CHATTING_PUBLIC", "value": 1 },
 
+  { "setting": "GAME_FFA_RATING", "value": 0 },
+  { "setting": "GAME_FFA_RATING_NO", "value": 1 },
+  { "setting": "GAME_FFA_RATING_YES", "value": 1 },
+
   { "setting": "GAME_FFA_DRAFT", "value": 1 },
   { "setting": "GAME_FFA_DRAFT_CLASSIC", "value": 1 },
   { "setting": "GAME_FFA_DRAFT_BLIND", "value": 1 },
@@ -205,6 +209,10 @@
   { "setting": "GAME_TEAMERS_REMAPS", "value": 1 },
   { "setting": "GAME_TEAMERS_REMAPS_NO", "value": 1 },
   { "setting": "GAME_TEAMERS_REMAPS_YES", "value": 1 },
+
+  { "setting": "GAME_TEAMERS_RATING", "value": 0 },
+  { "setting": "GAME_TEAMERS_RATING_NO", "value": 1 },
+  { "setting": "GAME_TEAMERS_RATING_YES", "value": 1 },
 
   { "setting": "GAME_TEAMERS_SPLIT", "value": 1 },
   { "setting": "GAME_TEAMERS_SPLIT_CLASSIC", "value": 1 },

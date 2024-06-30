@@ -86,6 +86,9 @@ export class UtilsDataGameTags {
         ["GAME_FFA_CHATTING", [
             "GAME_FFA_CHATTING_ANY", "GAME_FFA_CHATTING_PUBLIC"
         ]],
+        ["GAME_FFA_RATING", [
+            "GAME_FFA_RATING_NO", "GAME_FFA_RATING_YES"
+        ]],
         ["GAME_FFA_DRAFT", [
             "GAME_FFA_DRAFT_CLASSIC", "GAME_FFA_DRAFT_BLIND"
         ]],
@@ -142,6 +145,9 @@ export class UtilsDataGameTags {
         ]],
         ["GAME_TEAMERS_REMAPS", [
             "GAME_TEAMERS_REMAPS_NO", "GAME_TEAMERS_REMAPS_YES"
+        ]],
+        ["GAME_TEAMERS_RATING", [
+            "GAME_TEAMERS_RATING_NO", "GAME_TEAMERS_RATING_YES"
         ]],
         ["GAME_TEAMERS_SPLIT", [
             "GAME_TEAMERS_SPLIT_CLASSIC", "GAME_TEAMERS_SPLIT_DOUBLE",

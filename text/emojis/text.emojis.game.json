@@ -99,6 +99,9 @@
     { "tag": "GAME_FFA_CHATTING_ANY_EMOJI", "value": "🕵️" },
     { "tag": "GAME_FFA_CHATTING_PUBLIC_EMOJI", "value": "\uD83D\uDCF0" },
 
+    { "tag": "GAME_FFA_RATING_NO_EMOJI", "value": "<:no:808418109319938099>" },
+    { "tag": "GAME_FFA_RATING_YES_EMOJI", "value": "📈" },
+
     { "tag": "GAME_FFA_DRAFT_CLASSIC_EMOJI", "value": "\uD83C\uDFA9" },
     { "tag": "GAME_FFA_DRAFT_BLIND_EMOJI", "value": "\uD83E\uDD37" },
 
@@ -160,6 +163,9 @@
 
     { "tag": "GAME_TEAMERS_REMAPS_NO_EMOJI", "value": "<:no:808418109319938099>" },
     { "tag": "GAME_TEAMERS_REMAPS_YES_EMOJI", "value": "\uD83D\uDD04" },
+
+    { "tag": "GAME_TEAMERS_RATING_NO_EMOJI", "value": "<:no:808418109319938099>" },
+    { "tag": "GAME_TEAMERS_RATING_YES_EMOJI", "value": "📈" },
 
     { "tag": "GAME_TEAMERS_SPLIT_CLASSIC_EMOJI", "value": "🧭" },
     { "tag": "GAME_TEAMERS_SPLIT_DOUBLE_EMOJI", "value": "⏫" },

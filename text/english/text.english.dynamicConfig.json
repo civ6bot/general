@@ -122,6 +122,7 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_FRIENDS", "value": "Friends amount" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_MILITARY_ALLIANCE", "value": "Military alliance" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_CHATTING", "value": "Chatting" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_RATING", "value": "Rating game" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_DRAFT", "value": "Draft type" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_FFA_BANS_THRESHOLD", "value": "Ban threshold" },
 
@@ -139,7 +140,8 @@
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_CITY_CENTER", "value": "BCY: City Centers" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_CITY_YIELDS", "value": "BCY: additional yields" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_RELIC", "value": "Relic trade" },
-    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_REMAPS", "value": "Remaps (turn 8)" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_REMAPS", "value": "Remaps" },
+    { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_RATING", "value": "Rating game" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_SPLIT", "value": "Split type" },
     { "tag": "DYNAMIC_CONFIG_SUBCATEGORY_GAME_TEAMERS_BANS_THRESHOLD", "value": "Ban threshold" },
 

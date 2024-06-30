@@ -159,6 +159,10 @@
     { "tag": "GAME_FFA_CHATTING_ANY", "value": "Любое" },
     { "tag": "GAME_FFA_CHATTING_PUBLIC", "value": "Только публичное" },
 
+    { "tag": "GAME_FFA_RATING", "value": "📈 **Рейтинговая игра**" },
+    { "tag": "GAME_FFA_RATING_NO", "value": "Нет" },
+    { "tag": "GAME_FFA_RATING_YES", "value": "Да" },
+
     { "tag": "GAME_FFA_DRAFT", "value": "🃏 **Тип драфта**" },
     { "tag": "GAME_FFA_DRAFT_CLASSIC", "value": "Классический" },
     { "tag": "GAME_FFA_DRAFT_BLIND", "value": "Взакрытую" },
@@ -233,9 +237,13 @@
     { "tag": "GAME_TEAMERS_RELIC_TURN_20", "value": "Разрешена с 20 хода" },
     { "tag": "GAME_TEAMERS_RELIC_YES", "value": "Разрешена" },
 
-    { "tag": "GAME_TEAMERS_REMAPS", "value": "\uD83D\uDD04 **Ремапы (на 8 ходу)**" },
+    { "tag": "GAME_TEAMERS_REMAPS", "value": "\uD83D\uDD04 **Ремапы**" },
     { "tag": "GAME_TEAMERS_REMAPS_NO", "value": "Запрещены" },
     { "tag": "GAME_TEAMERS_REMAPS_YES", "value": "Разрешены" },
+
+    { "tag": "GAME_TEAMERS_RATING", "value": "📈 **Рейтинговая игра**" },
+    { "tag": "GAME_TEAMERS_RATING_NO", "value": "Нет" },
+    { "tag": "GAME_TEAMERS_RATING_YES", "value": "Да" },
 
     { "tag": "GAME_TEAMERS_SPLIT", "value": "\uD83D\uDC65 **Способ разделения на команды**" },
     { "tag": "GAME_TEAMERS_SPLIT_CLASSIC", "value": "Классический" },

@@ -159,6 +159,10 @@
     { "tag": "GAME_FFA_CHATTING_ANY", "value": "Будь-яке" },
     { "tag": "GAME_FFA_CHATTING_PUBLIC", "value": "Тільки публічне" },
 
+    { "tag": "GAME_FFA_RATING", "value": "📈 **Рейтингова гра**" },
+    { "tag": "GAME_FFA_RATING_NO", "value": "Нi" },
+    { "tag": "GAME_FFA_RATING_YES", "value": "Так" },
+
     { "tag": "GAME_FFA_DRAFT", "value": "🃏 **Тип драфта**" },
     { "tag": "GAME_FFA_DRAFT_CLASSIC", "value": "Класичний" },
     { "tag": "GAME_FFA_DRAFT_BLIND", "value": "У закриту" },
@@ -233,9 +237,13 @@
     { "tag": "GAME_TEAMERS_RELIC_TURN_20", "value": "Дозволено з 20 ходу" },
     { "tag": "GAME_TEAMERS_RELIC_YES", "value": "Дозволено" },
 
-    { "tag": "GAME_TEAMERS_REMAPS", "value": "\uD83D\uDD04 **Ремапи (на 8 ходу)**" },
+    { "tag": "GAME_TEAMERS_REMAPS", "value": "\uD83D\uDD04 **Ремапи**" },
     { "tag": "GAME_TEAMERS_REMAPS_NO", "value": "Заборонені" },
     { "tag": "GAME_TEAMERS_REMAPS_YES", "value": "Дозволено" },
+
+    { "tag": "GAME_TEAMERS_RATING", "value": "📈 **Рейтингова гра**" },
+    { "tag": "GAME_TEAMERS_RATING_NO", "value": "Нi" },
+    { "tag": "GAME_TEAMERS_RATING_YES", "value": "Так" },
 
     { "tag": "GAME_TEAMERS_SPLIT", "value": "\uD83D\uDC65 **Спосіб поділу на команди**" },
     { "tag": "GAME_TEAMERS_SPLIT_CLASSIC", "value": "Класичний" },

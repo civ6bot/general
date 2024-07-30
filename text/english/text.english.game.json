@@ -42,6 +42,7 @@
 
     { "tag": "GAME_FFA_MAP", "value": "\uD83C\uDF0D **Map**" },
     { "tag": "GAME_FFA_MAP_PANGAEA", "value": "Pangaea" },
+    { "tag": "GAME_FFA_MAP_PANGAEA_CLASSIC", "value": "Pangaea (Classic ridges)" },
     { "tag": "GAME_FFA_MAP_CONTINENTS", "value": "Continents" },
     { "tag": "GAME_FFA_MAP_HIGHLANDS", "value": "Highlands" },
     { "tag": "GAME_FFA_MAP_SEVEN_SEAS", "value": "Seven seas" },
@@ -173,6 +174,7 @@
 
     { "tag": "GAME_TEAMERS_MAP", "value": "\uD83C\uDF0D **Map**" },
     { "tag": "GAME_TEAMERS_MAP_PANGAEA", "value": "Pangaea" },
+    { "tag": "GAME_TEAMERS_MAP_PANGAEA_CLASSIC", "value": "Pangaea (Classic ridges)" },
     { "tag": "GAME_TEAMERS_MAP_CONTINENTS", "value": "Continents" },
     { "tag": "GAME_TEAMERS_MAP_HIGHLANDS", "value": "Highlands" },
     { "tag": "GAME_TEAMERS_MAP_SEVEN_SEAS", "value": "Seven seas" },

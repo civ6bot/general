@@ -11,6 +11,7 @@
 
   { "setting": "GAME_FFA_MAP", "value": 1 },
   { "setting": "GAME_FFA_MAP_PANGAEA", "value": 1 },
+  { "setting": "GAME_FFA_MAP_PANGAEA_CLASSIC", "value": 0 },
   { "setting": "GAME_FFA_MAP_CONTINENTS", "value": 1 },
   { "setting": "GAME_FFA_MAP_HIGHLANDS", "value": 1 },
   { "setting": "GAME_FFA_MAP_SEVEN_SEAS", "value": 1 },
@@ -142,6 +143,7 @@
 
   { "setting": "GAME_TEAMERS_MAP", "value": 1 },
   { "setting": "GAME_TEAMERS_MAP_PANGAEA", "value": 1 },
+  { "setting": "GAME_TEAMERS_MAP_PANGAEA_CLASSIC", "value": 0 },
   { "setting": "GAME_TEAMERS_MAP_CONTINENTS", "value": 1 },
   { "setting": "GAME_TEAMERS_MAP_HIGHLANDS", "value": 1 },
   { "setting": "GAME_TEAMERS_MAP_SEVEN_SEAS", "value": 1 },

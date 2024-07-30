@@ -43,13 +43,13 @@ export class SplitUI extends ModuleBaseUI {
         return hasSkipToDraft 
             ? UtilsGeneratorButton.getList(
                 labels,
-                ["▶️", "🔄", "⏩", "✖️"],
+                ["🔄", "▶️", "⏩", "✖️"],
                 [ButtonStyle.Primary, ButtonStyle.Secondary, ButtonStyle.Secondary, ButtonStyle.Danger],
                 ["split-restart", "split-continue", "split-skip", "split-delete"]
             )
             : UtilsGeneratorButton.getList(
                 labels,
-                ["▶️", "🔄", "✖️"],
+                ["🔄", "▶️", "✖️"],
                 [ButtonStyle.Primary, ButtonStyle.Secondary, ButtonStyle.Danger],
                 ["split-restart", "split-continue", "split-delete"]
             );

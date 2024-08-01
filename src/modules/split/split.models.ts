@@ -146,7 +146,7 @@ export class SplitRating extends Split {
         this.teams = [[], []];
         //users.unshift(...(captains as User[]));
         //users = Array.from(new Set(users));
-        let playersPerTeam: number = Math.floor(this.users.length/2);
+        let playersPerTeam: number = Math.floor(users.length/2);
 
         console.log("users length:", users.length);
         console.log("users:", users);

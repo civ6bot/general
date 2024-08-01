@@ -6,8 +6,11 @@
     { "tag": "SPLIT_ERROR_NOT_ENOUGH_USERS", "value": "Not enough players to run split." },
     { "tag": "SPLIT_ERROR_TOO_MUCH_USERS", "value": "Too much players." },
     { "tag": "SPLIT_ERROR_PROCESSING", "value": "Split is processing. Please, wait." },
+    { "tag": "SPLIT_ERROR_RATING", "value": "You need <@795292082184650813> Bot to use this split command." },
 
     { "tag": "SPLIT_RANDOM_TITLE", "value": "\uD83D\uDC65 Split - random" },
+
+    { "tag": "SPLIT_RATING_TITLE", "value": "📈 Split - rating" },
 
     { "tag": "SPLIT_CLASSIC_TITLE_PROCESSING", "value": "\uD83D\uDC65 Split - classic, step [STEP_NUMBER]/[STEP_TOTAL]" },
     { "tag": "SPLIT_CLASSIC_TITLE_FINISH", "value": "\uD83D\uDC65 Split - classic" },

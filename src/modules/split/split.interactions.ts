@@ -43,6 +43,29 @@ export abstract class SplitInteractions {
         interaction: CommandInteraction
     ) { this.splitService.random(interaction, captain1, captain2, usersInclude, usersExclude, usersOnly); }
 
+    @Slash({name: "rating", description: "Split into teams by average rating"})
+    public async rating(
+        @SlashOption({
+            name: "include",
+            description: "add other players to split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersInclude: string = "",
+        @SlashOption({
+            name: "exclude",
+            description: "remove players from split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersExclude: string = "",
+        @SlashOption({
+            name: "only",
+            description: "set only input players, captains and you to the split",
+            type: ApplicationCommandOptionType.String,
+            required: false,
+        }) usersOnly: string = "",
+        interaction: CommandInteraction
+    ) { this.splitService.rating(interaction, usersInclude, usersExclude, usersOnly); }
+
     @Slash({name: "classic", description: "Split: 1-2-1-2..."})
     public async classic(
         @SlashOption({

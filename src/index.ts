@@ -33,7 +33,7 @@ dataSource.initialize().then(async () => {
 });
 
 httpServer.listen(process.env.SERVER_HTTP_PORT, () => {
-    console.log(`HTTP server listening`);
+    console.log(`HTTP General server listening`);
 });
 
 process.on('uncaughtException', error => {

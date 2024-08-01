@@ -5,7 +5,7 @@ import {DraftFFA, DraftBlind} from "../draft/draft.models";
 import {UtilsDataCivilizations} from "../../utils/data/utils.data.civilizations";
 import {CommandInteraction, GuildMember, User} from "discord.js";
 import {SplitService} from "../split/split.service";
-import {SplitClassic, SplitCWC, SplitDouble, SplitRandom} from "../split/split.models";
+import {SplitClassic, SplitCWC, SplitDouble, SplitRandom, SplitRating} from "../split/split.models";
 
 export class GameAdapter extends ModuleBaseService {
     public async callDraft(game: GameFFA) {
@@ -62,14 +62,15 @@ export class GameAdapter extends ModuleBaseService {
         let splitService: SplitService = new SplitService();
         let gameTeamersSplitConfigOptions: number[] = await this.getManySettingNumber(game.interaction,
             "GAME_TEAMERS_SPLIT_CLASSIC", "GAME_TEAMERS_SPLIT_DOUBLE",
-            "GAME_TEAMERS_SPLIT_CWC", "GAME_TEAMERS_SPLIT_RANDOM"
+            "GAME_TEAMERS_SPLIT_CWC", "GAME_TEAMERS_SPLIT_RANDOM",
+            "GAME_TEAMERS_SPLIT_RATING"
         );
         let splitTypeIndex: number = gameTeamersSplitConfigOptions
             .map((configOption: number, index: number) => configOption ? index : -1)
             .filter(configOption => configOption !== -1)
             [splitResultIndexes[0]];
         let splitType: string = [
-            "Classic", "Double", "CWC", "Random"
+            "Classic", "Double", "CWC", "Random", "Rating"
         ][splitTypeIndex];
         let captains: User[] = game.entityCaptains.resultIndexes.map((value: number): User => game.entityCaptains.users[value]);
 
@@ -82,6 +83,11 @@ export class GameAdapter extends ModuleBaseService {
                 if(game.thread)
                     splitRandom.thread = game.thread;
                 return splitService.random(interaction, dummyMember, dummyMember, "", "", "", splitRandom);
+            case "Rating":
+                let splitRating: SplitRating = new SplitRating(interaction, captains, game.users, bans);
+                if(game.thread)
+                    splitRating.thread = game.thread;
+                return splitService.rating(interaction, "", "", "", splitRating);
             case "Classic":
                 let splitClassic: SplitClassic = new SplitClassic(interaction, captains, game.users, bans);
                 if(game.thread)

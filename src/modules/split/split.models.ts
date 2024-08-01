@@ -105,6 +105,107 @@ export class SplitRandom extends Split {
     }
 }
 
+export class SplitRating extends Split {
+    override type = "Rating";
+    override pickSequence = [];
+
+    private combinationsWithoutRepetitionCount(n: number, k: any) { 
+        return [...Array(k)].reduce((acc, _, i) => (acc * (n - i)) / (i + 1), 1); 
+    }
+
+    private combineWithoutRepetition(arr: string | any[], k: number): number[][] {
+        const n = arr.length;
+        const combinations = Array(this.combinationsWithoutRepetitionCount(arr.length, k)); // : T[][]
+        const indexMask = [...Array(k)].map((_, i) => i);
+        const endIndex = n - k;
+
+        for(let i = 0; i < combinations.length; i++) {
+            combinations[i] = indexMask.map((index) => arr[index]);
+            let left = k - 1;
+            while (left >= 0 && indexMask[left] === endIndex + left) 
+                left--;
+            if (left < 0) 
+                break;
+            indexMask[left]++;
+            for(let right = left + 1; right < k; right++) {
+                indexMask[right] = indexMask[right - 1] + 1;
+            }
+        }
+
+        return combinations;
+    }
+
+
+    constructor(interaction: CommandInteraction, captains: (User|null)[], users: User[], ratings: number[] = [], bansForDraft: string | null = null) {
+        super(interaction, captains, users, bansForDraft);
+        if(this.errorReturnTag !== "")
+            return;
+
+        this.captains = [];
+        this.users = [];
+        this.teams = [[], []];
+        users.unshift(...(captains as User[]));
+        let playersPerTeam: number = Math.floor(this.users.length/2);
+
+        let sumOfRatings: number = ratings.reduce((a, b) => a+b, 0);
+        let bestCombination: number[] = [];
+        let excessRatingValue: number|null = null;
+
+        if(ratings.length % 2) {
+            let bestSum: number = sumOfRatings;
+            for(let i: number = 0; i < ratings.length; i++) {
+                let tempRatings: number[] = ratings.slice(0, i).concat(ratings.slice(i+1));
+                let tempSumOrRatings: number = tempRatings.reduce((a,b) => a+b, 0);
+                let tempSimpleCombinations = this.combineWithoutRepetition(tempRatings, playersPerTeam);
+                let tempSumOfCombinations: number[] = tempSimpleCombinations.map(combination => Math.abs(tempSumOrRatings - 2*combination.reduce((a, b) => a+b, 0)));
+                let tempFinishSum: number = Math.min(...tempSumOfCombinations);
+                let tempFinishCombination: number[] = tempSimpleCombinations[tempSumOfCombinations.indexOf(tempFinishSum)];
+                if(tempFinishSum < bestSum) {
+                    bestCombination = tempFinishCombination;
+                    bestSum = tempFinishSum;
+                    excessRatingValue = ratings[i];
+                    if(bestSum <= 1) {
+                        break;
+                    }
+                }
+            }
+        } else {
+            let simpleCombinations: number[][] = this.combineWithoutRepetition(ratings, playersPerTeam);
+            let sumOfCombinations: number[] = simpleCombinations.map(combination => Math.abs(sumOfRatings - 2*combination.reduce((a, b) => a+b, 0)));
+            bestCombination = simpleCombinations[sumOfCombinations.indexOf(Math.min(...sumOfCombinations))];
+        }
+       
+        let userRatingUnions: {user: User, rating: number}[] = users.map((_, index: number) => { return {user: users[index], rating: ratings[index]}; });
+        if(excessRatingValue !== null) {
+            for(let i = 0; i < userRatingUnions.length; i++) {
+                if(userRatingUnions[i].rating === excessRatingValue) {
+                    this.users = [userRatingUnions[i].user.toString()];
+                    userRatingUnions.splice(i, 1);
+                    break;
+                }
+            }
+        }
+        let userRatingUnionsFromCombination: {user: User, rating: number}[] = [];
+        for(let i = 0; i < bestCombination.length; i++) {
+            for(let j = 0; j < userRatingUnions.length; j++) {
+                if(userRatingUnions[j].rating === bestCombination[i]) {
+                    userRatingUnionsFromCombination.push(...userRatingUnions.splice(j, 1));
+                    break;
+                }
+            }
+        }
+
+        let teamsUnions: {user: User, rating: number}[][] = [userRatingUnions, userRatingUnionsFromCombination];
+        teamsUnions.forEach(teamUnions => teamUnions.sort((a, b) => b.rating-a.rating));
+        teamsUnions.forEach((teamUnions, index) => {
+            captains.push(teamUnions[0].user);
+            teamUnions.forEach(userRatingUnion => this.teams[index].push(userRatingUnion.user.toString()));
+        });
+
+        this.currentCaptainIndex = -1;
+    }
+}
+
 export class SplitClassic extends Split {
     override type = "Classic";
     override pickSequence = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1];

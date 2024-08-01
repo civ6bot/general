@@ -151,7 +151,8 @@ export class UtilsDataGameTags {
         ]],
         ["GAME_TEAMERS_SPLIT", [
             "GAME_TEAMERS_SPLIT_CLASSIC", "GAME_TEAMERS_SPLIT_DOUBLE",
-            "GAME_TEAMERS_SPLIT_CWC", "GAME_TEAMERS_SPLIT_RANDOM"
+            "GAME_TEAMERS_SPLIT_CWC", "GAME_TEAMERS_SPLIT_RANDOM",
+            "GAME_TEAMERS_SPLIT_RATING"
         ]],
     ]);
 }

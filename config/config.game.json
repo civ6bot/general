@@ -221,6 +221,7 @@
   { "setting": "GAME_TEAMERS_SPLIT_DOUBLE", "value": 1 },
   { "setting": "GAME_TEAMERS_SPLIT_CWC", "value": 1 },
   { "setting": "GAME_TEAMERS_SPLIT_RANDOM", "value": 1 },
+  { "setting": "GAME_TEAMERS_SPLIT_RATING", "value": 0 },
 
   { "setting": "GAME_TEAMERS_CAPTAINS", "value": 1 },
   { "setting": "GAME_TEAMERS_DRAFT_BAN_THRESHOLD_PERCENT", "value": 50 }

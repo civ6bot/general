@@ -252,6 +252,7 @@
     { "tag": "GAME_TEAMERS_SPLIT_DOUBLE", "value": "С дабл-пиком для второго" },
     { "tag": "GAME_TEAMERS_SPLIT_CWC", "value": "CWC-формат" },
     { "tag": "GAME_TEAMERS_SPLIT_RANDOM", "value": "Случайный" },
+    { "tag": "GAME_TEAMERS_SPLIT_RATING", "value": "Рейтинговый" },
 
     { "tag": "GAME_TEAMERS_CAPTAINS", "value": "\uD83D\uDC51 **Выборы двух капитанов команд**" }
   ]

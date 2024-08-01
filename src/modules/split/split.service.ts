@@ -1,13 +1,14 @@
 import {ModuleBaseService} from "../base/base.service";
 import {ButtonInteraction, ChannelType, CommandInteraction, GuildMember, MessageReaction, User, VoiceChannel} from "discord.js";
 import {SplitUI} from "./split.ui";
-import {Split, SplitClassic, SplitCWC, SplitDouble, SplitRandom} from "./split.models";
+import {Split, SplitClassic, SplitCWC, SplitDouble, SplitRandom, SplitRating} from "./split.models";
 import {UtilsGeneratorTimestamp} from "../../utils/generators/utils.generator.timestamp";
 import {UtilsServiceEmojis} from "../../utils/services/utils.service.emojis";
 import {UtilsServiceUsers} from "../../utils/services/utils.service.users";
 import {SplitAdapter} from "./split.adapter";
 import {UtilsServicePM} from "../../utils/services/utils.service.PM";
 import {UtilsServiceLetters} from "../../utils/services/utils.service.letters";
+import { RequestsSplit } from "../../requests/requests.split";
 
 export class SplitService extends ModuleBaseService {
     private splitUI: SplitUI = new SplitUI();
@@ -142,6 +143,118 @@ export class SplitService extends ModuleBaseService {
         // для тех, кто не успел выбрать вовремя.
 
         let title: string = await this.getOneText(split.interaction, "SPLIT_RANDOM_TITLE");
+        let fieldHeaders: string[] = [await this.getOneText(split.interaction, "SPLIT_FIELD_TITLE_USERS_NOT_PICKED")];
+        for(let i: number = 0; i < split.teams.length; i++)
+            fieldHeaders.push(await this.getOneText(split.interaction, "SPLIT_FIELD_TITLE_TEAM", i+1));
+
+        if (outerSplit) {
+            if(split.thread)
+                split.thread.send({embeds: this.splitUI.splitEmbed(
+                        title,
+                        null,
+                        fieldHeaders,
+                        split
+                    )});
+            else
+                interaction.channel?.send({embeds: this.splitUI.splitEmbed(
+                    title,
+                        null,
+                        fieldHeaders,
+                        split
+                    )});
+        } else
+            interaction.reply({embeds: this.splitUI.splitEmbed(
+                title,
+                    null,
+                    fieldHeaders,
+                    split
+                )});
+        if(split.bansForDraft !== null) {
+            if(await this.getOneSettingNumber(split.interaction, "SPLIT_MOVE_TEAM_VOICE_CHANNEL")) {
+                let destinationChannel: VoiceChannel | undefined = (await this.getOneSettingString(split.interaction, "GAME_TEAMERS_VOICE_CHANNELS"))
+                    .split(" ")
+                    .filter(id => id !== "")
+                    .map(id => split.interaction.guild?.channels.cache.get(id))
+                    .filter(channel => !!channel && (channel?.type === ChannelType.GuildVoice))
+                    .map(channel => channel as VoiceChannel)
+                    .filter(channel => Array.from(channel.members.keys()).length === 0)[0];
+                if(destinationChannel) {
+                    split.teams[1].forEach(id => {
+                        let member: GuildMember | undefined = (split as Split).interaction.guild?.members.cache.get(id.slice(2, -1));
+                        if(member?.voice.channel?.id)
+                            try {
+                                member?.voice.setChannel(destinationChannel as VoiceChannel);
+                            } catch {}
+                    });
+                }
+            }
+            this.splitAdapter.callDraft(split);
+        }
+    }
+
+    public async rating(
+        interaction: CommandInteraction,
+        usersInclude: string,
+        usersExclude: string,
+        usersOnly: string,
+        outerSplit: SplitRating | null = null
+    ) {
+        let split: SplitRating;
+        if(outerSplit)
+            split = outerSplit;
+        else {
+            let users: User[];
+            if(usersOnly === "") {
+                users = usersInclude
+                    .replaceAll("<@", " ")
+                    .replaceAll(">", " ")
+                    .split(" ")
+                    .filter(id => id !== "")
+                    .map((id: string): User | undefined => interaction.guild?.members.cache.get(id)?.user)
+                    .filter(user => !!user)
+                    .map(user => user as User)
+                    .concat(UtilsServiceUsers.getFromVoice(interaction));
+                let usersExcludeID: string[] = usersExclude
+                    .replaceAll("<@", " ")
+                    .replaceAll(">", " ")
+                    .split(" ")
+                    .filter(id => (id !== "") && (id !== interaction.user.id));
+                users = Array.from(new Set(users.filter(user => usersExcludeID.indexOf(user.id) === -1)));
+            } else {
+                users = usersOnly
+                    .replaceAll("<@", " ")
+                    .replaceAll(">", " ")
+                    .split(" ")
+                    .filter(id => id !== "")
+                    .map((id: string): User | undefined => interaction.guild?.members.cache.get(id)?.user)
+                    .filter(user => !!user)
+                    .map(user => user as User)
+                    .concat(interaction.user);
+                users = Array.from(new Set(users));
+            }
+
+            const ratingBotID: string = "795292082184650813";
+            if(!(await interaction.guild?.members.fetch(ratingBotID))) {
+                let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", "SPLIT_ERROR_RATING"]);
+                return interaction.reply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1]), ephemeral: true});
+            }
+            let requestsSplit: RequestsSplit = new RequestsSplit();
+            let ratings: number[] = await requestsSplit.getRatings(interaction.guild?.id, users.map(user => user.id));
+            split = new SplitRating(interaction, [users[0] || null, users[1] || null], users, ratings);
+        }
+        this.checkSplit(split);
+        if(split.errorReturnTag !== ""){
+            let errorTexts: string[] = await this.getManyText(interaction, ["BASE_ERROR_TITLE", split.errorReturnTag]);
+            if(outerSplit) {
+                (split.thread)
+                    ? split.thread.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
+                    : interaction.channel?.send({embeds: this.splitUI.error(errorTexts[0], errorTexts[1])})
+            } else
+                interaction.reply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1]), ephemeral: true});
+            return;
+        }
+
+        let title: string = await this.getOneText(split.interaction, "SPLIT_RATING_TITLE");
         let fieldHeaders: string[] = [await this.getOneText(split.interaction, "SPLIT_FIELD_TITLE_USERS_NOT_PICKED")];
         for(let i: number = 0; i < split.teams.length; i++)
             fieldHeaders.push(await this.getOneText(split.interaction, "SPLIT_FIELD_TITLE_TEAM", i+1));

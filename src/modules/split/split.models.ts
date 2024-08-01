@@ -144,7 +144,8 @@ export class SplitRating extends Split {
         this.captains = [];
         this.users = [];
         this.teams = [[], []];
-        users.unshift(...(captains as User[]));
+        //users.unshift(...(captains as User[]));
+        //users = Array.from(new Set(users));
         let playersPerTeam: number = Math.floor(this.users.length/2);
 
         console.log("users length:", users.length);
@@ -159,14 +160,13 @@ export class SplitRating extends Split {
             let bestSum: number = sumOfRatings;
             for(let i: number = 0; i < ratings.length; i++) {
                 let tempRatings: number[] = ratings.slice(0, i).concat(ratings.slice(i+1));
-                let tempSumOrRatings: number = tempRatings.reduce((a,b) => a+b, 0);
-                let tempSimpleCombinations = this.combineWithoutRepetition(tempRatings, playersPerTeam);
-                let tempSumOfCombinations: number[] = tempSimpleCombinations.map(combination => Math.abs(tempSumOrRatings - 2*combination.reduce((a, b) => a+b, 0)));
-                let tempFinishSum: number = Math.min(...tempSumOfCombinations);
-                let tempFinishCombination: number[] = tempSimpleCombinations[tempSumOfCombinations.indexOf(tempFinishSum)];
-                if(tempFinishSum < bestSum) {
-                    bestCombination = tempFinishCombination;
-                    bestSum = tempFinishSum;
+                let simpleCombinations: number[][] = this.combineWithoutRepetition(tempRatings, playersPerTeam);
+                let sumOfCombinations: number[] = simpleCombinations.map(combination => Math.abs(sumOfRatings - 2*combination.reduce((a, b) => a+b, 0)));
+                let tempBestSum = Math.min(...sumOfCombinations);
+                let tempBestCombination = simpleCombinations[sumOfCombinations.indexOf(tempBestSum)];
+                if(tempBestSum < bestSum) {
+                    bestSum = tempBestSum;
+                    bestCombination = tempBestCombination;
                     excessRatingValue = ratings[i];
                     if(bestSum <= 1) {
                         break;
@@ -205,13 +205,23 @@ export class SplitRating extends Split {
 
         let teamsUnions: {user: User, rating: number}[][] = [userRatingUnions, userRatingUnionsFromCombination];
         console.log("teams:", teamsUnions);
+        /*
+        for(let i = 0; i < 2; i++) {
+            console.log("sort");
+            teamsUnions[i].sort((a, b) => b.rating-a.rating);
+            console.log("captain");
+            captains.push(teamsUnions[i][0].user);
+            console.log("push");
+            teamsUnions[i].forEach(union => this.teams[i].push(union.user.toString()));
+        }
+        */
         teamsUnions.forEach((team, index) => {
             console.log("sort");
             team.sort((a, b) => b.rating-a.rating);
             console.log("captain");
             captains.push(team[0].user);
             console.log("push");
-            team.forEach(union => this.teams[index].push(union.user.toString()));
+            this.teams[index] = team.map(union => union.user.toString());
         });
 
         this.currentCaptainIndex = -1;

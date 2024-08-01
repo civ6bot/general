@@ -219,6 +219,7 @@ export class SplitService extends ModuleBaseService {
                     .replaceAll(">", " ")
                     .split(" ")
                     .filter(id => (id !== "") && (id !== interaction.user.id));
+                users.push(interaction.user);
                 users = Array.from(new Set(users.filter(user => usersExcludeID.indexOf(user.id) === -1)));
             } else {
                 users = usersOnly

@@ -151,6 +151,7 @@ export class SplitRating extends Split {
         console.log("users length:", users.length);
         console.log("users:", users);
         console.log("ratings:", ratings);
+        console.log("playersPerTeam", playersPerTeam);
 
         let sumOfRatings: number = ratings.reduce((a, b) => a+b, 0);
         let bestCombination: number[] = [];
@@ -174,9 +175,16 @@ export class SplitRating extends Split {
                 }
             }
         } else {
+            console.log("comb func");
             let simpleCombinations: number[][] = this.combineWithoutRepetition(ratings, playersPerTeam);
             let sumOfCombinations: number[] = simpleCombinations.map(combination => Math.abs(sumOfRatings - 2*combination.reduce((a, b) => a+b, 0)));
-            bestCombination = simpleCombinations[sumOfCombinations.indexOf(Math.min(...sumOfCombinations))];
+            let bestSum: number = Math.min(...sumOfCombinations);
+            bestCombination = simpleCombinations[sumOfCombinations.indexOf(bestSum)];
+            console.log(simpleCombinations);
+            console.log(sumOfCombinations);
+            console.log(bestSum);
+            console.log(bestCombination);
+            console.log("end of comb func");
         }
        
         let userRatingUnions: {user: User, rating: number}[] = users.map((_, index: number) => { return {user: users[index], rating: ratings[index]}; });

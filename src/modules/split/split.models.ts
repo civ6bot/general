@@ -147,6 +147,10 @@ export class SplitRating extends Split {
         users.unshift(...(captains as User[]));
         let playersPerTeam: number = Math.floor(this.users.length/2);
 
+        console.log("users length:", users.length);
+        console.log("users:", users);
+        console.log("ratings:", ratings);
+
         let sumOfRatings: number = ratings.reduce((a, b) => a+b, 0);
         let bestCombination: number[] = [];
         let excessRatingValue: number|null = null;
@@ -176,6 +180,8 @@ export class SplitRating extends Split {
         }
        
         let userRatingUnions: {user: User, rating: number}[] = users.map((_, index: number) => { return {user: users[index], rating: ratings[index]}; });
+        console.log("all user unions:", userRatingUnions);
+
         if(excessRatingValue !== null) {
             for(let i = 0; i < userRatingUnions.length; i++) {
                 if(userRatingUnions[i].rating === excessRatingValue) {
@@ -185,6 +191,8 @@ export class SplitRating extends Split {
                 }
             }
         }
+        console.log("best combination: ", bestCombination);
+        console.log("excess value:", excessRatingValue);
         let userRatingUnionsFromCombination: {user: User, rating: number}[] = [];
         for(let i = 0; i < bestCombination.length; i++) {
             for(let j = 0; j < userRatingUnions.length; j++) {
@@ -196,10 +204,14 @@ export class SplitRating extends Split {
         }
 
         let teamsUnions: {user: User, rating: number}[][] = [userRatingUnions, userRatingUnionsFromCombination];
-        teamsUnions.forEach(teamUnions => teamUnions.sort((a, b) => b.rating-a.rating));
-        teamsUnions.forEach((teamUnions, index) => {
-            captains.push(teamUnions[0].user);
-            teamUnions.forEach(userRatingUnion => this.teams[index].push(userRatingUnion.user.toString()));
+        console.log("teams:", teamsUnions);
+        teamsUnions.forEach((team, index) => {
+            console.log("sort");
+            team.sort((a, b) => b.rating-a.rating);
+            console.log("captain");
+            captains.push(team[0].user);
+            console.log("push");
+            team.forEach(union => this.teams[index].push(union.user.toString()));
         });
 
         this.currentCaptainIndex = -1;

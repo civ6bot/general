@@ -6,6 +6,7 @@ import {UtilsDataCivilizations} from "../../utils/data/utils.data.civilizations"
 import {CommandInteraction, GuildMember, User} from "discord.js";
 import {SplitService} from "../split/split.service";
 import {SplitClassic, SplitCWC, SplitDouble, SplitRandom, SplitRating} from "../split/split.models";
+import { RequestsSplit } from "../../requests/requests.split";
 
 export class GameAdapter extends ModuleBaseService {
     public async callDraft(game: GameFFA) {
@@ -84,7 +85,9 @@ export class GameAdapter extends ModuleBaseService {
                     splitRandom.thread = game.thread;
                 return splitService.random(interaction, dummyMember, dummyMember, "", "", "", splitRandom);
             case "Rating":
-                let splitRating: SplitRating = new SplitRating(interaction, captains, game.users, bans);
+                let requestsSplit: RequestsSplit = new RequestsSplit();
+                let ratings: number[] = await requestsSplit.getRatings(interaction.guild?.id as string, game.users.map(user => user.id));
+                let splitRating: SplitRating = new SplitRating(interaction, captains, game.users, ratings, bans);
                 if(game.thread)
                     splitRating.thread = game.thread;
                 return splitService.rating(interaction, "", "", "", splitRating);

@@ -200,7 +200,7 @@ export class SplitRating extends Split {
         let teamsUnions: {user: User, rating: number}[][] = [userRatingUnions, userRatingUnionsFromCombination];
         teamsUnions.forEach((team, index) => {
             team.sort((a, b) => b.rating-a.rating);
-            captains.push(team[0].user);
+            this.captains.push(team[0].user);
             this.teams[index] = team.map(union => union.user.toString());
         });
 

@@ -161,8 +161,9 @@ export class SplitRating extends Split {
             let bestSum: number = sumOfRatings;
             for(let i: number = 0; i < ratings.length; i++) {
                 let tempRatings: number[] = ratings.slice(0, i).concat(ratings.slice(i+1));
+                let tempSumOfRatings: number = tempRatings.reduce((a, b) => a+b, 0);
                 let simpleCombinations: number[][] = this.combineWithoutRepetition(tempRatings, playersPerTeam);
-                let sumOfCombinations: number[] = simpleCombinations.map(combination => Math.abs(sumOfRatings - 2*combination.reduce((a, b) => a+b, 0)));
+                let sumOfCombinations: number[] = simpleCombinations.map(combination => Math.abs(tempSumOfRatings - 2*combination.reduce((a, b) => a+b, 0)));
                 let tempBestSum = Math.min(...sumOfCombinations);
                 let tempBestCombination = simpleCombinations[sumOfCombinations.indexOf(tempBestSum)];
                 if(tempBestSum < bestSum) {

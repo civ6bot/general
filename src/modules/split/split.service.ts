@@ -240,7 +240,6 @@ export class SplitService extends ModuleBaseService {
                 return interaction.reply({embeds: this.splitUI.error(errorTexts[0], errorTexts[1]), ephemeral: true});
             }
             let requestsSplit: RequestsSplit = new RequestsSplit();
-            console.log("guildID: ", interaction.guild?.id as string);
             let ratings: number[] = await requestsSplit.getRatings(interaction.guild?.id as string, users.map(user => user.id));
             split = new SplitRating(interaction, [users[0] || null, users[1] || null], users, ratings);
         }

@@ -147,12 +147,6 @@ export class SplitRating extends Split {
         //users.unshift(...(captains as User[]));
         //users = Array.from(new Set(users));
         let playersPerTeam: number = Math.floor(users.length/2);
-
-        console.log("users length:", users.length);
-        console.log("users:", users);
-        console.log("ratings:", ratings);
-        console.log("playersPerTeam", playersPerTeam);
-
         let sumOfRatings: number = ratings.reduce((a, b) => a+b, 0);
         let bestCombination: number[] = [];
         let excessRatingValue: number|null = null;
@@ -176,21 +170,13 @@ export class SplitRating extends Split {
                 }
             }
         } else {
-            console.log("comb func");
             let simpleCombinations: number[][] = this.combineWithoutRepetition(ratings, playersPerTeam);
             let sumOfCombinations: number[] = simpleCombinations.map(combination => Math.abs(sumOfRatings - 2*combination.reduce((a, b) => a+b, 0)));
             let bestSum: number = Math.min(...sumOfCombinations);
             bestCombination = simpleCombinations[sumOfCombinations.indexOf(bestSum)];
-            console.log(simpleCombinations);
-            console.log(sumOfCombinations);
-            console.log(bestSum);
-            console.log(bestCombination);
-            console.log("end of comb func");
         }
        
         let userRatingUnions: {user: User, rating: number}[] = users.map((_, index: number) => { return {user: users[index], rating: ratings[index]}; });
-        console.log("all user unions:", userRatingUnions);
-
         if(excessRatingValue !== null) {
             for(let i = 0; i < userRatingUnions.length; i++) {
                 if(userRatingUnions[i].rating === excessRatingValue) {
@@ -200,8 +186,7 @@ export class SplitRating extends Split {
                 }
             }
         }
-        console.log("best combination: ", bestCombination);
-        console.log("excess value:", excessRatingValue);
+
         let userRatingUnionsFromCombination: {user: User, rating: number}[] = [];
         for(let i = 0; i < bestCombination.length; i++) {
             for(let j = 0; j < userRatingUnions.length; j++) {
@@ -213,23 +198,9 @@ export class SplitRating extends Split {
         }
 
         let teamsUnions: {user: User, rating: number}[][] = [userRatingUnions, userRatingUnionsFromCombination];
-        console.log("teams:", teamsUnions);
-        /*
-        for(let i = 0; i < 2; i++) {
-            console.log("sort");
-            teamsUnions[i].sort((a, b) => b.rating-a.rating);
-            console.log("captain");
-            captains.push(teamsUnions[i][0].user);
-            console.log("push");
-            teamsUnions[i].forEach(union => this.teams[i].push(union.user.toString()));
-        }
-        */
         teamsUnions.forEach((team, index) => {
-            console.log("sort");
             team.sort((a, b) => b.rating-a.rating);
-            console.log("captain");
             captains.push(team[0].user);
-            console.log("push");
             this.teams[index] = team.map(union => union.user.toString());
         });
 

@@ -172,7 +172,7 @@
     { "tag": "GAME_TEAMERS_SPLIT_CLASSIC_EMOJI", "value": "🧭" },
     { "tag": "GAME_TEAMERS_SPLIT_DOUBLE_EMOJI", "value": "⏫" },
     { "tag": "GAME_TEAMERS_SPLIT_CWC_EMOJI", "value": "\uD83C\uDFC6" },
-    { "tag": "GAME_TEAMERS_SPLIT_RANDOM_EMOJI", "value": "\uD83C\uDFB2" }
+    { "tag": "GAME_TEAMERS_SPLIT_RANDOM_EMOJI", "value": "\uD83C\uDFB2" },
     { "tag": "GAME_TEAMERS_SPLIT_RATING_EMOJI", "value": "📈" }
   ]
 }

@@ -42,7 +42,7 @@
 
     { "tag": "GAME_FFA_MAP", "value": "\uD83C\uDF0D **Карта**" },
     { "tag": "GAME_FFA_MAP_PANGAEA", "value": "Пангея" },
-    { "tag": "GAME_FFA_MAP_PANGAEA_CLASSIC", "value": "Пангея (классические хребты)" },
+    { "tag": "GAME_FFA_MAP_PANGAEA_CLASSIC", "value": "Пангея (стандартные хребты)" },
     { "tag": "GAME_FFA_MAP_CONTINENTS", "value": "Континенты" },
     { "tag": "GAME_FFA_MAP_HIGHLANDS", "value": "Нагорье" },
     { "tag": "GAME_FFA_MAP_SEVEN_SEAS", "value": "Семь морей" },
@@ -174,7 +174,7 @@
 
     { "tag": "GAME_TEAMERS_MAP", "value": "\uD83C\uDF0D **Карта**" },
     { "tag": "GAME_TEAMERS_MAP_PANGAEA", "value": "Пангея" },
-    { "tag": "GAME_TEAMERS_MAP_PANGAEA_CLASSIC", "value": "Пангея (классические хребты)" },
+    { "tag": "GAME_TEAMERS_MAP_PANGAEA_CLASSIC", "value": "Пангея (стандартные хребты)" },
     { "tag": "GAME_TEAMERS_MAP_CONTINENTS", "value": "Континенты" },
     { "tag": "GAME_TEAMERS_MAP_HIGHLANDS", "value": "Нагорье" },
     { "tag": "GAME_TEAMERS_MAP_SEVEN_SEAS", "value": "Семь морей" },
